@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@msk/main/shell/feature": ["libs/main/shell/feature/src/index.ts"],
+      "@msk/shared/utils/app-config": ["libs/shared/utils/app-config/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

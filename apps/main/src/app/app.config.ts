@@ -1,8 +1,12 @@
 import { ApplicationConfig } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter } from '@angular/router';
-import { appRoutes } from './app.routes';
+
+import { provideShell } from '@msk/main/shell/feature';
+import { provideAppConfig } from '@msk/shared/utils/app-config';
+
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(appRoutes), provideAnimationsAsync()],
+  providers: [provideAnimationsAsync(), provideHttpClient(), provideAppConfig(environment), provideShell()],
 };
