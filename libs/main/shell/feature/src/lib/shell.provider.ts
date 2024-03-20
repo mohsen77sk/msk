@@ -3,6 +3,8 @@ import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
+import { provideIcons } from '@msk/shared/utils/icons';
+
 import { appRoutes } from './shell.routes';
 
 /**
@@ -33,6 +35,8 @@ export const provideShell = (): Array<Provider | EnvironmentProviders> => {
       withPreloading(PreloadAllModules),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
+
+    provideIcons(),
   ];
 
   // Return the providers
