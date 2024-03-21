@@ -1,9 +1,12 @@
-import { EnvironmentProviders, Provider } from '@angular/core';
+import { APP_INITIALIZER, EnvironmentProviders, Provider, inject } from '@angular/core';
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { TranslocoService, provideTransloco } from '@ngneat/transloco';
+import { firstValueFrom } from 'rxjs';
 
 import { provideIcons } from '@msk/shared/utils/icons';
+import { TranslocoHttpLoader, availableLangs } from '@msk/shared/utils/transloco';
 
 import { appRoutes } from './shell.routes';
 
@@ -35,6 +38,28 @@ export const provideShell = (): Array<Provider | EnvironmentProviders> => {
       withPreloading(PreloadAllModules),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
+
+    // Transloco Config
+    provideTransloco({
+      config: {
+        availableLangs: availableLangs,
+        reRenderOnLangChange: true,
+        prodMode: true,
+      },
+      loader: TranslocoHttpLoader,
+    }),
+    {
+      // Preload the default language before the app starts to prevent empty/jumping content
+      provide: APP_INITIALIZER,
+      useFactory: () => {
+        const translocoService = inject(TranslocoService);
+        const defaultLang = translocoService.getDefaultLang();
+        translocoService.setActiveLang(defaultLang);
+
+        return () => firstValueFrom(translocoService.load(defaultLang));
+      },
+      multi: true,
+    },
 
     provideIcons(),
   ];

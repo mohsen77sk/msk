@@ -15,6 +15,7 @@
     "@angular/platform-browser": "~17.2.0",
     "@angular/platform-browser-dynamic": "~17.2.0",
     "@angular/router": "~17.2.0",
+    "@ngneat/transloco": "^6.0.4",
     "@nx/angular": "18.1.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

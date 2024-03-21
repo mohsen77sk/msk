@@ -17,7 +17,8 @@
     "paths": {
       "@msk/main/shell/feature": ["libs/main/shell/feature/src/index.ts"],
       "@msk/shared/utils/app-config": ["libs/shared/utils/app-config/src/index.ts"],
-      "@msk/shared/utils/icons": ["libs/shared/utils/icons/src/index.ts"]
+      "@msk/shared/utils/icons": ["libs/shared/utils/icons/src/index.ts"],
+      "@msk/shared/utils/transloco": ["libs/shared/utils/transloco/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
