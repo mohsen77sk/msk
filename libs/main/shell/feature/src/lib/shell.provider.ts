@@ -3,6 +3,7 @@ import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { TranslocoService, provideTransloco } from '@ngneat/transloco';
+import { provideDateFnsAdapter } from 'ngx-material-date-fns-adapter';
 import { firstValueFrom } from 'rxjs';
 
 import { provideIcons } from '@msk/shared/utils/icons';
@@ -33,11 +34,15 @@ export const provideShell = (): Array<Provider | EnvironmentProviders> => {
       },
     },
 
+    // Route
     provideRouter(
       appRoutes,
       withPreloading(PreloadAllModules),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
+
+    // Material Date Adapter
+    provideDateFnsAdapter(),
 
     // Transloco Config
     provideTransloco({
