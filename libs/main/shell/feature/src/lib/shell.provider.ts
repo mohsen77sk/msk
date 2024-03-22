@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, EnvironmentProviders, Provider, inject } from '@angular/core';
+import { APP_INITIALIZER, ENVIRONMENT_INITIALIZER, EnvironmentProviders, Provider, inject } from '@angular/core';
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
@@ -6,6 +6,7 @@ import { TranslocoService, provideTransloco } from '@ngneat/transloco';
 import { provideDateFnsAdapter } from 'ngx-material-date-fns-adapter';
 import { firstValueFrom } from 'rxjs';
 
+import { PlatformService } from '@msk/shared/services/platform';
 import { provideIcons } from '@msk/shared/utils/icons';
 import { TranslocoHttpLoader, availableLangs } from '@msk/shared/utils/transloco';
 
@@ -67,6 +68,12 @@ export const provideShell = (): Array<Provider | EnvironmentProviders> => {
     },
 
     provideIcons(),
+
+    {
+      provide: ENVIRONMENT_INITIALIZER,
+      useValue: () => inject(PlatformService),
+      multi: true,
+    },
   ];
 
   // Return the providers
