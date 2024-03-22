@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@msk/main/shell/feature": ["libs/main/shell/feature/src/index.ts"],
+      "@msk/shared/directives/scroll-reset": ["libs/shared/directives/scroll-reset/src/index.ts"],
       "@msk/shared/services/config": ["libs/shared/services/config/src/index.ts"],
       "@msk/shared/services/media-watcher": ["libs/shared/services/media-watcher/src/index.ts"],
       "@msk/shared/services/platform": ["libs/shared/services/platform/src/index.ts"],
