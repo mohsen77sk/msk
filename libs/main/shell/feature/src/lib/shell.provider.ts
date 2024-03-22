@@ -6,6 +6,7 @@ import { TranslocoService, provideTransloco } from '@ngneat/transloco';
 import { provideDateFnsAdapter } from 'ngx-material-date-fns-adapter';
 import { firstValueFrom } from 'rxjs';
 
+import { LAYOUT_CONFIG, LayoutConfig } from '@msk/shared/services/config';
 import { PlatformService } from '@msk/shared/services/platform';
 import { provideIcons } from '@msk/shared/utils/icons';
 import { TranslocoHttpLoader, availableLangs } from '@msk/shared/utils/transloco';
@@ -15,7 +16,7 @@ import { appRoutes } from './shell.routes';
 /**
  * Shell provider
  */
-export const provideShell = (): Array<Provider | EnvironmentProviders> => {
+export const provideShell = (config: LayoutConfig): Array<Provider | EnvironmentProviders> => {
   // Base providers
   const providers: Array<Provider | EnvironmentProviders> = [
     {
@@ -33,6 +34,10 @@ export const provideShell = (): Array<Provider | EnvironmentProviders> => {
       useValue: {
         appearance: 'fill',
       },
+    },
+    {
+      provide: LAYOUT_CONFIG,
+      useValue: config ?? {},
     },
 
     // Route
