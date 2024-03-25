@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@msk/main/shell/feature": ["libs/main/shell/feature/src/index.ts"],
+      "@msk/main/shell/ui/layout": ["libs/main/shell/ui/layout/src/index.ts"],
       "@msk/shared/directives/scroll-reset": ["libs/shared/directives/scroll-reset/src/index.ts"],
       "@msk/shared/directives/scrollbar": ["libs/shared/directives/scrollbar/src/index.ts"],
       "@msk/shared/services/config": ["libs/shared/services/config/src/index.ts"],
