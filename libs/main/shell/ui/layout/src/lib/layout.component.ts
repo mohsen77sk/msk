@@ -2,6 +2,7 @@ import { Component, DestroyRef, Inject, OnInit, Renderer2, ViewEncapsulation, in
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DOCUMENT, NgIf } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { BidiModule } from '@angular/cdk/bidi';
 import { MediaWatcherService } from '@msk/shared/services/media-watcher';
 import { PlatformService } from '@msk/shared/services/platform';
 import {
@@ -12,6 +13,7 @@ import {
   LayoutTheme,
   LayoutType,
 } from '@msk/shared/services/config';
+import { LoadingBarComponent } from '@msk/shared/ui/loading-bar';
 import { combineLatest, filter, map } from 'rxjs';
 import { LayoutEmptyComponent } from './layouts/empty/empty.component';
 
@@ -21,7 +23,7 @@ import { LayoutEmptyComponent } from './layouts/empty/empty.component';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   encapsulation: ViewEncapsulation.None,
-  imports: [NgIf, LayoutEmptyComponent],
+  imports: [NgIf, BidiModule, LoadingBarComponent, LayoutEmptyComponent],
 })
 export class LayoutComponent implements OnInit {
   destroyRef = inject(DestroyRef);

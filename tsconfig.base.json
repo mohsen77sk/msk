@@ -25,7 +25,8 @@
       "@msk/shared/services/utils": ["libs/shared/services/utils/src/index.ts"],
       "@msk/shared/utils/app-config": ["libs/shared/utils/app-config/src/index.ts"],
       "@msk/shared/utils/icons": ["libs/shared/utils/icons/src/index.ts"],
-      "@msk/shared/utils/transloco": ["libs/shared/utils/transloco/src/index.ts"]
+      "@msk/shared/utils/transloco": ["libs/shared/utils/transloco/src/index.ts"],
+      "@msk/shared/ui/loading-bar": ["libs/shared/ui/loading-bar/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

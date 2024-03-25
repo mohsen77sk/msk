@@ -1,5 +1,6 @@
 import { APP_INITIALIZER, ENVIRONMENT_INITIALIZER, EnvironmentProviders, Provider, inject } from '@angular/core';
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { TranslocoService, provideTransloco } from '@ngneat/transloco';
@@ -12,6 +13,7 @@ import { PlatformService } from '@msk/shared/services/platform';
 import { UtilsService } from '@msk/shared/services/utils';
 import { provideIcons } from '@msk/shared/utils/icons';
 import { TranslocoHttpLoader, availableLangs } from '@msk/shared/utils/transloco';
+import { LoadingBarService, loadingBarInterceptor } from '@msk/shared/ui/loading-bar';
 
 import { appRoutes } from './shell.routes';
 
@@ -76,7 +78,13 @@ export const provideShell = (config: LayoutConfig): Array<Provider | Environment
 
     provideIcons(),
 
-    // Base services
+    provideHttpClient(withInterceptors([loadingBarInterceptor])),
+    {
+      provide: ENVIRONMENT_INITIALIZER,
+      useValue: () => inject(LoadingBarService),
+      multi: true,
+    },
+
     {
       provide: ENVIRONMENT_INITIALIZER,
       useValue: () => inject(MediaWatcherService),
