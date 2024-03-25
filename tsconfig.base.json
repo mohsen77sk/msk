@@ -22,11 +22,12 @@
       "@msk/shared/services/config": ["libs/shared/services/config/src/index.ts"],
       "@msk/shared/services/media-watcher": ["libs/shared/services/media-watcher/src/index.ts"],
       "@msk/shared/services/platform": ["libs/shared/services/platform/src/index.ts"],
+      "@msk/shared/services/splash-screen": ["libs/shared/services/splash-screen/src/index.ts"],
       "@msk/shared/services/utils": ["libs/shared/services/utils/src/index.ts"],
+      "@msk/shared/ui/loading-bar": ["libs/shared/ui/loading-bar/src/index.ts"],
       "@msk/shared/utils/app-config": ["libs/shared/utils/app-config/src/index.ts"],
       "@msk/shared/utils/icons": ["libs/shared/utils/icons/src/index.ts"],
-      "@msk/shared/utils/transloco": ["libs/shared/utils/transloco/src/index.ts"],
-      "@msk/shared/ui/loading-bar": ["libs/shared/ui/loading-bar/src/index.ts"]
+      "@msk/shared/utils/transloco": ["libs/shared/utils/transloco/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

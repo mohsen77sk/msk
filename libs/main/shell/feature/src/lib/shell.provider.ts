@@ -10,6 +10,7 @@ import { firstValueFrom } from 'rxjs';
 import { LAYOUT_CONFIG, LayoutConfig } from '@msk/shared/services/config';
 import { MediaWatcherService } from '@msk/shared/services/media-watcher';
 import { PlatformService } from '@msk/shared/services/platform';
+import { SplashScreenService } from '@msk/shared/services/splash-screen';
 import { UtilsService } from '@msk/shared/services/utils';
 import { provideIcons } from '@msk/shared/utils/icons';
 import { TranslocoHttpLoader, availableLangs } from '@msk/shared/utils/transloco';
@@ -93,6 +94,11 @@ export const provideShell = (config: LayoutConfig): Array<Provider | Environment
     {
       provide: ENVIRONMENT_INITIALIZER,
       useValue: () => inject(PlatformService),
+      multi: true,
+    },
+    {
+      provide: ENVIRONMENT_INITIALIZER,
+      useValue: () => inject(SplashScreenService),
       multi: true,
     },
     {
