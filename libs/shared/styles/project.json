@@ -1,0 +1,7 @@
+{
+  "name": "shared-styles",
+  "sourceRoot": "libs/shared/styles",
+  "tags": ["scope:shared"],
+  "projectType": "library",
+  "targets": {}
+}

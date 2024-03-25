@@ -26,6 +26,9 @@
           }
         ],
         "styles": ["apps/main/src/styles.scss"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["libs/shared/styles/src"]
+        },
         "scripts": []
       },
       "configurations": {
