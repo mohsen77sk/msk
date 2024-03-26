@@ -1,10 +1,10 @@
 import { InjectionToken, ValueProvider } from '@angular/core';
-import { IAppConfig } from './app.config';
+import { AppConfig } from './app.config';
 
 /**
  * APP_CONFIG
  */
-export const APP_CONFIG = new InjectionToken<IAppConfig>('app.config');
+export const MSK_APP_CONFIG = new InjectionToken<AppConfig>('app.config');
 
 /**
  * Configures APP_CONFIG to be available for injection.
@@ -18,7 +18,7 @@ export const APP_CONFIG = new InjectionToken<IAppConfig>('app.config');
  *
  * @param value pass environment value
  */
-export const provideAppConfig = (value: IAppConfig): ValueProvider => ({
-  provide: APP_CONFIG,
+export const provideMskAppConfig = (value: AppConfig): ValueProvider => ({
+  provide: MSK_APP_CONFIG,
   useValue: value,
 });

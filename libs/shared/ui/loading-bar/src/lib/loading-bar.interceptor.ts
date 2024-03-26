@@ -1,16 +1,16 @@
 import { inject } from '@angular/core';
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
-import { LoadingBarService } from './loading-bar.service';
+import { MskLoadingBarService } from './loading-bar.service';
 import { finalize, Observable, take } from 'rxjs';
 
-export const loadingBarInterceptor = (
+export const mskLoadingBarInterceptor = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
-  const loadingService = inject(LoadingBarService);
+  const mskLoadingBarService = inject(MskLoadingBarService);
   let handleRequestsAutomatically = false;
 
-  loadingService.auto$.pipe(take(1)).subscribe((value) => {
+  mskLoadingBarService.auto$.pipe(take(1)).subscribe((value) => {
     handleRequestsAutomatically = value;
   });
 
@@ -20,12 +20,12 @@ export const loadingBarInterceptor = (
   }
 
   // Set the loading status to true
-  loadingService.setLoadingStatus(true, req.url);
+  mskLoadingBarService.setLoadingStatus(true, req.url);
 
   return next(req).pipe(
     finalize(() => {
       // Set the status to false if there are any errors or the request is completed
-      loadingService.setLoadingStatus(false, req.url);
+      mskLoadingBarService.setLoadingStatus(false, req.url);
     })
   );
 };

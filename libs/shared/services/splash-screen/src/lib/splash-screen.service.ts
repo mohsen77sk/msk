@@ -4,7 +4,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, take } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class SplashScreenService {
+export class MskSplashScreenService {
   /**
    * Constructor
    */

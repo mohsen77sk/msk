@@ -1,27 +1,24 @@
-import { APP_INITIALIZER, ENVIRONMENT_INITIALIZER, EnvironmentProviders, Provider, inject } from '@angular/core';
+import { ENVIRONMENT_INITIALIZER, EnvironmentProviders, Provider, inject } from '@angular/core';
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { TranslocoService, provideTransloco } from '@ngneat/transloco';
 import { provideDateFnsAdapter } from 'ngx-material-date-fns-adapter';
-import { firstValueFrom } from 'rxjs';
 
-import { LAYOUT_CONFIG, LayoutConfig } from '@msk/shared/services/config';
-import { MediaWatcherService } from '@msk/shared/services/media-watcher';
-import { PlatformService } from '@msk/shared/services/platform';
-import { SplashScreenService } from '@msk/shared/services/splash-screen';
-import { UtilsService } from '@msk/shared/services/utils';
-import { provideIcons } from '@msk/shared/utils/icons';
-import { TranslocoHttpLoader, availableLangs } from '@msk/shared/utils/transloco';
-import { LoadingBarService, loadingBarInterceptor } from '@msk/shared/ui/loading-bar';
+import { MSK_LAYOUT_CONFIG, LayoutConfig } from '@msk/shared/services/config';
+import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
+import { MskPlatformService } from '@msk/shared/services/platform';
+import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
+import { MskUtilsService } from '@msk/shared/services/utils';
+import { provideMskIcons } from '@msk/shared/utils/icons';
+import { provideMskTransloco } from '@msk/shared/utils/transloco';
+import { provideMskLoadingBar } from '@msk/shared/ui/loading-bar';
 
-import { appRoutes } from './shell.routes';
+import { mainRoutes } from './shell.routes';
 
 /**
  * Shell provider
  */
-export const provideShell = (config: LayoutConfig): Array<Provider | EnvironmentProviders> => {
+export const provideMainShell = (config: LayoutConfig): Array<Provider | EnvironmentProviders> => {
   // Base providers
   const providers: Array<Provider | EnvironmentProviders> = [
     {
@@ -41,13 +38,13 @@ export const provideShell = (config: LayoutConfig): Array<Provider | Environment
       },
     },
     {
-      provide: LAYOUT_CONFIG,
+      provide: MSK_LAYOUT_CONFIG,
       useValue: config ?? {},
     },
 
     // Route
     provideRouter(
-      appRoutes,
+      mainRoutes,
       withPreloading(PreloadAllModules),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
@@ -55,55 +52,29 @@ export const provideShell = (config: LayoutConfig): Array<Provider | Environment
     // Material Date Adapter
     provideDateFnsAdapter(),
 
-    // Transloco Config
-    provideTransloco({
-      config: {
-        availableLangs: availableLangs,
-        reRenderOnLangChange: true,
-        prodMode: true,
-      },
-      loader: TranslocoHttpLoader,
-    }),
-    {
-      // Preload the default language before the app starts to prevent empty/jumping content
-      provide: APP_INITIALIZER,
-      useFactory: () => {
-        const translocoService = inject(TranslocoService);
-        const defaultLang = translocoService.getDefaultLang();
-        translocoService.setActiveLang(defaultLang);
-
-        return () => firstValueFrom(translocoService.load(defaultLang));
-      },
-      multi: true,
-    },
-
-    provideIcons(),
-
-    provideHttpClient(withInterceptors([loadingBarInterceptor])),
+    // Provide utils
+    provideMskIcons(),
+    provideMskTransloco(),
+    provideMskLoadingBar(),
+    // Provide services
     {
       provide: ENVIRONMENT_INITIALIZER,
-      useValue: () => inject(LoadingBarService),
-      multi: true,
-    },
-
-    {
-      provide: ENVIRONMENT_INITIALIZER,
-      useValue: () => inject(MediaWatcherService),
+      useValue: () => inject(MskMediaWatcherService),
       multi: true,
     },
     {
       provide: ENVIRONMENT_INITIALIZER,
-      useValue: () => inject(PlatformService),
+      useValue: () => inject(MskPlatformService),
       multi: true,
     },
     {
       provide: ENVIRONMENT_INITIALIZER,
-      useValue: () => inject(SplashScreenService),
+      useValue: () => inject(MskSplashScreenService),
       multi: true,
     },
     {
       provide: ENVIRONMENT_INITIALIZER,
-      useValue: () => inject(UtilsService),
+      useValue: () => inject(MskUtilsService),
       multi: true,
     },
   ];

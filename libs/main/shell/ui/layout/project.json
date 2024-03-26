@@ -2,7 +2,7 @@
   "name": "main-shell-ui-layout",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/main/shell/ui/layout/src",
-  "prefix": "lib",
+  "prefix": "main",
   "tags": ["scope:main", "type:ui"],
   "projectType": "library",
   "targets": {

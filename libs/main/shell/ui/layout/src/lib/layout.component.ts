@@ -3,29 +3,23 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DOCUMENT, NgIf } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BidiModule } from '@angular/cdk/bidi';
-import { MediaWatcherService } from '@msk/shared/services/media-watcher';
-import { PlatformService } from '@msk/shared/services/platform';
-import {
-  LayoutConfig,
-  LayoutConfigService,
-  LayoutDirection,
-  LayoutScheme,
-  LayoutTheme,
-  LayoutType,
-} from '@msk/shared/services/config';
-import { LoadingBarComponent } from '@msk/shared/ui/loading-bar';
+import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
+import { MskPlatformService } from '@msk/shared/services/platform';
+import { LayoutConfig, LayoutDirection, LayoutScheme, LayoutTheme, LayoutType } from '@msk/shared/services/config';
+import { MskLayoutConfigService } from '@msk/shared/services/config';
+import { MskLoadingBarComponent } from '@msk/shared/ui/loading-bar';
 import { combineLatest, filter, map } from 'rxjs';
-import { LayoutEmptyComponent } from './layouts/empty/empty.component';
+import { MainLayoutEmptyComponent } from './layouts/empty/empty.component';
 
 @Component({
   standalone: true,
-  selector: 'lib-layout',
+  selector: 'main-layout',
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   encapsulation: ViewEncapsulation.None,
-  imports: [NgIf, BidiModule, LoadingBarComponent, LayoutEmptyComponent],
+  imports: [NgIf, BidiModule, MskLoadingBarComponent, MainLayoutEmptyComponent],
 })
-export class LayoutComponent implements OnInit {
+export class MainLayoutComponent implements OnInit {
   destroyRef = inject(DestroyRef);
 
   layoutConfig!: LayoutConfig;
@@ -42,9 +36,9 @@ export class LayoutComponent implements OnInit {
     private _router: Router,
     private _renderer2: Renderer2,
     private _activatedRoute: ActivatedRoute,
-    private _mskConfigService: LayoutConfigService,
-    private _mskMediaWatcherService: MediaWatcherService,
-    private _mskPlatformService: PlatformService
+    private _mskLayoutConfigService: MskLayoutConfigService,
+    private _mskMediaWatcherService: MskMediaWatcherService,
+    private _mskPlatformService: MskPlatformService
   ) {}
 
   // -----------------------------------------------------------------------------------------------------
@@ -57,7 +51,7 @@ export class LayoutComponent implements OnInit {
   ngOnInit(): void {
     // Set the theme and scheme based on the configuration
     combineLatest([
-      this._mskConfigService.config$,
+      this._mskLayoutConfigService.config$,
       this._mskMediaWatcherService.onMediaQueryChange$([
         '(prefers-color-scheme: dark)',
         '(prefers-color-scheme: light)',
@@ -90,7 +84,7 @@ export class LayoutComponent implements OnInit {
       .subscribe();
 
     // Subscribe to config changes
-    this._mskConfigService.config$
+    this._mskLayoutConfigService.config$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         map((config) => {

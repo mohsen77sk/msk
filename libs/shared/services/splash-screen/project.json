@@ -2,7 +2,7 @@
   "name": "shared-services-splash-screen",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/services/splash-screen/src",
-  "prefix": "lib",
+  "prefix": "msk",
   "tags": ["scope:shared", "type:util"],
   "projectType": "library",
   "targets": {

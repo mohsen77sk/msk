@@ -2,7 +2,7 @@
   "name": "shared-services-media-watcher",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/services/media-watcher/src",
-  "prefix": "lib",
+  "prefix": "msk",
   "tags": ["scope:shared", "type:util"],
   "projectType": "library",
   "targets": {

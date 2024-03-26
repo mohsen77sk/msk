@@ -1,10 +1,10 @@
 import { Route } from '@angular/router';
-import { LayoutComponent } from '@msk/main/shell/ui/layout';
+import { MainLayoutComponent } from '@msk/main/shell/ui/layout';
 
-export const appRoutes: Route[] = [
+export const mainRoutes: Route[] = [
   {
     path: '',
-    component: LayoutComponent,
+    component: MainLayoutComponent,
     data: {
       layoutType: 'empty',
     },

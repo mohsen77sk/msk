@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ProgressBarMode } from '@angular/material/progress-bar';
 
 @Injectable({ providedIn: 'root' })
-export class LoadingBarService {
+export class MskLoadingBarService {
   private _auto$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private _mode$: BehaviorSubject<ProgressBarMode> = new BehaviorSubject<ProgressBarMode>('indeterminate');
   private _progress$: BehaviorSubject<number> = new BehaviorSubject<number>(0);

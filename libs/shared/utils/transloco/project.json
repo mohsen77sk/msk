@@ -2,7 +2,7 @@
   "name": "shared-utils-transloco",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/utils/transloco/src",
-  "prefix": "lib",
+  "prefix": "msk",
   "tags": ["scope:shared", "type:util"],
   "projectType": "library",
   "targets": {

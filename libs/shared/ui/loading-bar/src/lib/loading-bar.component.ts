@@ -12,18 +12,18 @@ import { NgIf } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progress-bar';
-import { LoadingBarService } from './loading-bar.service';
+import { MskLoadingBarService } from './loading-bar.service';
 import { map } from 'rxjs';
 
 @Component({
   standalone: true,
-  selector: 'lib-loading-bar',
+  selector: 'msk-loading-bar',
   templateUrl: './loading-bar.component.html',
   styleUrls: ['./loading-bar.component.scss'],
   encapsulation: ViewEncapsulation.None,
   imports: [NgIf, MatProgressBarModule],
 })
-export class LoadingBarComponent implements OnChanges, OnInit {
+export class MskLoadingBarComponent implements OnChanges, OnInit {
   destroyRef = inject(DestroyRef);
 
   @Input() autoMode = true;
@@ -34,7 +34,7 @@ export class LoadingBarComponent implements OnChanges, OnInit {
   /**
    * Constructor
    */
-  constructor(private _loadingBarService: LoadingBarService) {}
+  constructor(private _mskLoadingBarService: MskLoadingBarService) {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -49,7 +49,7 @@ export class LoadingBarComponent implements OnChanges, OnInit {
     // Auto mode
     if ('autoMode' in changes) {
       // Set the auto mode in the service
-      this._loadingBarService.setAutoMode(coerceBooleanProperty(changes['autoMode'].currentValue));
+      this._mskLoadingBarService.setAutoMode(coerceBooleanProperty(changes['autoMode'].currentValue));
     }
   }
 
@@ -58,21 +58,21 @@ export class LoadingBarComponent implements OnChanges, OnInit {
    */
   ngOnInit(): void {
     // Subscribe to the service
-    this._loadingBarService.mode$
+    this._mskLoadingBarService.mode$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         map((value) => (this.mode = value))
       )
       .subscribe();
 
-    this._loadingBarService.progress$
+    this._mskLoadingBarService.progress$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         map((value) => (this.progress = value))
       )
       .subscribe();
 
-    this._loadingBarService.show$
+    this._mskLoadingBarService.show$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         map((value) => (this.show = value))

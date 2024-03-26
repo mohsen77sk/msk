@@ -22,10 +22,10 @@ import { ScrollbarGeometry, ScrollbarPosition } from './scrollbar.types';
  */
 @Directive({
   standalone: true,
-  selector: '[libScrollbar]',
-  exportAs: 'libScrollbar',
+  selector: '[mskScrollbar]',
+  exportAs: 'mskScrollbar',
 })
-export class ScrollbarDirective implements OnChanges, OnInit, OnDestroy {
+export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
   destroyRef = inject(DestroyRef);
 
   @Input() scrollbar = true;

@@ -4,9 +4,9 @@ import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
-  selector: 'lib-layout-empty',
+  selector: 'main-layout-empty',
   templateUrl: './empty.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [NgIf, RouterOutlet],
 })
-export class LayoutEmptyComponent {}
+export class MainLayoutEmptyComponent {}

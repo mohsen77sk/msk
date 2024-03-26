@@ -2,7 +2,7 @@
   "name": "shared-directives-scroll-reset",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/directives/scroll-reset/src",
-  "prefix": "lib",
+  "prefix": "msk",
   "tags": ["scope:shared", "type:ui"],
   "projectType": "library",
   "targets": {

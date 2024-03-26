@@ -2,7 +2,7 @@
   "name": "shared-utils-icons",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/utils/icons/src",
-  "prefix": "lib",
+  "prefix": "msk",
   "tags": ["scope:shared", "type:util"],
   "projectType": "library",
   "targets": {

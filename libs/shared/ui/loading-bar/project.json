@@ -2,7 +2,7 @@
   "name": "shared-ui-loading-bar",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/ui/loading-bar/src",
-  "prefix": "lib",
+  "prefix": "msk",
   "tags": ["scope:shared", "type:ui"],
   "projectType": "library",
   "targets": {

@@ -5,10 +5,10 @@ import { filter } from 'rxjs';
 
 @Directive({
   standalone: true,
-  selector: '[libScrollReset]',
-  exportAs: 'libScrollReset',
+  selector: '[mskScrollReset]',
+  exportAs: 'mskScrollReset',
 })
-export class ScrollResetDirective implements OnInit {
+export class MskScrollResetDirective implements OnInit {
   destroyRef = inject(DestroyRef);
 
   /**

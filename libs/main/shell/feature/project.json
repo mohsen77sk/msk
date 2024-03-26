@@ -2,7 +2,7 @@
   "name": "main-shell-feature",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/main/shell/feature/src",
-  "prefix": "lib",
+  "prefix": "main",
   "tags": ["scope:main", "type:feature"],
   "projectType": "library",
   "targets": {

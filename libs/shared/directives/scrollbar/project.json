@@ -2,7 +2,7 @@
   "name": "shared-directives-scrollbar",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/directives/scrollbar/src",
-  "prefix": "lib",
+  "prefix": "msk",
   "tags": ["scope:shared", "type:ui"],
   "projectType": "library",
   "targets": {
