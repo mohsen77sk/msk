@@ -10,4 +10,20 @@ export const mainRoutes: Route[] = [
     },
     children: [],
   },
+  // Error routes & Catch all
+  {
+    path: '',
+    component: MainLayoutComponent,
+    data: {
+      layoutType: 'empty',
+    },
+    children: [
+      {
+        path: 'not-found',
+        pathMatch: 'full',
+        loadChildren: () => import('@msk/main/errors/not-found').then((r) => r.routes),
+      },
+      { path: '**', redirectTo: 'not-found' },
+    ],
+  },
 ];
