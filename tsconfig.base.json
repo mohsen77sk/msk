@@ -28,6 +28,7 @@
       "@msk/shared/services/platform": ["libs/shared/services/platform/src/index.ts"],
       "@msk/shared/services/splash-screen": ["libs/shared/services/splash-screen/src/index.ts"],
       "@msk/shared/services/utils": ["libs/shared/services/utils/src/index.ts"],
+      "@msk/shared/ui/fullscreen": ["libs/shared/ui/fullscreen/src/index.ts"],
       "@msk/shared/ui/loading-bar": ["libs/shared/ui/loading-bar/src/index.ts"],
       "@msk/shared/utils/app-config": ["libs/shared/utils/app-config/src/index.ts"],
       "@msk/shared/utils/icons": ["libs/shared/utils/icons/src/index.ts"],
