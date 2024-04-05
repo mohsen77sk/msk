@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MskTranslocoTestingModule } from '@msk/shared/utils/transloco';
 import { NotFoundComponent } from './not-found.component';
 
 describe('NotFoundComponent', () => {
@@ -7,7 +8,7 @@ describe('NotFoundComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotFoundComponent],
+      imports: [MskTranslocoTestingModule(), NotFoundComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NotFoundComponent);

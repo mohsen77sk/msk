@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MskTranslocoTestingModule } from '@msk/shared/utils/transloco';
 import { InternalServerErrorComponent } from './internal-server-error.component';
 
 describe('InternalServerErrorComponent', () => {
@@ -7,7 +8,7 @@ describe('InternalServerErrorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InternalServerErrorComponent],
+      imports: [MskTranslocoTestingModule(), InternalServerErrorComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InternalServerErrorComponent);

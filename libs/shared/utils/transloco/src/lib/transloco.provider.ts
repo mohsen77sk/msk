@@ -1,7 +1,7 @@
 import { APP_INITIALIZER, EnvironmentProviders, inject, Provider } from '@angular/core';
-import { provideTransloco, TranslocoService } from '@ngneat/transloco';
-import { availableLangs } from './transloco.types';
+import { provideTransloco, TranslocoService, TranslocoTestingModule, TranslocoTestingOptions } from '@ngneat/transloco';
 import { TranslocoHttpLoader } from './transloco.http-loader';
+import { availableLangs } from './transloco.types';
 import { firstValueFrom } from 'rxjs';
 
 export const provideMskTransloco = (): Array<Provider | EnvironmentProviders> => {
@@ -28,3 +28,15 @@ export const provideMskTransloco = (): Array<Provider | EnvironmentProviders> =>
     },
   ];
 };
+
+export function MskTranslocoTestingModule(options: TranslocoTestingOptions = {}) {
+  return TranslocoTestingModule.forRoot({
+    langs: {},
+    translocoConfig: {
+      availableLangs: availableLangs,
+      defaultLang: availableLangs[0].id,
+    },
+    preloadLangs: true,
+    ...options,
+  });
+}
