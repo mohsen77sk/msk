@@ -1,4 +1,6 @@
-export type LayoutDirection = 'ltr' | 'rtl';
+import { Direction } from '@angular/cdk/bidi';
+
+export type LayoutDirection = Direction;
 export type LayoutScheme = 'auto' | 'dark' | 'light';
 export type LayoutScreens = { [key: string]: string };
 export type LayoutTheme = 'theme-default' | string;
