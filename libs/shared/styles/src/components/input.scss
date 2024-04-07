@@ -4,19 +4,19 @@ textarea {
 
   /* Placeholder color */
   &::placeholder {
-    @apply text-hint;
+    color: var(--mdc-filled-text-field-input-text-placeholder-color);
   }
 
   &::-moz-placeholder {
-    @apply text-hint;
+    color: var(--mdc-filled-text-field-input-text-placeholder-color);
   }
 
   &::-webkit-input-placeholder {
-    @apply text-hint;
+    color: var(--mdc-filled-text-field-input-text-placeholder-color);
   }
 
   &:-ms-input-placeholder {
-    @apply text-hint;
+    color: var(--mdc-filled-text-field-input-text-placeholder-color);
   }
 
   /* Autofill color fix */

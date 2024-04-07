@@ -1,56 +1,10 @@
 const path = require('path');
-const colors = require('tailwindcss/colors');
-const defaultTheme = require('tailwindcss/defaultTheme');
-
-/**
- * Themes
- */
-const themes = {
-  // Default theme is required for theming system to work correctly
-  default: {
-    primary: {
-      ...colors.indigo,
-      DEFAULT: colors.indigo[600],
-    },
-    accent: {
-      ...colors.slate,
-      DEFAULT: colors.slate[800],
-    },
-    warn: {
-      ...colors.red,
-      DEFAULT: colors.red[600],
-    },
-    'on-warn': {
-      500: colors.red['50'],
-    },
-  },
-  // Rest of the themes will use the 'default' as the base
-  // theme and will extend it with their given configuration
-  teal: {
-    primary: {
-      ...colors.teal,
-      DEFAULT: colors.teal[600],
-    },
-  },
-  rose: {
-    primary: colors.rose,
-  },
-  purple: {
-    primary: {
-      ...colors.purple,
-      DEFAULT: colors.purple[600],
-    },
-  },
-  amber: {
-    primary: colors.amber,
-  },
-};
 
 const config = {
   darkMode: 'class',
   theme: {
     fontFamily: {
-      sans: ['IRANSansX', ...defaultTheme.fontFamily.sans],
+      sans: ['IRANSansX', 'sans-serif'],
     },
     fontSize: {
       xs: '0.625rem',
@@ -169,79 +123,8 @@ const config = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            color: 'var(--msk-text-default)',
-            '[class~="lead"]': {
-              color: 'var(--msk-text-secondary)',
-            },
-            a: {
-              color: 'var(--msk-primary-500)',
-            },
-            strong: {
-              color: 'var(--msk-text-default)',
-            },
-            'ol > li::before': {
-              color: 'var(--msk-text-secondary)',
-            },
-            'ul > li::before': {
-              backgroundColor: 'var(--msk-text-hint)',
-            },
-            hr: {
-              borderColor: 'var(--msk-border)',
-            },
-            blockquote: {
-              color: 'var(--msk-text-default)',
-              borderLeftColor: 'var(--msk-border)',
-            },
-            h1: {
-              color: 'var(--msk-text-default)',
-            },
-            h2: {
-              color: 'var(--msk-text-default)',
-            },
-            h3: {
-              color: 'var(--msk-text-default)',
-            },
-            h4: {
-              color: 'var(--msk-text-default)',
-            },
-            'figure figcaption': {
-              color: 'var(--msk-text-secondary)',
-            },
-            code: {
-              color: 'var(--msk-text-default)',
-              fontWeight: '500',
-            },
-            'a code': {
-              color: 'var(--msk-primary)',
-            },
-            pre: {
-              color: theme('colors.white'),
-              backgroundColor: theme('colors.zinc.700'),
-            },
-            thead: {
-              color: 'var(--msk-text-default)',
-              borderBottomColor: 'var(--msk-border)',
-            },
-            'tbody tr': {
-              borderBottomColor: 'var(--msk-border)',
-            },
-            'ol[type="A" s]': false,
-            'ol[type="a" s]': false,
-            'ol[type="I" s]': false,
-            'ol[type="i" s]': false,
-          },
-        },
-        sm: {
-          css: {
-            code: {
-              fontSize: '1em',
-            },
-            pre: {
-              fontSize: '1em',
-            },
-            table: {
-              fontSize: '1em',
-            },
+            '--tw-prose-body': 'var(--mat-app-text-color)',
+            '--tw-prose-links': 'var(--msk-mat-primary)',
           },
         },
       }),
@@ -249,11 +132,10 @@ const config = {
   },
   plugins: [
     // Tailwind plugins
-    require(path.resolve(__dirname, './plugins/utilities')),
+    require(path.resolve(__dirname, './plugins/color-roles')),
     require(path.resolve(__dirname, './plugins/icon-size')),
-    require(path.resolve(__dirname, './plugins/theming'))({ themes }),
     // Other third party and/or custom plugins
-    require('@tailwindcss/typography')({ modifiers: ['sm', 'lg'] }),
+    require('@tailwindcss/typography'),
   ],
 };
 

@@ -29,22 +29,6 @@ export const appConfig: ApplicationConfig = {
           id: 'theme-default',
           name: 'Default',
         },
-        {
-          id: 'theme-teal',
-          name: 'Teal',
-        },
-        {
-          id: 'theme-rose',
-          name: 'Rose',
-        },
-        {
-          id: 'theme-purple',
-          name: 'Purple',
-        },
-        {
-          id: 'theme-amber',
-          name: 'Amber',
-        },
       ],
     }),
   ],
