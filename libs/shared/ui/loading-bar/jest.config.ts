@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'loading-bar',
+  displayName: 'shared-ui-loading-bar',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/ui/loading-bar',

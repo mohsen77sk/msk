@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'media-watcher',
+  displayName: 'shared-services-media-watcher',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/services/media-watcher',

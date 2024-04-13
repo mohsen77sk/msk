@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'splash-screen',
+  displayName: 'shared-services-splash-screen',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/services/splash-screen',

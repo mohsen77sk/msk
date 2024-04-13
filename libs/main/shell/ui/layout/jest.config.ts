@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'layout',
+  displayName: 'main-shell-ui-layout',
   preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../../coverage/libs/main/shell/ui/layout',

@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'not-found',
+  displayName: 'main-errors-not-found',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/main/errors/not-found',

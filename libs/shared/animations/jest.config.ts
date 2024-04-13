@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'animations',
+  displayName: 'shared-animations',
   preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../coverage/libs/shared/animations',

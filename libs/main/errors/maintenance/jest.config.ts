@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'maintenance',
+  displayName: 'main-errors-maintenance',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/main/errors/maintenance',

@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'internal-server-error',
+  displayName: 'main-errors-internal-server-error',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/main/errors/internal-server-error',

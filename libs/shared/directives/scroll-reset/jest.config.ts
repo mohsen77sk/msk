@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'scroll-reset',
+  displayName: 'shared-directives-scroll-reset',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/directives/scroll-reset',

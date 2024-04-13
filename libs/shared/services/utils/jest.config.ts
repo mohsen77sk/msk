@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'utils',
+  displayName: 'shared-services-utils',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/services/utils',

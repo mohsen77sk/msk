@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'find-by-key',
+  displayName: 'shared-pipes-find-by-key',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/pipes/find-by-key',

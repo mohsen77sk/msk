@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'platform',
+  displayName: 'shared-services-platform',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/services/platform',

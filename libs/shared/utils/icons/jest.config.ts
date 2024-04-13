@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'icons',
+  displayName: 'shared-utils-icons',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/utils/icons',

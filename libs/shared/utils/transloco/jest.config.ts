@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'transloco',
+  displayName: 'shared-utils-transloco',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/utils/transloco',

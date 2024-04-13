@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'feature',
+  displayName: 'main-shell-feature',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/main/shell/feature',
