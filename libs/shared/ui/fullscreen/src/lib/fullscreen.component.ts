@@ -21,7 +21,7 @@ import { FSDocument, FSDocumentElement } from './fullscreen.types';
   exportAs: 'mskFullscreen',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, MatTooltipModule, NgTemplateOutlet, MatIconModule],
+  imports: [MatIconModule, MatButtonModule, MatTooltipModule, NgTemplateOutlet],
 })
 export class MskFullscreenComponent implements OnInit {
   @Input() iconTpl!: TemplateRef<unknown>;
