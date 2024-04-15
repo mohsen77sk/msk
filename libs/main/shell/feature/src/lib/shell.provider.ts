@@ -10,6 +10,7 @@ import { MskPlatformService } from '@msk/shared/services/platform';
 import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
 import { MskUtilsService } from '@msk/shared/services/utils';
 import { provideMskIcons } from '@msk/shared/utils/icons';
+import { provideMskServiceWorker } from '@msk/shared/utils/service-worker';
 import { provideMskTransloco } from '@msk/shared/utils/transloco';
 import { provideMskLoadingBar } from '@msk/shared/ui/loading-bar';
 
@@ -48,6 +49,9 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
       withPreloading(PreloadAllModules),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
+
+    // Service Worker
+    provideMskServiceWorker(),
 
     // Material Date Adapter
     provideDateFnsAdapter(),

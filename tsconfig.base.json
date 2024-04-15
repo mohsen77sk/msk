@@ -33,6 +33,7 @@
       "@msk/shared/ui/loading-bar": ["libs/shared/ui/loading-bar/src/index.ts"],
       "@msk/shared/utils/app-config": ["libs/shared/utils/app-config/src/index.ts"],
       "@msk/shared/utils/icons": ["libs/shared/utils/icons/src/index.ts"],
+      "@msk/shared/utils/service-worker": ["libs/shared/utils/service-worker/src/index.ts"],
       "@msk/shared/utils/transloco": ["libs/shared/utils/transloco/src/index.ts"]
     }
   },

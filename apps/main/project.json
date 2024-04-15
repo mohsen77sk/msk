@@ -17,6 +17,7 @@
         "tsConfig": "apps/main/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
+          "apps/main/src/manifest.webmanifest",
           "apps/main/src/favicon.ico",
           "apps/main/src/assets",
           {
@@ -51,7 +52,8 @@
               "maximumError": "4kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "serviceWorker": "apps/main/ngsw-config.json"
         },
         "development": {
           "optimization": false,
