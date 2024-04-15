@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, EnvironmentProviders, inject, Provider } from '@angular/core';
+import { APP_INITIALIZER, EnvironmentProviders, inject, isDevMode, Provider } from '@angular/core';
 import { provideTransloco, TranslocoService, TranslocoTestingModule, TranslocoTestingOptions } from '@ngneat/transloco';
 import { TranslocoHttpLoader } from './transloco.http-loader';
 import { availableLangs } from './transloco.types';
@@ -10,7 +10,7 @@ export const provideMskTransloco = (): Array<Provider | EnvironmentProviders> =>
       config: {
         availableLangs: availableLangs,
         reRenderOnLangChange: true,
-        prodMode: true,
+        prodMode: !isDevMode(),
       },
       loader: TranslocoHttpLoader,
     }),
