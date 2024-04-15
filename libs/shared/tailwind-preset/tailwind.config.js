@@ -2,6 +2,7 @@ const path = require('path');
 
 const config = {
   darkMode: 'class',
+  important: true,
   theme: {
     fontFamily: {
       sans: ['IRANSansX', 'sans-serif'],
