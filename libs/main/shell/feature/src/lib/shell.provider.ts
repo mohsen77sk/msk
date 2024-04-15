@@ -50,9 +50,6 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
 
-    // Service Worker
-    provideMskServiceWorker(),
-
     // Material Date Adapter
     provideDateFnsAdapter(),
 
@@ -81,6 +78,9 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
       useValue: () => inject(MskUtilsService),
       multi: true,
     },
+
+    // Service Worker
+    provideMskServiceWorker(),
   ];
 
   // Return the providers
