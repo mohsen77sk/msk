@@ -23,6 +23,11 @@
             "glob": "**/*",
             "input": "libs/shared/assets/src",
             "output": "assets"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/shared/services/splash-screen/src/lib/assets/",
+            "output": "assets"
           }
         ],
         "styles": ["apps/main/src/styles.scss"],
