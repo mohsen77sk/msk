@@ -1,10 +1,10 @@
-import { ENVIRONMENT_INITIALIZER, EnvironmentProviders, Provider, inject } from '@angular/core';
+import { ENVIRONMENT_INITIALIZER, EnvironmentProviders, LOCALE_ID, Provider, inject } from '@angular/core';
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
 import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideDateFnsAdapter } from 'ngx-material-date-fns-adapter';
 
-import { MSK_LAYOUT_CONFIG, LayoutConfig } from '@msk/shared/services/config';
+import { MSK_LAYOUT_CONFIG, LayoutConfig, MskLayoutConfigService } from '@msk/shared/services/config';
 import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
 import { MskPlatformService } from '@msk/shared/services/platform';
 import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
@@ -41,6 +41,13 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
     {
       provide: MSK_LAYOUT_CONFIG,
       useValue: config ?? {},
+    },
+    {
+      provide: LOCALE_ID,
+      useFactory: (): string => {
+        const layoutConfigService = inject(MskLayoutConfigService);
+        return layoutConfigService.config.language;
+      },
     },
 
     // Route

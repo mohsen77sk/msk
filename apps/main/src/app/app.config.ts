@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideMainShell({
       language: 'en',
       direction: 'ltr',
-      type: 'classic',
+      type: 'empty',
       scheme: 'auto',
       screens: {
         sm: '600px',

@@ -34,6 +34,10 @@ export class MskLayoutConfigService {
     this._config.next(config);
   }
 
+  get config(): LayoutConfig {
+    return this._config.value;
+  }
+
   get config$(): Observable<LayoutConfig> {
     return this._config.asObservable();
   }
