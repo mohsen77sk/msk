@@ -5,13 +5,12 @@ name: master
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ['master']
   pull_request:
-    branches: [ "master" ]
+    branches: ['master']
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,18 +19,20 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Syncing repository
-      uses: actions/checkout@v4
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        
-    - name: Install Dependencies
-      run: npm ci
+      - name: Syncing repository
+        uses: actions/checkout@v4
 
-    - name: Build Application
-      run: npx nx run main:build --configuration=production
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Lint Project
+        run: npx nx run-many --target=lint --all=true
+
+      - name: Build Main Application
+        run: npx nx run main:build --configuration=production
