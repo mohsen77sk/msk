@@ -1,19 +1,14 @@
-import { Inject, LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
+import { Inject, Pipe, PipeTransform } from '@angular/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
-import { enUS } from 'date-fns/locale';
+import { Locale, enUS } from 'date-fns/locale';
 import { format as gregorianFormat } from 'date-fns';
 import { faIR } from 'date-fns-jalali/locale';
 import { format as jalaliFormat } from 'date-fns-jalali';
 
-import { AvailableLangsIds } from '@msk/shared/utils/transloco';
-
-const locale = {
-  en: enUS,
-  fa: faIR,
-};
 const localeFormat = {
-  en: gregorianFormat,
-  fa: jalaliFormat,
+  gregorian: gregorianFormat,
+  jalali: jalaliFormat,
 };
 
 /**
@@ -25,16 +20,38 @@ const localeFormat = {
   pure: false,
 })
 export class MskDateTimePipe implements PipeTransform {
+  /** Calendar type. */
+  private _calendarType: 'gregorian' | 'jalali' = 'gregorian';
+
   /**
    * Constructor
    */
-  constructor(@Inject(LOCALE_ID) private _locale: string) {}
+  constructor(@Inject(MAT_DATE_LOCALE) private _dateLocale: 'en-US' | Locale) {
+    this.setLocale(_dateLocale);
+  }
 
   /**
-   * Getter for locale
+   * Sets the locale used for dates.
+   *
+   * @param locale The new locale
    */
-  get locale(): AvailableLangsIds {
-    return this._locale.valueOf() as AvailableLangsIds;
+  setLocale(locale: 'en-US' | Locale): void {
+    if (!(locale === 'en-US' || 'code' in locale)) {
+      throw new Error(`Missing locale data for the locale ${locale}`);
+    }
+
+    if (locale === 'en-US') {
+      this._dateLocale = enUS;
+      return;
+    }
+
+    if (locale.code === 'fa-IR') {
+      this._dateLocale = faIR;
+      this._calendarType = 'jalali';
+      return;
+    }
+
+    this._dateLocale = locale;
   }
 
   /**
@@ -45,7 +62,7 @@ export class MskDateTimePipe implements PipeTransform {
    * @returns
    */
   transform(value: Date | string | number | null | undefined, format = 'mediumDate'): string | null {
-    if (value == null || value === '' || value !== value) return null;
+    if (value === '' || value == null || value !== value) return null;
 
     switch (format) {
       case 'short':
@@ -78,8 +95,8 @@ export class MskDateTimePipe implements PipeTransform {
   }
 
   private _formatDate(value: Date | string | number, format: string): string {
-    return localeFormat[this.locale](new Date(value), format, {
-      locale: locale[this.locale],
+    return localeFormat[this._calendarType](new Date(value), format, {
+      locale: this._dateLocale as Locale,
     });
   }
 }
