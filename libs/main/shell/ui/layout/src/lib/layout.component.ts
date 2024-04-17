@@ -1,11 +1,11 @@
 import { Component, DestroyRef, Inject, OnInit, Renderer2, ViewEncapsulation, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DOCUMENT, NgIf } from '@angular/common';
+import { DOCUMENT, NgIf, getLocaleDirection } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { BidiModule } from '@angular/cdk/bidi';
+import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
 import { MskPlatformService } from '@msk/shared/services/platform';
-import { LayoutConfig, LayoutDirection, LayoutScheme, LayoutTheme, LayoutType } from '@msk/shared/services/config';
+import { LayoutConfig, LayoutScheme, LayoutTheme, LayoutType } from '@msk/shared/services/config';
 import { MskLayoutConfigService } from '@msk/shared/services/config';
 import { MskLoadingBarComponent } from '@msk/shared/ui/loading-bar';
 import { combineLatest, filter, map } from 'rxjs';
@@ -23,7 +23,7 @@ export class MainLayoutComponent implements OnInit {
   destroyRef = inject(DestroyRef);
 
   layoutConfig!: LayoutConfig;
-  layoutDirection!: LayoutDirection;
+  layoutDirection!: Direction;
   layoutScheme!: LayoutScheme;
   layoutTheme!: LayoutTheme;
   layoutType!: LayoutType;
@@ -203,9 +203,11 @@ export class MainLayoutComponent implements OnInit {
    * @private
    */
   private _updateLayoutDirection(): void {
-    // 1. Set the direction from the layoutConfig
-    this.layoutDirection = this.layoutConfig.direction;
-    // 2. Change dir attribute for the currently selected direction
+    // 1. Get the direction from the layoutConfig
+    this.layoutDirection = getLocaleDirection(this.layoutConfig.locale);
+    // 2. Change lang attribute for the currently selected language
+    this._document.documentElement.setAttribute('lang', this.layoutConfig.locale.slice(0, 2));
+    // 3. Change dir attribute for the currently selected direction
     this._document.documentElement.setAttribute('dir', this.layoutDirection);
     this._document.body.setAttribute('dir', this.layoutDirection);
   }

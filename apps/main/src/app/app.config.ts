@@ -13,8 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideMskAppConfig(environment),
     provideMainShell({
-      language: 'en',
-      direction: 'ltr',
+      locale: 'en-US',
       type: 'empty',
       scheme: 'auto',
       screens: {
