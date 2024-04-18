@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 @use '@angular/material-experimental' as matx;
-@use 'themes-colors' as themesColors;
+@use 'themes-vars' as themesVars;
 
 // Create a theme with the specified color type and density.
 @function create-theme($type: light, $density: 0) {
@@ -36,12 +36,14 @@ $dark-theme: create-theme(
 
 // Include the default theme styles.
 body {
-  @include themesColors.color($light-theme);
+  @include themesVars.color($light-theme);
+  @include themesVars.elevation($light-theme);
   @include mat.all-component-themes($light-theme);
 }
 
 // Include the dark theme color styles.
 .dark {
-  @include themesColors.color($dark-theme);
+  @include themesVars.color($dark-theme);
+  @include themesVars.elevation($dark-theme);
   @include mat.all-component-colors($dark-theme);
 }
