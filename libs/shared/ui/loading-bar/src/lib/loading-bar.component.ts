@@ -20,6 +20,7 @@ import { map } from 'rxjs';
   selector: 'msk-loading-bar',
   templateUrl: './loading-bar.component.html',
   styleUrls: ['./loading-bar.component.scss'],
+  exportAs: 'mskLoadingBar',
   encapsulation: ViewEncapsulation.None,
   imports: [NgIf, MatProgressBarModule],
 })
