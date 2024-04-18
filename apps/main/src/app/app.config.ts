@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideMskAppConfig(environment),
     provideMainShell({
       locale: 'en-US',
-      type: 'empty',
+      type: 'material',
       scheme: 'auto',
       screens: {
         sm: '600px',

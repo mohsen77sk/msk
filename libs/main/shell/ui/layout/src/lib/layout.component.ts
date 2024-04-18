@@ -10,6 +10,7 @@ import { MskLayoutConfigService } from '@msk/shared/services/config';
 import { MskLoadingBarComponent } from '@msk/shared/ui/loading-bar';
 import { combineLatest, filter, map } from 'rxjs';
 import { MainLayoutEmptyComponent } from './layouts/empty/empty.component';
+import { MainLayoutMaterialComponent } from './layouts/material/material.component';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ import { MainLayoutEmptyComponent } from './layouts/empty/empty.component';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   encapsulation: ViewEncapsulation.None,
-  imports: [NgIf, BidiModule, MskLoadingBarComponent, MainLayoutEmptyComponent],
+  imports: [NgIf, BidiModule, MskLoadingBarComponent, MainLayoutEmptyComponent, MainLayoutMaterialComponent],
 })
 export class MainLayoutComponent implements OnInit {
   destroyRef = inject(DestroyRef);
