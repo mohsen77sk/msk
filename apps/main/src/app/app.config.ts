@@ -18,9 +18,9 @@ export const appConfig: ApplicationConfig = {
       scheme: 'auto',
       screens: {
         sm: '600px',
-        md: '960px',
-        lg: '1280px',
-        xl: '1440px',
+        md: '840px',
+        lg: '1200px',
+        xl: '1600px',
       },
       theme: 'theme-default',
       themes: [

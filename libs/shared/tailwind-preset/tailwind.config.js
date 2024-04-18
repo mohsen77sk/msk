@@ -26,9 +26,9 @@ const config = {
     },
     screens: {
       sm: '600px',
-      md: '960px',
-      lg: '1280px',
-      xl: '1440px',
+      md: '840px',
+      lg: '1200px',
+      xl: '1600px',
     },
     extends: {
       animation: {
