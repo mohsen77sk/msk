@@ -28,8 +28,8 @@ import { ScrollbarGeometry, ScrollbarPosition } from './scrollbar.types';
 export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
   destroyRef = inject(DestroyRef);
 
-  @Input() scrollbar = true;
-  @Input() scrollbarOptions!: PerfectScrollbar.Options;
+  @Input() mskScrollbar = true;
+  @Input() mskScrollbarOptions!: PerfectScrollbar.Options;
 
   private _animation: number | undefined;
   private _options: PerfectScrollbar.Options | undefined;
@@ -71,10 +71,10 @@ export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
     // Enabled
     if ('scrollbar' in changes) {
       // Interpret empty string as 'true'
-      this.scrollbar = coerceBooleanProperty(changes['scrollbar'].currentValue);
+      this.mskScrollbar = coerceBooleanProperty(changes['scrollbar'].currentValue);
 
       // If enabled, init the directive
-      if (this.scrollbar) {
+      if (this.mskScrollbar) {
         this._init();
       }
       // Otherwise destroy it
@@ -132,7 +132,7 @@ export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
    * Is enabled
    */
   isEnabled(): boolean {
-    return this.scrollbar;
+    return this.mskScrollbar;
   }
 
   /**
@@ -378,7 +378,7 @@ export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
 
     // Return if on mobile or not on browser
     if (this._platform.ANDROID || this._platform.IOS || !this._platform.isBrowser) {
-      this.scrollbar = false;
+      this.mskScrollbar = false;
       return;
     }
 
