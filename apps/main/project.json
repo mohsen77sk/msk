@@ -22,6 +22,11 @@
           "apps/main/src/assets",
           {
             "glob": "**/*",
+            "input": "libs/main/assets/src",
+            "output": "assets"
+          },
+          {
+            "glob": "**/*",
             "input": "libs/shared/assets/src",
             "output": "assets"
           },

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "main",
+    "title": "Main",
+    "tooltip": "Main",
+    "type": "group",
+    "icon": "heroicons_outline:home",
+    "children": [
+      {
+        "id": "main.dashboard",
+        "title": "Dashboard",
+        "type": "basic",
+        "icon": "heroicons_outline:rectangle-group",
+        "link": "/dashboard"
+      }
+    ]
+  },
+  {
+    "id": "apps",
+    "title": "Applications",
+    "tooltip": "Applications",
+    "type": "group",
+    "icon": "heroicons_outline:squares-2x2",
+    "children": []
+  },
+  {
+    "id": "pages",
+    "title": "Pages",
+    "tooltip": "Pages",
+    "type": "group",
+    "icon": "heroicons_outline:document-duplicate",
+    "children": [
+      {
+        "id": "pages.error",
+        "title": "Error",
+        "type": "collapsable",
+        "icon": "heroicons_outline:exclamation-circle",
+        "children": [
+          {
+            "id": "pages.error.not-found",
+            "title": "Not found",
+            "type": "basic",
+            "link": "/pages/error/not-found"
+          },
+          {
+            "id": "pages.error.internal-server-error",
+            "title": "Internal server error",
+            "type": "basic",
+            "link": "/pages/error/internal-server-error"
+          }
+        ]
+      },
+      {
+        "id": "pages.maintenance",
+        "title": "Maintenance",
+        "type": "basic",
+        "icon": "heroicons_outline:exclamation-triangle",
+        "link": "/pages/maintenance"
+      }
+    ]
+  }
+]

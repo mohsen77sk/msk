@@ -1,0 +1,7 @@
+{
+  "name": "main-assets",
+  "sourceRoot": "libs/main/assets",
+  "tags": ["scope:main"],
+  "projectType": "library",
+  "targets": {}
+}
