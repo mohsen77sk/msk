@@ -18,6 +18,7 @@
       "@msk/main/errors/internal-server-error": ["libs/main/errors/internal-server-error/src/index.ts"],
       "@msk/main/errors/maintenance": ["libs/main/errors/maintenance/src/index.ts"],
       "@msk/main/errors/not-found": ["libs/main/errors/not-found/src/index.ts"],
+      "@msk/main/shell/core/navigation": ["libs/main/shell/core/navigation/src/index.ts"],
       "@msk/main/shell/feature": ["libs/main/shell/feature/src/index.ts"],
       "@msk/main/shell/ui/layout": ["libs/main/shell/ui/layout/src/index.ts"],
       "@msk/shared/animations": ["libs/shared/animations/src/index.ts"],

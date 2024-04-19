@@ -1,12 +1,13 @@
 import { Route } from '@angular/router';
 import { MainLayoutComponent } from '@msk/main/shell/ui/layout';
+import { initialMainDataResolver } from './shell.resolvers';
 
 export const mainRoutes: Route[] = [
   {
     path: '',
     component: MainLayoutComponent,
-    data: {
-      layoutType: 'empty',
+    resolve: {
+      initial: initialMainDataResolver,
     },
     children: [],
   },
