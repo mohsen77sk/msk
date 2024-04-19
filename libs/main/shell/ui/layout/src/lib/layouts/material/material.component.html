@@ -1,5 +1,27 @@
+<!-- Navigation -->
+<msk-vertical-navigation
+  class="print:hidden"
+  [mode]="isScreenSmall ? 'over' : 'side'"
+  [name]="'mainNavigation'"
+  [navigation]="navigation"
+  [opened]="!isScreenSmall"
+>
+  <!-- Navigation header hook -->
+  <ng-container mskVerticalNavigationContentHeader> </ng-container>
+</msk-vertical-navigation>
+
 <!-- Wrapper -->
-<div class="flex w-full flex-auto flex-col">
+<div class="flex w-full min-w-0 flex-auto flex-col">
+  <!-- Header -->
+  <div class="z-49 flex-0 relative flex h-16 w-full items-center justify-between px-4 md:px-6 print:hidden">
+    <!-- Navigation toggle button -->
+    <button mat-icon-button (click)="toggleNavigation('mainNavigation')">
+      <mat-icon svgIcon="heroicons_outline:bars-3"></mat-icon>
+    </button>
+    <!-- Components -->
+    <div class="flex items-center space-x-0.5 px-2 md:space-x-1 rtl:space-x-reverse"></div>
+  </div>
+
   <!-- Content -->
   <div class="flex flex-auto flex-col">
     <!-- *ngIf="true" hack is required here for router-outlet to work correctly.
