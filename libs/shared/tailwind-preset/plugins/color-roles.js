@@ -14,142 +14,142 @@ module.exports = plugin(({ addComponents }) => {
       color: 'var(--mat-app-text-color) !important',
     },
     '.bg-surface-dim': {
-      backgroundColor: 'var(--msk-mat-surface-dim) !important',
+      backgroundColor: 'rgb(var(--msk-mat-surface-dim-rgb)) !important',
     },
     '.bg-surface': {
-      backgroundColor: 'var(--msk-mat-surface) !important',
+      backgroundColor: 'rgb(var(--msk-mat-surface-rgb)) !important',
     },
     '.bg-surface-bright': {
-      backgroundColor: 'var(--msk-mat-surface-bright) !important',
+      backgroundColor: 'rgb(var(--msk-mat-surface-bright-rgb)) !important',
     },
     '.bg-surface-container-lowest': {
-      backgroundColor: 'var(--msk-mat-surface-container-lowest) !important',
+      backgroundColor: 'rgb(var(--msk-mat-surface-container-lowest-rgb)) !important',
     },
     '.bg-surface-container-low': {
-      backgroundColor: 'var(--msk-mat-surface-container-low) !important',
+      backgroundColor: 'rgb(var(--msk-mat-surface-container-low-rgb)) !important',
     },
     '.bg-surface-container': {
-      backgroundColor: 'var(--msk-mat-surface-container) !important',
+      backgroundColor: 'rgb(var(--msk-mat-surface-container-rgb)) !important',
     },
     '.bg-surface-container-high': {
-      backgroundColor: 'var(--msk-mat-surface-container-high) !important',
+      backgroundColor: 'rgb(var(--msk-mat-surface-container-high-rgb)) !important',
     },
     '.bg-surface-container-highest': {
-      backgroundColor: 'var(--msk-mat-surface-container-highest) !important',
+      backgroundColor: 'rgb(var(--msk-mat-surface-container-highest-rgb)) !important',
     },
     '.text-on-surface': {
-      color: 'var(--msk-mat-on-surface) !important',
+      color: 'rgb(var(--msk-mat-on-surface-rgb)) !important',
     },
     '.text-on-surface-variant': {
-      color: 'var(--msk-mat-on-surface-variant) !important',
+      color: 'rgb(var(--msk-mat-on-surface-variant-rgb)) !important',
     },
     '.bg-inverse-surface': {
-      backgroundColor: 'var(--msk-mat-inverse-surface) !important',
+      backgroundColor: 'rgb(var(--msk-mat-inverse-surface-rgb)) !important',
     },
     '.text-inverse-on-surface': {
-      color: 'var(--msk-mat-inverse-on-surface) !important',
+      color: 'rgb(var(--msk-mat-inverse-on-surface-rgb)) !important',
     },
   });
 
   addComponents({
     '.bg-primary': {
-      backgroundColor: 'var(--msk-mat-primary) !important',
+      backgroundColor: 'rgb(var(--msk-mat-primary-rgb)) !important',
     },
     '.text-primary': {
-      color: 'var(--msk-mat-primary) !important',
+      color: 'rgb(var(--msk-mat-primary-rgb)) !important',
     },
     '.text-on-primary': {
-      color: 'var(--msk-mat-on-primary) !important',
+      color: 'rgb(var(--msk-mat-on-primary-rgb)) !important',
     },
     '.bg-primary-container': {
-      backgroundColor: 'var(--msk-mat-primary-container) !important',
+      backgroundColor: 'rgb(var(--msk-mat-primary-container-rgb)) !important',
     },
     '.text-on-primary-container': {
-      color: 'var(--msk-mat-on-primary-container) !important',
+      color: 'rgb(var(--msk-mat-on-primary-container-rgb)) !important',
     },
     '.bg-primary-fixed': {
-      backgroundColor: 'var(--msk-mat-primary-fixed) !important',
+      backgroundColor: 'rgb(var(--msk-mat-primary-fixed-rgb)) !important',
     },
     '.bg-primary-fixed-dim': {
-      backgroundColor: 'var(--msk-mat-primary-fixed-dim) !important',
+      backgroundColor: 'rgb(var(--msk-mat-primary-fixed-dim-rgb)) !important',
     },
     '.text-on-primary-fixed': {
-      color: 'var(--msk-mat-on-primary-fixed) !important',
+      color: 'rgb(var(--msk-mat-on-primary-fixed-rgb)) !important',
     },
     '.text-on-primary-fixed-variant': {
-      color: 'var(--msk-mat-on-primary-fixed-variant) !important',
+      color: 'rgb(var(--msk-mat-on-primary-fixed-variant-rgb)) !important',
     },
 
     '.bg-secondary': {
-      backgroundColor: 'var(--msk-mat-secondary) !important',
+      backgroundColor: 'rgb(var(--msk-mat-secondary-rgb)) !important',
     },
     '.text-secondary': {
-      color: 'var(--msk-mat-secondary) !important',
+      color: 'rgb(var(--msk-mat-secondary-rgb)) !important',
     },
     '.text-on-secondary': {
-      color: 'var(--msk-mat-on-secondary) !important',
+      color: 'rgb(var(--msk-mat-on-secondary-rgb)) !important',
     },
     '.bg-secondary-container': {
-      backgroundColor: 'var(--msk-mat-secondary-container) !important',
+      backgroundColor: 'rgb(var(--msk-mat-secondary-container-rgb)) !important',
     },
     '.text-on-secondary-container': {
-      color: 'var(--msk-mat-on-secondary-container) !important',
+      color: 'rgb(var(--msk-mat-on-secondary-container-rgb)) !important',
     },
     '.bg-secondary-fixed': {
-      backgroundColor: 'var(--msk-mat-secondary-fixed) !important',
+      backgroundColor: 'rgb(var(--msk-mat-secondary-fixed-rgb)) !important',
     },
     '.bg-secondary-fixed-dim': {
-      backgroundColor: 'var(--msk-mat-secondary-fixed-dim) !important',
+      backgroundColor: 'rgb(var(--msk-mat-secondary-fixed-dim-rgb)) !important',
     },
     '.text-on-secondary-fixed': {
-      color: 'var(--msk-mat-on-secondary-fixed) !important',
+      color: 'rgb(var(--msk-mat-on-secondary-fixed-rgb)) !important',
     },
     '.text-on-secondary-fixed-variant': {
-      color: 'var(--msk-mat-on-secondary-fixed-variant) !important',
+      color: 'rgb(var(--msk-mat-on-secondary-fixed-variant-rgb)) !important',
     },
 
     '.bg-tertiary': {
-      backgroundColor: 'var(--msk-mat-tertiary) !important',
+      backgroundColor: 'rgb(var(--msk-mat-tertiary-rgb)) !important',
     },
     '.text-tertiary': {
-      color: 'var(--msk-mat-tertiary) !important',
+      color: 'rgb(var(--msk-mat-tertiary-rgb)) !important',
     },
     '.text-on-tertiary': {
-      color: 'var(--msk-mat-on-tertiary) !important',
+      color: 'rgb(var(--msk-mat-on-tertiary-rgb)) !important',
     },
     '.bg-tertiary-container': {
-      backgroundColor: 'var(--msk-mat-tertiary-container) !important',
+      backgroundColor: 'rgb(var(--msk-mat-tertiary-container-rgb)) !important',
     },
     '.text-on-tertiary-container': {
-      color: 'var(--msk-mat-on-tertiary-container) !important',
+      color: 'rgb(var(--msk-mat-on-tertiary-container-rgb)) !important',
     },
     '.bg-tertiary-fixed': {
-      backgroundColor: 'var(--msk-mat-tertiary-fixed) !important',
+      backgroundColor: 'rgb(var(--msk-mat-tertiary-fixed-rgb)) !important',
     },
     '.bg-tertiary-fixed-dim': {
-      backgroundColor: 'var(--msk-mat-tertiary-fixed-dim) !important',
+      backgroundColor: 'rgb(var(--msk-mat-tertiary-fixed-dim-rgb)) !important',
     },
     '.text-on-tertiary-fixed': {
-      color: 'var(--msk-mat-on-tertiary-fixed) !important',
+      color: 'rgb(var(--msk-mat-on-tertiary-fixed-rgb)) !important',
     },
     '.text-on-tertiary-fixed-variant': {
-      color: 'var(--msk-mat-on-tertiary-fixed-variant) !important',
+      color: 'rgb(var(--msk-mat-on-tertiary-fixed-variant-rgb)) !important',
     },
 
     '.bg-error': {
-      backgroundColor: 'var(--msk-mat-error) !important',
+      backgroundColor: 'rgb(var(--msk-mat-error-rgb)) !important',
     },
     '.text-error': {
-      color: 'var(--msk-mat-error) !important',
+      color: 'rgb(var(--msk-mat-error-rgb)) !important',
     },
     '.text-on-error': {
-      color: 'var(--msk-mat-on-error) !important',
+      color: 'rgb(var(--msk-mat-on-error-rgb)) !important',
     },
     '.bg-error-container': {
-      backgroundColor: 'var(--msk-mat-error-container) !important',
+      backgroundColor: 'rgb(var(--msk-mat-error-container-rgb)) !important',
     },
     '.text-on-error-container': {
-      color: 'var(--msk-mat-on-error-container) !important',
+      color: 'rgb(var(--msk-mat-on-error-container-rgb)) !important',
     },
   });
 });

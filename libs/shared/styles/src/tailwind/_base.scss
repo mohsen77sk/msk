@@ -73,7 +73,7 @@
   *,
   *::before,
   *::after {
-    border-color: var(--msk-mat-outline-variant);
+    border-color: rgb(var(--msk-mat-outline-variant-rgb));
   }
 
   /* Style scrollbars on platforms other than MacOS and iOS */

@@ -13,7 +13,8 @@ $color-roles: primary, on-primary, primary-container, on-primary-container, prim
   --msk-is-dark: #{if(mat.get-theme-type($theme) == dark, true, false)};
 
   @each $role in $color-roles {
-    --msk-mat-#{$role}: #{mat.get-theme-color($theme, $role)};
+    // --msk-mat-#{$role}: #{mat.get-theme-color($theme, $role)};
+    --msk-mat-#{$role}-rgb: #{hexToRGBString(mat.get-theme-color($theme, $role))};
   }
 }
 
@@ -30,4 +31,8 @@ $color-roles: primary, on-primary, primary-container, on-primary-container, prim
     rgba(var(--msk-mat-shadow), 0.14) 0px 8px 10px 1px, rgba(var(--msk-mat-shadow), 0.12) 0px 3px 14px 2px;
   --msk-mat-elevation-level5: rgba(var(--msk-mat-shadow), 0.2) 0px 7px 8px -4px,
     rgba(var(--msk-mat-shadow), 0.14) 0px 12px 17px 2px, rgba(var(--msk-mat-shadow), 0.12) 0px 5px 22px 4px;
+}
+
+@function hexToRGBString($hexColor) {
+  @return '#{red($hexColor)},#{green($hexColor)},#{blue($hexColor)}';
 }

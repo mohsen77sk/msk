@@ -125,7 +125,7 @@ const config = {
         DEFAULT: {
           css: {
             '--tw-prose-body': 'var(--mat-app-text-color)',
-            '--tw-prose-links': 'var(--msk-mat-primary)',
+            '--tw-prose-links': 'rgb(var(--msk-mat-primary-rgb))',
           },
         },
       }),
