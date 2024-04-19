@@ -1,0 +1,73 @@
+<div class="msk-vertical-navigation-item-wrapper" [ngClass]="item.classes?.wrapper!">
+  <div
+    class="msk-vertical-navigation-item"
+    [ngClass]="{ 'msk-vertical-navigation-item-disabled': item.disabled }"
+    [matTooltip]="item.tooltip || ''"
+    (click)="toggleCollapsable()"
+  >
+    <!-- Icon -->
+    @if (item.icon) {
+    <mat-icon
+      class="msk-vertical-navigation-item-icon"
+      [ngClass]="item.classes?.icon!"
+      [svgIcon]="item.icon"
+    ></mat-icon>
+    }
+
+    <!-- Title -->
+    <div class="msk-vertical-navigation-item-title-wrapper">
+      <div class="msk-vertical-navigation-item-title">
+        <span [ngClass]="item.classes?.title!">
+          {{ item.title }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Badge -->
+    @if (item.badge) {
+    <div class="msk-vertical-navigation-item-badge">
+      <div class="msk-vertical-navigation-item-badge-content" [ngClass]="item.badge.classes!">
+        {{ item.badge.title }}
+      </div>
+    </div>
+    }
+
+    <!-- Arrow -->
+    <mat-icon
+      class="mat-icon-rtl-mirror msk-vertical-navigation-item-arrow icon-size-4"
+      [svgIcon]="'heroicons_solid:chevron-right'"
+    ></mat-icon>
+  </div>
+</div>
+
+@if (!isCollapsed) {
+<div class="msk-vertical-navigation-item-children" @expandCollapse>
+  @for (item of item.children; track item.id) {
+  <!-- Skip the hidden items -->
+  @if ((item.hidden && !item.hidden(item)) || !item.hidden) {
+
+  <!-- Basic -->
+  @if (item.type === 'basic') {
+  <msk-vertical-navigation-basic-item [item]="item" [name]="name"></msk-vertical-navigation-basic-item>
+  }
+
+  <!-- Collapsable -->
+  @if (item.type === 'collapsable') {
+  <msk-vertical-navigation-collapsable-item
+    [item]="item"
+    [name]="name"
+    [autoCollapse]="autoCollapse"
+  ></msk-vertical-navigation-collapsable-item>
+  }
+
+  <!-- Divider -->
+  @if (item.type === 'divider') {
+  <msk-vertical-navigation-divider-item [item]="item" [name]="name"></msk-vertical-navigation-divider-item>
+  }
+
+  <!-- Group -->
+  @if (item.type === 'group') {
+  <msk-vertical-navigation-group-item [item]="item" [name]="name"></msk-vertical-navigation-group-item>
+  } } }
+</div>
+}
