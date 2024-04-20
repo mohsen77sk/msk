@@ -29,7 +29,6 @@ export interface MskNavigationItem {
     classes?: string;
   };
   children?: MskNavigationItem[];
-  meta?: any;
 }
 
 export type MskVerticalNavigationAppearance = 'default' | 'rail';
