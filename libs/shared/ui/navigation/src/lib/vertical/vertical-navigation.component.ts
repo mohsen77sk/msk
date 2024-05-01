@@ -23,7 +23,6 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AnimationBuilder, AnimationPlayer, animate, style } from '@angular/animations';
-import { NgFor, NgIf } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { Directionality } from '@angular/cdk/bidi';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -55,8 +54,6 @@ import {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgFor,
-    NgIf,
     MskScrollbarDirective,
     MskVerticalNavigationAsideItemComponent,
     MskVerticalNavigationBasicItemComponent,

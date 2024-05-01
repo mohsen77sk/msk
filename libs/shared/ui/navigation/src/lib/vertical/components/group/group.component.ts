@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,7 +11,6 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgClass, NgIf, NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MskVerticalNavigationBasicItemComponent } from '../basic/basic.component';
 import { MskVerticalNavigationCollapsableItemComponent } from '../collapsable/collapsable.component';
@@ -27,8 +27,6 @@ import { MskNavigationItem } from '../../../navigation.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgClass,
-    NgIf,
-    NgFor,
     MatIconModule,
     MskVerticalNavigationBasicItemComponent,
     MskVerticalNavigationCollapsableItemComponent,

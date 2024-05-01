@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -32,8 +32,6 @@ import { MskNavigationItem } from '../../../navigation.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgClass,
-    NgIf,
-    NgFor,
     MatIconModule,
     MatTooltipModule,
     MskVerticalNavigationBasicItemComponent,

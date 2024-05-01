@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,7 +13,6 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
-import { NgClass, NgFor, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { mskAnimations } from '@msk/shared/animations';
@@ -33,8 +33,6 @@ import { MskNavigationItem } from '../../../navigation.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgClass,
-    NgIf,
-    NgFor,
     MatIconModule,
     MatTooltipModule,
     MskVerticalNavigationBasicItemComponent,
