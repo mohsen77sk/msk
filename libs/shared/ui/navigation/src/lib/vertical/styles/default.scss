@@ -26,7 +26,7 @@ msk-vertical-navigation {
   &.msk-vertical-navigation-animations-enabled {
     transition-duration: 400ms;
     transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition-property: visibility, margin-left, margin-right, transform, width, max-width, min-width;
+    transition-property: visibility, margin-inline-start, margin-inline-end, transform, width, max-width, min-width;
 
     /* Wrapper */
     .msk-vertical-navigation-wrapper {
@@ -41,7 +41,8 @@ msk-vertical-navigation {
     position: fixed;
     top: 0;
     bottom: 0;
-    border-radius: 0 16px 16px 0;
+    border-start-end-radius: 16px;
+    border-end-end-radius: 16px;
     background-color: var(--msk-surface-container-low);
     box-shadow: var(--msk-elevation-level-1);
   }
@@ -50,10 +51,10 @@ msk-vertical-navigation {
   &.msk-vertical-navigation-position-start {
     /* Side mode */
     &.msk-vertical-navigation-mode-side {
-      margin-left: -$msk-vertical-navigation-width;
+      margin-inline-start: -$msk-vertical-navigation-width;
 
       &.msk-vertical-navigation-opened {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
 
@@ -69,7 +70,7 @@ msk-vertical-navigation {
 
     /* Wrapper */
     .msk-vertical-navigation-wrapper {
-      left: 0;
+      // left: 0;
     }
   }
 
@@ -77,10 +78,10 @@ msk-vertical-navigation {
   &.msk-vertical-navigation-position-end {
     /* Side mode */
     &.msk-vertical-navigation-mode-side {
-      margin-right: -$msk-vertical-navigation-width;
+      margin-inline-end: -$msk-vertical-navigation-width;
 
       &.msk-vertical-navigation-opened {
-        margin-right: 0;
+        margin-inline-end: 0;
       }
     }
 
@@ -238,11 +239,11 @@ msk-vertical-navigation {
         }
 
         .msk-vertical-navigation-item-icon {
-          margin-right: 16px;
+          margin-inline-end: 16px;
         }
 
         .msk-vertical-navigation-item-badge {
-          margin-left: auto;
+          margin-inline-start: auto;
 
           .msk-vertical-navigation-item-badge-content {
             display: flex;
@@ -313,14 +314,14 @@ msk-vertical-navigation {
       .msk-vertical-navigation-item {
         .msk-vertical-navigation-item-badge {
           + .msk-vertical-navigation-item-arrow {
-            margin-left: 8px;
+            margin-inline-start: 8px;
           }
         }
 
         .msk-vertical-navigation-item-arrow {
           height: 20px;
           line-height: 20px;
-          margin-left: auto;
+          margin-inline-start: auto;
           transition: transform 300ms cubic-bezier(0.25, 0.8, 0.25, 1), color 375ms cubic-bezier(0.25, 0.8, 0.25, 1);
         }
       }
@@ -355,25 +356,25 @@ msk-vertical-navigation {
       overflow: hidden;
 
       .msk-vertical-navigation-item {
-        padding-left: 56px;
+        padding-inline-start: 56px;
       }
 
       /* 2nd level */
       .msk-vertical-navigation-item-children {
         .msk-vertical-navigation-item {
-          padding-left: 72px;
+          padding-inline-start: 72px;
         }
 
         /* 3rd level */
         .msk-vertical-navigation-item-children {
           .msk-vertical-navigation-item {
-            padding-left: 88px;
+            padding-inline-start: 88px;
           }
 
           /* 4th level */
           .msk-vertical-navigation-item-children {
             .msk-vertical-navigation-item {
-              padding-left: 104px;
+              padding-inline-start: 104px;
             }
           }
         }
@@ -414,17 +415,6 @@ msk-vertical-navigation {
   msk-vertical-navigation {
     /* Start position */
     &.msk-vertical-navigation-position-start {
-      /* Side mode */
-      &.msk-vertical-navigation-mode-side {
-        margin-left: unset;
-        margin-right: -$msk-vertical-navigation-width;
-
-        &.msk-vertical-navigation-opened {
-          margin-left: unset;
-          margin-right: 0;
-        }
-      }
-
       /* Over mode */
       &.msk-vertical-navigation-mode-over {
         left: unset;
@@ -445,17 +435,6 @@ msk-vertical-navigation {
 
     /* End position */
     &.msk-vertical-navigation-position-end {
-      /* Side mode */
-      &.msk-vertical-navigation-mode-side {
-        margin-right: unset;
-        margin-left: -$msk-vertical-navigation-width;
-
-        &.msk-vertical-navigation-opened {
-          margin-right: unset;
-          margin-left: 0;
-        }
-      }
-
       /* Over mode */
       &.msk-vertical-navigation-mode-over {
         right: unset;
@@ -484,70 +463,6 @@ msk-vertical-navigation {
       .msk-vertical-navigation-aside-wrapper {
         right: auto;
         left: $msk-vertical-navigation-width;
-      }
-    }
-
-    /* Navigation items common */
-    msk-vertical-navigation-aside-item,
-    msk-vertical-navigation-basic-item,
-    msk-vertical-navigation-collapsable-item,
-    msk-vertical-navigation-divider-item,
-    msk-vertical-navigation-group-item {
-      .msk-vertical-navigation-item-wrapper {
-        .msk-vertical-navigation-item {
-          .msk-vertical-navigation-item-icon {
-            margin-right: unset;
-            margin-left: 16px;
-          }
-          .msk-vertical-navigation-item-badge {
-            margin-left: unset;
-            margin-right: auto;
-          }
-        }
-      }
-    }
-
-    /* Collapsable */
-    msk-vertical-navigation-collapsable-item {
-      > .msk-vertical-navigation-item-wrapper {
-        .msk-vertical-navigation-item {
-          .msk-vertical-navigation-item-arrow {
-            margin-left: unset;
-            margin-right: auto;
-          }
-        }
-      }
-
-      /* 1st level */
-      .msk-vertical-navigation-item-children {
-        .msk-vertical-navigation-item {
-          padding-left: 16px;
-          padding-right: 56px;
-        }
-
-        /* 2nd level */
-        .msk-vertical-navigation-item-children {
-          .msk-vertical-navigation-item {
-            padding-left: 16px;
-            padding-right: 72px;
-          }
-
-          /* 3rd level */
-          .msk-vertical-navigation-item-children {
-            .msk-vertical-navigation-item {
-              padding-left: 16px;
-              padding-right: 88px;
-            }
-
-            /* 4th level */
-            .msk-vertical-navigation-item-children {
-              .msk-vertical-navigation-item {
-                padding-left: 16px;
-                padding-right: 104px;
-              }
-            }
-          }
-        }
       }
     }
   }
