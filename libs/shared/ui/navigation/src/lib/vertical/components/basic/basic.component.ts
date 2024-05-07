@@ -24,7 +24,7 @@ import { MskNavigationItem } from '../../../navigation.types';
   templateUrl: './basic.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, RouterLink, RouterLinkActive, MatTooltipModule, NgTemplateOutlet, MatIconModule],
+  imports: [NgClass, NgTemplateOutlet, RouterLink, RouterLinkActive, MatTooltipModule, MatIconModule],
 })
 export class MskVerticalNavigationBasicItemComponent implements OnInit {
   destroyRef = inject(DestroyRef);
