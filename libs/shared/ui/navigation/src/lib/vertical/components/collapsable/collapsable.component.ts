@@ -38,7 +38,7 @@ import { MskNavigationItem } from '../../../navigation.types';
     MskVerticalNavigationBasicItemComponent,
     forwardRef(() => MskVerticalNavigationCollapsableItemComponent),
     MskVerticalNavigationDividerItemComponent,
-    MskVerticalNavigationGroupItemComponent,
+    forwardRef(() => MskVerticalNavigationGroupItemComponent),
   ],
 })
 export class MskVerticalNavigationCollapsableItemComponent implements OnInit {

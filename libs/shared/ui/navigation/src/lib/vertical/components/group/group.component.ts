@@ -29,7 +29,7 @@ import { MskNavigationItem } from '../../../navigation.types';
     NgClass,
     MatIconModule,
     MskVerticalNavigationBasicItemComponent,
-    MskVerticalNavigationCollapsableItemComponent,
+    forwardRef(() => MskVerticalNavigationCollapsableItemComponent),
     MskVerticalNavigationDividerItemComponent,
     forwardRef(() => MskVerticalNavigationGroupItemComponent),
   ],
