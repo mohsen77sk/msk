@@ -3,6 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { MskNavigationService, MskVerticalNavigationComponent } from '@msk/shared/ui/navigation';
 import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
 import { MainNavigationService, Navigation } from '@msk/main/shell/core/navigation';
@@ -13,7 +14,7 @@ import { cloneDeep } from 'lodash-es';
   selector: 'main-layout-material',
   templateUrl: './material.component.html',
   encapsulation: ViewEncapsulation.None,
-  imports: [NgIf, RouterOutlet, MatIconModule, MskVerticalNavigationComponent],
+  imports: [NgIf, RouterOutlet, MatIconModule, MatButtonModule, MskVerticalNavigationComponent],
 })
 export class MainLayoutMaterialComponent implements OnInit {
   destroyRef = inject(DestroyRef);
