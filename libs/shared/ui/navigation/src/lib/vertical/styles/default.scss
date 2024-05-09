@@ -1,5 +1,5 @@
 /* Variables */
-$msk-vertical-navigation-width: 360px;
+$msk-vertical-navigation-width: 320px;
 
 msk-vertical-navigation {
   position: -webkit-sticky;
@@ -233,7 +233,6 @@ msk-vertical-navigation {
         line-height: 20px;
         text-decoration: none;
         border-radius: 32px;
-        color: var(--msk-on-surface);
 
         /* Disabled state */
         &.msk-vertical-navigation-item-disabled {
@@ -243,8 +242,13 @@ msk-vertical-navigation {
 
         .msk-vertical-navigation-item-icon {
           margin-inline-end: 16px;
+          color: var(--msk-on-surface-variant);
           font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
           transition: font-variation-settings 0.2s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        .msk-vertical-navigation-item-title {
+          color: var(--msk-on-surface-variant);
         }
 
         .msk-vertical-navigation-item-badge {
@@ -286,23 +290,41 @@ msk-vertical-navigation {
         &:not(.msk-vertical-navigation-item-disabled) {
           &.msk-vertical-navigation-item-active,
           &.msk-vertical-navigation-item-active-forced {
-            font-weight: 700;
-            color: var(--msk-on-secondary-container);
             background-color: rgba(var(--msk-secondary-container-rgb), 1);
 
             .msk-vertical-navigation-item-icon {
+              color: var(--msk-on-secondary-container);
               font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+
+            .msk-vertical-navigation-item-title {
+              font-weight: 700;
+              color: var(--msk-on-secondary-container);
             }
           }
         }
 
         /* Hover state */
-        &:not(.msk-vertical-navigation-item-active-forced):not(.msk-vertical-navigation-item-active):not(
-            .msk-vertical-navigation-item-disabled
-          ) {
+        &:not(.msk-vertical-navigation-item-disabled) {
           &:hover {
-            color: var(--msk-on-surface);
-            background-color: rgba(var(--msk-on-secondary-container-rgb), 0.08);
+            background-color: rgba(var(--msk-on-surface-rgb), 0.08);
+
+            .msk-vertical-navigation-item-title {
+              color: var(--msk-on-surface);
+            }
+
+            &.msk-vertical-navigation-item-active,
+            &.msk-vertical-navigation-item-active-forced {
+              background-color: rgba(var(--msk-on-secondary-container-rgb), 0.08);
+
+              .msk-vertical-navigation-item-icon {
+                color: var(--msk-on-secondary-container);
+              }
+
+              .msk-vertical-navigation-item-title {
+                color: var(--msk-on-secondary-container);
+              }
+            }
           }
         }
       }

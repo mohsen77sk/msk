@@ -1,6 +1,6 @@
 import { Component, DestroyRef, Inject, OnInit, Renderer2, ViewEncapsulation, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DOCUMENT, NgIf, getLocaleDirection } from '@angular/common';
+import { DOCUMENT, getLocaleDirection } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
@@ -18,7 +18,7 @@ import { MainLayoutMaterialComponent } from './layouts/material/material.compone
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   encapsulation: ViewEncapsulation.None,
-  imports: [NgIf, BidiModule, MskLoadingBarComponent, MainLayoutEmptyComponent, MainLayoutMaterialComponent],
+  imports: [BidiModule, MskLoadingBarComponent, MainLayoutEmptyComponent, MainLayoutMaterialComponent],
 })
 export class MainLayoutComponent implements OnInit {
   destroyRef = inject(DestroyRef);

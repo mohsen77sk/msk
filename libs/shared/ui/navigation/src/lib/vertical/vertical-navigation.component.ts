@@ -225,6 +225,9 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
   ngOnChanges(changes: SimpleChanges): void {
     // Appearance
     if ('appearance' in changes) {
+      // Fix navigation data by appearance
+      this._fixNavigationData();
+
       // Execute the observable
       this.appearanceChanged.next(changes['appearance'].currentValue);
     }
@@ -275,6 +278,9 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
 
     // Navigation
     if ('navigation' in changes) {
+      // Fix navigation data by appearance
+      this._fixNavigationData();
+
       // Mark for check
       this._changeDetectorRef.markForCheck();
     }
@@ -697,5 +703,22 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
 
     // Execute the observable
     this.openedChanged.next(open);
+  }
+
+  /**
+   * Fix navigation data by appearance
+   *
+   * @private
+   */
+  private _fixNavigationData(): void {
+    // If the appearance is 'default'
+    if (this.appearance === 'default') {
+      this.navigation.forEach((item) => (item.type === 'aside' ? (item.type = 'group') : null));
+    }
+
+    // If the appearance is 'rail'
+    if (this.appearance === 'rail') {
+      this.navigation.forEach((item) => (item.type === 'group' ? (item.type = 'aside') : null));
+    }
   }
 }
