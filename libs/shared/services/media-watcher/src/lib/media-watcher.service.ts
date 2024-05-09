@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { fromPairs } from 'lodash-es';
-import { map, Observable, ReplaySubject, switchMap } from 'rxjs';
 import { MskLayoutConfigService } from '@msk/shared/services/config';
+import { map, Observable, ReplaySubject, switchMap } from 'rxjs';
+import { fromPairs } from 'lodash-es';
 
 @Injectable({ providedIn: 'root' })
 export class MskMediaWatcherService {
