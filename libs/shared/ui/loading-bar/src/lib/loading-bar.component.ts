@@ -8,7 +8,6 @@ import {
   ViewEncapsulation,
   inject,
 } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progress-bar';
@@ -22,7 +21,7 @@ import { map } from 'rxjs';
   styleUrls: ['./loading-bar.component.scss'],
   exportAs: 'mskLoadingBar',
   encapsulation: ViewEncapsulation.None,
-  imports: [NgIf, MatProgressBarModule],
+  imports: [MatProgressBarModule],
 })
 export class MskLoadingBarComponent implements OnChanges, OnInit {
   destroyRef = inject(DestroyRef);
