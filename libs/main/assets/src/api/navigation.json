@@ -4,13 +4,13 @@
     "title": "Main",
     "tooltip": "Main",
     "type": "group",
-    "icon": "heroicons_outline:home",
+    "icon": "home",
     "children": [
       {
         "id": "main.dashboard",
         "title": "Dashboard",
         "type": "basic",
-        "icon": "heroicons_outline:rectangle-group",
+        "icon": "dashboard",
         "link": "/dashboard"
       }
     ]
@@ -20,7 +20,7 @@
     "title": "Applications",
     "tooltip": "Applications",
     "type": "group",
-    "icon": "heroicons_outline:squares-2x2",
+    "icon": "apps",
     "children": []
   },
   {
@@ -28,13 +28,13 @@
     "title": "Pages",
     "tooltip": "Pages",
     "type": "group",
-    "icon": "heroicons_outline:document-duplicate",
+    "icon": "layers",
     "children": [
       {
         "id": "pages.error",
         "title": "Error",
         "type": "collapsable",
-        "icon": "heroicons_outline:exclamation-circle",
+        "icon": "error",
         "children": [
           {
             "id": "pages.error.not-found",
@@ -54,7 +54,7 @@
         "id": "pages.maintenance",
         "title": "Maintenance",
         "type": "basic",
-        "icon": "heroicons_outline:exclamation-triangle",
+        "icon": "warning",
         "link": "/pages/maintenance"
       }
     ]

@@ -21,6 +21,18 @@
     <!-- Skip the hidden items -->
     @if ((item.hidden && !item.hidden(item)) || !item.hidden) {
 
+    <!-- Aside -->
+    @if (item.type === 'aside') {
+    <msk-vertical-navigation-aside-item
+      [item]="item"
+      [name]="name"
+      [activeItemId]="activeAsideItemId!"
+      [autoCollapse]="autoCollapse"
+      [skipChildren]="true"
+      (click)="toggleAside(item)"
+    ></msk-vertical-navigation-aside-item>
+    }
+
     <!-- Basic -->
     @if (item.type === 'basic') {
     <msk-vertical-navigation-basic-item [item]="item" [name]="name"></msk-vertical-navigation-basic-item>

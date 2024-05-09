@@ -8,11 +8,7 @@
   >
     <!-- Icon -->
     @if (item.icon) {
-    <mat-icon
-      class="msk-vertical-navigation-item-icon"
-      [ngClass]="item.classes?.icon!"
-      [svgIcon]="item.icon"
-    ></mat-icon>
+    <mat-icon class="msk-vertical-navigation-item-icon" [ngClass]="item.classes?.icon!">{{ item.icon }}</mat-icon>
     }
 
     <!-- Title -->
@@ -34,10 +30,7 @@
     }
 
     <!-- Arrow -->
-    <mat-icon
-      class="mat-icon-rtl-mirror msk-vertical-navigation-item-arrow icon-size-4"
-      [svgIcon]="'heroicons_solid:chevron-right'"
-    ></mat-icon>
+    <mat-icon class="mat-icon-rtl-mirror msk-vertical-navigation-item-arrow icon-size-4">chevron_right</mat-icon>
   </div>
 </div>
 

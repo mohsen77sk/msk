@@ -11,6 +11,9 @@ export class MskIconsService {
     const domSanitizer = inject(DomSanitizer);
     const matIconRegistry = inject(MatIconRegistry);
 
+    // Register default icons class
+    matIconRegistry.setDefaultFontSetClass('material-symbols-rounded');
+
     // Register icon sets
     matIconRegistry.addSvgIconSetInNamespace(
       'heroicons_outline',

@@ -3,11 +3,7 @@
   <div class="msk-vertical-navigation-item">
     <!-- Icon -->
     @if (item.icon) {
-    <mat-icon
-      class="msk-vertical-navigation-item-icon"
-      [ngClass]="item.classes?.icon!"
-      [svgIcon]="item.icon"
-    ></mat-icon>
+    <mat-icon class="msk-vertical-navigation-item-icon" [ngClass]="item.classes?.icon!">{{ item.icon }}</mat-icon>
     }
 
     <!-- Title -->
