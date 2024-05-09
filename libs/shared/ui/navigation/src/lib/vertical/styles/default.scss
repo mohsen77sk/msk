@@ -315,7 +315,7 @@ msk-vertical-navigation {
 
             &.msk-vertical-navigation-item-active,
             &.msk-vertical-navigation-item-active-forced {
-              background-color: rgba(var(--msk-on-secondary-container-rgb), 0.08);
+              background-color: rgba(var(--msk-secondary-container-rgb), 0.8);
 
               .msk-vertical-navigation-item-icon {
                 color: var(--msk-on-secondary-container);
