@@ -1,0 +1,20 @@
+{
+  "name": "main-shell-core-user",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/main/shell/core/user/src",
+  "prefix": "main",
+  "projectType": "library",
+  "tags": ["scope:main", "type:util"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/main/shell/core/user/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

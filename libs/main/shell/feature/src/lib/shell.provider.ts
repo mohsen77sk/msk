@@ -21,6 +21,7 @@ import { provideMskIcons } from '@msk/shared/utils/icons';
 import { provideMskServiceWorker } from '@msk/shared/utils/service-worker';
 import { provideMskTransloco } from '@msk/shared/utils/transloco';
 import { provideMskLoadingBar } from '@msk/shared/ui/loading-bar';
+import { provideMainAuth } from '@msk/main/shell/core/auth';
 
 import { mainRoutes } from './shell.routes';
 
@@ -74,6 +75,9 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
       withPreloading(PreloadAllModules),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
+
+    // Provide Auth
+    provideMainAuth(),
 
     // Material Date Adapter
     provideDateFnsAdapter(),

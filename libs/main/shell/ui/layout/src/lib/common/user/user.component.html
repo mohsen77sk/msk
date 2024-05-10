@@ -1,0 +1,12 @@
+<!-- Button -->
+<button mat-icon-button [matMenuTriggerFor]="userActions">
+  <span class="relative flex justify-center">
+    @if (showAvatar && user.avatar) {
+    <img class="h-7 w-7 rounded-full" [src]="user.avatar" />
+    } @else {
+    <mat-icon svgIcon="heroicons_outline:user-circle"> </mat-icon>
+    }
+  </span>
+</button>
+<!-- Menu -->
+<mat-menu [xPosition]="'before'" #userActions="matMenu"></mat-menu>

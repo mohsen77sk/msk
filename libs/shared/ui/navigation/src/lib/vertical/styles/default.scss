@@ -135,6 +135,8 @@ msk-vertical-navigation {
     height: 100%;
     overflow: hidden;
     background: inherit;
+    border-start-end-radius: 16px;
+    border-end-end-radius: 16px;
     z-index: 10;
 
     /* Header */
