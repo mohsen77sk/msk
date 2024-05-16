@@ -11,9 +11,9 @@ msk-vertical-navigation {
   width: $msk-vertical-navigation-width;
   min-width: $msk-vertical-navigation-width;
   max-width: $msk-vertical-navigation-width;
-  height: 100vh;
-  min-height: 100vh;
-  max-height: 100vh;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
   z-index: 200;
   background-color: var(--msk-surface);
   box-shadow: var(--msk-elevation-level-0);
@@ -45,6 +45,12 @@ msk-vertical-navigation {
     border-end-end-radius: 16px;
     background-color: var(--msk-surface-container-low);
     box-shadow: var(--msk-elevation-level-1);
+
+    /* Wrapper */
+    .msk-vertical-navigation-wrapper {
+      border-start-end-radius: 16px;
+      border-end-end-radius: 16px;
+    }
   }
 
   /* Start position */
@@ -135,8 +141,6 @@ msk-vertical-navigation {
     height: 100%;
     overflow: hidden;
     background: inherit;
-    border-start-end-radius: 16px;
-    border-end-end-radius: 16px;
     z-index: 10;
 
     /* Header */

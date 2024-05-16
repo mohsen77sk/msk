@@ -1,7 +1,7 @@
 const path = require('path');
 
 const config = {
-  darkMode: 'class',
+  darkMode: 'selector',
   important: true,
   theme: {
     fontFamily: {
