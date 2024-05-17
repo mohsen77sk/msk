@@ -1,27 +1,19 @@
 [
   {
-    "id": "main",
+    "id": "panel",
     "title": "Main",
     "tooltip": "Main",
     "type": "group",
     "icon": "home",
     "children": [
       {
-        "id": "main.dashboard",
+        "id": "panel.dashboard",
         "title": "Dashboard",
         "type": "basic",
         "icon": "dashboard",
-        "link": "/dashboard"
+        "link": "/panel/dashboard"
       }
     ]
-  },
-  {
-    "id": "apps",
-    "title": "Applications",
-    "tooltip": "Applications",
-    "type": "group",
-    "icon": "apps",
-    "children": []
   },
   {
     "id": "pages",

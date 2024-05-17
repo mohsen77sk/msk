@@ -15,9 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@msk/main/auth/sign-in": ["libs/main/auth/sign-in/src/index.ts"],
+      "@msk/main/auth/sign-out": ["libs/main/auth/sign-out/src/index.ts"],
       "@msk/main/errors/internal-server-error": ["libs/main/errors/internal-server-error/src/index.ts"],
       "@msk/main/errors/maintenance": ["libs/main/errors/maintenance/src/index.ts"],
       "@msk/main/errors/not-found": ["libs/main/errors/not-found/src/index.ts"],
+      "@msk/main/panel/dashboard": ["libs/main/panel/dashboard/src/index.ts"],
       "@msk/main/shell/core/auth": ["libs/main/shell/core/auth/src/index.ts"],
       "@msk/main/shell/core/navigation": ["libs/main/shell/core/navigation/src/index.ts"],
       "@msk/main/shell/core/user": ["libs/main/shell/core/user/src/index.ts"],

@@ -3,6 +3,51 @@ import { MainLayoutComponent } from '@msk/main/shell/ui/layout';
 import { initialMainDataResolver } from './shell.resolvers';
 
 export const mainRoutes: Route[] = [
+  // Redirect empty path to '/panel/dashboard'
+  { path: '', pathMatch: 'full', redirectTo: 'panel/dashboard' },
+
+  // Redirect signed in user to the '/panel/dashboard'
+  //
+  // After the user signs in, the sign in page will redirect the user to the 'signed-in-redirect'
+  // path. eBelow is another redirection for that path to redirect the user to the desird
+  // location. This is a small convenience to keep all main routes together here on this file.
+  {
+    path: 'signed-in-redirect',
+    pathMatch: 'full',
+    redirectTo: 'panel/dashboard',
+  },
+
+  // Auth routes for guests
+  {
+    path: '',
+    component: MainLayoutComponent,
+    data: {
+      layoutType: 'empty',
+    },
+    children: [
+      {
+        path: 'sign-in',
+        loadChildren: () => import('@msk/main/auth/sign-in').then((r) => r.routes),
+      },
+    ],
+  },
+
+  // Auth routes for authenticated users
+  {
+    path: '',
+    component: MainLayoutComponent,
+    data: {
+      layoutType: 'empty',
+    },
+    children: [
+      {
+        path: 'sign-out',
+        loadChildren: () => import('@msk/main/auth/sign-out').then((r) => r.routes),
+      },
+    ],
+  },
+
+  // Admin routes
   {
     path: '',
     component: MainLayoutComponent,
@@ -10,6 +55,18 @@ export const mainRoutes: Route[] = [
       initial: initialMainDataResolver,
     },
     children: [
+      // Panel
+      {
+        path: 'panel',
+        children: [
+          // Error
+          {
+            path: 'dashboard',
+            pathMatch: 'full',
+            loadChildren: () => import('@msk/main/panel/dashboard').then((r) => r.routes),
+          },
+        ],
+      },
       // Pages
       {
         path: 'pages',
@@ -35,6 +92,7 @@ export const mainRoutes: Route[] = [
       },
     ],
   },
+
   // Error routes & Catch all
   {
     path: '',
