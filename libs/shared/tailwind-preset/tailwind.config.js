@@ -124,7 +124,7 @@ const config = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            '--tw-prose-body': 'var(--mat-app-text-color)',
+            '--tw-prose-body': 'var(--msk-on-surface)',
             '--tw-prose-links': 'var(--msk-primary)',
           },
         },
@@ -133,7 +133,7 @@ const config = {
   },
   plugins: [
     // Tailwind plugins
-    require(path.resolve(__dirname, './plugins/color-roles')),
+    require(path.resolve(__dirname, './plugins/material')),
     require(path.resolve(__dirname, './plugins/icon-size')),
     // Other third party and/or custom plugins
     require('@tailwindcss/typography'),

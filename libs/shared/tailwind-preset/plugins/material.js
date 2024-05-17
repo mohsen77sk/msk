@@ -152,4 +152,43 @@ module.exports = plugin(({ addComponents }) => {
       color: 'var(--msk-on-error-container) !important',
     },
   });
+
+  addComponents({
+    '.rounded-extra-small': {
+      'border-radius': 'var(--msk-corner-extra-small) !important',
+    },
+    '.rounded-small': {
+      'border-radius': 'var(--msk-corner-small) !important',
+    },
+    '.rounded-medium': {
+      'border-radius': 'var(--msk-corner-medium) !important',
+    },
+    '.rounded-large': {
+      'border-radius': 'var(--msk-corner-large) !important',
+    },
+    '.rounded-extra-large': {
+      'border-radius': 'var(--msk-corner-extra-large) !important',
+    },
+  });
+
+  addComponents({
+    '.shadow-level-0': {
+      'box-shadow': 'var(--msk-elevation-level-0) !important',
+    },
+    '.shadow-level-1': {
+      'box-shadow': 'var(--msk-elevation-level-1) !important',
+    },
+    '.shadow-level-2': {
+      'box-shadow': 'var(--msk-elevation-level-2) !important',
+    },
+    '.shadow-level-3': {
+      'box-shadow': 'var(--msk-elevation-level-3) !important',
+    },
+    '.shadow-level-4': {
+      'box-shadow': 'var(--msk-elevation-level-4) !important',
+    },
+    '.shadow-level-5': {
+      'box-shadow': 'var(--msk-elevation-level-5) !important',
+    },
+  });
 });
