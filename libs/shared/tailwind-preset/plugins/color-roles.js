@@ -8,10 +8,10 @@ module.exports = plugin(({ addComponents }) => {
    */
   addComponents({
     '.bg-default': {
-      backgroundColor: 'var(--mat-app-background-color) !important',
+      backgroundColor: 'var(--msk-surface-container) !important',
     },
     '.text-default': {
-      color: 'var(--mat-app-text-color) !important',
+      color: 'var(--msk-on-surface) !important',
     },
     '.bg-surface-dim': {
       backgroundColor: 'var(--msk-surface-dim) !important',
