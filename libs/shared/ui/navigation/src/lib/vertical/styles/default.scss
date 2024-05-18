@@ -15,8 +15,8 @@ msk-vertical-navigation {
   min-height: 100%;
   max-height: 100%;
   z-index: 200;
-  background-color: var(--msk-surface-container);
-  box-shadow: var(--msk-elevation-level-0);
+  background-color: rgb(var(--msk-surface-container));
+  box-shadow: rgb(var(--msk-elevation-level-0));
 
   /* ----------------------------------------------------------------------------------------------------- */
   /* @ Navigation Drawer
@@ -43,8 +43,8 @@ msk-vertical-navigation {
     bottom: 0;
     border-start-end-radius: 16px;
     border-end-end-radius: 16px;
-    background-color: var(--msk-surface-container-low);
-    box-shadow: var(--msk-elevation-level-1);
+    background-color: rgb(var(--msk-surface-container-low));
+    box-shadow: rgb(var(--msk-elevation-level-1));
 
     /* Wrapper */
     .msk-vertical-navigation-wrapper {
@@ -248,13 +248,13 @@ msk-vertical-navigation {
 
         .msk-vertical-navigation-item-icon {
           margin-inline-end: 16px;
-          color: var(--msk-on-surface-variant);
+          color: rgb(var(--msk-on-surface-variant));
           font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
           transition: font-variation-settings 0.2s cubic-bezier(0.2, 0, 0, 1);
         }
 
         .msk-vertical-navigation-item-title {
-          color: var(--msk-on-surface-variant);
+          color: rgb(var(--msk-on-surface-variant));
         }
 
         .msk-vertical-navigation-item-badge {
@@ -296,16 +296,16 @@ msk-vertical-navigation {
         &:not(.msk-vertical-navigation-item-disabled) {
           &.msk-vertical-navigation-item-active,
           &.msk-vertical-navigation-item-active-forced {
-            background-color: rgba(var(--msk-secondary-container-rgb), 1);
+            background-color: rgba(var(--msk-secondary-container), 1);
 
             .msk-vertical-navigation-item-icon {
-              color: var(--msk-on-secondary-container);
+              color: rgb(var(--msk-on-secondary-container));
               font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             }
 
             .msk-vertical-navigation-item-title {
               font-weight: 700;
-              color: var(--msk-on-secondary-container);
+              color: rgb(var(--msk-on-secondary-container));
             }
           }
         }
@@ -313,22 +313,22 @@ msk-vertical-navigation {
         /* Hover state */
         &:not(.msk-vertical-navigation-item-disabled) {
           &:hover {
-            background-color: rgba(var(--msk-on-surface-rgb), 0.08);
+            background-color: rgba(var(--msk-on-surface), 0.08);
 
             .msk-vertical-navigation-item-title {
-              color: var(--msk-on-surface);
+              color: rgb(var(--msk-on-surface));
             }
 
             &.msk-vertical-navigation-item-active,
             &.msk-vertical-navigation-item-active-forced {
-              background-color: rgba(var(--msk-secondary-container-rgb), 0.8);
+              background-color: rgba(var(--msk-secondary-container), 0.8);
 
               .msk-vertical-navigation-item-icon {
-                color: var(--msk-on-secondary-container);
+                color: rgb(var(--msk-on-secondary-container));
               }
 
               .msk-vertical-navigation-item-title {
-                color: var(--msk-on-secondary-container);
+                color: rgb(var(--msk-on-secondary-container));
               }
             }
           }
@@ -425,7 +425,7 @@ msk-vertical-navigation {
 
     .msk-vertical-navigation-item-wrapper {
       margin: 0 28px;
-      border-bottom: 1px solid var(--msk-outline);
+      border-bottom: 1px solid rgb(var(--msk-outline));
     }
   }
 
@@ -435,7 +435,7 @@ msk-vertical-navigation {
       .msk-vertical-navigation-item {
         .msk-vertical-navigation-item-title-wrapper {
           .msk-vertical-navigation-item-title {
-            color: var(--msk-on-surface);
+            color: rgb(var(--msk-on-surface));
           }
         }
 
@@ -513,7 +513,7 @@ msk-vertical-navigation {
   inset: 0px;
   opacity: 0;
   z-index: 170;
-  background-color: rgba(var(--msk-scrim-rgb), 0.4);
+  background-color: rgba(var(--msk-scrim), 0.4);
 
   + .msk-vertical-navigation-aside-overlay {
     background-color: transparent;
@@ -528,5 +528,5 @@ msk-vertical-navigation {
   inset: 0px;
   opacity: 0;
   z-index: 169;
-  background-color: rgba(var(--msk-scrim-rgb), 0.4);
+  background-color: rgba(var(--msk-scrim), 0.4);
 }

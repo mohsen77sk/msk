@@ -1,36 +1,53 @@
 @use '@angular/material' as mat;
 
-$color-roles: primary, on-primary, primary-container, on-primary-container, primary-fixed, primary-fixed-dim,
-  on-primary-fixed, on-primary-fixed-variant, secondary, on-secondary, secondary-container, on-secondary-container,
-  secondary-fixed, secondary-fixed-dim, on-secondary-fixed, on-secondary-fixed-variant, tertiary, on-tertiary,
-  tertiary-container, on-tertiary-container, tertiary-fixed, tertiary-fixed-dim, on-tertiary-fixed,
-  on-tertiary-fixed-variant, error, on-error, error-container, on-error-container, surface-dim, surface, surface-bright,
-  surface-container-lowest, surface-container-low, surface-container, surface-container-high, surface-container-highest,
-  on-surface, on-surface-variant, outline, outline-variant, inverse-surface, inverse-on-surface, inverse-primary, scrim,
-  shadow;
+$color-roles:
+  //
+  primary, on-primary, primary-container, on-primary-container, primary-fixed, primary-fixed-dim, on-primary-fixed,
+  on-primary-fixed-variant,
+  //
+  secondary,
+  on-secondary, secondary-container, on-secondary-container, secondary-fixed, secondary-fixed-dim, on-secondary-fixed,
+  on-secondary-fixed-variant,
+  //
+  tertiary,
+  on-tertiary, tertiary-container, on-tertiary-container, tertiary-fixed, tertiary-fixed-dim, on-tertiary-fixed,
+  on-tertiary-fixed-variant,
+  //
+  error,
+  on-error, error-container, on-error-container,
+  //
+  surface,
+  surface-dim, surface-bright, surface-container-lowest, surface-container-low, surface-container,
+  surface-container-high, surface-container-highest, on-surface, on-surface-variant,
+  //
+  outline,
+  outline-variant, shadow, scrim,
+  //
+  inverse-surface,
+  inverse-on-surface, inverse-primary;
+//
 
 @mixin color($theme) {
   --msk-is-dark: #{if(mat.get-theme-type($theme) == dark, true, false)};
 
   @each $role in $color-roles {
-    --msk-#{$role}: #{mat.get-theme-color($theme, $role)};
-    --msk-#{$role}-rgb: #{hexToRGBString(mat.get-theme-color($theme, $role))};
+    --msk-#{$role}: #{hexToRGBString(mat.get-theme-color($theme, $role))};
   }
 }
 
 @mixin elevation($theme) {
-  --msk-elevation-level-0: rgba(var(--msk-shadow-rgb), 0.2) 0px 0px 0px 0px,
-    rgba(var(--msk-shadow-rgb), 0.14) 0px 0px 0px 0px, rgba(var(--msk-shadow-rgb), 0.12) 0px 0px 0px 0px;
-  --msk-elevation-level-1: rgba(var(--msk-shadow-rgb), 0.2) 0px 2px 1px -1px,
-    rgba(var(--msk-shadow-rgb), 0.14) 0px 1px 1px 0px, rgba(var(--msk-shadow-rgb), 0.12) 0px 1px 3px 0px;
-  --msk-elevation-level-2: rgba(var(--msk-shadow-rgb), 0.2) 0px 3px 3px -2px,
-    rgba(var(--msk-shadow-rgb), 0.14) 0px 3px 4px 0px, rgba(var(--msk-shadow-rgb), 0.12) 0px 1px 8px 0px;
-  --msk-elevation-level-3: rgba(var(--msk-shadow-rgb), 0.2) 0px 3px 5px -1px,
-    rgba(var(--msk-shadow-rgb), 0.14) 0px 6px 10px 0px, rgba(var(--msk-shadow-rgb), 0.12) 0px 1px 18px 0px;
-  --msk-elevation-level-4: rgba(var(--msk-shadow-rgb), 0.2) 0px 5px 5px -3px,
-    rgba(var(--msk-shadow-rgb), 0.14) 0px 8px 10px 1px, rgba(var(--msk-shadow-rgb), 0.12) 0px 3px 14px 2px;
-  --msk-elevation-level-5: rgba(var(--msk-shadow-rgb), 0.2) 0px 7px 8px -4px,
-    rgba(var(--msk-shadow-rgb), 0.14) 0px 12px 17px 2px, rgba(var(--msk-shadow-rgb), 0.12) 0px 5px 22px 4px;
+  --msk-elevation-level-0: rgba(var(--msk-shadow), 0.2) 0px 0px 0px 0px, rgba(var(--msk-shadow), 0.14) 0px 0px 0px 0px,
+    rgba(var(--msk-shadow), 0.12) 0px 0px 0px 0px;
+  --msk-elevation-level-1: rgba(var(--msk-shadow), 0.2) 0px 2px 1px -1px, rgba(var(--msk-shadow), 0.14) 0px 1px 1px 0px,
+    rgba(var(--msk-shadow), 0.12) 0px 1px 3px 0px;
+  --msk-elevation-level-2: rgba(var(--msk-shadow), 0.2) 0px 3px 3px -2px, rgba(var(--msk-shadow), 0.14) 0px 3px 4px 0px,
+    rgba(var(--msk-shadow), 0.12) 0px 1px 8px 0px;
+  --msk-elevation-level-3: rgba(var(--msk-shadow), 0.2) 0px 3px 5px -1px, rgba(var(--msk-shadow), 0.14) 0px 6px 10px 0px,
+    rgba(var(--msk-shadow), 0.12) 0px 1px 18px 0px;
+  --msk-elevation-level-4: rgba(var(--msk-shadow), 0.2) 0px 5px 5px -3px, rgba(var(--msk-shadow), 0.14) 0px 8px 10px 1px,
+    rgba(var(--msk-shadow), 0.12) 0px 3px 14px 2px;
+  --msk-elevation-level-5: rgba(var(--msk-shadow), 0.2) 0px 7px 8px -4px,
+    rgba(var(--msk-shadow), 0.14) 0px 12px 17px 2px, rgba(var(--msk-shadow), 0.12) 0px 5px 22px 4px;
 }
 
 @mixin corner($theme) {

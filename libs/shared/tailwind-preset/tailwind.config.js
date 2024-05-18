@@ -124,8 +124,8 @@ const config = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            '--tw-prose-body': 'var(--msk-on-surface)',
-            '--tw-prose-links': 'var(--msk-primary)',
+            '--tw-prose-body': 'rgb(var(--msk-on-surface))',
+            '--tw-prose-links': 'rgb(var(--msk-primary))',
           },
         },
       }),

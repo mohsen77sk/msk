@@ -113,7 +113,7 @@ msk-vertical-navigation {
                   transition-property: transform, opacity;
                   transition-timing-function: linear;
                   border-radius: 100px;
-                  background-color: rgba(var(--msk-secondary-container-rgb), 1);
+                  background-color: rgba(var(--msk-secondary-container), 1);
                   content: '';
                   z-index: -1;
                 }
@@ -133,7 +133,7 @@ msk-vertical-navigation {
                   }
 
                   .msk-vertical-navigation-item-title {
-                    color: var(--msk-on-surface);
+                    color: rgb(var(--msk-on-surface));
                   }
                 }
               }
@@ -144,7 +144,7 @@ msk-vertical-navigation {
                   background-color: unset;
 
                   .msk-vertical-navigation-item-icon {
-                    background-color: rgba(var(--msk-on-secondary-container-rgb), 0.08);
+                    background-color: rgba(var(--msk-on-secondary-container), 0.08);
                   }
                 }
               }
