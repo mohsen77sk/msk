@@ -23,7 +23,7 @@ export class MskLayoutConfigService {
   /**
    * Setter & getter for config
    */
-  set config(value: LayoutConfig) {
+  set config(value: Partial<LayoutConfig>) {
     // Merge the new config over to the current config
     const config = merge({}, this._config.getValue(), value);
 

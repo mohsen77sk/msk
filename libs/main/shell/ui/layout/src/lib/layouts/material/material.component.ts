@@ -11,6 +11,7 @@ import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
 import { MainNavigationService, Navigation } from '@msk/main/shell/core/navigation';
 import { cloneDeep } from 'lodash-es';
 import { MainUserComponent } from '../../common/user/user.component';
+import { MainLanguagesComponent } from '../../common/languages/languages.component';
 
 @Component({
   standalone: true,
@@ -25,6 +26,7 @@ import { MainUserComponent } from '../../common/user/user.component';
     MskFullscreenComponent,
     MskVerticalNavigationComponent,
     MainUserComponent,
+    MainLanguagesComponent,
     TranslocoDirective,
   ],
 })
