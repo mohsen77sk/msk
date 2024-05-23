@@ -2,3 +2,8 @@
 /*  @ Import/write your custom styles here.
 /*  @ Styles from this file will override 'vendors.scss' and Main's base styles.
 /* ----------------------------------------------------------------------------------------------------- */
+
+// fix font icon direction
+.material-symbols-rounded {
+  direction: unset !important;
+}
