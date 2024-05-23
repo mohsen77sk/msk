@@ -1,5 +1,7 @@
 {
   "layout": {
+    "settings": "تنظیمات",
+    "sign-out": "خروج از سیستم",
     "languages": "زبان سیستم",
     "toggle-fullscreen": "تغییر حالت تمام صفحه"
   },

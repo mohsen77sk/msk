@@ -1,0 +1,25 @@
+.main-user-panel-profile {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  width: 384px !important;
+  min-width: 240px !important;
+  max-width: 384px !important;
+  border-radius: var(--msk-corner-extra-large) !important;
+  box-shadow: 0 4px 8px 3px rgba(var(--msk-shadow), 0.15), 0 1px 3px rgba(var(--msk-shadow), 0.3) !important;
+
+  .main-user-panel-profile-item {
+    margin-bottom: 4px;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    cursor: pointer;
+    border-radius: var(--msk-corner-extra-large);
+    background-color: rgb(var(--msk-surface-container-lowest));
+
+    &:hover {
+      background-color: rgb(var(--msk-surface-container-highest));
+    }
+  }
+}

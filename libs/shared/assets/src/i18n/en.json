@@ -1,5 +1,7 @@
 {
   "layout": {
+    "settings": "Settings",
+    "sign-out": "Sign out",
     "languages": "Languages",
     "toggle-fullscreen": "Toggle Fullscreen"
   },
