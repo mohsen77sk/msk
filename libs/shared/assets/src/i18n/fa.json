@@ -1,9 +1,13 @@
 {
   "layout": {
-    "settings": "تنظیمات",
+    "settings": "مدیریت تنظیمات حساب شما",
     "sign-out": "خروج از سیستم",
     "languages": "زبان سیستم",
-    "toggle-fullscreen": "تغییر حالت تمام صفحه"
+    "toggle-fullscreen": "تغییر حالت تمام صفحه",
+    "dark-theme": "تم تاریک",
+    "dark-theme-on": "روشن",
+    "dark-theme-off": "خاموش",
+    "dark-theme-default": "پیش فرض دستگاه"
   },
   "error-validation": {
     "required": "این فیلد اجباری است",

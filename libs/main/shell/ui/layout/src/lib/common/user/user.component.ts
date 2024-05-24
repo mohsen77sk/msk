@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,7 +15,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslocoDirective } from '@ngneat/transloco';
+import { TranslocoDirective, TranslocoService } from '@ngneat/transloco';
+import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
+import { availableLangs } from '@msk/shared/utils/transloco';
 import { MainUserService, User } from '@msk/main/shell/core/user';
 
 @Component({
@@ -24,16 +27,21 @@ import { MainUserService, User } from '@msk/main/shell/core/user';
   styleUrl: './user.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatMenuModule, MatIconModule, MatButtonModule, TranslocoDirective],
+  imports: [NgClass, MatMenuModule, MatIconModule, MatButtonModule, TranslocoDirective],
 })
 export class MainUserComponent implements OnInit {
   destroyRef = inject(DestroyRef);
   router = inject(Router);
   userService = inject(MainUserService);
+  translocoService = inject(TranslocoService);
+  layoutConfigService = inject(MskLayoutConfigService);
   changeDetectorRef = inject(ChangeDetectorRef);
 
   @Input({ transform: booleanAttribute }) showAvatar = true;
   user!: User;
+
+  activeLang!: string;
+  layoutScheme!: LayoutScheme;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -49,6 +57,18 @@ export class MainUserComponent implements OnInit {
       this.user = user;
       // Mark for check
       this.changeDetectorRef.markForCheck();
+    });
+
+    // Subscribe to config changes
+    this.layoutConfigService.config$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((config) => {
+      // Get the scheme config
+      this.layoutScheme = config.scheme;
+    });
+
+    // Subscribe to language changes
+    this.translocoService.langChanges$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((activeLang) => {
+      // Get the active lang
+      this.activeLang = availableLangs.find((x) => x.id === activeLang)?.label ?? '';
     });
   }
 

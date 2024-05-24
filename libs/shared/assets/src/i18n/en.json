@@ -1,9 +1,13 @@
 {
   "layout": {
-    "settings": "Settings",
+    "settings": "Manage your account settings",
     "sign-out": "Sign out",
     "languages": "Languages",
-    "toggle-fullscreen": "Toggle Fullscreen"
+    "toggle-fullscreen": "Toggle Fullscreen",
+    "dark-theme": "Dark theme",
+    "dark-theme-on": "On",
+    "dark-theme-off": "Off",
+    "dark-theme-default": "Device default"
   },
   "error-validation": {
     "required": "This is required",

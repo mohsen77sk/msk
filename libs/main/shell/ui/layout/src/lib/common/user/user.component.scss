@@ -1,25 +1,55 @@
 .main-user-panel-profile {
-  padding-top: 2px !important;
-  padding-bottom: 2px !important;
+  display: flex !important;
+  overflow: hidden !important;
+  padding: 0 !important;
   width: 384px !important;
   min-width: 240px !important;
   max-width: 384px !important;
   border-radius: var(--msk-corner-extra-large) !important;
   box-shadow: 0 4px 8px 3px rgba(var(--msk-shadow), 0.15), 0 1px 3px rgba(var(--msk-shadow), 0.3) !important;
 
+  > .mat-mdc-menu-content {
+    padding: 0 !important;
+  }
+
+  .main-user-panel-profile-container {
+    display: block;
+    overflow: auto;
+    text-align: center;
+    padding: 0 24px;
+    height: calc(100% - 56px);
+  }
+
   .main-user-panel-profile-item {
     margin-bottom: 4px;
     padding: 0 24px;
     height: 56px;
+    width: 100%;
     display: flex;
     flex: 1 1 auto;
     align-items: center;
+    justify-content: space-between;
     cursor: pointer;
-    border-radius: var(--msk-corner-extra-large);
+    border-radius: var(--msk-corner-extra-small);
     background-color: rgb(var(--msk-surface-container-lowest));
+
+    &:first-child {
+      border-top-left-radius: var(--msk-corner-extra-large);
+      border-top-right-radius: var(--msk-corner-extra-large);
+    }
+
+    &:last-child {
+      border-bottom-left-radius: var(--msk-corner-extra-large);
+      border-bottom-right-radius: var(--msk-corner-extra-large);
+    }
 
     &:hover {
       background-color: rgb(var(--msk-surface-container-highest));
+    }
+
+    > div {
+      display: flex;
+      align-items: center;
     }
   }
 }
