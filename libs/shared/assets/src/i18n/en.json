@@ -4,10 +4,14 @@
     "sign-out": "Sign out",
     "languages": "Languages",
     "toggle-fullscreen": "Toggle Fullscreen",
+    "on": "On",
+    "off": "Off",
+    "dark": "Dark",
+    "light": "Light",
+    "default": "Device default",
     "dark-theme": "Dark theme",
-    "dark-theme-on": "On",
-    "dark-theme-off": "Off",
-    "dark-theme-default": "Device default"
+    "select-theme": "Select theme",
+    "select-language": "Select language"
   },
   "error-validation": {
     "required": "This is required",

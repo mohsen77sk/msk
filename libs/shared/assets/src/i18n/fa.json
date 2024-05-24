@@ -4,10 +4,14 @@
     "sign-out": "خروج از سیستم",
     "languages": "زبان سیستم",
     "toggle-fullscreen": "تغییر حالت تمام صفحه",
+    "on": "روشن",
+    "off": "خاموش",
+    "dark": "تاریک",
+    "light": "روشن",
+    "default": "پیش فرض دستگاه",
     "dark-theme": "تم تاریک",
-    "dark-theme-on": "روشن",
-    "dark-theme-off": "خاموش",
-    "dark-theme-default": "پیش فرض دستگاه"
+    "select-theme": "انتخاب تم",
+    "select-language": "انتخاب زبان"
   },
   "error-validation": {
     "required": "این فیلد اجباری است",

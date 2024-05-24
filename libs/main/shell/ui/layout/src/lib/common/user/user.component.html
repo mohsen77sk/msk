@@ -33,20 +33,20 @@
       </button>
     </div>
     <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">
-      <div class="main-user-panel-profile-item" (click)="(null)">
+      <div class="main-user-panel-profile-item" (click)="openLayoutSchemeDialog()">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">dark_mode</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.dark-theme') }}</span>
         </div>
         @switch (layoutScheme) { @case ('auto') {
-        <span class="text-sm font-light">{{ t('layout.dark-theme-default') }}</span>
+        <span class="text-sm font-light">{{ t('layout.default') }}</span>
         } @case ('dark') {
-        <span class="text-sm font-light">{{ t('layout.dark-theme-on') }}</span>
+        <span class="text-sm font-light">{{ t('layout.on') }}</span>
         } @case ('light') {
-        <span class="text-sm font-light">{{ t('layout.dark-theme-off') }}</span>
+        <span class="text-sm font-light">{{ t('layout.off') }}</span>
         } }
       </div>
-      <div class="main-user-panel-profile-item" (click)="(null)">
+      <div class="main-user-panel-profile-item" (click)="openLayoutLanguageDialog()">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">language</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.languages') }}</span>
