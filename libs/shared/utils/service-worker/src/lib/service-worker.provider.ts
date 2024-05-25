@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { provideServiceWorker } from '@angular/service-worker';
-import { provideTranslocoScope } from '@ngneat/transloco';
+import { provideTranslocoScope } from '@jsverse/transloco';
 import { scopeLoader } from '@msk/shared/utils/transloco';
 import { MskServiceWorkerService } from './service-worker.service';
 

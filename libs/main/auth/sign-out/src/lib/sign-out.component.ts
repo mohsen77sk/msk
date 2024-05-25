@@ -1,7 +1,7 @@
 import { Component, DestroyRef, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
-import { TranslocoDirective } from '@ngneat/transloco';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { MainAuthService } from '@msk/main/shell/core/auth';
 import { finalize, takeWhile, tap, timer } from 'rxjs';
 

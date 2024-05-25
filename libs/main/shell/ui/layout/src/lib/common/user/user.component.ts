@@ -16,7 +16,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslocoDirective, TranslocoService } from '@ngneat/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
 import { availableLangs } from '@msk/shared/utils/transloco';
 import { MainUserService, User } from '@msk/main/shell/core/user';

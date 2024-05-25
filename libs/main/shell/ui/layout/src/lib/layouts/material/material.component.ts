@@ -2,7 +2,7 @@ import { Component, DestroyRef, OnInit, ViewEncapsulation, inject } from '@angul
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { NgClass } from '@angular/common';
-import { TranslocoDirective } from '@ngneat/transloco';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MskFullscreenComponent } from '@msk/shared/ui/fullscreen';

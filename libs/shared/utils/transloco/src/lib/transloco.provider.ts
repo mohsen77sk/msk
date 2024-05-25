@@ -1,5 +1,10 @@
 import { APP_INITIALIZER, EnvironmentProviders, inject, isDevMode, LOCALE_ID, Provider } from '@angular/core';
-import { provideTransloco, TranslocoService, TranslocoTestingModule, TranslocoTestingOptions } from '@ngneat/transloco';
+import {
+  provideTransloco,
+  TranslocoService,
+  TranslocoTestingModule,
+  TranslocoTestingOptions,
+} from '@jsverse/transloco';
 import { TranslocoHttpLoader } from './transloco.http-loader';
 import { availableLangs } from './transloco.types';
 import { firstValueFrom } from 'rxjs';
