@@ -1,16 +1,15 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
-@use '@angular/material-experimental' as matx;
 @use 'themes-vars' as themesVars;
 
 // Create a theme with the specified color type and density.
 @function create-theme($type: light, $density: 0) {
-  @return matx.define-theme(
+  @return mat.define-theme(
     (
       color: (
         theme-type: $type,
-        primary: matx.$m3-azure-palette,
-        tertiary: matx.$m3-blue-palette,
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
       ),
       typography: (
         plain-family: theme('fontFamily.sans'),
