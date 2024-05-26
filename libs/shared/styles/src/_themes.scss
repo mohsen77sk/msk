@@ -1,50 +1,20 @@
-@use 'sass:map';
 @use '@angular/material' as mat;
-@use 'themes-vars' as themesVars;
-
-// Create a theme with the specified color type and density.
-@function create-theme($type: light, $density: 0) {
-  @return mat.define-theme(
-    (
-      color: (
-        theme-type: $type,
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
-      ),
-      typography: (
-        plain-family: theme('fontFamily.sans'),
-      ),
-      density: (
-        scale: $density,
-      ),
-    )
-  );
-}
-
-// Define the default (light) theme.
-$light-theme: create-theme(
-  $type: light,
-);
-// Create our dark theme.
-$dark-theme: create-theme(
-  $type: dark,
-);
+@use 'theme-m3' as themeM3;
+@use 'theme-vars' as themeVars;
 
 // Include the common styles for Angular Material.
 @include mat.core();
 
 // Include the default theme styles.
 body {
-  @include themesVars.color($light-theme);
-  @include themesVars.corner($light-theme);
-  @include themesVars.elevation($light-theme);
-  @include mat.all-component-themes($light-theme);
+  @include mat.system-level-colors(themeM3.$light-theme);
+  @include themeVars.system-level-corner(themeM3.$light-theme);
+  @include themeVars.system-level-elevation(themeM3.$light-theme);
+
+  @include mat.all-component-themes(themeM3.$light-theme);
 }
 
 // Include the dark theme color styles.
 .dark {
-  @include themesVars.color($dark-theme);
-  @include themesVars.corner($dark-theme);
-  @include themesVars.elevation($dark-theme);
-  @include mat.all-component-colors($dark-theme);
+  @include mat.system-level-colors(themeM3.$dark-theme);
 }

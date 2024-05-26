@@ -8,187 +8,187 @@ module.exports = plugin(({ addComponents }) => {
    */
   addComponents({
     '.bg-default': {
-      backgroundColor: 'rgb(var(--msk-surface-container)) !important',
+      backgroundColor: 'var(--sys-surface-container) !important',
     },
     '.text-default': {
-      color: 'rgb(var(--msk-on-surface)) !important',
+      color: 'var(--sys-on-surface) !important',
     },
     '.bg-surface-dim': {
-      backgroundColor: 'rgb(var(--msk-surface-dim)) !important',
+      backgroundColor: 'var(--sys-surface-dim) !important',
     },
     '.bg-surface': {
-      backgroundColor: 'rgb(var(--msk-surface)) !important',
+      backgroundColor: 'var(--sys-surface) !important',
     },
     '.bg-surface-bright': {
-      backgroundColor: 'rgb(var(--msk-surface-bright)) !important',
+      backgroundColor: 'var(--sys-surface-bright) !important',
     },
     '.bg-surface-container-lowest': {
-      backgroundColor: 'rgb(var(--msk-surface-container-lowest)) !important',
+      backgroundColor: 'var(--sys-surface-container-lowest) !important',
     },
     '.bg-surface-container-low': {
-      backgroundColor: 'rgb(var(--msk-surface-container-low)) !important',
+      backgroundColor: 'var(--sys-surface-container-low) !important',
     },
     '.bg-surface-container': {
-      backgroundColor: 'rgb(var(--msk-surface-container)) !important',
+      backgroundColor: 'var(--sys-surface-container) !important',
     },
     '.bg-surface-container-high': {
-      backgroundColor: 'rgb(var(--msk-surface-container-high)) !important',
+      backgroundColor: 'var(--sys-surface-container-high) !important',
     },
     '.bg-surface-container-highest': {
-      backgroundColor: 'rgb(var(--msk-surface-container-highest)) !important',
+      backgroundColor: 'var(--sys-surface-container-highest) !important',
     },
     '.text-on-surface': {
-      color: 'rgb(var(--msk-on-surface)) !important',
+      color: 'var(--sys-on-surface) !important',
     },
     '.text-on-surface-variant': {
-      color: 'rgb(var(--msk-on-surface-variant)) !important',
+      color: 'var(--sys-on-surface-variant) !important',
     },
     '.bg-inverse-surface': {
-      backgroundColor: 'rgb(var(--msk-inverse-surface)) !important',
+      backgroundColor: 'var(--sys-inverse-surface) !important',
     },
     '.text-inverse-on-surface': {
-      color: 'rgb(var(--msk-inverse-on-surface)) !important',
+      color: 'var(--sys-inverse-on-surface) !important',
     },
   });
 
   addComponents({
     '.bg-primary': {
-      backgroundColor: 'rgb(var(--msk-primary)) !important',
+      backgroundColor: 'var(--sys-primary) !important',
     },
     '.text-primary': {
-      color: 'rgb(var(--msk-primary)) !important',
+      color: 'var(--sys-primary) !important',
     },
     '.text-on-primary': {
-      color: 'rgb(var(--msk-on-primary)) !important',
+      color: 'var(--sys-on-primary) !important',
     },
     '.bg-primary-container': {
-      backgroundColor: 'rgb(var(--msk-primary-container)) !important',
+      backgroundColor: 'var(--sys-primary-container) !important',
     },
     '.text-on-primary-container': {
-      color: 'rgb(var(--msk-on-primary-container)) !important',
+      color: 'var(--sys-on-primary-container) !important',
     },
     '.bg-primary-fixed': {
-      backgroundColor: 'rgb(var(--msk-primary-fixed)) !important',
+      backgroundColor: 'var(--sys-primary-fixed) !important',
     },
     '.bg-primary-fixed-dim': {
-      backgroundColor: 'rgb(var(--msk-primary-fixed-dim)) !important',
+      backgroundColor: 'var(--sys-primary-fixed-dim) !important',
     },
     '.text-on-primary-fixed': {
-      color: 'rgb(var(--msk-on-primary-fixed)) !important',
+      color: 'var(--sys-on-primary-fixed) !important',
     },
     '.text-on-primary-fixed-variant': {
-      color: 'rgb(var(--msk-on-primary-fixed-variant)) !important',
+      color: 'var(--sys-on-primary-fixed-variant) !important',
     },
 
     '.bg-secondary': {
-      backgroundColor: 'rgb(var(--msk-secondary)) !important',
+      backgroundColor: 'var(--sys-secondary) !important',
     },
     '.text-secondary': {
-      color: 'rgb(var(--msk-secondary)) !important',
+      color: 'var(--sys-secondary) !important',
     },
     '.text-on-secondary': {
-      color: 'rgb(var(--msk-on-secondary)) !important',
+      color: 'var(--sys-on-secondary) !important',
     },
     '.bg-secondary-container': {
-      backgroundColor: 'rgb(var(--msk-secondary-container)) !important',
+      backgroundColor: 'var(--sys-secondary-container) !important',
     },
     '.text-on-secondary-container': {
-      color: 'rgb(var(--msk-on-secondary-container)) !important',
+      color: 'var(--sys-on-secondary-container) !important',
     },
     '.bg-secondary-fixed': {
-      backgroundColor: 'rgb(var(--msk-secondary-fixed)) !important',
+      backgroundColor: 'var(--sys-secondary-fixed) !important',
     },
     '.bg-secondary-fixed-dim': {
-      backgroundColor: 'rgb(var(--msk-secondary-fixed-dim)) !important',
+      backgroundColor: 'var(--sys-secondary-fixed-dim) !important',
     },
     '.text-on-secondary-fixed': {
-      color: 'rgb(var(--msk-on-secondary-fixed)) !important',
+      color: 'var(--sys-on-secondary-fixed) !important',
     },
     '.text-on-secondary-fixed-variant': {
-      color: 'rgb(var(--msk-on-secondary-fixed-variant)) !important',
+      color: 'var(--sys-on-secondary-fixed-variant) !important',
     },
 
     '.bg-tertiary': {
-      backgroundColor: 'rgb(var(--msk-tertiary)) !important',
+      backgroundColor: 'var(--sys-tertiary) !important',
     },
     '.text-tertiary': {
-      color: 'rgb(var(--msk-tertiary)) !important',
+      color: 'var(--sys-tertiary) !important',
     },
     '.text-on-tertiary': {
-      color: 'rgb(var(--msk-on-tertiary)) !important',
+      color: 'var(--sys-on-tertiary) !important',
     },
     '.bg-tertiary-container': {
-      backgroundColor: 'rgb(var(--msk-tertiary-container)) !important',
+      backgroundColor: 'var(--sys-tertiary-container) !important',
     },
     '.text-on-tertiary-container': {
-      color: 'rgb(var(--msk-on-tertiary-container)) !important',
+      color: 'var(--sys-on-tertiary-container) !important',
     },
     '.bg-tertiary-fixed': {
-      backgroundColor: 'rgb(var(--msk-tertiary-fixed)) !important',
+      backgroundColor: 'var(--sys-tertiary-fixed) !important',
     },
     '.bg-tertiary-fixed-dim': {
-      backgroundColor: 'rgb(var(--msk-tertiary-fixed-dim)) !important',
+      backgroundColor: 'var(--sys-tertiary-fixed-dim) !important',
     },
     '.text-on-tertiary-fixed': {
-      color: 'rgb(var(--msk-on-tertiary-fixed)) !important',
+      color: 'var(--sys-on-tertiary-fixed) !important',
     },
     '.text-on-tertiary-fixed-variant': {
-      color: 'rgb(var(--msk-on-tertiary-fixed-variant)) !important',
+      color: 'var(--sys-on-tertiary-fixed-variant) !important',
     },
 
     '.bg-error': {
-      backgroundColor: 'rgb(var(--msk-error)) !important',
+      backgroundColor: 'var(--sys-error) !important',
     },
     '.text-error': {
-      color: 'rgb(var(--msk-error)) !important',
+      color: 'var(--sys-error) !important',
     },
     '.text-on-error': {
-      color: 'rgb(var(--msk-on-error)) !important',
+      color: 'var(--sys-on-error) !important',
     },
     '.bg-error-container': {
-      backgroundColor: 'rgb(var(--msk-error-container)) !important',
+      backgroundColor: 'var(--sys-error-container) !important',
     },
     '.text-on-error-container': {
-      color: 'rgb(var(--msk-on-error-container)) !important',
+      color: 'var(--sys-on-error-container) !important',
     },
   });
 
   addComponents({
     '.rounded-extra-small': {
-      'border-radius': 'var(--msk-corner-extra-small) !important',
+      'border-radius': 'var(--sys-corner-extra-small) !important',
     },
     '.rounded-small': {
-      'border-radius': 'var(--msk-corner-small) !important',
+      'border-radius': 'var(--sys-corner-small) !important',
     },
     '.rounded-medium': {
-      'border-radius': 'var(--msk-corner-medium) !important',
+      'border-radius': 'var(--sys-corner-medium) !important',
     },
     '.rounded-large': {
-      'border-radius': 'var(--msk-corner-large) !important',
+      'border-radius': 'var(--sys-corner-large) !important',
     },
     '.rounded-extra-large': {
-      'border-radius': 'var(--msk-corner-extra-large) !important',
+      'border-radius': 'var(--sys-corner-extra-large) !important',
     },
   });
 
   addComponents({
     '.shadow-level-0': {
-      'box-shadow': 'var(--msk-elevation-level-0) !important',
+      'box-shadow': 'var(--sys-elevation-level-0) !important',
     },
     '.shadow-level-1': {
-      'box-shadow': 'var(--msk-elevation-level-1) !important',
+      'box-shadow': 'var(--sys-elevation-level-1) !important',
     },
     '.shadow-level-2': {
-      'box-shadow': 'var(--msk-elevation-level-2) !important',
+      'box-shadow': 'var(--sys-elevation-level-2) !important',
     },
     '.shadow-level-3': {
-      'box-shadow': 'var(--msk-elevation-level-3) !important',
+      'box-shadow': 'var(--sys-elevation-level-3) !important',
     },
     '.shadow-level-4': {
-      'box-shadow': 'var(--msk-elevation-level-4) !important',
+      'box-shadow': 'var(--sys-elevation-level-4) !important',
     },
     '.shadow-level-5': {
-      'box-shadow': 'var(--msk-elevation-level-5) !important',
+      'box-shadow': 'var(--sys-elevation-level-5) !important',
     },
   });
 });
