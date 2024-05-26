@@ -13,14 +13,15 @@ module.exports = plugin(({ addComponents }) => {
     '.text-default': {
       color: 'var(--sys-on-surface) !important',
     },
-    '.bg-surface-dim': {
-      backgroundColor: 'var(--sys-surface-dim) !important',
-    },
+
     '.bg-surface': {
       backgroundColor: 'var(--sys-surface) !important',
     },
     '.bg-surface-bright': {
       backgroundColor: 'var(--sys-surface-bright) !important',
+    },
+    '.bg-surface-container': {
+      backgroundColor: 'var(--sys-surface-container) !important',
     },
     '.bg-surface-container-lowest': {
       backgroundColor: 'var(--sys-surface-container-lowest) !important',
@@ -28,21 +29,29 @@ module.exports = plugin(({ addComponents }) => {
     '.bg-surface-container-low': {
       backgroundColor: 'var(--sys-surface-container-low) !important',
     },
-    '.bg-surface-container': {
-      backgroundColor: 'var(--sys-surface-container) !important',
-    },
     '.bg-surface-container-high': {
       backgroundColor: 'var(--sys-surface-container-high) !important',
     },
     '.bg-surface-container-highest': {
       backgroundColor: 'var(--sys-surface-container-highest) !important',
     },
+    '.bg-surface-dim': {
+      backgroundColor: 'var(--sys-surface-dim) !important',
+    },
+    '.bg-surface-tint': {
+      backgroundColor: 'var(--sys-surface-tint) !important',
+    },
+    '.bg-surface-variant': {
+      backgroundColor: 'var(--sys-surface-variant) !important',
+    },
+
     '.text-on-surface': {
       color: 'var(--sys-on-surface) !important',
     },
     '.text-on-surface-variant': {
       color: 'var(--sys-on-surface-variant) !important',
     },
+
     '.bg-inverse-surface': {
       backgroundColor: 'var(--sys-inverse-surface) !important',
     },
