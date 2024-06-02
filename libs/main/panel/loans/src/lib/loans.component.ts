@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -7,6 +7,6 @@ import { TranslocoDirective } from '@jsverse/transloco';
   templateUrl: './loans.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslocoDirective],
+  imports: [RouterOutlet],
 })
 export class LoansComponent {}
