@@ -59,11 +59,25 @@ export const mainRoutes: Route[] = [
       {
         path: 'panel',
         children: [
-          // Error
           {
             path: 'dashboard',
             pathMatch: 'full',
             loadChildren: () => import('@msk/main/panel/dashboard').then((r) => r.routes),
+          },
+          {
+            path: 'people',
+            pathMatch: 'full',
+            loadChildren: () => import('@msk/main/panel/people').then((r) => r.routes),
+          },
+          {
+            path: 'accounts',
+            pathMatch: 'full',
+            loadChildren: () => import('@msk/main/panel/accounts').then((r) => r.routes),
+          },
+          {
+            path: 'loans',
+            pathMatch: 'full',
+            loadChildren: () => import('@msk/main/panel/loans').then((r) => r.routes),
           },
         ],
       },

@@ -12,6 +12,27 @@
         "type": "basic",
         "icon": "dashboard",
         "link": "/panel/dashboard"
+      },
+      {
+        "id": "panel.people",
+        "title": "People",
+        "type": "basic",
+        "icon": "groups",
+        "link": "/panel/people"
+      },
+      {
+        "id": "panel.accounts",
+        "title": "Accounts",
+        "type": "basic",
+        "icon": "account_balance",
+        "link": "/panel/accounts"
+      },
+      {
+        "id": "panel.loans",
+        "title": "Loans",
+        "type": "basic",
+        "icon": "payments",
+        "link": "/panel/loans"
       }
     ]
   },
