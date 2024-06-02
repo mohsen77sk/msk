@@ -27,9 +27,9 @@ import { MainAuthService } from '@msk/main/shell/core/auth';
   animations: mskAnimations,
   imports: [
     RouterLink,
-    TranslocoDirective,
     FormsModule,
     ReactiveFormsModule,
+    TranslocoDirective,
     MatIconModule,
     MatInputModule,
     MatButtonModule,

@@ -8,7 +8,8 @@ describe('MskVerticalNavigationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [provideAnimationsAsync(), MskVerticalNavigationComponent],
+      imports: [MskVerticalNavigationComponent],
+      providers: [provideAnimationsAsync()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MskVerticalNavigationComponent);

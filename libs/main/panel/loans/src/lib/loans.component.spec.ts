@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoansComponent } from './loans.component';
+import { MskTranslocoTestingModule } from '@msk/shared/utils/transloco';
 
 describe('LoansComponent', () => {
   let component: LoansComponent;
@@ -7,7 +8,7 @@ describe('LoansComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoansComponent],
+      imports: [MskTranslocoTestingModule(), LoansComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoansComponent);

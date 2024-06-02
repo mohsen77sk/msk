@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { MskTranslocoTestingModule } from '@msk/shared/utils/transloco';
 import { SignOutComponent } from './sign-out.component';
@@ -9,7 +10,8 @@ describe('SignOutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [provideHttpClient(), MskTranslocoTestingModule(), SignOutComponent],
+      imports: [MskTranslocoTestingModule(), SignOutComponent],
+      providers: [provideAnimationsAsync(), provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignOutComponent);

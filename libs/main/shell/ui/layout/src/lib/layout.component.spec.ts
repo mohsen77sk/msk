@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { MSK_LAYOUT_CONFIG } from '@msk/shared/services/config';
 import { MainLayoutComponent } from './layout.component';
 
@@ -9,8 +9,8 @@ describe('MainLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainLayoutComponent, RouterModule.forRoot([])],
-      providers: [{ provide: MSK_LAYOUT_CONFIG, useValue: {} }],
+      imports: [MainLayoutComponent],
+      providers: [provideRouter([]), { provide: MSK_LAYOUT_CONFIG, useValue: {} }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MainLayoutComponent);
