@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { AuthGuard, NoAuthGuard } from '@msk/main/shell/core/auth';
 import { MainLayoutComponent } from '@msk/main/shell/ui/layout';
 import { initialMainDataResolver } from './shell.resolvers';
 
@@ -20,6 +21,8 @@ export const mainRoutes: Route[] = [
   // Auth routes for guests
   {
     path: '',
+    canActivate: [NoAuthGuard],
+    canActivateChild: [NoAuthGuard],
     component: MainLayoutComponent,
     data: {
       layoutType: 'empty',
@@ -35,6 +38,8 @@ export const mainRoutes: Route[] = [
   // Auth routes for authenticated users
   {
     path: '',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: MainLayoutComponent,
     data: {
       layoutType: 'empty',
@@ -50,6 +55,8 @@ export const mainRoutes: Route[] = [
   // Admin routes
   {
     path: '',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: MainLayoutComponent,
     resolve: {
       initial: initialMainDataResolver,

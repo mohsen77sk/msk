@@ -22,3 +22,8 @@ export const provideMskAppConfig = (value: AppConfig): ValueProvider => ({
   provide: MSK_APP_CONFIG,
   useValue: value,
 });
+
+export const provideTestMskAppConfig = (): ValueProvider => ({
+  provide: MSK_APP_CONFIG,
+  useValue: { production: false, apiEndpoint: '' },
+});

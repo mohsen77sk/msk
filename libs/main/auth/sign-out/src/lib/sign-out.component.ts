@@ -13,9 +13,9 @@ import { finalize, takeWhile, tap, timer } from 'rxjs';
   imports: [RouterLink, TranslocoDirective],
 })
 export class SignOutComponent implements OnInit {
-  destroyRef = inject(DestroyRef);
-  router = inject(Router);
-  authService = inject(MainAuthService);
+  private _router = inject(Router);
+  private _destroyRef = inject(DestroyRef);
+  private _authService = inject(MainAuthService);
 
   countdown = 5;
 
@@ -28,14 +28,14 @@ export class SignOutComponent implements OnInit {
    */
   ngOnInit(): void {
     // Sign out
-    this.authService.signOut();
+    this._authService.signOut();
 
     // Redirect after the countdown
     timer(1000, 1000)
       .pipe(
-        finalize(() => this.router.navigate(['sign-in'])),
+        finalize(() => this._router.navigate(['sign-in'])),
         takeWhile(() => this.countdown > 0),
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this._destroyRef),
         tap(() => this.countdown--)
       )
       .subscribe();

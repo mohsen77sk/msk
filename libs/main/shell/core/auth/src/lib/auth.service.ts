@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { MainUserService } from '@msk/main/shell/core/user';
+import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { Observable, of, switchMap, throwError } from 'rxjs';
 import { AuthUtils } from './auth.utils';
+import { LoginRequest, LoginResponse } from './auth.types';
 
 @Injectable({ providedIn: 'root' })
 export class MainAuthService {
   private _authenticated = false;
+  private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
   private _userService = inject(MainUserService);
 
@@ -34,22 +37,22 @@ export class MainAuthService {
    *
    * @param credentials
    */
-  signIn(credentials: { email: string; password: string }): Observable<any> {
+  signIn(credentials: LoginRequest): Observable<LoginResponse> {
     // Throw error, if the user is already logged in
     if (this._authenticated) {
       return throwError(() => 'User is already logged in.');
     }
 
-    return this._httpClient.post('api/auth/sign-in', credentials).pipe(
-      switchMap((response: any) => {
-        // Store the access token in the local storage
-        this.accessToken = response.accessToken;
+    return this._httpClient.post<LoginResponse>(`${this._appConfig.apiEndpoint}/auth/login`, credentials).pipe(
+      switchMap((response) => {
+        // If the user don't need two factor authentication...
+        if (!response.requiresTwoFactor) {
+          // Store the access token in the local storage
+          this.accessToken = response.accessToken;
 
-        // Set the authenticated flag to true
-        this._authenticated = true;
-
-        // Store the user on the user service
-        this._userService.user = response.user;
+          // Set the authenticated flag to true
+          this._authenticated = true;
+        }
 
         // Return a new observable with the response
         return of(response);
@@ -61,14 +64,18 @@ export class MainAuthService {
    * Sign out
    */
   signOut(): Observable<boolean> {
-    // Remove the access token from the local storage
-    localStorage.removeItem('accessToken');
+    return this._httpClient.post<void>(`${this._appConfig.apiEndpoint}/auth/logout`, null).pipe(
+      switchMap(() => {
+        // Remove the access token from the local storage
+        localStorage.removeItem('accessToken');
 
-    // Set the authenticated flag to false
-    this._authenticated = false;
+        // Set the authenticated flag to false
+        this._authenticated = false;
 
-    // Return the observable
-    return of(true);
+        // Return the observable
+        return of(true);
+      })
+    );
   }
 
   /**
