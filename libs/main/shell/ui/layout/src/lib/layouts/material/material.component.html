@@ -2,14 +2,20 @@
 <div class="bg-surface-container flex w-full min-w-0 flex-auto flex-col">
   <!-- Header -->
   <div class="z-49 flex-0 relative flex h-16 w-full items-center justify-between px-4 md:px-6 print:hidden">
-    <!-- Navigation toggle button -->
     <div class="flex-0 relative flex items-center gap-4">
-      <button mat-icon-button (click)="toggleNavigation('mainNavigation')">
-        <mat-icon svgIcon="heroicons_outline:bars-3"></mat-icon>
-      </button>
+      <!-- Navigation toggle button -->
+      <div class="flex items-center gap-4 md:w-[280px]">
+        <button mat-icon-button (click)="toggleNavigation('mainNavigation')">
+          <mat-icon svgIcon="heroicons_outline:bars-3"></mat-icon>
+        </button>
+        <div class="hidden items-center md:flex">
+          <img class="me-2 w-6" src="assets/images/logo/logo.svg" />
+          <label class="mt-1 text-2xl font-bold">MSK</label>
+        </div>
+      </div>
+      <!-- Page name -->
       <div class="flex items-center">
-        <img class="me-2 w-6" src="assets/images/logo/logo.svg" />
-        <label class="mt-1 text-2xl font-bold">MSK</label>
+        <span class="text-2xl font-medium" mskPageName></span>
       </div>
     </div>
     <!-- Components -->

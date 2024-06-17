@@ -5,6 +5,7 @@ import { NgClass } from '@angular/common';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MskPageNameDirective } from '@msk/shared/directives/page-name';
 import { MskFullscreenComponent } from '@msk/shared/ui/fullscreen';
 import { MskNavigationService, MskVerticalNavigationComponent } from '@msk/shared/ui/navigation';
 import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
@@ -23,6 +24,7 @@ import { MainLanguagesComponent } from '../../common/languages/languages.compone
     RouterOutlet,
     MatIconModule,
     MatButtonModule,
+    MskPageNameDirective,
     MskFullscreenComponent,
     MskVerticalNavigationComponent,
     MainUserComponent,
