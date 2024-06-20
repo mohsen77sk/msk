@@ -1,0 +1,18 @@
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Import third party library styles here.
+/* ----------------------------------------------------------------------------------------------------- */
+.main-paginator.mat-mdc-paginator {
+  .mat-mdc-paginator-container {
+    justify-content: space-between !important;
+
+    .mat-mdc-paginator-page-size-label {
+      display: none;
+    }
+
+    @screen sm {
+      .mat-mdc-paginator-page-size-label {
+        display: unset;
+      }
+    }
+  }
+}

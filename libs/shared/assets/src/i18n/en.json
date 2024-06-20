@@ -1,4 +1,6 @@
 {
+  "active": "Active",
+  "inactive": "Inactive ",
   "layout": {
     "settings": "Manage your account settings",
     "sign-out": "Sign out",
