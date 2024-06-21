@@ -17,7 +17,7 @@ export const routes: Routes = [
       }),
     ],
     resolve: {
-      persons: () => inject(MainAuthService).signOut(),
+      signOut: () => inject(MainAuthService).signOut(),
     },
   },
 ];
