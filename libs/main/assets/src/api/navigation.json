@@ -37,38 +37,51 @@
     ]
   },
   {
-    "id": "pages",
-    "title": "Pages",
-    "tooltip": "Pages",
+    "id": "docs",
+    "title": "Documentation",
+    "tooltip": "Documentation",
     "type": "group",
     "icon": "layers",
     "children": [
       {
-        "id": "pages.error",
-        "title": "Error",
+        "id": "docs.ui",
+        "title": "Ui",
         "type": "collapsable",
-        "icon": "error",
+        "icon": "responsive_layout",
         "children": [
           {
-            "id": "pages.error.not-found",
-            "title": "Not found",
+            "id": "docs.ui.alert",
+            "title": "Alert",
             "type": "basic",
-            "link": "/pages/error/not-found"
-          },
-          {
-            "id": "pages.error.internal-server-error",
-            "title": "Internal server error",
-            "type": "basic",
-            "link": "/pages/error/internal-server-error"
+            "link": "docs/ui/alert"
           }
         ]
       },
       {
-        "id": "pages.maintenance",
-        "title": "Maintenance",
-        "type": "basic",
-        "icon": "warning",
-        "link": "/pages/maintenance"
+        "id": "docs.pages",
+        "title": "Pages",
+        "type": "collapsable",
+        "icon": "layers",
+        "children": [
+          {
+            "id": "docs.pages.not-found",
+            "title": "Not found",
+            "type": "basic",
+            "link": "docs/pages/not-found"
+          },
+          {
+            "id": "docs.pages.internal-server-error",
+            "title": "Internal server error",
+            "type": "basic",
+            "link": "docs/pages/internal-server-error"
+          },
+          {
+            "id": "docs.pages.maintenance",
+            "title": "Maintenance",
+            "type": "basic",
+            "link": "docs/pages/maintenance"
+          }
+        ]
       }
     ]
   }

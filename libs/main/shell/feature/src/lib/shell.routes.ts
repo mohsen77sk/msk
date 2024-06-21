@@ -88,24 +88,29 @@ export const mainRoutes: Route[] = [
           },
         ],
       },
-      // Pages
+      // Documentation
       {
-        path: 'pages',
+        path: 'docs',
         children: [
-          // Error
+          // Ui
           {
-            path: 'error/not-found',
+            path: 'ui/alert',
+            pathMatch: 'full',
+            loadComponent: () => import('@msk/shared/ui/alert').then((r) => r.MskDocsAlertComponent),
+          },
+          // Pages
+          {
+            path: 'pages/not-found',
             pathMatch: 'full',
             loadChildren: () => import('@msk/main/errors/not-found').then((r) => r.routes),
           },
           {
-            path: 'error/internal-server-error',
+            path: 'pages/internal-server-error',
             pathMatch: 'full',
             loadChildren: () => import('@msk/main/errors/internal-server-error').then((r) => r.routes),
           },
-          // Maintenance
           {
-            path: 'maintenance',
+            path: 'pages/maintenance',
             pathMatch: 'full',
             loadChildren: () => import('@msk/main/errors/maintenance').then((r) => r.routes),
           },
