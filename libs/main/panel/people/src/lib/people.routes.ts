@@ -1,4 +1,6 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
+import { PeopleService } from './people.service';
 import { PeopleComponent } from './people.component';
 import { PeopleListComponent } from './list/list.component';
 
@@ -19,7 +21,10 @@ export const routes: Routes = [
       {
         path: '',
         component: PeopleListComponent,
-      }
-    ]
+        resolve: {
+          persons: () => inject(PeopleService).getPersons(),
+        },
+      },
+    ],
   },
 ];

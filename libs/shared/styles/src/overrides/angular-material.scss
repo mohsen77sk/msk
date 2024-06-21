@@ -1,16 +1,24 @@
 /* ----------------------------------------------------------------------------------------------------- */
 /*  @ Import third party library styles here.
 /* ----------------------------------------------------------------------------------------------------- */
-.main-paginator.mat-mdc-paginator {
+.msk-main-paginator.mat-mdc-paginator {
   .mat-mdc-paginator-container {
     justify-content: space-between !important;
 
-    .mat-mdc-paginator-page-size-label {
+    @screen sm {
+      padding: 0 16px !important;
+    }
+
+    .mat-mdc-paginator-page-size-label,
+    .mat-mdc-paginator-navigation-first,
+    .mat-mdc-paginator-navigation-last {
       display: none;
     }
 
     @screen sm {
-      .mat-mdc-paginator-page-size-label {
+      .mat-mdc-paginator-page-size-label,
+      .mat-mdc-paginator-navigation-first,
+      .mat-mdc-paginator-navigation-last {
         display: unset;
       }
     }

@@ -1,7 +1,63 @@
 <div class="absolute inset-0 flex min-w-0 flex-col overflow-y-auto sm:overflow-hidden">
   <!-- Header -->
-  <div class="flex flex-row items-center justify-between p-4 md:px-8"></div>
+  <div class="flex items-center justify-between p-4 md:px-8">
+    <form class="flex items-center justify-end space-x-1 rtl:space-x-reverse" [formGroup]="filterForm"></form>
+  </div>
 
   <!-- Main -->
-  <div class="flex flex-auto sm:overflow-hidden"></div>
+  <div class="flex flex-auto sm:overflow-hidden">
+    <!-- List -->
+    <div class="sm:mb-18 flex flex-auto flex-col overflow-hidden sm:overflow-y-auto">
+      <div class="text-on-surface-variant grid transition">
+        <!-- Header -->
+        <div
+          class="people-grid text-md text-on-surface sticky top-0 z-10 grid gap-4 bg-inherit p-4 font-semibold md:px-8"
+          matSort
+          matSortDisableClear
+        >
+          <ng-container *transloco="let t; read: 'people.column'">
+            <a mat-sort-header="code">{{ t('code') }}</a>
+            <a mat-sort-header="firstName">{{ t('name') }}</a>
+            <a class="hidden sm:block" mat-sort-header="nationalCode">{{ t('nationalCode') }}</a>
+            <a mat-sort-header="isActive">{{ t('status') }}</a>
+          </ng-container>
+        </div>
+        <!-- Rows -->
+        @for (person of persons$ | async; track person.id) {
+        <div class="people-grid grid h-14 items-center gap-4 border-b px-4 py-2 hover:cursor-pointer md:px-8" matRipple>
+          <!-- Code -->
+          <div class="truncate">
+            {{ person.code }}
+          </div>
+          <!-- Name -->
+          <div class="truncate">
+            {{ person.firstName + ' ' + person.lastName }}
+          </div>
+          <!-- National code -->
+          <div class="hidden truncate sm:block">
+            {{ person.nationalCode }}
+          </div>
+          <!-- Status -->
+          <div class="flex items-center justify-center">
+            <main-person-status [value]="person.isActive"></main-person-status>
+          </div>
+        </div>
+        } @empty {
+        <div class="p-8 text-center text-xl font-semibold tracking-tight sm:p-16" *transloco="let t">
+          {{ t('people.empty-list') }}
+        </div>
+        }
+      </div>
+
+      <mat-paginator
+        class="msk-main-paginator z-10 border-b sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
+        [length]="pagination.total"
+        [pageIndex]="pagination.pageIndex"
+        [pageSize]="pagination.pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="true"
+        [disabled]="isLoading"
+      ></mat-paginator>
+    </div>
+  </div>
 </div>

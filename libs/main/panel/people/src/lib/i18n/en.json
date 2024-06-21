@@ -1,1 +1,10 @@
-{}
+{
+  "column": {
+    "code": "Code",
+    "name": "Name",
+    "nationalCode": "National Id",
+    "status": "Status"
+  },
+  "search": "Search people",
+  "empty-list": "There are no users!"
+}
