@@ -1,8 +1,10 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { SignOutComponent } from './sign-out.component';
 
 import { scopeLoader } from '@msk/shared/utils/transloco';
 import { provideTranslocoScope } from '@jsverse/transloco';
+import { MainAuthService } from '@msk/main/shell/core/auth';
 
 export const routes: Routes = [
   {
@@ -14,5 +16,8 @@ export const routes: Routes = [
         loader: scopeLoader((lang: string, root: string) => import(`./${root}/${lang}.json`)),
       }),
     ],
+    resolve: {
+      persons: () => inject(MainAuthService).signOut(),
+    },
   },
 ];

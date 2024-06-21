@@ -18,6 +18,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MainAuthService } from '@msk/main/shell/core/auth';
+import { MskErrorResponse } from '@msk/shared/data-access';
+import { MskAlertComponent, MskAlertType } from '@msk/shared/ui/alert';
 import { mskAnimations } from '@msk/shared/animations';
 import { catchError, map } from 'rxjs';
 
@@ -38,6 +40,7 @@ import { catchError, map } from 'rxjs';
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
+    MskAlertComponent,
   ],
 })
 export class SignInComponent implements OnInit {
@@ -50,6 +53,11 @@ export class SignInComponent implements OnInit {
   private _authService = inject(MainAuthService);
 
   @ViewChild('signInNgForm') signInNgForm!: NgForm;
+
+  alert: { type: MskAlertType; message: string } = {
+    type: 'error',
+    message: '',
+  };
 
   signInForm!: FormGroup;
   showAlert = false;
@@ -111,12 +119,18 @@ export class SignInComponent implements OnInit {
             this._router.navigate(['/two-step-verification'], { queryParams: { redirectURL } });
           }
         }),
-        catchError((response) => {
+        catchError((response: { error: MskErrorResponse }) => {
           // Re-enable the form
           this.signInForm.enable();
 
           // Reset the form
           this.signInNgForm.resetForm();
+
+          // Set the alert
+          this.alert = {
+            type: 'error',
+            message: response.error.message,
+          };
 
           // Show the alert
           this.showAlert = true;

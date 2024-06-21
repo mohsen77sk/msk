@@ -2,7 +2,6 @@ import { Component, DestroyRef, OnInit, ViewEncapsulation, inject } from '@angul
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { MainAuthService } from '@msk/main/shell/core/auth';
 import { finalize, takeWhile, tap, timer } from 'rxjs';
 
 @Component({
@@ -15,7 +14,6 @@ import { finalize, takeWhile, tap, timer } from 'rxjs';
 export class SignOutComponent implements OnInit {
   private _router = inject(Router);
   private _destroyRef = inject(DestroyRef);
-  private _authService = inject(MainAuthService);
 
   countdown = 5;
 
@@ -27,9 +25,6 @@ export class SignOutComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    // Sign out
-    this._authService.signOut();
-
     // Redirect after the countdown
     timer(1000, 1000)
       .pipe(

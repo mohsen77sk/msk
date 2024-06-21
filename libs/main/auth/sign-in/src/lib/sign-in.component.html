@@ -19,6 +19,19 @@
         </a>
       </div>
 
+      <!-- Alert -->
+      @if (showAlert) {
+      <msk-alert
+        class="mt-8"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert.type"
+        [@shake]="alert.type === 'error'"
+      >
+        {{ alert.message }}
+      </msk-alert>
+      }
+
       <!-- Sign in form -->
       <form class="mt-6" [formGroup]="signInForm" #signInNgForm="ngForm">
         <!-- Username field -->
