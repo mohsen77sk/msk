@@ -1,5 +1,6 @@
 import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MskHighlightComponent } from '@msk/shared/ui/highlight';
 import { MskAlertComponent } from '../alert.component';
 import { MskAlertService } from '../alert.service';
 
@@ -9,7 +10,7 @@ import { MskAlertService } from '../alert.service';
   templateUrl: './docs-alert.component.html',
   styleUrl: './docs-alert.component.scss',
   encapsulation: ViewEncapsulation.None,
-  imports: [MskAlertComponent, MatTabsModule],
+  imports: [MskAlertComponent, MskHighlightComponent, MatTabsModule],
 })
 export class MskDocsAlertComponent {
   private _mskAlertService = inject(MskAlertService);
