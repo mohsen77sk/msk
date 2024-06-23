@@ -43,6 +43,7 @@
       "@msk/shared/services/utils": ["libs/shared/services/utils/src/index.ts"],
       "@msk/shared/ui/alert": ["libs/shared/ui/alert/src/index.ts"],
       "@msk/shared/ui/fullscreen": ["libs/shared/ui/fullscreen/src/index.ts"],
+      "@msk/shared/ui/highlight": ["libs/shared/ui/highlight/src/index.ts"],
       "@msk/shared/ui/loading-bar": ["libs/shared/ui/loading-bar/src/index.ts"],
       "@msk/shared/ui/navigation": ["libs/shared/ui/navigation/src/index.ts"],
       "@msk/shared/utils/app-config": ["libs/shared/utils/app-config/src/index.ts"],
