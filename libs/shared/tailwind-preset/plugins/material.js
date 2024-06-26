@@ -161,43 +161,4 @@ module.exports = plugin(({ addComponents }) => {
       color: 'var(--sys-on-error-container) !important',
     },
   });
-
-  addComponents({
-    '.rounded-extra-small': {
-      'border-radius': 'var(--sys-corner-extra-small) !important',
-    },
-    '.rounded-small': {
-      'border-radius': 'var(--sys-corner-small) !important',
-    },
-    '.rounded-medium': {
-      'border-radius': 'var(--sys-corner-medium) !important',
-    },
-    '.rounded-large': {
-      'border-radius': 'var(--sys-corner-large) !important',
-    },
-    '.rounded-extra-large': {
-      'border-radius': 'var(--sys-corner-extra-large) !important',
-    },
-  });
-
-  addComponents({
-    '.shadow-level-0': {
-      'box-shadow': 'var(--sys-elevation-level-0) !important',
-    },
-    '.shadow-level-1': {
-      'box-shadow': 'var(--sys-elevation-level-1) !important',
-    },
-    '.shadow-level-2': {
-      'box-shadow': 'var(--sys-elevation-level-2) !important',
-    },
-    '.shadow-level-3': {
-      'box-shadow': 'var(--sys-elevation-level-3) !important',
-    },
-    '.shadow-level-4': {
-      'box-shadow': 'var(--sys-elevation-level-4) !important',
-    },
-    '.shadow-level-5': {
-      'box-shadow': 'var(--sys-elevation-level-5) !important',
-    },
-  });
 });

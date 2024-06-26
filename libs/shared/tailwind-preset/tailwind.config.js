@@ -30,6 +30,23 @@ const config = {
       lg: '1200px',
       xl: '1600px',
     },
+    borderRadius: {
+      'none': '0',
+      'extra-small': 'var(--sys-corner-extra-small)',
+      'small': 'var(--sys-corner-small)',
+      'medium': 'var(--sys-corner-medium)',
+      'large': 'var(--sys-corner-large)',
+      'extra-large': 'var(--sys-corner-extra-large)',
+      'full': '9999px',
+    },
+    boxShadow: {
+      'level-0': 'var(--sys-elevation-level-0)',
+      'level-1': 'var(--sys-elevation-level-1)',
+      'level-2': 'var(--sys-elevation-level-2)',
+      'level-3': 'var(--sys-elevation-level-3)',
+      'level-4': 'var(--sys-elevation-level-4)',
+      'level-5': 'var(--sys-elevation-level-5)',
+    },
     extends: {
       animation: {
         'spin-slow': 'spin 3s linear infinite',

@@ -12,7 +12,7 @@
 <mat-menu [xPosition]="'before'" #userActions="matMenu" class="main-user-panel-profile">
   <div
     class="sticky z-10 flex h-14 items-center justify-between px-2 transition"
-    [ngClass]="{ 'bg-surface-container-high shadow': container.scrollTop > 24 }"
+    [ngClass]="{ 'bg-surface-container-high shadow-level-1': container.scrollTop > 24 }"
   >
     <div class="w-10"></div>
     <span>{{ user.username }}</span>
