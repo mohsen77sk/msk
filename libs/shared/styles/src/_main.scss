@@ -1,8 +1,8 @@
 /* Components */
 @use 'components/icon';
 @use 'components/input';
+@use 'components/main-layout';
 
 /* Overrides */
-@use 'overrides/angular-material';
 @use 'overrides/highlight-js';
 @use 'overrides/perfect-scrollbar';

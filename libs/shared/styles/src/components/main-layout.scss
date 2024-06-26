@@ -1,0 +1,48 @@
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Main grid list
+/* ----------------------------------------------------------------------------------------------------- */
+.msk-main-list {
+  @apply text-on-surface-variant grid transition;
+
+  .msk-main-list-header {
+    @apply text-md text-on-surface sticky top-0 z-10 grid gap-4 border-b bg-inherit p-4 font-semibold md:px-8;
+  }
+
+  .msk-main-list-row {
+    @apply grid h-14 items-center gap-4 border-b px-4 py-2 md:px-8;
+
+    &:hover {
+      @apply cursor-pointer;
+      background: color-mix(in srgb, var(--sys-on-surface) 8%, transparent);
+    }
+  }
+}
+
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Main paginator
+/* ----------------------------------------------------------------------------------------------------- */
+.msk-main-paginator.mat-mdc-paginator {
+  @apply z-10 border-b sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t;
+
+  .mat-mdc-paginator-container {
+    justify-content: space-between !important;
+
+    @screen sm {
+      padding: 0 16px !important;
+    }
+
+    .mat-mdc-paginator-page-size-label,
+    .mat-mdc-paginator-navigation-first,
+    .mat-mdc-paginator-navigation-last {
+      display: none;
+    }
+
+    @screen sm {
+      .mat-mdc-paginator-page-size-label,
+      .mat-mdc-paginator-navigation-first,
+      .mat-mdc-paginator-navigation-last {
+        display: unset;
+      }
+    }
+  }
+}

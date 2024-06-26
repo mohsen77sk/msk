@@ -8,13 +8,9 @@
   <div class="flex flex-auto sm:overflow-hidden">
     <!-- List -->
     <div class="sm:mb-18 flex flex-auto flex-col overflow-hidden sm:overflow-y-auto">
-      <div class="text-on-surface-variant grid transition">
+      <div class="msk-main-list people-main-list">
         <!-- Header -->
-        <div
-          class="people-grid text-md text-on-surface sticky top-0 z-10 grid gap-4 bg-inherit p-4 font-semibold md:px-8"
-          matSort
-          matSortDisableClear
-        >
+        <div class="msk-main-list-header" matSort matSortDisableClear>
           <ng-container *transloco="let t; read: 'people.column'">
             <a mat-sort-header="code">{{ t('code') }}</a>
             <a mat-sort-header="firstName">{{ t('name') }}</a>
@@ -24,7 +20,7 @@
         </div>
         <!-- Rows -->
         @for (person of persons$ | async; track person.id) {
-        <div class="people-grid grid h-14 items-center gap-4 border-b px-4 py-2 hover:cursor-pointer md:px-8" matRipple>
+        <div class="msk-main-list-row" matRipple>
           <!-- Code -->
           <div class="truncate">
             {{ person.code }}
@@ -50,7 +46,7 @@
       </div>
 
       <mat-paginator
-        class="msk-main-paginator z-10 border-b sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
+        class="msk-main-paginator"
         [length]="pagination.total"
         [pageIndex]="pagination.pageIndex"
         [pageSize]="pagination.pageSize"
