@@ -35,7 +35,10 @@ import { filter } from 'rxjs';
   imports: [MatIconModule, MatButtonModule],
 })
 export class MskAlertComponent implements OnChanges, OnInit {
-  destroyRef = inject(DestroyRef);
+  private _destroyRef = inject(DestroyRef);
+  private _mskAlertService = inject(MskAlertService);
+  private _mskUtilsService = inject(MskUtilsService);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
 
   @Input() appearance: MskAlertAppearance = 'soft';
   @Input() dismissed = false;
@@ -44,15 +47,6 @@ export class MskAlertComponent implements OnChanges, OnInit {
   @Input() showIcon = true;
   @Input() type: MskAlertType = 'basic';
   @Output() readonly dismissedChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  /**
-   * Constructor
-   */
-  constructor(
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _mskAlertService: MskAlertService,
-    private _mskUtilsService: MskUtilsService
-  ) {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -111,7 +105,7 @@ export class MskAlertComponent implements OnChanges, OnInit {
     this._mskAlertService.onDismiss
       .pipe(
         filter((name) => this.name === name),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this._destroyRef)
       )
       .subscribe(() => {
         // Dismiss the alert
@@ -122,7 +116,7 @@ export class MskAlertComponent implements OnChanges, OnInit {
     this._mskAlertService.onShow
       .pipe(
         filter((name) => this.name === name),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this._destroyRef)
       )
       .subscribe(() => {
         // Show the alert
