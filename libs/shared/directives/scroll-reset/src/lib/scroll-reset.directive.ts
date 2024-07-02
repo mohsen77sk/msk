@@ -9,12 +9,9 @@ import { filter } from 'rxjs';
   exportAs: 'mskScrollReset',
 })
 export class MskScrollResetDirective implements OnInit {
-  destroyRef = inject(DestroyRef);
-
-  /**
-   * Constructor
-   */
-  constructor(private _elementRef: ElementRef, private _router: Router) {}
+  private _destroyRef = inject(DestroyRef);
+  private _elementRef = inject(ElementRef);
+  private _router = inject(Router);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -28,7 +25,7 @@ export class MskScrollResetDirective implements OnInit {
     this._router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this._destroyRef)
       )
       .subscribe(() => {
         // Reset the element's scroll position to the top
