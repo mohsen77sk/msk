@@ -41,7 +41,10 @@ import { MskNavigationItem } from '../../../navigation.types';
   ],
 })
 export class MskVerticalNavigationAsideItemComponent implements OnChanges, OnInit {
-  destroyRef = inject(DestroyRef);
+  private _destroyRef = inject(DestroyRef);
+  private _router = inject(Router);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+  private _mskNavigationService = inject(MskNavigationService);
 
   @Input() activeItemId!: string;
   @Input() autoCollapse!: boolean;
@@ -51,15 +54,6 @@ export class MskVerticalNavigationAsideItemComponent implements OnChanges, OnIni
 
   active = false;
   private _mskVerticalNavigationComponent!: MskVerticalNavigationComponent;
-
-  /**
-   * Constructor
-   */
-  constructor(
-    private _router: Router,
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _mskNavigationService: MskNavigationService
-  ) {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -89,7 +83,7 @@ export class MskVerticalNavigationAsideItemComponent implements OnChanges, OnIni
     this._router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this._destroyRef)
       )
       .subscribe((event: NavigationEnd) => {
         // Mark if active
@@ -100,7 +94,7 @@ export class MskVerticalNavigationAsideItemComponent implements OnChanges, OnIni
     this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name);
 
     // Subscribe to onRefreshed on the navigation component
-    this._mskVerticalNavigationComponent.onRefreshed.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+    this._mskVerticalNavigationComponent.onRefreshed.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
       // Mark for check
       this._changeDetectorRef.markForCheck();
     });

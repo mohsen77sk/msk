@@ -63,7 +63,16 @@ import {
   ],
 })
 export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
-  destroyRef = inject(DestroyRef);
+  private _destroyRef = inject(DestroyRef);
+  private _animationBuilder = inject(AnimationBuilder);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+  private _elementRef = inject(ElementRef);
+  private _renderer2 = inject(Renderer2);
+  private _router = inject(Router);
+  private _dir = inject(Directionality);
+  private _scrollStrategyOptions = inject(ScrollStrategyOptions);
+  private _mskNavigationService = inject(MskNavigationService);
+  private _mskUtilsService = inject(MskUtilsService);
 
   @Input() name: string = this._mskUtilsService.randomId();
   @Input() inner = false;
@@ -103,17 +112,7 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
   /**
    * Constructor
    */
-  constructor(
-    private _animationBuilder: AnimationBuilder,
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _elementRef: ElementRef,
-    private _renderer2: Renderer2,
-    private _router: Router,
-    private _dir: Directionality,
-    private _scrollStrategyOptions: ScrollStrategyOptions,
-    private _mskNavigationService: MskNavigationService,
-    private _mskUtilsService: MskUtilsService
-  ) {
+  constructor() {
     this._handleAsideOverlayClick = (): void => {
       this.closeAside();
     };
@@ -172,7 +171,7 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
 
     // Update the scrollbars on collapsable items' collapse/expand
     this._mskScrollbarDirectivesSubscription = merge(this.onCollapsableItemCollapsed, this.onCollapsableItemExpanded)
-      .pipe(takeUntilDestroyed(this.destroyRef), delay(250))
+      .pipe(takeUntilDestroyed(this._destroyRef), delay(250))
       .subscribe(() => {
         // Loop through the scrollbars and update them
         mskScrollbarDirectives.forEach((mskScrollbarDirective) => {
@@ -323,7 +322,7 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
     this._router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this._destroyRef)
       )
       .subscribe(() => {
         // If the mode is 'over' and the navigation is opened...

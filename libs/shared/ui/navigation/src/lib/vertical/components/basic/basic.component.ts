@@ -27,28 +27,20 @@ import { MskNavigationItem } from '../../../navigation.types';
   imports: [NgClass, NgTemplateOutlet, RouterLink, RouterLinkActive, MatTooltipModule, MatIconModule],
 })
 export class MskVerticalNavigationBasicItemComponent implements OnInit {
-  destroyRef = inject(DestroyRef);
+  private _destroyRef = inject(DestroyRef);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+  private _mskNavigationService = inject(MskNavigationService);
+  private _mskUtilsService = inject(MskUtilsService);
 
   @Input() item!: MskNavigationItem;
   @Input() name!: string;
 
-  isActiveMatchOptions!: IsActiveMatchOptions;
+  // Set the equivalent of {exact: false} as default for active match options.
+  // We are not assigning the item.isActiveMatchOptions directly to the
+  // [routerLinkActiveOptions] because if it's "undefined" initially, the router
+  // will throw an error and stop working.
+  isActiveMatchOptions: IsActiveMatchOptions = this._mskUtilsService.subsetMatchOptions;
   private _mskVerticalNavigationComponent!: MskVerticalNavigationComponent;
-
-  /**
-   * Constructor
-   */
-  constructor(
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _mskNavigationService: MskNavigationService,
-    private _mskUtilsService: MskUtilsService
-  ) {
-    // Set the equivalent of {exact: false} as default for active match options.
-    // We are not assigning the item.isActiveMatchOptions directly to the
-    // [routerLinkActiveOptions] because if it's "undefined" initially, the router
-    // will throw an error and stop working.
-    this.isActiveMatchOptions = this._mskUtilsService.subsetMatchOptions;
-  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -73,7 +65,7 @@ export class MskVerticalNavigationBasicItemComponent implements OnInit {
     this._changeDetectorRef.markForCheck();
 
     // Subscribe to onRefreshed on the navigation component
-    this._mskVerticalNavigationComponent.onRefreshed.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+    this._mskVerticalNavigationComponent.onRefreshed.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
       // Mark for check
       this._changeDetectorRef.markForCheck();
     });

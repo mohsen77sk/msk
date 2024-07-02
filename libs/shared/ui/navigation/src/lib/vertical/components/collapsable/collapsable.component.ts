@@ -42,7 +42,10 @@ import { MskNavigationItem } from '../../../navigation.types';
   ],
 })
 export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
-  destroyRef = inject(DestroyRef);
+  private _destroyRef = inject(DestroyRef);
+  private _router = inject(Router);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+  private _mskNavigationService = inject(MskNavigationService);
 
   @Input() autoCollapse!: boolean;
   @Input() item!: MskNavigationItem;
@@ -51,15 +54,6 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
   isCollapsed = true;
   isExpanded = false;
   private _mskVerticalNavigationComponent!: MskVerticalNavigationComponent;
-
-  /**
-   * Constructor
-   */
-  constructor(
-    private _router: Router,
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _mskNavigationService: MskNavigationService
-  ) {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -100,7 +94,7 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
 
     // Listen for the onCollapsableItemCollapsed from the service
     this._mskVerticalNavigationComponent.onCollapsableItemCollapsed
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe((collapsedItem) => {
         // Check if the collapsed item is null
         if (collapsedItem === null) {
@@ -116,7 +110,7 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
     // Listen for the onCollapsableItemExpanded from the service if the autoCollapse is on
     if (this.autoCollapse) {
       this._mskVerticalNavigationComponent.onCollapsableItemExpanded
-        .pipe(takeUntilDestroyed(this.destroyRef))
+        .pipe(takeUntilDestroyed(this._destroyRef))
         .subscribe((expandedItem) => {
           // Check if the expanded item is null
           if (expandedItem === null) {
@@ -147,7 +141,7 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
     this._router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this._destroyRef)
       )
       .subscribe((event: NavigationEnd) => {
         // If the item has a children that has a matching url with the current url, expand...
@@ -164,7 +158,7 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
       });
 
     // Subscribe to onRefreshed on the navigation component
-    this._mskVerticalNavigationComponent.onRefreshed.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+    this._mskVerticalNavigationComponent.onRefreshed.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
       // Mark for check
       this._changeDetectorRef.markForCheck();
     });
