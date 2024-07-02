@@ -26,7 +26,9 @@ import { ScrollbarGeometry, ScrollbarPosition } from './scrollbar.types';
   exportAs: 'mskScrollbar',
 })
 export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
-  destroyRef = inject(DestroyRef);
+  private _destroyRef = inject(DestroyRef);
+  private _elementRef = inject(ElementRef);
+  private _platform = inject(Platform);
 
   @Input() mskScrollbar = true;
   @Input() mskScrollbarOptions!: PerfectScrollbar.Options;
@@ -34,11 +36,6 @@ export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
   private _animation: number | undefined;
   private _options: PerfectScrollbar.Options | undefined;
   private _ps: PerfectScrollbar | undefined;
-
-  /**
-   * Constructor
-   */
-  constructor(private _elementRef: ElementRef, private _platform: Platform) {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -110,7 +107,7 @@ export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
   ngOnInit(): void {
     // Subscribe to window resize event
     fromEvent(window, 'resize')
-      .pipe(takeUntilDestroyed(this.destroyRef), debounceTime(150))
+      .pipe(takeUntilDestroyed(this._destroyRef), debounceTime(150))
       .subscribe(() => {
         // Update the PerfectScrollbar
         this.update();
