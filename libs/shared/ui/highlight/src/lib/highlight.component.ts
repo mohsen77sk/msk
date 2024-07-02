@@ -13,6 +13,7 @@ import {
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation,
+  inject,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -29,22 +30,17 @@ import { MskHighlightService } from './highlight.service';
   imports: [NgClass],
 })
 export class MskHighlightComponent implements OnChanges, AfterViewInit {
+  private _elementRef = inject(ElementRef);
+  private _domSanitizer = inject(DomSanitizer);
+  private _viewContainerRef = inject(ViewContainerRef);
+  private _mskHighlightService = inject(MskHighlightService);
+
   @Input() code!: string;
   @Input() lang!: string;
-  @ViewChild(TemplateRef) templateRef!: TemplateRef<any>;
+  @ViewChild(TemplateRef) templateRef!: TemplateRef<unknown>;
 
   highlightedCode!: string | null;
-  private _viewRef!: EmbeddedViewRef<any> | null;
-
-  /**
-   * Constructor
-   */
-  constructor(
-    private _elementRef: ElementRef,
-    private _domSanitizer: DomSanitizer,
-    private _viewContainerRef: ViewContainerRef,
-    private _mskHighlightService: MskHighlightService
-  ) {}
+  private _viewRef!: EmbeddedViewRef<unknown> | null;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
