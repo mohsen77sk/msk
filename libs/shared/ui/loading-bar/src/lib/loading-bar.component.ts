@@ -24,17 +24,13 @@ import { map } from 'rxjs';
   imports: [MatProgressBarModule],
 })
 export class MskLoadingBarComponent implements OnChanges, OnInit {
-  destroyRef = inject(DestroyRef);
+  private _destroyRef = inject(DestroyRef);
+  private _mskLoadingBarService = inject(MskLoadingBarService);
 
   @Input() autoMode = true;
   mode!: ProgressBarMode;
   progress = 0;
   show = false;
-
-  /**
-   * Constructor
-   */
-  constructor(private _mskLoadingBarService: MskLoadingBarService) {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -60,21 +56,21 @@ export class MskLoadingBarComponent implements OnChanges, OnInit {
     // Subscribe to the service
     this._mskLoadingBarService.mode$
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this._destroyRef),
         map((value) => (this.mode = value))
       )
       .subscribe();
 
     this._mskLoadingBarService.progress$
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this._destroyRef),
         map((value) => (this.progress = value))
       )
       .subscribe();
 
     this._mskLoadingBarService.show$
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this._destroyRef),
         map((value) => (this.show = value))
       )
       .subscribe();
