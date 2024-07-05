@@ -1,20 +1,35 @@
-import { AfterViewInit, DestroyRef, Directive, ElementRef, inject } from '@angular/core';
+import { NgClass } from '@angular/common';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  inject,
+  ViewEncapsulation,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
 import { MskNavigationService, MskVerticalNavigationComponent } from '@msk/shared/ui/navigation';
 import { filter } from 'rxjs';
 
-@Directive({
+@Component({
   standalone: true,
-  selector: '[mskPageName]',
-  exportAs: 'mskPageName',
+  selector: 'main-page-title',
+  templateUrl: './page-title.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass, MatIcon],
 })
-export class MskPageNameDirective implements AfterViewInit {
-  private _router = inject(Router);
+export class MainPageTitleComponent implements AfterViewInit {
   private _destroyRef = inject(DestroyRef);
-  private _elementRef = inject(ElementRef);
+  private _router = inject(Router);
   private _activatedRoute = inject(ActivatedRoute);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
   private _mskNavigationService = inject(MskNavigationService);
+
+  currentTitle!: string;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -25,7 +40,7 @@ export class MskPageNameDirective implements AfterViewInit {
    */
   ngAfterViewInit(): void {
     // Init the navigation
-    this.setCurrentPage();
+    this.getCurrentTitle();
 
     // Subscribe to route change
     this._router.events
@@ -33,13 +48,13 @@ export class MskPageNameDirective implements AfterViewInit {
         filter((event) => event instanceof NavigationEnd),
         takeUntilDestroyed(this._destroyRef)
       )
-      .subscribe(() => this.setCurrentPage());
+      .subscribe(() => this.getCurrentTitle());
   }
 
   /**
-   * Set current page name
+   * Get current page title
    */
-  setCurrentPage() {
+  getCurrentTitle() {
     // Segment on path url
     const segment = this._router.url.split('/');
     // Remove root path segment
@@ -50,7 +65,9 @@ export class MskPageNameDirective implements AfterViewInit {
     const idPath = segment.join('.');
     // Get the navigation
     const navigation = this._mskNavigationService.getComponent<MskVerticalNavigationComponent>('mainNavigation');
-    // Set title of current navigation in element
-    this._elementRef.nativeElement.innerText = this._mskNavigationService.getItem(idPath, navigation.navigation)?.title;
+    // Set title of current navigation
+    this.currentTitle = this._mskNavigationService.getItem(idPath, navigation.navigation)?.title ?? '';
+    // Mark for check
+    this._changeDetectorRef.markForCheck();
   }
 }

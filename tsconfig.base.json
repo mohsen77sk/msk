@@ -31,7 +31,6 @@
       "@msk/main/shell/ui/layout": ["libs/main/shell/ui/layout/src/index.ts"],
       "@msk/shared/animations": ["libs/shared/animations/src/index.ts"],
       "@msk/shared/data-access": ["libs/shared/data-access/src/index.ts"],
-      "@msk/shared/directives/page-name": ["libs/shared/directives/page-name/src/index.ts"],
       "@msk/shared/directives/scroll-reset": ["libs/shared/directives/scroll-reset/src/index.ts"],
       "@msk/shared/directives/scrollbar": ["libs/shared/directives/scrollbar/src/index.ts"],
       "@msk/shared/pipes/date-time": ["libs/shared/pipes/date-time/src/index.ts"],
