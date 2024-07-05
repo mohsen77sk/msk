@@ -4,8 +4,12 @@
 .msk-main-list {
   @apply text-on-surface-variant grid transition;
 
+  @screen sm {
+    margin-bottom: 57px;
+  }
+
   .msk-main-list-header {
-    @apply text-md text-on-surface sticky top-0 z-10 grid gap-4 border-b bg-inherit p-4 font-semibold md:px-8;
+    @apply text-md text-on-surface bg-surface sticky top-0 z-10 grid gap-4 border-b p-4 font-semibold md:px-8;
   }
 
   .msk-main-list-row {
@@ -25,23 +29,16 @@
   @apply z-10 border-b sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t;
 
   .mat-mdc-paginator-container {
-    justify-content: space-between !important;
-
     @screen sm {
       padding: 0 16px !important;
+      justify-content: space-between !important;
     }
 
-    .mat-mdc-paginator-page-size-label,
-    .mat-mdc-paginator-navigation-first,
-    .mat-mdc-paginator-navigation-last {
+    .mat-mdc-paginator-page-size {
       display: none;
-    }
 
-    @screen sm {
-      .mat-mdc-paginator-page-size-label,
-      .mat-mdc-paginator-navigation-first,
-      .mat-mdc-paginator-navigation-last {
-        display: unset;
+      @screen sm {
+        display: flex;
       }
     }
   }
