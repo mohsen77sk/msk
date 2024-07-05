@@ -33,7 +33,7 @@ import { MainLanguagesComponent } from '../../common/languages/languages.compone
   ],
 })
 export class MainLayoutMaterialComponent implements OnInit {
-  destroyRef = inject(DestroyRef);
+  private _destroyRef = inject(DestroyRef);
 
   navigation!: Navigation;
   isScreenSmall!: boolean;
@@ -57,14 +57,14 @@ export class MainLayoutMaterialComponent implements OnInit {
   ngOnInit(): void {
     // Subscribe to navigation data
     this._navigationService.navigation$
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe((navigation: Navigation) => {
         this.navigation = cloneDeep(navigation);
       });
 
     // Subscribe to media changes
     this._mskMediaWatcherService.onMediaChange$
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe(({ matchingAliases }) => {
         // Check if the screen is small
         this.isScreenSmall = !matchingAliases.includes('md');

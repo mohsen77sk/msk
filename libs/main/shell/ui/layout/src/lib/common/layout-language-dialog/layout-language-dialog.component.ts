@@ -25,15 +25,15 @@ const localeDate = {
   standalone: true,
   selector: 'main-layout-language-dialog',
   templateUrl: './layout-language-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, MatRadioModule, MatDialogModule, TranslocoDirective],
 })
 export class MainLayoutLanguageDialogComponent implements OnInit {
-  destroyRef = inject(DestroyRef);
-  dateAdapter = inject(DateAdapter<Locale>);
-  translocoService = inject(TranslocoService);
-  layoutConfigService = inject(MskLayoutConfigService);
+  private _destroyRef = inject(DestroyRef);
+  private _dateAdapter = inject(DateAdapter<Locale>);
+  private _translocoService = inject(TranslocoService);
+  private _layoutConfigService = inject(MskLayoutConfigService);
 
   availableLangs = availableLangs;
   activeLang!: AvailableLangsIds;
@@ -47,7 +47,7 @@ export class MainLayoutLanguageDialogComponent implements OnInit {
    */
   ngOnInit(): void {
     // Subscribe to language changes
-    this.translocoService.langChanges$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((activeLang) => {
+    this._translocoService.langChanges$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((activeLang) => {
       // Get the active lang
       this.activeLang = activeLang as AvailableLangsIds;
     });
@@ -64,11 +64,11 @@ export class MainLayoutLanguageDialogComponent implements OnInit {
    */
   setActiveLang(event: MatRadioChange): void {
     // Set the active locale
-    this.dateAdapter.setLocale(localeDate[event.value as AvailableLangsIds]);
+    this._dateAdapter.setLocale(localeDate[event.value as AvailableLangsIds]);
     // Set the active lang
-    this.translocoService.setActiveLang(event.value);
+    this._translocoService.setActiveLang(event.value);
     // Set the active locale in config
-    this.layoutConfigService.config = {
+    this._layoutConfigService.config = {
       locale: locale[event.value as AvailableLangsIds],
     };
   }

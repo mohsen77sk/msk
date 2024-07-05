@@ -10,13 +10,13 @@ import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/confi
   standalone: true,
   selector: 'main-layout-scheme-dialog',
   templateUrl: './layout-scheme-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, MatRadioModule, MatDialogModule, TranslocoDirective],
 })
 export class MainLayoutSchemeDialogComponent implements OnInit {
-  destroyRef = inject(DestroyRef);
-  layoutConfigService = inject(MskLayoutConfigService);
+  private _destroyRef = inject(DestroyRef);
+  private _layoutConfigService = inject(MskLayoutConfigService);
 
   layoutScheme!: LayoutScheme;
 
@@ -29,7 +29,7 @@ export class MainLayoutSchemeDialogComponent implements OnInit {
    */
   ngOnInit(): void {
     // Subscribe to config changes
-    this.layoutConfigService.config$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((config) => {
+    this._layoutConfigService.config$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((config) => {
       // Get the config
       this.layoutScheme = config.scheme;
     });
@@ -46,7 +46,7 @@ export class MainLayoutSchemeDialogComponent implements OnInit {
    */
   setActiveSchema(event: MatRadioChange): void {
     // Set the active schema in config
-    this.layoutConfigService.config = {
+    this._layoutConfigService.config = {
       scheme: event.value,
     };
   }

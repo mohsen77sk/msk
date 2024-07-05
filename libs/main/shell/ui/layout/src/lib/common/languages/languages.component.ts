@@ -31,10 +31,10 @@ const localeDate = {
   imports: [MatMenuModule, MatButtonModule, MatTooltipModule, NgTemplateOutlet, TranslocoDirective],
 })
 export class MainLanguagesComponent implements OnInit {
-  destroyRef = inject(DestroyRef);
-  dateAdapter = inject(DateAdapter<Locale>);
-  translocoService = inject(TranslocoService);
-  layoutConfigService = inject(MskLayoutConfigService);
+  private _destroyRef = inject(DestroyRef);
+  private _dateAdapter = inject(DateAdapter<Locale>);
+  private _translocoService = inject(TranslocoService);
+  private _layoutConfigService = inject(MskLayoutConfigService);
 
   availableLangs = availableLangs;
   activeLang!: AvailableLangsIds;
@@ -48,7 +48,7 @@ export class MainLanguagesComponent implements OnInit {
    */
   ngOnInit(): void {
     // Subscribe to language changes
-    this.translocoService.langChanges$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((activeLang) => {
+    this._translocoService.langChanges$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((activeLang) => {
       // Get the active lang
       this.activeLang = activeLang as AvailableLangsIds;
     });
@@ -65,11 +65,11 @@ export class MainLanguagesComponent implements OnInit {
    */
   setActiveLang(lang: AvailableLangsIds): void {
     // Set the active locale
-    this.dateAdapter.setLocale(localeDate[lang]);
+    this._dateAdapter.setLocale(localeDate[lang]);
     // Set the active lang
-    this.translocoService.setActiveLang(lang);
+    this._translocoService.setActiveLang(lang);
     // Set the active locale in config
-    this.layoutConfigService.config = {
+    this._layoutConfigService.config = {
       locale: locale[lang],
     };
   }

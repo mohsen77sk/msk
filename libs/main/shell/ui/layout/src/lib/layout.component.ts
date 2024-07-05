@@ -21,7 +21,7 @@ import { MainLayoutMaterialComponent } from './layouts/material/material.compone
   imports: [BidiModule, MskLoadingBarComponent, MainLayoutEmptyComponent, MainLayoutMaterialComponent],
 })
 export class MainLayoutComponent implements OnInit {
-  destroyRef = inject(DestroyRef);
+  private _destroyRef = inject(DestroyRef);
 
   layoutConfig!: LayoutConfig;
   layoutDirection!: Direction;
@@ -59,7 +59,7 @@ export class MainLayoutComponent implements OnInit {
       ]),
     ])
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this._destroyRef),
         map(([config, mql]) => {
           const options = {
             scheme: config.scheme,
@@ -87,7 +87,7 @@ export class MainLayoutComponent implements OnInit {
     // Subscribe to config changes
     this._mskLayoutConfigService.config$
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this._destroyRef),
         map((config) => {
           // Store the layoutConfig
           this.layoutConfig = config;
@@ -102,7 +102,7 @@ export class MainLayoutComponent implements OnInit {
     // Subscribe to NavigationEnd event
     this._router.events
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this._destroyRef),
         filter((event) => event instanceof NavigationEnd),
         map(() => {
           // Update the layout type

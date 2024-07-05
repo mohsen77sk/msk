@@ -43,13 +43,13 @@ import { Direction } from '@angular/cdk/bidi';
   ],
 })
 export class MainUserComponent implements OnInit {
-  destroyRef = inject(DestroyRef);
-  router = inject(Router);
-  dialog = inject(MatDialog);
-  userService = inject(MainUserService);
-  translocoService = inject(TranslocoService);
-  layoutConfigService = inject(MskLayoutConfigService);
-  changeDetectorRef = inject(ChangeDetectorRef);
+  private _destroyRef = inject(DestroyRef);
+  private _router = inject(Router);
+  private _dialog = inject(MatDialog);
+  private _userService = inject(MainUserService);
+  private _translocoService = inject(TranslocoService);
+  private _layoutConfigService = inject(MskLayoutConfigService);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
 
   @Input({ transform: booleanAttribute }) showAvatar = true;
   user!: User;
@@ -67,28 +67,28 @@ export class MainUserComponent implements OnInit {
    */
   ngOnInit(): void {
     // Subscribe to user changes
-    this.userService.user$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((user) => {
+    this._userService.user$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((user) => {
       // Get the current user
       this.user = user;
       // Mark for check
-      this.changeDetectorRef.markForCheck();
+      this._changeDetectorRef.markForCheck();
     });
 
     // Subscribe to config changes
-    this.layoutConfigService.config$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((config) => {
+    this._layoutConfigService.config$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((config) => {
       // Get the config
       this.layoutScheme = config.scheme;
       this.layoutDirection = getLocaleDirection(config.locale);
       // Mark for check
-      this.changeDetectorRef.markForCheck();
+      this._changeDetectorRef.markForCheck();
     });
 
     // Subscribe to language changes
-    this.translocoService.langChanges$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((activeLang) => {
+    this._translocoService.langChanges$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((activeLang) => {
       // Get the active lang
       this.activeLang = availableLangs.find((x) => x.id === activeLang)?.label ?? '';
       // Mark for check
-      this.changeDetectorRef.markForCheck();
+      this._changeDetectorRef.markForCheck();
     });
   }
 
@@ -100,20 +100,20 @@ export class MainUserComponent implements OnInit {
    * Open schema dialog
    */
   openLayoutSchemeDialog() {
-    this.dialog.open(MainLayoutSchemeDialogComponent, { direction: this.layoutDirection }).afterClosed().subscribe();
+    this._dialog.open(MainLayoutSchemeDialogComponent, { direction: this.layoutDirection }).afterClosed().subscribe();
   }
 
   /**
    * Open language dialog
    */
   openLayoutLanguageDialog() {
-    this.dialog.open(MainLayoutLanguageDialogComponent, { direction: this.layoutDirection }).afterClosed().subscribe();
+    this._dialog.open(MainLayoutLanguageDialogComponent, { direction: this.layoutDirection }).afterClosed().subscribe();
   }
 
   /**
    * Sign out
    */
   signOut(): void {
-    this.router.navigate(['/sign-out']);
+    this._router.navigate(['/sign-out']);
   }
 }
