@@ -8,9 +8,9 @@ textarea[msk-highlight] {
   margin-bottom: 16px;
   font-size: .875rem;
   line-height: 1.7142857;
-  color: var(--sys-inverse-on-surface);
-  background-color: var(--sys-inverse-surface);
-  border-radius: var(--sys-corner-extra-small);
+  color: #f1f0f4;
+  background-color: #2f3033;
+  border-radius: 4px;
 
   pre {
     flex: 1;
@@ -20,7 +20,7 @@ textarea[msk-highlight] {
 
   .msk-highlight-action {
     .mat-icon {
-      color: color-mix(in srgb, var(--sys-inverse-on-surface) 87%, transparent);
+      color: rgba(241, 240, 244, 87%);
     }
   }
 }
