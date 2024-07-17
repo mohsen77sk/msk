@@ -9,7 +9,6 @@ import {
   numberAttribute,
   booleanAttribute,
   Renderer2,
-  OnInit,
 } from '@angular/core';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
@@ -18,11 +17,12 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   selector: '[mskSpinner]',
   exportAs: 'mskSpinner',
 })
-export class MskSpinnerDirective implements OnInit {
+export class MskSpinnerDirective {
   private _renderer = inject(Renderer2);
   private _elementRef = inject(ElementRef);
   private _viewContainerRef = inject(ViewContainerRef);
 
+  private _isSpinnerExist = false;
   private _spinnerParent!: HTMLDivElement;
   private _spinner!: ComponentRef<MatProgressSpinner>;
 
@@ -39,31 +39,30 @@ export class MskSpinnerDirective implements OnInit {
    */
   @Input({ transform: numberAttribute }) mskSpinnerDiameter = 24;
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Accessors
-  // -----------------------------------------------------------------------------------------------------
-
-  @HostBinding('class.relative') isSpinnerExist = false;
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Lifecycle hooks
-  // -----------------------------------------------------------------------------------------------------
-
   /**
-   * On init
+   * constructor
    */
-  ngOnInit() {
+  constructor() {
     // Create parent division for spinner
     this._spinnerParent = document.createElement('div');
     this._spinnerParent.classList.add('absolute', 'inset-0', 'flex', 'items-center', 'justify-center', 'z-99999');
-    this._spinnerParent.style.backgroundColor = 'var(--mat-ripple-color)';
     // Create spinner
     this._spinner = this._viewContainerRef.createComponent(MatProgressSpinner);
     this._spinner.instance.mode = 'indeterminate';
     this._spinner.instance.diameter = this.mskSpinnerDiameter;
-    this._spinner.changeDetectorRef.detectChanges();
     // Add spinner to parent division
     this._renderer.appendChild(this._spinnerParent, this._spinner.location.nativeElement);
+  }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Accessors
+  // -----------------------------------------------------------------------------------------------------
+
+  @HostBinding('class') get classList(): object {
+    return {
+      relative: this._isSpinnerExist,
+      'overflow-hidden': this._isSpinnerExist,
+    };
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -74,10 +73,10 @@ export class MskSpinnerDirective implements OnInit {
    * Hide
    */
   hide() {
-    if (this.isSpinnerExist) {
+    if (this._isSpinnerExist) {
       // remove parent spinner to host element
       this._renderer.removeChild(this._elementRef.nativeElement, this._spinnerParent);
-      this.isSpinnerExist = false;
+      this._isSpinnerExist = false;
     }
   }
 
@@ -85,10 +84,10 @@ export class MskSpinnerDirective implements OnInit {
    * Show
    */
   show() {
-    if (!this.isSpinnerExist) {
+    if (!this._isSpinnerExist) {
       // Add parent spinner to host element
       this._renderer.appendChild(this._elementRef.nativeElement, this._spinnerParent);
-      this.isSpinnerExist = true;
+      this._isSpinnerExist = true;
     }
   }
 }
