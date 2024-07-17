@@ -47,7 +47,7 @@ const config = {
       'level-4': 'var(--sys-elevation-level-4)',
       'level-5': 'var(--sys-elevation-level-5)',
     },
-    extends: {
+    extend: {
       animation: {
         'spin-slow': 'spin 3s linear infinite',
       },
@@ -142,7 +142,12 @@ const config = {
         DEFAULT: {
           css: {
             '--tw-prose-body': 'var(--sys-on-surface)',
+            '--tw-prose-headings': 'var(--sys-on-surface)',
             '--tw-prose-links': 'var(--sys-primary)',
+            '--tw-prose-bold': 'var(--sys-on-surface)',
+            '--tw-prose-code': 'var(--sys-primary)',
+            '--tw-prose-th-borders': 'var(--sys-outline-variant)',
+            '--tw-prose-td-borders': 'var(--sys-outline-variant)',
           },
         },
       }),
