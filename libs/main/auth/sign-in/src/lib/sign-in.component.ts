@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MainAuthService } from '@msk/main/shell/core/auth';
 import { MskErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent, MskAlertType } from '@msk/shared/ui/alert';
+import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { mskAnimations } from '@msk/shared/animations';
 import { catchError, map } from 'rxjs';
 
@@ -42,6 +43,7 @@ import { catchError, map } from 'rxjs';
     MatFormFieldModule,
     NgxTouchKeyboardModule,
     MskAlertComponent,
+    MskSpinnerDirective,
   ],
 })
 export class SignInComponent implements OnInit {
@@ -124,7 +126,7 @@ export class SignInComponent implements OnInit {
           this.signInForm.enable();
 
           // Reset the form
-          this.signInNgForm.resetForm();
+          this.signInForm.reset({ rememberMe: false });
 
           // Set the alert
           this.alert = {

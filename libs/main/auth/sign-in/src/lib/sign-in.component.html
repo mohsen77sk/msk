@@ -84,8 +84,14 @@
         </div>
 
         <!-- Submit button -->
-        <button class="mt-6 w-full" mat-flat-button [disabled]="signInForm.disabled" (click)="signIn()">
-          {{ !signInForm.disabled ? t('signIn.sign-in') : '' }}
+        <button
+          class="mt-6 w-full"
+          mat-flat-button
+          [disabled]="signInForm.disabled"
+          [mskSpinner]="signInForm.disabled"
+          (click)="signIn()"
+        >
+          {{ signInForm.enabled ? t('signIn.sign-in') : '' }}
         </button>
       </form>
     </div>
