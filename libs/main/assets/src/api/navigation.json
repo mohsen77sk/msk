@@ -54,6 +54,12 @@
             "title": "Alert",
             "type": "basic",
             "link": "docs/ui/alert"
+          },
+          {
+            "id": "docs.ui.highlight",
+            "title": "Highlight",
+            "type": "basic",
+            "link": "docs/ui/highlight"
           }
         ]
       },

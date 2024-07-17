@@ -1,0 +1,88 @@
+<div class="absolute inset-0 flex min-w-0 flex-col overflow-y-auto">
+  <!-- Main -->
+  <div class="prose max-w-full flex-auto p-6 md:px-10">
+    <h3>Component</h3>
+    <textarea msk-highlight lang="typescript">
+      import { MskHighlightComponent } from '@msk/shared/ui/highlight';
+    </textarea>
+
+    <p>
+      <strong>msk-highlight</strong> is a syntax highlighter component to display syntax highlighted codes within the
+      content. Internally, it uses <em>highlight.js</em>.
+    </p>
+    <p><strong>Exported as: </strong><code>mskHighlight</code></p>
+
+    <h3>Usage</h3>
+    <p>Here's the basic usage of the <code>msk-highlight</code>:</p>
+    <textarea msk-highlight lang="html">
+      &lt;textarea msk-highlight lang="html"&gt;
+        &lt;div&gt;Some HTML code to highlight&lt;/div&gt;
+      &lt;/textarea&gt;
+    </textarea>
+    <p>
+      <code>msk-highlight</code> doesn't have its own selector and cannot be used like any other components. It must be
+      used with a <code>&lt;textarea&gt;</code>.
+    </p>
+    <p>
+      The main reason of this is that the Angular parses the templates before binding and running components. Because of
+      this mechanic, anything you place into templates will be taken as a literal content and parsed by Angular. Only
+      the contents of a <code>&lt;textarea&gt;</code> can be preserved as is.
+    </p>
+
+    <h3>Properties</h3>
+    <div class="msk-mat-card-filled overflow-auto px-6 py-3">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-md text-secondary font-mono">
+              <div>&#64;Input()</div>
+              <div>code: string</div>
+            </td>
+            <td>
+              Piece of code to highlight. If <strong>code</strong> input is not provided, the actual content of the
+              <strong>textarea</strong> will be used.
+            </td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary font-mono">
+              <div>&#64;Input()</div>
+              <div>lang: string</div>
+            </td>
+            <td>
+              Which language to highlight the code. See:
+              <a href="https://highlightjs.org/usage/" rel="noreferrer" target="_blank"
+                >https://highlightjs.org/usage/
+              </a>
+              for full list of supported languages.
+            </td>
+            <td>-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Service</h3>
+    <p>The <code>MskHighlightService</code> can also be used to format and highlight code:</p>
+    <textarea msk-highlight lang="typescript">
+      import { MskHighlightService } from '@msk/shared/ui/highlight';
+
+      code = '<div> Some code to highlight </div>'
+
+      /**
+        * Constructor
+        */
+      constructor(private _mskHighlightService: MskHighlightService)
+      {
+        const highlightedCode = this._mskHighlightService.highlight(code, 'html');
+      }
+    </textarea>
+  </div>
+</div>

@@ -98,6 +98,11 @@ export const mainRoutes: Route[] = [
             pathMatch: 'full',
             loadComponent: () => import('@msk/shared/ui/alert').then((r) => r.MskDocsAlertComponent),
           },
+          {
+            path: 'ui/highlight',
+            pathMatch: 'full',
+            loadComponent: () => import('@msk/shared/ui/highlight').then((r) => r.MskDocsHighlightComponent),
+          },
           // Pages
           {
             path: 'pages/not-found',
