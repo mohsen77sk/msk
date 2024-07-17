@@ -2,7 +2,7 @@
   @for (item of breadcrumb; track item.id; let first = $first; let last = $last) {
   <div class="flex items-center gap-1 whitespace-nowrap">
     @if(!first) {
-    <mat-icon class="icon-size-4 mat-icon-rtl-mirror" [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+    <mat-icon class="icon-size-4 mat-icon-rtl-mirror" svgIcon="heroicons_solid:chevron-right"></mat-icon>
     }
     <a class="whitespace-nowrap" [ngClass]="last ? 'text-secondary' : 'text-primary'">{{ item.title }}</a>
   </div>
