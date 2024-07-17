@@ -1,3 +1,26 @@
 textarea[msk-highlight] {
   display: none;
 }
+
+.msk-highlight {
+  display: flex;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  font-size: .875rem;
+  line-height: 1.7142857;
+  color: var(--sys-inverse-on-surface);
+  background-color: var(--sys-inverse-surface);
+  border-radius: var(--sys-corner-extra-small);
+
+  pre {
+    flex: 1;
+    padding: 8px;
+    overflow: auto;
+  }
+
+  .msk-highlight-action {
+    .mat-icon {
+      color: color-mix(in srgb, var(--sys-inverse-on-surface) 87%, transparent);
+    }
+  }
+}

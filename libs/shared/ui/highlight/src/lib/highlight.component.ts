@@ -17,6 +17,9 @@ import {
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ClipboardModule, Clipboard } from '@angular/cdk/clipboard';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { MskHighlightService } from './highlight.service';
 
 @Component({
@@ -27,9 +30,10 @@ import { MskHighlightService } from './highlight.service';
   exportAs: 'mskHighlight',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass],
+  imports: [NgClass, ClipboardModule, MatIconModule, MatButtonModule],
 })
 export class MskHighlightComponent implements OnChanges, AfterViewInit {
+  private _clipboard = inject(Clipboard);
   private _elementRef = inject(ElementRef);
   private _domSanitizer = inject(DomSanitizer);
   private _viewContainerRef = inject(ViewContainerRef);
@@ -39,6 +43,7 @@ export class MskHighlightComponent implements OnChanges, AfterViewInit {
   @Input() lang!: string;
   @ViewChild(TemplateRef) templateRef!: TemplateRef<unknown>;
 
+  isCopied = false;
   highlightedCode!: string | null;
   private _viewRef!: EmbeddedViewRef<unknown> | null;
 
@@ -82,6 +87,22 @@ export class MskHighlightComponent implements OnChanges, AfterViewInit {
 
     // Highlight and insert
     this._highlightAndInsert();
+  }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Public methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Copy the code
+   */
+  copyCode(): void {
+    this.isCopied = true;
+    this._clipboard.copy(this.code);
+
+    setTimeout(() => {
+      this.isCopied = false;
+    }, 1000);
   }
 
   // -----------------------------------------------------------------------------------------------------
