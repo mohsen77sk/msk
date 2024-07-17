@@ -19,6 +19,10 @@ textarea[msk-highlight] {
   }
 
   .msk-highlight-action {
+    button {
+      display: flex;
+    }
+
     .mat-icon {
       color: rgba(241, 240, 244, 87%);
     }
