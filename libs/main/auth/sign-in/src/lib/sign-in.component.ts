@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  DestroyRef,
   ElementRef,
   OnInit,
   ViewChild,
@@ -12,6 +11,7 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
+import { NgxTouchKeyboardModule } from 'ngx-touch-keyboard';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -40,12 +40,12 @@ import { catchError, map } from 'rxjs';
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
+    NgxTouchKeyboardModule,
     MskAlertComponent,
   ],
 })
 export class SignInComponent implements OnInit {
   private _router = inject(Router);
-  private _destroyRef = inject(DestroyRef);
   private _elementRef = inject(ElementRef);
   private _formBuilder = inject(FormBuilder);
   private _activatedRoute = inject(ActivatedRoute);

@@ -23,6 +23,7 @@
     "highlight.js": "^11.9.0",
     "lodash-es": "^4.17.21",
     "ngx-material-date-fns-adapter": "18.0.0",
+    "ngx-touch-keyboard": "^3.1.0",
     "perfect-scrollbar": "^1.5.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

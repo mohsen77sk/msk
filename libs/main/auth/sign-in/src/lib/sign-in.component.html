@@ -44,19 +44,31 @@
         <!-- Password field -->
         <mat-form-field class="mt-2 w-full">
           <mat-label> {{ t('signIn.password') }} </mat-label>
-          <input id="password" matInput type="password" formControlName="password" #passwordField />
-          <button
-            type="button"
-            matIconSuffix
-            mat-icon-button
-            (click)="
-              passwordField.type === 'password' ? (passwordField.type = 'text') : (passwordField.type = 'password')
-            "
-          >
-            <mat-icon class="icon-size-5">
-              {{ passwordField.type === 'password' ? 'visibility' : 'visibility_off' }}
-            </mat-icon>
-          </button>
+          <input
+            id="password"
+            matInput
+            type="password"
+            formControlName="password"
+            ngxTouchKeyboard
+            #passwordVirtualKeyboard="ngxTouchKeyboard"
+            #passwordField
+          />
+          <div matSuffix>
+            <button
+              type="button"
+              mat-icon-button
+              (click)="
+                passwordField.type === 'password' ? (passwordField.type = 'text') : (passwordField.type = 'password')
+              "
+            >
+              <mat-icon class="icon-size-5">
+                {{ passwordField.type === 'password' ? 'visibility' : 'visibility_off' }}
+              </mat-icon>
+            </button>
+            <button mat-icon-button type="button" (click)="passwordVirtualKeyboard.togglePanel()">
+              <mat-icon class="icon-size-5">keyboard</mat-icon>
+            </button>
+          </div>
           <mat-error> {{ t('error-validation.required') }} </mat-error>
         </mat-form-field>
 
