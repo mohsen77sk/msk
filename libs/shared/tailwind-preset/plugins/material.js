@@ -1,12 +1,12 @@
 const plugin = require('tailwindcss/plugin');
 
-module.exports = plugin(({ addComponents }) => {
+module.exports = plugin(({ addComponents, addUtilities, theme }) => {
   /*
-   * Add base components. These are very important for everything to look
-   * correct. We are adding these to the 'components' layer because they must
+   * Add base utilities. These are very important for everything to look
+   * correct. We are adding these to the 'utilities' layer because they must
    * be defined before pretty much everything else.
    */
-  addComponents({
+  addUtilities({
     '.bg-default': {
       backgroundColor: 'var(--sys-surface-container) !important',
     },
@@ -58,9 +58,7 @@ module.exports = plugin(({ addComponents }) => {
     '.text-inverse-on-surface': {
       color: 'var(--sys-inverse-on-surface) !important',
     },
-  });
 
-  addComponents({
     '.bg-primary': {
       backgroundColor: 'var(--sys-primary) !important',
     },
@@ -159,6 +157,30 @@ module.exports = plugin(({ addComponents }) => {
     },
     '.text-on-error-container': {
       color: 'var(--sys-on-error-container) !important',
+    },
+  });
+
+  addComponents({
+    '.msk-mat-card-elevated': {
+      position: 'relative',
+      boxShadow: 'var(--sys-elevation-level-1)',
+      borderRadius: 'var(--sys-corner-medium)',
+      backgroundColor: 'var(--sys-surface-container-low)',
+    },
+
+    '.msk-mat-card-filled': {
+      position: 'relative',
+      boxShadow: 'var(--sys-elevation-level-0)',
+      borderRadius: 'var(--sys-corner-medium)',
+      backgroundColor: 'var(--sys-surface-container-highest)',
+    },
+
+    '.msk-mat-card-outlined': {
+      position: 'relative',
+      boxShadow: 'var(--sys-elevation-level-0)',
+      borderRadius: 'var(--sys-corner-medium)',
+      backgroundColor: 'var(--sys-surface)',
+      border: '1px solid var(--sys-outline-variant)',
     },
   });
 });
