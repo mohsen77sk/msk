@@ -4,10 +4,6 @@
 .msk-main-list {
   @apply text-on-surface-variant grid transition;
 
-  @screen sm {
-    margin-bottom: 57px;
-  }
-
   .msk-main-list-header {
     @apply text-md text-on-surface bg-surface sticky top-0 z-10 grid gap-4 border-b p-4 font-semibold md:px-8;
   }
@@ -17,7 +13,7 @@
 
     &:hover {
       @apply cursor-pointer;
-      background: color-mix(in srgb, var(--sys-on-surface) 8%, transparent);
+      background-color: color-mix(in srgb, var(--sys-on-surface) 8%, transparent);
     }
   }
 }
