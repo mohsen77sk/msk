@@ -260,5 +260,26 @@
       <span mskAlertTitle>Error alert</span>
       This is a alert with an 'error' level severity
     </msk-alert>
+
+    <h3>Dismissible alerts</h3>
+    <p>
+      Dismissible alerts can be removed from the view by clicking their
+      <strong>dismiss (x)</strong> button. In order to get the dismiss button
+      visible, the <code>[dismissed]</code> input must be explicitly set either
+      to <code>true</code> or <code>false</code>. Setting the
+      <code>[dismissed]</code> input to <code>null</code> or simply removing it
+      from the element will remove the <strong>dismiss</strong> button.
+    </p>
+
+    <msk-alert [appearance]="'soft'" [dismissible]="true" [dismissed]="false" [name]="'alertBox1'" [type]="'success'">
+      Your subscription model is successfully upgraded to the
+      <b>Lifetime Pro</b>.
+    </msk-alert>
+
+    <msk-alert [appearance]="'soft'" [dismissible]="true" [dismissed]="false" [name]="'alertBox2'" [type]="'info'">
+      This one has a lot of text so you can see how the text is going to
+      be displayed. Also this is a dismissible alert box which can be
+      dismissed by clicking the <b>dismiss</b> button.
+    </msk-alert>
   </div>
 </div>
