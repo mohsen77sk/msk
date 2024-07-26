@@ -56,6 +56,12 @@
             "link": "docs/ui/alert"
           },
           {
+            "id": "docs.ui.fullscreen",
+            "title": "Fullscreen",
+            "type": "basic",
+            "link": "docs/ui/fullscreen"
+          },
+          {
             "id": "docs.ui.highlight",
             "title": "Highlight",
             "type": "basic",

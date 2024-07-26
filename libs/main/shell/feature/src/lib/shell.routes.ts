@@ -99,6 +99,11 @@ export const mainRoutes: Route[] = [
             loadComponent: () => import('@msk/shared/ui/alert').then((r) => r.MskDocsAlertComponent),
           },
           {
+            path: 'ui/fullscreen',
+            pathMatch: 'full',
+            loadComponent: () => import('@msk/shared/ui/fullscreen').then((r) => r.MskDocsFullscreenComponent),
+          },
+          {
             path: 'ui/highlight',
             pathMatch: 'full',
             loadComponent: () => import('@msk/shared/ui/highlight').then((r) => r.MskDocsHighlightComponent),
