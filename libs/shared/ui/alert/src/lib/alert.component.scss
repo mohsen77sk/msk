@@ -125,11 +125,11 @@ msk-alert {
       @apply bg-surface shadow-level-2 rounded-small;
 
       .msk-alert-border {
+        width: 4px;
         position: absolute;
-        @apply ltr:left-0 rtl:right-0;
         top: 0;
         bottom: 0;
-        width: 4px;
+        @apply ltr:left-0 rtl:right-0;
       }
 
       .msk-alert-message {
