@@ -7,7 +7,7 @@
   <!-- Main -->
   <div class="flex flex-auto sm:overflow-hidden">
     <!-- List -->
-    <div class="sm:mb-14 flex flex-auto flex-col overflow-hidden sm:overflow-y-auto">
+    <div class="flex flex-auto flex-col overflow-hidden sm:mb-14 sm:overflow-y-auto">
       <div class="msk-main-list people-main-list">
         <!-- Header -->
         <div class="msk-main-list-header" matSort matSortDisableClear>
@@ -20,7 +20,7 @@
         </div>
         <!-- Rows -->
         @for (person of persons$ | async; track person.id) {
-        <div class="msk-main-list-row" matRipple>
+        <div class="msk-main-list-row" [routerLink]="['card', 'view', person.id]" matRipple>
           <!-- Code -->
           <div class="truncate">
             {{ person.code }}
@@ -56,4 +56,9 @@
       ></mat-paginator>
     </div>
   </div>
+</div>
+
+<!-- Invisible router-outlet for card component -->
+<div class="pointer-events-none invisible absolute h-0 w-0 opacity-0">
+  <router-outlet></router-outlet>
 </div>

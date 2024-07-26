@@ -5,6 +5,11 @@
     "nationalCode": "National Id",
     "status": "Status"
   },
+  "details": {
+    "new": "New person",
+    "edit": "Edit person",
+    "view": "Person #{{code}}"
+  },
   "search": "Search people",
-  "empty-list": "There are no users!"
+  "empty-list": "There are no persons!"
 }

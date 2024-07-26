@@ -1,0 +1,24 @@
+<!-- Header -->
+<div class="msk-dialog-header">
+  <button mat-icon-button matDialogClose="cancelled" [tabIndex]="-1">
+    <mat-icon class="text-current">close</mat-icon>
+  </button>
+  <div class="msk-dialog-header-title" *transloco="let t; read: 'people.details'">
+    {{ t(data.action, { code: data.item.code }) }}
+  </div>
+</div>
+
+<!-- Content -->
+<div class="msk-dialog-content" *transloco="let t; read: 'people.details'"></div>
+
+<!-- Actions -->
+@if (data.action !== 'view') {
+<div class="msk-dialog-footer" align="end" *transloco="let t">
+  <button mat-button matDialogClose="cancelled">
+    {{ t('cancel') }}
+  </button>
+  <button mat-button [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+    {{ t('save') }}
+  </button>
+</div>
+}

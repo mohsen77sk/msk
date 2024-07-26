@@ -68,22 +68,18 @@ export const mainRoutes: Route[] = [
         children: [
           {
             path: 'dashboard',
-            pathMatch: 'full',
             loadChildren: () => import('@msk/main/panel/dashboard').then((r) => r.routes),
           },
           {
             path: 'people',
-            pathMatch: 'full',
             loadChildren: () => import('@msk/main/panel/people').then((r) => r.routes),
           },
           {
             path: 'accounts',
-            pathMatch: 'full',
             loadChildren: () => import('@msk/main/panel/accounts').then((r) => r.routes),
           },
           {
             path: 'loans',
-            pathMatch: 'full',
             loadChildren: () => import('@msk/main/panel/loans').then((r) => r.routes),
           },
         ],
@@ -95,38 +91,31 @@ export const mainRoutes: Route[] = [
           // Ui
           {
             path: 'ui/alert',
-            pathMatch: 'full',
             loadComponent: () => import('@msk/shared/ui/alert').then((r) => r.MskDocsAlertComponent),
           },
           {
             path: 'ui/fullscreen',
-            pathMatch: 'full',
             loadComponent: () => import('@msk/shared/ui/fullscreen').then((r) => r.MskDocsFullscreenComponent),
           },
           {
             path: 'ui/highlight',
-            pathMatch: 'full',
             loadComponent: () => import('@msk/shared/ui/highlight').then((r) => r.MskDocsHighlightComponent),
           },
           {
             path: 'ui/loading-bar',
-            pathMatch: 'full',
             loadComponent: () => import('@msk/shared/ui/loading-bar').then((r) => r.MskDocsLoadingBarComponent),
           },
           // Pages
           {
             path: 'pages/not-found',
-            pathMatch: 'full',
             loadChildren: () => import('@msk/main/errors/not-found').then((r) => r.routes),
           },
           {
             path: 'pages/internal-server-error',
-            pathMatch: 'full',
             loadChildren: () => import('@msk/main/errors/internal-server-error').then((r) => r.routes),
           },
           {
             path: 'pages/maintenance',
-            pathMatch: 'full',
             loadChildren: () => import('@msk/main/errors/maintenance').then((r) => r.routes),
           },
         ],
@@ -144,17 +133,14 @@ export const mainRoutes: Route[] = [
     children: [
       {
         path: 'internal-server-error',
-        pathMatch: 'full',
         loadChildren: () => import('@msk/main/errors/internal-server-error').then((r) => r.routes),
       },
       {
         path: 'maintenance',
-        pathMatch: 'full',
         loadChildren: () => import('@msk/main/errors/maintenance').then((r) => r.routes),
       },
       {
         path: 'not-found',
-        pathMatch: 'full',
         loadChildren: () => import('@msk/main/errors/not-found').then((r) => r.routes),
       },
       { path: '**', redirectTo: 'not-found' },

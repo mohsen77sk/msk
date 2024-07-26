@@ -10,6 +10,7 @@ import {
   ViewEncapsulation,
   inject,
 } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -41,6 +42,8 @@ import { UsersStatusComponent } from '../common/status/status.component';
     NgClass,
     FormsModule,
     ReactiveFormsModule,
+    RouterLink,
+    RouterOutlet,
     MatIconModule,
     MatMenuModule,
     MatInputModule,
