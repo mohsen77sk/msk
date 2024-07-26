@@ -108,6 +108,11 @@ export const mainRoutes: Route[] = [
             pathMatch: 'full',
             loadComponent: () => import('@msk/shared/ui/highlight').then((r) => r.MskDocsHighlightComponent),
           },
+          {
+            path: 'ui/loading-bar',
+            pathMatch: 'full',
+            loadComponent: () => import('@msk/shared/ui/loading-bar').then((r) => r.MskDocsLoadingBarComponent),
+          },
           // Pages
           {
             path: 'pages/not-found',

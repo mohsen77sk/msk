@@ -66,6 +66,12 @@
             "title": "Highlight",
             "type": "basic",
             "link": "docs/ui/highlight"
+          },
+          {
+            "id": "docs.ui.loading-bar",
+            "title": "Loading bar",
+            "type": "basic",
+            "link": "docs/ui/loading-bar"
           }
         ]
       },

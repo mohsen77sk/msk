@@ -1,3 +1,4 @@
+export * from './lib/docs/docs-loading-bar.component';
 export * from './lib/loading-bar.interceptor';
 export * from './lib/loading-bar.component';
 export * from './lib/loading-bar.provider';
