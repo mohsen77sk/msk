@@ -26,10 +26,14 @@
   }
 
   .msk-dialog-header {
-    @apply flex-0 flex h-16 items-center p-4;
+    @apply flex-0 z-10 flex items-center justify-between px-6 py-4;
 
     .msk-dialog-header-title {
-      @apply ms-2 truncate text-3xl;
+      @apply truncate text-3xl;
+    }
+
+    .msk-dialog-header-action {
+      @apply flex items-center;
     }
   }
 

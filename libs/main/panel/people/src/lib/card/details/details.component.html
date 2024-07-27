@@ -1,10 +1,12 @@
 <!-- Header -->
 <div class="msk-dialog-header">
-  <button mat-icon-button matDialogClose="cancelled" [tabIndex]="-1">
-    <mat-icon class="text-current">close</mat-icon>
-  </button>
   <div class="msk-dialog-header-title" *transloco="let t; read: 'people.details'">
     {{ t(data.action, { code: data.item.code }) }}
+  </div>
+  <div class="msk-dialog-header-action">
+    <button mat-icon-button matDialogClose="cancelled" [tabIndex]="-1">
+      <mat-icon class="text-current">close</mat-icon>
+    </button>
   </div>
 </div>
 

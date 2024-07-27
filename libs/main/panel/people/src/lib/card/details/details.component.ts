@@ -56,6 +56,12 @@ export class PeopleCardDetailsComponent implements OnInit {
     // Create the form
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      nationalCode: '',
+      dateOfBirth: '',
+      gender: [0, Validators.required],
+      note: '',
     });
     // if update => patch form
     if (this.data.action === 'edit') {
@@ -70,5 +76,7 @@ export class PeopleCardDetailsComponent implements OnInit {
   /**
    * Save and close
    */
-  saveAndClose(): void {}
+  saveAndClose(): void {
+    //
+  }
 }
