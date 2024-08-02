@@ -26,7 +26,7 @@ export class MskDateTimePipe implements PipeTransform {
   /**
    * Constructor
    */
-  constructor(@Inject(MAT_DATE_LOCALE) private _dateLocale: 'en-US' | Locale) {
+  constructor(@Inject(MAT_DATE_LOCALE) private _dateLocale: string | Locale) {
     this.setLocale(_dateLocale);
   }
 
@@ -35,17 +35,15 @@ export class MskDateTimePipe implements PipeTransform {
    *
    * @param locale The new locale
    */
-  setLocale(locale: 'en-US' | Locale): void {
-    if (!(locale === 'en-US' || 'code' in locale)) {
-      throw new Error(`Missing locale data for the locale ${locale}`);
-    }
+  setLocale(locale: string | Locale): void {
+    const _locale = typeof locale === 'string' ? locale : locale.code;
 
-    if (locale === 'en-US') {
+    if (_locale === 'en-US') {
       this._dateLocale = enUS;
       return;
     }
 
-    if (locale.code === 'fa-IR') {
+    if (_locale === 'fa-IR') {
       this._dateLocale = faIR;
       this._calendarType = 'jalali';
       return;
