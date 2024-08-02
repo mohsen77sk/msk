@@ -8,7 +8,18 @@
   "details": {
     "new": "New person",
     "edit": "Edit person",
-    "view": "Person #{{code}}"
+    "view": "Person #{{code}}",
+    "about": "About {{name}}",
+    "name": "Name",
+    "nationalCode": "National Id",
+    "birthday": "Birthday",
+    "gender": "Gender",
+    "note": "Note"
+  },
+  "genders": {
+    "1": "Male",
+    "2": "Female",
+    "3": "Other"
   },
   "search": "Search people",
   "empty-list": "There are no persons!"

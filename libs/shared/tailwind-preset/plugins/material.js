@@ -183,4 +183,34 @@ module.exports = plugin(({ addComponents, addUtilities, theme }) => {
       border: '1px solid var(--sys-outline-variant)',
     },
   });
+
+  addComponents({
+    '.msk-list-item': {
+      display: 'flex',
+      padding: '8px 16px',
+    },
+    '.msk-list-item-icon': {
+      width: '40px',
+      height: '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginInlineEnd: '16px',
+      color: 'var(--sys-on-surface-variant)',
+    },
+    '.msk-list-item-content': {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+    '.msk-list-item-content span:nth-child(1)': {
+      fontWeight: '500',
+    },
+    '.msk-list-item-content span:nth-child(2)': {
+      color: 'var(--sys-secondary)',
+    },
+    '.msk-list-item-content span:nth-child(3)': {
+      color: 'var(--sys-secondary)',
+    },
+  });
 });

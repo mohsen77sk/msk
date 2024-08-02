@@ -48,7 +48,7 @@ export const routes: Routes = [
     ],
     children: [
       {
-        path: 'list',
+        path: '',
         component: PeopleListComponent,
         resolve: {
           persons: () => inject(PeopleService).getPersons(),

@@ -9,10 +9,12 @@ import {
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { MskDialogData } from '@msk/shared/data-access';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
+import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { mskAnimations } from '@msk/shared/animations';
 import { Person } from '../../people.types';
 
@@ -28,9 +30,11 @@ import { Person } from '../../people.types';
     ReactiveFormsModule,
     MatIconModule,
     MatButtonModule,
+    MatTooltipModule,
     MatDialogClose,
     TranslocoDirective,
     MskSpinnerDirective,
+    MskDateTimePipe,
   ],
 })
 export class PeopleCardDetailsComponent implements OnInit {

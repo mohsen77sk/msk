@@ -1,9 +1,14 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject } from '@angular/core';
+import { getLocaleDirection } from '@angular/common';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Direction } from '@angular/cdk/bidi';
 import { MatDialog } from '@angular/material/dialog';
 import { MskDialogDataAction } from '@msk/shared/data-access';
+import { MskLayoutConfigService } from '@msk/shared/services/config';
 import { PeopleListComponent } from '../list/list.component';
 import { PeopleCardDetailsComponent } from './details/details.component';
+import { map } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -16,7 +21,11 @@ import { PeopleCardDetailsComponent } from './details/details.component';
 export class PeopleCardComponent implements OnInit {
   private _router = inject(Router);
   private _matDialog = inject(MatDialog);
+  private _destroyRef = inject(DestroyRef);
   private _activatedRoute = inject(ActivatedRoute);
+  private _mskLayoutConfigService = inject(MskLayoutConfigService);
+
+  layoutDirection!: Direction;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -28,12 +37,21 @@ export class PeopleCardComponent implements OnInit {
   ngOnInit(): void {
     const action = this._activatedRoute.snapshot.url[1].path as MskDialogDataAction;
 
+    // Subscribe to config changes
+    this._mskLayoutConfigService.config$
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        map((config) => (this.layoutDirection = getLocaleDirection(config.locale)))
+      )
+      .subscribe();
+
     // Launch the modal
     this._matDialog
       .open(PeopleCardDetailsComponent, {
         autoFocus: false,
         disableClose: action !== 'view',
         panelClass: 'msk-dialog',
+        direction: this.layoutDirection,
         data: {
           action,
           item: this._activatedRoute.snapshot.data['card'],
