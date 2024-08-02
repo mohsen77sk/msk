@@ -34,18 +34,12 @@ import { MainPageTitleComponent } from '../../common/page-title/page-title.compo
 })
 export class MainLayoutMaterialComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
+  private _navigationService = inject(MainNavigationService);
+  private _mskNavigationService = inject(MskNavigationService);
+  private _mskMediaWatcherService = inject(MskMediaWatcherService);
 
   navigation!: Navigation;
   isScreenSmall!: boolean;
-
-  /**
-   * Constructor
-   */
-  constructor(
-    private _navigationService: MainNavigationService,
-    private _mskNavigationService: MskNavigationService,
-    private _mskMediaWatcherService: MskMediaWatcherService
-  ) {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks

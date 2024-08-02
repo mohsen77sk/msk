@@ -21,26 +21,20 @@ import { MainLayoutMaterialComponent } from './layouts/material/material.compone
   imports: [BidiModule, MskLoadingBarComponent, MainLayoutEmptyComponent, MainLayoutMaterialComponent],
 })
 export class MainLayoutComponent implements OnInit {
+  private _router = inject(Router);
+  private _document = inject(DOCUMENT);
+  private _renderer2 = inject(Renderer2);
   private _destroyRef = inject(DestroyRef);
+  private _activatedRoute = inject(ActivatedRoute);
+  private _mskPlatformService = inject(MskPlatformService);
+  private _mskLayoutConfigService = inject(MskLayoutConfigService);
+  private _mskMediaWatcherService = inject(MskMediaWatcherService);
 
   layoutConfig!: LayoutConfig;
   layoutDirection!: Direction;
   layoutScheme!: LayoutScheme;
   layoutTheme!: LayoutTheme;
   layoutType!: LayoutType;
-
-  /**
-   * Constructor
-   */
-  constructor(
-    @Inject(DOCUMENT) private _document: Document,
-    private _router: Router,
-    private _renderer2: Renderer2,
-    private _activatedRoute: ActivatedRoute,
-    private _mskLayoutConfigService: MskLayoutConfigService,
-    private _mskMediaWatcherService: MskMediaWatcherService,
-    private _mskPlatformService: MskPlatformService
-  ) {}
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
