@@ -1,4 +1,4 @@
-import { Component, DestroyRef, Inject, OnInit, Renderer2, ViewEncapsulation, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, Renderer2, ViewEncapsulation, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DOCUMENT, getLocaleDirection } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
