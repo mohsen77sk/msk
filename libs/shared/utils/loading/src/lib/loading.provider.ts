@@ -1,11 +1,11 @@
 import { ENVIRONMENT_INITIALIZER, EnvironmentProviders, inject, Provider } from '@angular/core';
-import { MskLoadingBarService } from './loading-bar.service';
+import { MskLoadingBarService } from '@msk/shared/ui/loading-bar';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { mskLoadingBarInterceptor } from './loading-bar.interceptor';
+import { mskLoadingInterceptor } from './loading.interceptor';
 
-export const provideMskLoadingBar = (): Array<Provider | EnvironmentProviders> => {
+export const provideMskLoading = (): Array<Provider | EnvironmentProviders> => {
   return [
-    provideHttpClient(withInterceptors([mskLoadingBarInterceptor])),
+    provideHttpClient(withInterceptors([mskLoadingInterceptor])),
     {
       provide: ENVIRONMENT_INITIALIZER,
       useValue: () => inject(MskLoadingBarService),

@@ -20,7 +20,7 @@ import { MskUtilsService } from '@msk/shared/services/utils';
 import { provideMskIcons } from '@msk/shared/utils/icons';
 import { provideMskServiceWorker } from '@msk/shared/utils/service-worker';
 import { provideMskTransloco } from '@msk/shared/utils/transloco';
-import { provideMskLoadingBar } from '@msk/shared/ui/loading-bar';
+import { provideMskLoading } from '@msk/shared/utils/loading';
 import { provideMainAuth } from '@msk/main/shell/core/auth';
 
 import { mainRoutes } from './shell.routes';
@@ -84,8 +84,8 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
 
     // Provide utils
     provideMskIcons(),
+    provideMskLoading(),
     provideMskTransloco(),
-    provideMskLoadingBar(),
     // Provide services
     {
       provide: ENVIRONMENT_INITIALIZER,

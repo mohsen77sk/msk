@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
-import { MskLoadingBarService } from './loading-bar.service';
+import { MskLoadingBarService } from '@msk/shared/ui/loading-bar';
 import { finalize, Observable, take } from 'rxjs';
 
-export const mskLoadingBarInterceptor = (
+export const mskLoadingInterceptor = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
