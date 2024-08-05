@@ -1,16 +1,16 @@
-<div class="absolute inset-0 flex min-w-0 flex-col overflow-y-auto sm:overflow-hidden">
+<div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden">
   <!-- Header -->
   <div class="flex items-center justify-between p-4 md:px-8">
     <form class="flex items-center justify-end space-x-1 rtl:space-x-reverse" [formGroup]="filterForm"></form>
   </div>
 
   <!-- Main -->
-  <div class="flex flex-auto sm:overflow-hidden">
+  <div class="flex flex-auto flex-col overflow-hidden">
     <!-- List -->
-    <div class="flex flex-auto flex-col overflow-hidden sm:mb-14 sm:overflow-y-auto">
-      <div class="msk-main-list people-main-list">
+    <div class="msk-main-list">
+      <div class="msk-main-list-grid people-main-list-grid">
         <!-- Header -->
-        <div class="msk-main-list-header" matSort matSortDisableClear>
+        <div class="msk-main-list-grid-header" matSort matSortDisableClear>
           <ng-container *transloco="let t; read: 'people.column'">
             <a mat-sort-header="code">{{ t('code') }}</a>
             <a mat-sort-header="firstName">{{ t('name') }}</a>
@@ -20,7 +20,7 @@
         </div>
         <!-- Rows -->
         @for (person of persons$ | async; track person.id) {
-        <div class="msk-main-list-row" [routerLink]="['card', 'view', person.id]" matRipple>
+        <div class="msk-main-list-grid-row" [routerLink]="['card', 'view', person.id]" matRipple>
           <!-- Code -->
           <div class="truncate">
             {{ person.code }}
@@ -44,17 +44,25 @@
         </div>
         }
       </div>
-
-      <mat-paginator
-        class="msk-main-paginator"
-        [length]="pagination.total"
-        [pageIndex]="pagination.pageIndex"
-        [pageSize]="pagination.pageSize"
-        [pageSizeOptions]="pageSizeOptions"
-        [showFirstLastButtons]="true"
-        [disabled]="isLoading"
-      ></mat-paginator>
     </div>
+
+    <!-- Fab -->
+    <div class="msk-main-list-fab-container">
+      <button mat-fab extended *transloco="let t">
+        <mat-icon>add</mat-icon>
+        <span>{{ t('new') }}</span>
+      </button>
+    </div>
+
+    <mat-paginator
+      class="msk-main-list-paginator"
+      [length]="pagination.total"
+      [pageIndex]="pagination.pageIndex"
+      [pageSize]="pagination.pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="true"
+      [disabled]="isLoading"
+    ></mat-paginator>
   </div>
 </div>
 
