@@ -130,156 +130,459 @@
     <p>Alert component comes with 4 different built-in appearances to choose from:</p>
 
     <!-- Soft -->
-    <h4>Soft (default)</h4>
+    <div class="example-viewer">
+      <div class="header">
+        <div class="title">Soft (default)</div>
+        <div class="action"></div>
+      </div>
+      <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
+        <mat-tab label="Preview">
+          <ng-template matTabContent>
+            <!-- Basic -->
+            <msk-alert [type]="'basic'">
+              <span mskAlertTitle>Basic alert</span>
+              You have 3 new notifications
+            </msk-alert>
 
-    <!-- Basic -->
-    <msk-alert [type]="'basic'">
-      <span mskAlertTitle>Basic alert</span>
-      You have 3 new notifications
-    </msk-alert>
+            <!-- Info -->
+            <msk-alert [type]="'info'">
+              <span mskAlertTitle>Info alert</span>
+              This is a alert with an 'info' level severity
+            </msk-alert>
 
-    <!-- Info -->
-    <msk-alert [type]="'info'">
-      <span mskAlertTitle>Info alert</span>
-      This is a alert with an 'info' level severity
-    </msk-alert>
+            <!-- Success -->
+            <msk-alert [type]="'success'">
+              <span mskAlertTitle>Success alert</span>
+              This is a alert with a 'success' level severity
+            </msk-alert>
 
-    <!-- Success -->
-    <msk-alert [type]="'success'">
-      <span mskAlertTitle>Success alert</span>
-      This is a alert with a 'success' level severity
-    </msk-alert>
+            <!-- Warning -->
+            <msk-alert [type]="'warning'">
+              <span mskAlertTitle>Warning alert</span>
+              This is a alert with a 'warning' level severity
+            </msk-alert>
 
-    <!-- Warning -->
-    <msk-alert [type]="'warning'">
-      <span mskAlertTitle>Warning alert</span>
-      This is a alert with a 'warning' level severity
-    </msk-alert>
+            <!-- Error -->
+            <msk-alert [type]="'error'">
+              <span mskAlertTitle>Error alert</span>
+              This is a alert with an 'error' level severity
+            </msk-alert>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="HTML">
+          <ng-template matTabContent>
+            <textarea msk-highlight [lang]="'html'">
+              <!-- Primary -->
+              <msk-alert [type]="'primary'">
+                <span mskAlertTitle>Primary alert</span>
+                Thank you for joining our newsletter
+              </msk-alert>
 
-    <!-- Error -->
-    <msk-alert [type]="'error'">
-      <span mskAlertTitle>Error alert</span>
-      This is a alert with an 'error' level severity
-    </msk-alert>
+              <!-- Accent -->
+              <msk-alert [type]="'accent'">
+                <span mskAlertTitle>Accent alert</span>
+                Your changes has been saved
+              </msk-alert>
+
+              <!-- Warn -->
+              <msk-alert [type]="'warn'">
+                <span mskAlertTitle>Warn alert</span>
+                Fill all required fields to proceed next step
+              </msk-alert>
+
+              <!-- Basic -->
+              <msk-alert [type]="'basic'">
+                <span mskAlertTitle>Basic alert</span>
+                You have 3 new notifications
+              </msk-alert>
+
+              <!-- Info -->
+              <msk-alert [type]="'info'">
+                <span mskAlertTitle>Info alert</span>
+                This is a alert with an 'info' level severity
+              </msk-alert>
+
+              <!-- Success -->
+              <msk-alert [type]="'success'">
+                <span mskAlertTitle>Success alert</span>
+                This is a alert with a 'success' level severity
+              </msk-alert>
+
+              <!-- Warning -->
+              <msk-alert [type]="'warning'">
+                <span mskAlertTitle>Warning alert</span>
+                This is a alert with a 'warning' level severity
+              </msk-alert>
+
+              <!-- Error -->
+              <msk-alert [type]="'error'">
+                <span mskAlertTitle>Error alert</span>
+                This is a alert with an 'error' level severity
+              </msk-alert>
+            </textarea>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
 
     <!-- Outline -->
-    <h4>Outline</h4>
+    <div class="example-viewer mt-4">
+      <div class="header">
+        <div class="title">Outline</div>
+        <div class="action"></div>
+      </div>
+      <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
+        <mat-tab label="Preview">
+          <ng-template matTabContent>
+            <!-- Basic -->
+            <msk-alert [type]="'basic'" [appearance]="'outline'">
+              <span mskAlertTitle>Basic alert</span>
+              You have 3 new notifications
+            </msk-alert>
 
-    <!-- Basic -->
-    <msk-alert [type]="'basic'" [appearance]="'outline'">
-      <span mskAlertTitle>Basic alert</span>
-      You have 3 new notifications
-    </msk-alert>
+            <!-- Info -->
+            <msk-alert [type]="'info'" [appearance]="'outline'">
+              <span mskAlertTitle>Info alert</span>
+              This is a alert with an 'info' level severity
+            </msk-alert>
 
-    <!-- Info -->
-    <msk-alert [type]="'info'" [appearance]="'outline'">
-      <span mskAlertTitle>Info alert</span>
-      This is a alert with an 'info' level severity
-    </msk-alert>
+            <!-- Success -->
+            <msk-alert [type]="'success'" [appearance]="'outline'">
+              <span mskAlertTitle>Success alert</span>
+              This is a alert with a 'success' level severity
+            </msk-alert>
 
-    <!-- Success -->
-    <msk-alert [type]="'success'" [appearance]="'outline'">
-      <span mskAlertTitle>Success alert</span>
-      This is a alert with a 'success' level severity
-    </msk-alert>
+            <!-- Warning -->
+            <msk-alert [type]="'warning'" [appearance]="'outline'">
+              <span mskAlertTitle>Warning alert</span>
+              This is a alert with a 'warning' level severity
+            </msk-alert>
 
-    <!-- Warning -->
-    <msk-alert [type]="'warning'" [appearance]="'outline'">
-      <span mskAlertTitle>Warning alert</span>
-      This is a alert with a 'warning' level severity
-    </msk-alert>
+            <!-- Error -->
+            <msk-alert [type]="'error'" [appearance]="'outline'">
+              <span mskAlertTitle>Error alert</span>
+              This is a alert with an 'error' level severity
+            </msk-alert>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="HTML">
+          <ng-template matTabContent>
+            <textarea msk-highlight [lang]="'html'">
+              <!-- Primary -->
+              <msk-alert [type]="'primary'" [appearance]="'outline'">
+                <span mskAlertTitle>Primary alert</span>
+                Thank you for joining our newsletter
+              </msk-alert>
 
-    <!-- Error -->
-    <msk-alert [type]="'error'" [appearance]="'outline'">
-      <span mskAlertTitle>Error alert</span>
-      This is a alert with an 'error' level severity
-    </msk-alert>
+              <!-- Accent -->
+              <msk-alert [type]="'accent'" [appearance]="'outline'">
+                <span mskAlertTitle>Accent alert</span>
+                Your changes has been saved
+              </msk-alert>
+
+              <!-- Warn -->
+              <msk-alert [type]="'warn'" [appearance]="'outline'">
+                <span mskAlertTitle>Warn alert</span>
+                Fill all required fields to proceed next step
+              </msk-alert>
+
+              <!-- Basic -->
+              <msk-alert [type]="'basic'" [appearance]="'outline'">
+                <span mskAlertTitle>Basic alert</span>
+                You have 3 new notifications
+              </msk-alert>
+
+              <!-- Info -->
+              <msk-alert [type]="'info'" [appearance]="'outline'">
+                <span mskAlertTitle>Info alert</span>
+                This is a alert with an 'info' level severity
+              </msk-alert>
+
+              <!-- Success -->
+              <msk-alert [type]="'success'" [appearance]="'outline'">
+                <span mskAlertTitle>Success alert</span>
+                This is a alert with a 'success' level severity
+              </msk-alert>
+
+              <!-- Warning -->
+              <msk-alert [type]="'warning'" [appearance]="'outline'">
+                <span mskAlertTitle>Warning alert</span>
+                This is a alert with a 'warning' level severity
+              </msk-alert>
+
+              <!-- Error -->
+              <msk-alert [type]="'error'" [appearance]="'outline'">
+                <span mskAlertTitle>Error alert</span>
+                This is a alert with an 'error' level severity
+              </msk-alert>
+            </textarea>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
 
     <!-- Fill -->
-    <h4>Fill</h4>
+    <div class="example-viewer mt-4">
+      <div class="header">
+        <div class="title">Fill</div>
+        <div class="action"></div>
+      </div>
+      <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
+        <mat-tab label="Preview">
+          <ng-template matTabContent>
+            <!-- Basic -->
+            <msk-alert [type]="'basic'" [appearance]="'fill'">
+              <span mskAlertTitle>Basic alert</span>
+              You have 3 new notifications
+            </msk-alert>
 
-    <!-- Basic -->
-    <msk-alert [type]="'basic'" [appearance]="'fill'">
-      <span mskAlertTitle>Basic alert</span>
-      You have 3 new notifications
-    </msk-alert>
+            <!-- Info -->
+            <msk-alert [type]="'info'" [appearance]="'fill'">
+              <span mskAlertTitle>Info alert</span>
+              This is a alert with an 'info' level severity
+            </msk-alert>
 
-    <!-- Info -->
-    <msk-alert [type]="'info'" [appearance]="'fill'">
-      <span mskAlertTitle>Info alert</span>
-      This is a alert with an 'info' level severity
-    </msk-alert>
+            <!-- Success -->
+            <msk-alert [type]="'success'" [appearance]="'fill'">
+              <span mskAlertTitle>Success alert</span>
+              This is a alert with a 'success' level severity
+            </msk-alert>
 
-    <!-- Success -->
-    <msk-alert [type]="'success'" [appearance]="'fill'">
-      <span mskAlertTitle>Success alert</span>
-      This is a alert with a 'success' level severity
-    </msk-alert>
+            <!-- Warning -->
+            <msk-alert [type]="'warning'" [appearance]="'fill'">
+              <span mskAlertTitle>Warning alert</span>
+              This is a alert with a 'warning' level severity
+            </msk-alert>
 
-    <!-- Warning -->
-    <msk-alert [type]="'warning'" [appearance]="'fill'">
-      <span mskAlertTitle>Warning alert</span>
-      This is a alert with a 'warning' level severity
-    </msk-alert>
+            <!-- Error -->
+            <msk-alert [type]="'error'" [appearance]="'fill'">
+              <span mskAlertTitle>Error alert</span>
+              This is a alert with an 'error' level severity
+            </msk-alert>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="HTML">
+          <ng-template matTabContent>
+            <textarea msk-highlight [lang]="'html'">
+              <!-- Primary -->
+              <msk-alert [type]="'primary'" [appearance]="'fill'">
+                <span mskAlertTitle>Primary alert</span>
+                Thank you for joining our newsletter
+              </msk-alert>
 
-    <!-- Error -->
-    <msk-alert [type]="'error'" [appearance]="'fill'">
-      <span mskAlertTitle>Error alert</span>
-      This is a alert with an 'error' level severity
-    </msk-alert>
+              <!-- Accent -->
+              <msk-alert [type]="'accent'" [appearance]="'fill'">
+                <span mskAlertTitle>Accent alert</span>
+                Your changes has been saved
+              </msk-alert>
+
+              <!-- Warn -->
+              <msk-alert [type]="'warn'" [appearance]="'fill'">
+                <span mskAlertTitle>Warn alert</span>
+                Fill all required fields to proceed next step
+              </msk-alert>
+
+              <!-- Basic -->
+              <msk-alert [type]="'basic'" [appearance]="'fill'">
+                <span mskAlertTitle>Basic alert</span>
+                You have 3 new notifications
+              </msk-alert>
+
+              <!-- Info -->
+              <msk-alert [type]="'info'" [appearance]="'fill'">
+                <span mskAlertTitle>Info alert</span>
+                This is a alert with an 'info' level severity
+              </msk-alert>
+
+              <!-- Success -->
+              <msk-alert [type]="'success'" [appearance]="'fill'">
+                <span mskAlertTitle>Success alert</span>
+                This is a alert with a 'success' level severity
+              </msk-alert>
+
+              <!-- Warning -->
+              <msk-alert [type]="'warning'" [appearance]="'fill'">
+                <span mskAlertTitle>Warning alert</span>
+                This is a alert with a 'warning' level severity
+              </msk-alert>
+
+              <!-- Error -->
+              <msk-alert [type]="'error'" [appearance]="'fill'">
+                <span mskAlertTitle>Error alert</span>
+                This is a alert with an 'error' level severity
+              </msk-alert>
+            </textarea>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
 
     <!-- Border -->
-    <h4>Border</h4>
+    <div class="example-viewer mt-4">
+      <div class="header">
+        <div class="title">Border</div>
+        <div class="action"></div>
+      </div>
+      <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
+        <mat-tab label="Preview">
+          <ng-template matTabContent>
+            <!-- Basic -->
+            <msk-alert [type]="'basic'" [appearance]="'border'">
+              <span mskAlertTitle>Basic alert</span>
+              You have 3 new notifications
+            </msk-alert>
 
-    <!-- Basic -->
-    <msk-alert [type]="'basic'" [appearance]="'border'">
-      <span mskAlertTitle>Basic alert</span>
-      You have 3 new notifications
-    </msk-alert>
+            <!-- Info -->
+            <msk-alert [type]="'info'" [appearance]="'border'">
+              <span mskAlertTitle>Info alert</span>
+              This is a alert with an 'info' level severity
+            </msk-alert>
 
-    <!-- Info -->
-    <msk-alert [type]="'info'" [appearance]="'border'">
-      <span mskAlertTitle>Info alert</span>
-      This is a alert with an 'info' level severity
-    </msk-alert>
+            <!-- Success -->
+            <msk-alert [type]="'success'" [appearance]="'border'">
+              <span mskAlertTitle>Success alert</span>
+              This is a alert with a 'success' level severity
+            </msk-alert>
 
-    <!-- Success -->
-    <msk-alert [type]="'success'" [appearance]="'border'">
-      <span mskAlertTitle>Success alert</span>
-      This is a alert with a 'success' level severity
-    </msk-alert>
+            <!-- Warning -->
+            <msk-alert [type]="'warning'" [appearance]="'border'">
+              <span mskAlertTitle>Warning alert</span>
+              This is a alert with a 'warning' level severity
+            </msk-alert>
 
-    <!-- Warning -->
-    <msk-alert [type]="'warning'" [appearance]="'border'">
-      <span mskAlertTitle>Warning alert</span>
-      This is a alert with a 'warning' level severity
-    </msk-alert>
+            <!-- Error -->
+            <msk-alert [type]="'error'" [appearance]="'border'">
+              <span mskAlertTitle>Error alert</span>
+              This is a alert with an 'error' level severity
+            </msk-alert>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="HTML">
+          <ng-template matTabContent>
+            <textarea msk-highlight [lang]="'html'">
+              <!-- Basic -->
+              <msk-alert [type]="'basic'" [appearance]="'border'">
+                <span mskAlertTitle>Basic alert</span>
+                You have 3 new notifications
+              </msk-alert>
 
-    <!-- Error -->
-    <msk-alert [type]="'error'" [appearance]="'border'">
-      <span mskAlertTitle>Error alert</span>
-      This is a alert with an 'error' level severity
-    </msk-alert>
+              <!-- Info -->
+              <msk-alert [type]="'info'" [appearance]="'border'">
+                <span mskAlertTitle>Info alert</span>
+                This is a alert with an 'info' level severity
+              </msk-alert>
+
+              <!-- Success -->
+              <msk-alert [type]="'success'" [appearance]="'border'">
+                <span mskAlertTitle>Success alert</span>
+                This is a alert with a 'success' level severity
+              </msk-alert>
+
+              <!-- Warning -->
+              <msk-alert [type]="'warning'" [appearance]="'border'">
+                <span mskAlertTitle>Warning alert</span>
+                This is a alert with a 'warning' level severity
+              </msk-alert>
+
+              <!-- Error -->
+              <msk-alert [type]="'error'" [appearance]="'border'">
+                <span mskAlertTitle>Error alert</span>
+                This is a alert with an 'error' level severity
+              </msk-alert>
+            </textarea>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
 
     <h3>Dismissible alerts</h3>
     <p>
       Dismissible alerts can be removed from the view by clicking their
-      <strong>dismiss (x)</strong> button. In order to get the dismiss button
-      visible, the <code>[dismissed]</code> input must be explicitly set either
-      to <code>true</code> or <code>false</code>. Setting the
-      <code>[dismissed]</code> input to <code>null</code> or simply removing it
-      from the element will remove the <strong>dismiss</strong> button.
+      <strong>dismiss (x)</strong> button. In order to get the dismiss button visible, the
+      <code>[dismissed]</code> input must be explicitly set either to <code>true</code> or <code>false</code>. Setting
+      the <code>[dismissed]</code> input to <code>null</code> or simply removing it from the element will remove the
+      <strong>dismiss</strong> button.
     </p>
 
-    <msk-alert [appearance]="'soft'" [dismissible]="true" [dismissed]="false" [name]="'alertBox1'" [type]="'success'">
-      Your subscription model is successfully upgraded to the
-      <b>Lifetime Pro</b>.
-    </msk-alert>
+    <div class="example-viewer mt-4">
+      <div class="header">
+        <div class="title">Example</div>
+        <div class="action"></div>
+      </div>
+      <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
+        <mat-tab label="Preview">
+          <ng-template matTabContent>
+            <button class="mx-1" mat-flat-button (click)="show('alertBox1'); show('alertBox2')">
+              Show alert boxes
+            </button>
+            <button class="mx-1" mat-flat-button (click)="dismiss('alertBox1'); dismiss('alertBox2')">
+              Dismiss alert boxes
+            </button>
 
-    <msk-alert [appearance]="'soft'" [dismissible]="true" [dismissed]="false" [name]="'alertBox2'" [type]="'info'">
-      This one has a lot of text so you can see how the text is going to
-      be displayed. Also this is a dismissible alert box which can be
-      dismissed by clicking the <b>dismiss</b> button.
-    </msk-alert>
+            <msk-alert [dismissible]="true" [dismissed]="false" [name]="'alertBox1'" [type]="'success'">
+              Your subscription model is successfully upgraded to the
+              <b>Lifetime Pro</b>.
+            </msk-alert>
+
+            <msk-alert [dismissible]="true" [dismissed]="false" [name]="'alertBox2'" [type]="'info'">
+              This one has a lot of text so you can see how the text is going to be displayed. Also this is a
+              dismissible alert box which can be dismissed by clicking the <b>dismiss</b> button.
+            </msk-alert>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="HTML">
+          <ng-template matTabContent>
+            <textarea msk-highlight [lang]="'html'">
+              <button class="mx-1" mat-flat-button (click)="show('alertBox1'); show('alertBox2')">
+                Show alert boxes
+              </button>
+              <button class="mx-1" mat-flat-button (click)="dismiss('alertBox1'); dismiss('alertBox2')">
+                Dismiss alert boxes
+              </button>
+
+              <msk-alert [dismissible]="true" [dismissed]="false" [name]="'alertBox1'" [type]="'success'">
+                Your subscription model is successfully upgraded to the
+                <b>Lifetime Pro</b>.
+              </msk-alert>
+
+              <msk-alert [dismissible]="true" [dismissed]="false" [name]="'alertBox2'" [type]="'info'">
+                This one has a lot of text so you can see how the text is going to be displayed. Also this is a
+                dismissible alert box which can be dismissed by clicking the <b>dismiss</b> button.
+              </msk-alert>
+            </textarea>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Typescript">
+          <ng-template matTabContent>
+            <textarea msk-highlight [lang]="'typescript'">
+              /**
+                * Constructor
+                */
+              constructor(private _mskAlertService: MskAlertService) {}
+
+              /**
+                * Dismiss the alert via the service
+                *
+                * @param name
+                */
+              dismiss(name: string): void
+              {
+                this._mskAlertService.dismiss(name);
+              }
+
+              /**
+                * Show the alert via the service
+                *
+                * @param name
+                */
+              show(name: string): void
+              {
+                this._mskAlertService.show(name);
+              }
+            </textarea>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
   </div>
 </div>
