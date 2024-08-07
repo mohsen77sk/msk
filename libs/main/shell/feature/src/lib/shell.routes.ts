@@ -88,6 +88,11 @@ export const mainRoutes: Route[] = [
       {
         path: 'docs',
         children: [
+          // Animation
+          {
+            path: 'animations',
+            loadComponent: () => import('@msk/shared/animations').then((r) => r.MskDocsAnimationComponent),
+          },
           // Ui
           {
             path: 'ui/alert',

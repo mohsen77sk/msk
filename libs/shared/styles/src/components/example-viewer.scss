@@ -1,0 +1,15 @@
+.example-viewer {
+  @apply msk-mat-card-outlined overflow-auto;
+
+  .header {
+    @apply flex items-center justify-between px-6 pt-4;
+
+    .title {
+      @apply text-secondary;
+    }
+  }
+
+  .mat-mdc-tab-body-content {
+    @apply px-6 py-4;
+  }
+}

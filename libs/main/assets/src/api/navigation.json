@@ -44,6 +44,13 @@
     "icon": "layers",
     "children": [
       {
+        "id": "docs.animations",
+        "title": "Animations",
+        "type": "basic",
+        "icon": "animation",
+        "link": "docs/animations"
+      },
+      {
         "id": "docs.ui",
         "title": "Ui",
         "type": "collapsable",
