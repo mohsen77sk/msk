@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -8,8 +9,12 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { MskDialogData } from '@msk/shared/data-access';
@@ -26,11 +31,16 @@ import { Person } from '../../people.types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatInputModule,
     MatButtonModule,
+    MatSelectModule,
     MatTooltipModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
     MatDialogClose,
     TranslocoDirective,
     MskSpinnerDirective,
@@ -38,13 +48,13 @@ import { Person } from '../../people.types';
   ],
 })
 export class PeopleCardDetailsComponent implements OnInit {
-  readonly data = inject<MskDialogData<Person>>(MAT_DIALOG_DATA);
+  readonly data = inject<MskDialogData<Person | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<PeopleCardDetailsComponent>);
   private _formBuilder = inject(FormBuilder);
   private _changeDetectorRef = inject(ChangeDetectorRef);
 
   form!: FormGroup;
-  formErrors: unknown = {};
+  formErrors: any = {};
 
   showAlert = false;
   alertMessage = '';
@@ -64,7 +74,7 @@ export class PeopleCardDetailsComponent implements OnInit {
       lastName: ['', Validators.required],
       nationalCode: '',
       dateOfBirth: '',
-      gender: [0, Validators.required],
+      gender: ['', Validators.required],
       note: '',
     });
     // if update => patch form

@@ -11,6 +11,8 @@
     "view": "کاربر #{{code}}",
     "about": "درباره {{name}}",
     "name": "نام",
+    "firstName": "نام",
+    "lastName": "نام خانوادگی",
     "nationalCode": "کد ملی",
     "birthday": "تاریخ تولد",
     "gender": "جنسیت",

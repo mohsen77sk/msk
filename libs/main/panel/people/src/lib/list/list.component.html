@@ -48,7 +48,7 @@
 
     <!-- Fab -->
     <div class="msk-main-list-fab-container">
-      <button mat-fab extended *transloco="let t">
+      <button mat-fab extended *transloco="let t" [routerLink]="['card', 'new']">
         <mat-icon>add</mat-icon>
         <span>{{ t('new') }}</span>
       </button>

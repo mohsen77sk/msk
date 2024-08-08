@@ -55,12 +55,17 @@ export const routes: Routes = [
         },
         children: [
           {
-            path: 'card/view/:id',
+            path: 'card/new',
+            component: PeopleCardComponent,
+            resolve: {},
+          },
+          {
+            path: 'card/edit/:id',
             component: PeopleCardComponent,
             resolve: { card: personResolver },
           },
           {
-            path: 'card/edit/:id',
+            path: 'card/view/:id',
             component: PeopleCardComponent,
             resolve: { card: personResolver },
           },

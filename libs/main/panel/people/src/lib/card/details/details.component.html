@@ -1,7 +1,7 @@
 <!-- Header -->
 <div class="msk-dialog-header">
   <div class="msk-dialog-header-title" *transloco="let t; read: 'people.details'">
-    {{ t(data.action, { code: data.item.code }) }}
+    {{ t(data.action, { code: data.item?.code }) }}
   </div>
   <div class="msk-dialog-header-action">
     <button mat-icon-button matDialogClose="cancelled" [tabIndex]="-1">
@@ -12,53 +12,10 @@
 
 <!-- Content -->
 <div class="msk-dialog-content" *transloco="let t; read: 'people.details'">
-  <!-- About -->
-  <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="mb-2 font-bold">{{ t('about', { name: data.item.firstName }) }}</div>
-    <!-- Name -->
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>person</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item.firstName + ' ' + data.item.lastName }}</span>
-        <span>{{ t('name') }}</span>
-      </div>
-    </div>
-    <!-- National Code -->
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>assignment_ind</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item.nationalCode }}</span>
-        <span>{{ t('nationalCode') }}</span>
-      </div>
-    </div>
-    <!-- Birthday -->
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>cake</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item.dateOfBirth | mskDateTime : 'longDate' }}</span>
-        <span>{{ t('birthday') }}</span>
-      </div>
-    </div>
-    <!-- Gender -->
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>wc</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span *transloco="let t; read: 'people.genders'">{{ t(data.item.gender.toString()) }}</span>
-        <span>{{ t('gender') }}</span>
-      </div>
-    </div>
-  </div>
-  @if (data.item.note) {
-  <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="mb-2 font-bold">{{ t('note') }}</div>
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>sticky_note_2</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item.note }}</span>
-      </div>
-    </div>
-  </div>
-  }
+  <ng-container
+    [ngTemplateOutlet]="data.action === 'view' ? viewTemplate : formTemplate"
+    [ngTemplateOutletContext]="{ t: t }"
+  ></ng-container>
 </div>
 
 <!-- Actions -->
@@ -72,3 +29,106 @@
   </button>
 </div>
 }
+
+<ng-template #viewTemplate let-t="t">
+  <div class="msk-mat-card-filled mb-2 p-4">
+    <div class="mb-2 font-bold">{{ t('about', { name: data.item?.firstName }) }}</div>
+    <!-- Name -->
+    <div class="msk-list-item -mx-4">
+      <div class="msk-list-item-icon"><mat-icon>person</mat-icon></div>
+      <div class="msk-list-item-content">
+        <span>{{ data.item?.firstName + ' ' + data.item?.lastName }}</span>
+        <span>{{ t('name') }}</span>
+      </div>
+    </div>
+    <!-- National Code -->
+    <div class="msk-list-item -mx-4">
+      <div class="msk-list-item-icon"><mat-icon>assignment_ind</mat-icon></div>
+      <div class="msk-list-item-content">
+        <span>{{ data.item?.nationalCode || '-' }}</span>
+        <span>{{ t('nationalCode') }}</span>
+      </div>
+    </div>
+    <!-- Birthday -->
+    <div class="msk-list-item -mx-4">
+      <div class="msk-list-item-icon"><mat-icon>cake</mat-icon></div>
+      <div class="msk-list-item-content">
+        <span>{{ (data.item?.dateOfBirth | mskDateTime : 'longDate') || '-' }}</span>
+        <span>{{ t('birthday') }}</span>
+      </div>
+    </div>
+    <!-- Gender -->
+    <div class="msk-list-item -mx-4">
+      <div class="msk-list-item-icon"><mat-icon>wc</mat-icon></div>
+      <div class="msk-list-item-content">
+        <span *transloco="let t; read: 'people.genders'">{{ t(data.item?.gender?.toString() ?? '') }}</span>
+        <span>{{ t('gender') }}</span>
+      </div>
+    </div>
+  </div>
+  @if (data.item?.note) {
+  <div class="msk-mat-card-filled mb-2 p-4">
+    <div class="mb-2 font-bold">{{ t('note') }}</div>
+    <div class="msk-list-item -mx-4">
+      <div class="msk-list-item-icon"><mat-icon>sticky_note_2</mat-icon></div>
+      <div class="msk-list-item-content">
+        <span>{{ data.item?.note }}</span>
+      </div>
+    </div>
+  </div>
+  }
+</ng-template>
+
+<ng-template #formTemplate let-t="t">
+  <form [formGroup]="form">
+    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+      <!-- FirstName -->
+      <mat-form-field>
+        <mat-label>{{ t('firstName') }}</mat-label>
+        <input matInput formControlName="firstName" maxlength="128" autocomplete="off" />
+        <mat-error>{{ formErrors.firstName }}</mat-error>
+      </mat-form-field>
+
+      <!-- LastName -->
+      <mat-form-field>
+        <mat-label>{{ t('lastName') }}</mat-label>
+        <input matInput formControlName="lastName" maxlength="128" autocomplete="off" />
+        <mat-error>{{ formErrors.lastName }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+      <!-- NationalCode -->
+      <mat-form-field>
+        <mat-label>{{ t('nationalCode') }}</mat-label>
+        <input matInput formControlName="nationalCode" maxlength="10" autocomplete="off" />
+        <mat-error>{{ formErrors.nationalCode }}</mat-error>
+      </mat-form-field>
+
+      <!-- Birthday -->
+      <mat-form-field>
+        <mat-label>{{ t('birthday') }}</mat-label>
+        <input matInput formControlName="dateOfBirth" [matDatepicker]="picker" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>{{ formErrors.dateOfBirth }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Gender -->
+    <mat-form-field>
+      <mat-label>{{ t('gender') }}</mat-label>
+      <mat-select formControlName="gender" *transloco="let t">
+        @for (item of [1, 2, 3]; track item) {
+        <mat-option [value]="item">{{ t('people.genders.' + item) }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Note -->
+    <mat-form-field>
+      <textarea matInput formControlName="note" [placeholder]="t('note')" [rows]="2"></textarea>
+      <mat-error>{{ formErrors.note }}</mat-error>
+    </mat-form-field>
+  </form>
+</ng-template>

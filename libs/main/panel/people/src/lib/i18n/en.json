@@ -11,6 +11,8 @@
     "view": "Person #{{code}}",
     "about": "About {{name}}",
     "name": "Name",
+    "firstName": "First Name",
+    "lastName": "Last Name",
     "nationalCode": "National Id",
     "birthday": "Birthday",
     "gender": "Gender",

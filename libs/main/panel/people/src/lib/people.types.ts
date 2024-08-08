@@ -15,7 +15,7 @@ export class Person {
   firstName: string;
   lastName: string;
   nationalCode: string;
-  dateOfBirth: Date;
+  dateOfBirth?: Date;
   gender: Gender;
   note?: string;
   isActive: boolean;
@@ -26,7 +26,7 @@ export class Person {
     this.firstName = input.firstName;
     this.lastName = input.lastName;
     this.nationalCode = input.nationalCode;
-    this.dateOfBirth = new Date(input.dateOfBirth);
+    this.dateOfBirth = input.dateOfBirth ? new Date(input.dateOfBirth) : undefined;
     this.gender = input.gender;
     this.note = input.note;
     this.isActive = input.isActive;
