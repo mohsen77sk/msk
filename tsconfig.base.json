@@ -37,6 +37,7 @@
       "@msk/shared/pipes/date-time": ["libs/shared/pipes/date-time/src/index.ts"],
       "@msk/shared/pipes/find-by-key": ["libs/shared/pipes/find-by-key/src/index.ts"],
       "@msk/shared/services/config": ["libs/shared/services/config/src/index.ts"],
+      "@msk/shared/services/iranian-banks": ["libs/shared/services/iranian-banks/src/index.ts"],
       "@msk/shared/services/media-watcher": ["libs/shared/services/media-watcher/src/index.ts"],
       "@msk/shared/services/platform": ["libs/shared/services/platform/src/index.ts"],
       "@msk/shared/services/splash-screen": ["libs/shared/services/splash-screen/src/index.ts"],
