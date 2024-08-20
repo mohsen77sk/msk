@@ -143,6 +143,7 @@ $light-theme: mat.define-theme((
   ),
   typography: (
     plain-family: theme('fontFamily.sans'),
+    use-system-variables: true,
   ),
 ));
 
@@ -155,5 +156,6 @@ $dark-theme: mat.define-theme((
   ),
   typography: (
     plain-family: theme('fontFamily.sans'),
+    use-system-variables: true,
   ),
 ));

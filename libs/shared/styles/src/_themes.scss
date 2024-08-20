@@ -8,8 +8,8 @@
 // Include the default theme styles.
 body {
   @include mat.system-level-colors(themeM3.$light-theme);
+  @include mat.system-level-typography(themeM3.$light-theme);
   @include themeVars.system-level-corner(themeM3.$light-theme);
-  @include themeVars.system-level-elevation(themeM3.$light-theme);
 
   @include mat.all-component-themes(themeM3.$light-theme);
 }
