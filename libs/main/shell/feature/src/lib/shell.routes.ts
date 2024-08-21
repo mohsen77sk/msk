@@ -93,6 +93,14 @@ export const mainRoutes: Route[] = [
             path: 'animations',
             loadComponent: () => import('@msk/shared/animations').then((r) => r.MskDocsAnimationComponent),
           },
+          {
+            path: 'colors',
+            loadComponent: () => import('@msk/shared/ui/documentation').then((r) => r.MskDocsColorsComponent),
+          },
+          {
+            path: 'typography',
+            loadComponent: () => import('@msk/shared/ui/documentation').then((r) => r.MskDocsTypographyComponent),
+          },
           // Ui
           {
             path: 'ui/alert',

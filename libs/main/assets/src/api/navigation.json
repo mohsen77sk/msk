@@ -51,6 +51,20 @@
         "link": "docs/animations"
       },
       {
+        "id": "docs.colors",
+        "title": "Colors",
+        "type": "basic",
+        "icon": "colors",
+        "link": "docs/colors"
+      },
+      {
+        "id": "docs.typography",
+        "title": "Typography",
+        "type": "basic",
+        "icon": "format_paragraph",
+        "link": "docs/typography"
+      },
+      {
         "id": "docs.ui",
         "title": "Ui",
         "type": "collapsable",
