@@ -160,6 +160,54 @@ module.exports = plugin(({ addComponents, addUtilities, theme }) => {
     },
   });
 
+  addUtilities({
+    '.text-display-large': {
+      font: 'var(--sys-display-large) !important',
+    },
+    '.text-display-medium': {
+      font: 'var(--sys-display-medium) !important',
+    },
+    '.text-display-small': {
+      font: 'var(--sys-display-small) !important',
+    },
+    '.text-headline-large': {
+      font: 'var(--sys-headline-large) !important',
+    },
+    '.text-headline-medium': {
+      font: 'var(--sys-headline-medium) !important',
+    },
+    '.text-headline-small': {
+      font: 'var(--sys-headline-small) !important',
+    },
+    '.text-title-large': {
+      font: 'var(--sys-title-large) !important',
+    },
+    '.text-title-medium': {
+      font: 'var(--sys-title-medium) !important',
+    },
+    '.text-title-small': {
+      font: 'var(--sys-title-small) !important',
+    },
+    '.text-body-large': {
+      font: 'var(--sys-body-large) !important',
+    },
+    '.text-body-medium': {
+      font: 'var(--sys-body-medium) !important',
+    },
+    '.text-body-small': {
+      font: 'var(--sys-body-small) !important',
+    },
+    '.text-label-large': {
+      font: 'var(--sys-label-large) !important',
+    },
+    '.text-label-medium': {
+      font: 'var(--sys-label-medium) !important',
+    },
+    '.text-label-small': {
+      font: 'var(--sys-label-small) !important',
+    },
+  });
+
   addComponents({
     '.msk-mat-card-elevated': {
       position: 'relative',

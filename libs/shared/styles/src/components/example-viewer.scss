@@ -5,8 +5,12 @@
     @apply flex items-center justify-between px-6 pt-4;
 
     .title {
-      @apply text-secondary;
+      @apply text-secondary text-title-medium;
     }
+  }
+
+  .content {
+    @apply border-t px-6 py-4 mt-4;
   }
 
   .mat-mdc-tab-body-content {

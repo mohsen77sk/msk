@@ -167,6 +167,8 @@ const config = {
             '--tw-prose-code': 'var(--sys-primary)',
             '--tw-prose-th-borders': 'var(--sys-outline-variant)',
             '--tw-prose-td-borders': 'var(--sys-outline-variant)',
+            'font-size': 'var(--sys-body-medium-size)',
+            'line-height': 'var(--sys-body-medium-line-height)'
           },
         },
       }),
