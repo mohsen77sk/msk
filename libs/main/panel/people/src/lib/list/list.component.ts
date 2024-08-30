@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/scrolling';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -44,6 +45,7 @@ import { UsersStatusComponent } from '../common/status/status.component';
     ReactiveFormsModule,
     RouterLink,
     RouterOutlet,
+    CdkScrollable,
     MatIconModule,
     MatMenuModule,
     MatInputModule,
@@ -59,12 +61,15 @@ import { UsersStatusComponent } from '../common/status/status.component';
 export class PeopleListComponent implements OnInit, AfterViewInit {
   private _destroyRef = inject(DestroyRef);
   private _peopleService = inject(PeopleService);
+  private _scrollDispatcher = inject(ScrollDispatcher);
   private _changeDetectorRef = inject(ChangeDetectorRef);
 
   @ViewChild(MatPaginator) private _paginator!: MatPaginator;
   @ViewChild(MatSort) private _sort!: MatSort;
 
   isLoading = false;
+  isFabCollapses = false;
+  lastOffsetScroll = 0;
   pageSizeOptions = MskPageSizeOptions;
   pagination!: MskPagination;
   persons$!: Observable<Person[] | null>;
@@ -81,6 +86,22 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
    * On init
    */
   ngOnInit(): void {
+    // Get the scrolling
+    this._scrollDispatcher
+      .scrolled()
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        filter((data) => data !== undefined)
+      )
+      .subscribe((data) => {
+        // Check for scrolling
+        const scrollTop = data.getElementRef().nativeElement.scrollTop || 0;
+        this.isFabCollapses = scrollTop > 10 ? this.lastOffsetScroll < scrollTop : false;
+        this.lastOffsetScroll = scrollTop;
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+      });
+
     // Get the pagination
     this._peopleService.pagination$
       .pipe(

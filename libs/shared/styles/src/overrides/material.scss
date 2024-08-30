@@ -11,6 +11,48 @@
   }
 }
 
+/* Fab extended buttons */
+.mat-mdc-fab.mat-mdc-extended-fab {
+  overflow: hidden;
+
+  .mat-icon {
+    transition: margin 300ms 0ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .mdc-button__label {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 15ms ease-out, transform 300ms 0ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  &.mat-mdc-extended-fab-collapses {
+    width: 56px;
+    padding-left: 0;
+    padding-right: 0;
+
+    .mat-icon {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .mdc-button__label {
+      width: 0;
+      opacity: 0;
+      transform: translateX(100%);
+    }
+  }
+}
+
+[dir='rtl'] {
+  .mat-mdc-fab.mat-mdc-extended-fab {
+    &.mat-mdc-extended-fab-collapses {
+      .mdc-button__label {
+        transform: translateX(-100%);
+      }
+    }
+  }
+}
+
 /* Dialog */
 .cdk-overlay-pane.mat-mdc-dialog-panel.msk-dialog {
   min-width: 100vw;

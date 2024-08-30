@@ -1,7 +1,7 @@
-<div class="absolute inset-0 flex min-w-0 flex-col overflow-y-auto">
+<div class="page-layout content-scroll md:py-4">
   <!-- Main -->
-  <div class="prose max-w-full flex-auto p-6 md:px-10">
-    <h3>Component</h3>
+  <div class="content prose my-4 max-w-full">
+    <h3 class="sticky-header mt-4 md:mt-0">Component</h3>
     <textarea msk-highlight lang="typescript">
       import { MskAlertComponent } from '@msk/shared/ui/alert';
     </textarea>
@@ -12,8 +12,8 @@
     </p>
     <p><strong>Exported as: </strong><code>mskAlert</code></p>
 
-    <h3>Properties</h3>
-    <div class="msk-mat-card-filled overflow-auto p-4">
+    <h3 class="sticky-header">Properties</h3>
+    <div class="msk-mat-card-filled flex-shrink-0 overflow-auto p-4">
       <table class="m-0">
         <thead>
           <tr>
@@ -109,7 +109,7 @@
       </table>
     </div>
 
-    <h3>Type aliases</h3>
+    <h3 class="sticky-header">Type aliases</h3>
     <textarea msk-highlight lang="typescript">
       export type MskAlertAppearance =
         | 'border'
@@ -126,7 +126,7 @@
         | 'error';
     </textarea>
 
-    <h3>Appearance</h3>
+    <h3 class="sticky-header">Appearance</h3>
     <p>Alert component comes with 4 different built-in appearances to choose from:</p>
 
     <!-- Soft -->
@@ -495,7 +495,7 @@
       </mat-tab-group>
     </div>
 
-    <h3>Dismissible alerts</h3>
+    <h3 class="sticky-header">Dismissible alerts</h3>
     <p>
       Dismissible alerts can be removed from the view by clicking their
       <strong>dismiss (x)</strong> button. In order to get the dismiss button visible, the
@@ -584,5 +584,7 @@
         </mat-tab>
       </mat-tab-group>
     </div>
+
+    <div class="mb-6"></div>
   </div>
 </div>

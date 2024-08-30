@@ -1,6 +1,6 @@
 /* Components */
 @use 'components/input';
-@use 'components/main-layout';
+@use 'components/page-layout';
 @use 'components/example-viewer';
 
 /* Overrides */
@@ -8,3 +8,4 @@
 @use 'overrides/font-icons';
 @use 'overrides/highlight-js';
 @use 'overrides/perfect-scrollbar';
+@use 'overrides/prose';

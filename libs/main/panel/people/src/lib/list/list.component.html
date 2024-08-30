@@ -1,16 +1,16 @@
-<div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden">
+<div class="page-layout grid-scroll">
   <!-- Header -->
-  <div class="flex items-center justify-between p-4 md:px-8">
+  <div class="header">
     <form class="flex items-center justify-end space-x-1 rtl:space-x-reverse" [formGroup]="filterForm"></form>
   </div>
 
   <!-- Main -->
-  <div class="flex flex-auto flex-col overflow-hidden">
+  <div class="content">
     <!-- List -->
-    <div class="msk-main-list">
-      <div class="msk-main-list-grid people-main-list-grid">
+    <div class="content-grid" cdkScrollable>
+      <div class="content-grid-list people-content-grid">
         <!-- Header -->
-        <div class="msk-main-list-grid-header" matSort matSortDisableClear>
+        <div class="content-grid-list-header" matSort matSortDisableClear>
           <ng-container *transloco="let t; read: 'people.column'">
             <a mat-sort-header="code">{{ t('code') }}</a>
             <a mat-sort-header="firstName">{{ t('name') }}</a>
@@ -20,7 +20,7 @@
         </div>
         <!-- Rows -->
         @for (person of persons$ | async; track person.id) {
-        <div class="msk-main-list-grid-row" [routerLink]="['card', 'view', person.id]" matRipple>
+        <div class="content-grid-list-row" [routerLink]="['card', 'view', person.id]" matRipple>
           <!-- Code -->
           <div class="truncate">
             {{ person.code }}
@@ -47,15 +47,21 @@
     </div>
 
     <!-- Fab -->
-    <div class="msk-main-list-fab-container">
-      <button mat-fab extended *transloco="let t" [routerLink]="['card', 'new']">
+    <div class="content-fab-container">
+      <button
+        mat-fab
+        extended
+        [routerLink]="['card', 'new']"
+        [ngClass]="{ 'mat-mdc-extended-fab-collapses': isFabCollapses }"
+        @zoomIn
+      >
         <mat-icon>add</mat-icon>
-        <span>{{ t('new') }}</span>
+        <span *transloco="let t">{{ t('new') }}</span>
       </button>
     </div>
 
     <mat-paginator
-      class="msk-main-list-paginator"
+      class="content-paginator"
       [length]="pagination.total"
       [pageIndex]="pagination.pageIndex"
       [pageSize]="pagination.pageSize"
