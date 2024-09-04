@@ -48,7 +48,7 @@ export class PeopleCardComponent implements OnInit {
     // Launch the modal
     this._matDialog
       .open(PeopleCardDetailsComponent, {
-        autoFocus: false,
+        autoFocus: true,
         disableClose: action !== 'view',
         panelClass: 'msk-dialog',
         direction: this.layoutDirection,
