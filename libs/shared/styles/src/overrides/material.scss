@@ -53,6 +53,30 @@
   }
 }
 
+/* Basic dialog */
+.cdk-overlay-pane.mat-mdc-dialog-panel {
+  --mat-dialog-headline-padding: 24px 24px 16px;
+  --mat-dialog-content-padding: 24px 24px;
+  --mat-dialog-actions-padding: 24px 24px;
+  --mat-dialog-with-actions-content-padding: 24px 24px 0;
+
+  .mat-mdc-dialog-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--mat-dialog-headline-padding);
+    color: var(--sys-secondary);
+  }
+
+  .mat-mdc-dialog-title::before {
+    display: none;
+  }
+
+  .mat-mdc-dialog-container .mat-mdc-dialog-icon + .mat-mdc-dialog-title {
+    padding-top: 0;
+  }
+}
+
 /* Dialog */
 .cdk-overlay-pane.mat-mdc-dialog-panel.msk-dialog {
   min-width: 100vw;

@@ -97,10 +97,24 @@
         ]
       },
       {
+        "id": "docs.services",
+        "title": "Services",
+        "type": "collapsable",
+        "icon": "layers",
+        "children": [
+          {
+            "id": "docs.services.confirmation",
+            "title": "Confirmation",
+            "type": "basic",
+            "link": "docs/services/confirmation"
+          }
+        ]
+      },
+      {
         "id": "docs.pages",
         "title": "Pages",
         "type": "collapsable",
-        "icon": "layers",
+        "icon": "pages",
         "children": [
           {
             "id": "docs.pages.not-found",

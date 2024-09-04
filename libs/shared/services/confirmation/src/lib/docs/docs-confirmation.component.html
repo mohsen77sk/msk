@@ -1,0 +1,180 @@
+<div class="page-layout content-scroll md:py-4">
+  <!-- Main -->
+  <div class="content prose max-w-full">
+    <h3 class="sticky-header mt-4 md:mt-0">Service</h3>
+    <textarea msk-highlight lang="typescript">
+      import { MskConfirmationService } from '@msk/shared/services/confirmation';
+    </textarea>
+
+    <p>
+      <strong>MskConfirmationService</strong> is a singleton service for creating confirmation and information dialogs.
+      Internally it uses MatDialog to create and show the dialog.
+    </p>
+
+    <h3 class="sticky-header">Confirmation Config</h3>
+    <p>Here is the interface for the <em>Confirmation configuration</em>:</p>
+    <textarea msk-highlight lang="typescript">
+      export interface MskConfirmationConfig
+      {
+        title?: string;
+        message?: string;
+        icon?: {
+          show?: boolean;
+          name?: string;
+        };
+        actions?: {
+          confirm?: {
+            show?: boolean;
+            label?: string;
+          };
+          cancel?: {
+            show?: boolean;
+            label?: string;
+          };
+        };
+        dismissible?: boolean;
+      }
+    </textarea>
+
+    <h3 class="sticky-header">Methods</h3>
+    <div class="msk-mat-card-filled mt-4">
+      <div class="text-secondary text-title-small border-b px-6 py-3">
+        open(config: MskConfirmationConfig): MatDialogRef&lt;MskConfirmationDialogComponent&gt;
+      </div>
+      <div class="p-6">Opens the confirmation dialog with the given configuration</div>
+    </div>
+
+    <h3 class="sticky-header">MatDialogRef</h3>
+    <p>
+      Since <code>MskConfirmationService</code> uses <em>MatDialog</em> behind the scenes, it returns a reference to the
+      created dialog. You can use all available methods from that reference such as <code>updateSize</code> and
+      <code>updatePosition</code> to further customize the dialog.
+    </p>
+    <p>
+      See
+      <a href="https://material.angular.io/components/dialog/api#MatDialogRef" target="_blank" rel="noreferrer">
+        https://material.angular.io/components/dialog/api#MatDialogRef
+      </a>
+      for the complete list of available methods.
+    </p>
+    <p>Using the reference, you can also access to the user input:</p>
+    <textarea msk-highlight [lang]="'ts'">
+      // Open the confirmation and save the reference
+      const dialogRef = this._mskConfirmationService.open({...});
+
+      // Subscribe to afterClosed from the dialog reference
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(result);
+      });
+    </textarea>
+    <div class="msk-mat-card-filled flex-shrink-0 overflow-auto p-4">
+      <table class="m-0">
+        <thead>
+          <tr>
+            <th>Result</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-md text-secondary">
+              <code>'confirmed'</code>
+            </td>
+            <td>This is the result if the user pressed the Confirm button.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">
+              <code>'cancelled'</code>
+            </td>
+            <td>This is the result if the user pressed the Cancel button.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">
+              <code>undefined</code>
+            </td>
+            <td>
+              This is the result if the confirmation dismissed either using the close button, clicking on the backdrop
+              or pressing the Escape key.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sticky-header">Demo</h3>
+    <p>
+      Below you can configure and preview the confirmation dialog. You can use the generated configuration object within
+      your code to have the exact same dialog.
+    </p>
+    <div class="msk-mat-card-outlined flex-shrink-0 overflow-auto p-4">
+      <div class="text-title-medium mb-6">Configure the dialog and preview it</div>
+
+      <form [formGroup]="configForm" class="flex flex-col items-start">
+        <!-- Title -->
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" />
+        </mat-form-field>
+
+        <!-- Message -->
+        <mat-form-field class="mt-4 w-full" subscriptSizing="dynamic">
+          <mat-label>Message</mat-label>
+          <textarea matInput formControlName="message"> </textarea>
+        </mat-form-field>
+
+        <!-- Divider -->
+        <div class="mb-4 mt-6 w-full border-b"></div>
+
+        <!-- Icon -->
+        <div class="flex w-full flex-col" formGroupName="icon">
+          <mat-checkbox formControlName="show"> Show Icon </mat-checkbox>
+          <!-- Icon name -->
+          <mat-form-field class="mt-4 w-full" subscriptSizing="dynamic">
+            <mat-label>Icon name</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+        </div>
+
+        <!-- Divider -->
+        <div class="mb-4 mt-6 w-full border-b"></div>
+
+        <!-- Actions -->
+        <div class="grid w-full grid-cols-2 gap-4" formGroupName="actions">
+          <!-- Confirm -->
+          <div class="flex w-full flex-col" formGroupName="confirm">
+            <mat-checkbox formControlName="show"> Show Confirm button </mat-checkbox>
+            <!-- Confirm label -->
+            <mat-form-field class="mt-4 w-full" subscriptSizing="dynamic">
+              <mat-label>Confirm button label</mat-label>
+              <input matInput formControlName="label" />
+            </mat-form-field>
+          </div>
+
+          <!-- Cancel -->
+          <div class="flex w-full flex-col" formGroupName="cancel">
+            <mat-checkbox formControlName="show"> Show Cancel button </mat-checkbox>
+            <!-- Cancel label -->
+            <mat-form-field class="mt-4 w-full" subscriptSizing="dynamic">
+              <mat-label>Cancel button label</mat-label>
+              <input matInput formControlName="label" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="mb-4 mt-6 w-full border-b"></div>
+
+        <!-- Dismissible -->
+        <mat-checkbox formControlName="dismissible"> Dismissible </mat-checkbox>
+
+        <div class="mt-12">
+          <button mat-flat-button (click)="openConfirmationDialog()">Open Confirmation Dialog</button>
+        </div>
+      </form>
+    </div>
+
+    <textarea msk-highlight [code]="configForm.value | json" lang="json"></textarea>
+
+    <div class="mb-6"></div>
+  </div>
+</div>
