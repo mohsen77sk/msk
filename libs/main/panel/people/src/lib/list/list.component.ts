@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/scrolling';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -25,7 +25,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskPageSizeOptions, MskPagination } from '@msk/shared/data-access';
-import { Observable, catchError, filter, finalize, merge, of, switchMap } from 'rxjs';
+import { Observable, catchError, filter, finalize, map, merge, of, switchMap, tap } from 'rxjs';
 import { DefaultPeopleSortDirection, DefaultPeopleSortId, Person } from '../people.types';
 import { PeopleService } from '../people.service';
 import { UsersStatusComponent } from '../common/status/status.component';
@@ -61,9 +61,9 @@ import { UsersStatusComponent } from '../common/status/status.component';
 export class PeopleListComponent implements OnInit, AfterViewInit {
   private _destroyRef = inject(DestroyRef);
   private _peopleService = inject(PeopleService);
-  private _scrollDispatcher = inject(ScrollDispatcher);
   private _changeDetectorRef = inject(ChangeDetectorRef);
 
+  @ViewChild(CdkScrollable) private _gridContent!: CdkScrollable;
   @ViewChild(MatPaginator) private _paginator!: MatPaginator;
   @ViewChild(MatSort) private _sort!: MatSort;
 
@@ -86,22 +86,6 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
    * On init
    */
   ngOnInit(): void {
-    // Get the scrolling
-    this._scrollDispatcher
-      .scrolled()
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        filter((data) => data !== undefined)
-      )
-      .subscribe((data) => {
-        // Check for scrolling
-        const scrollTop = data.getElementRef().nativeElement.scrollTop || 0;
-        this.isFabCollapses = scrollTop > 10 ? this.lastOffsetScroll < scrollTop : false;
-        this.lastOffsetScroll = scrollTop;
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
-      });
-
     // Get the pagination
     this._peopleService.pagination$
       .pipe(
@@ -145,6 +129,25 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
         .pipe(switchMap(() => this.getPersons()))
         .subscribe();
     }
+
+    // Get the scrolling
+    this._gridContent
+      .elementScrolled()
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        map((data) => (data.target as HTMLElement).scrollTop || 0),
+        tap((scrollTop) => {
+          const isFabCollapses = scrollTop > 10 ? this.lastOffsetScroll < scrollTop : false;
+          // If the FAB collapses state has changed...
+          if (this.isFabCollapses !== isFabCollapses) {
+            this.isFabCollapses = isFabCollapses;
+            this._changeDetectorRef.markForCheck();
+          }
+          // Update lastOffsetScroll
+          this.lastOffsetScroll = scrollTop;
+        })
+      )
+      .subscribe();
   }
 
   // -----------------------------------------------------------------------------------------------------
