@@ -1,34 +1,22 @@
-<!-- Header -->
-<div class="msk-dialog-header">
-  <div class="msk-dialog-header-title" *transloco="let t; read: 'people.details'">
-    {{ t(data.action, { code: data.item?.code }) }}
-  </div>
-  <div class="msk-dialog-header-action">
-    <button mat-icon-button matDialogClose="cancelled" [tabIndex]="-1">
-      <mat-icon class="text-current">close</mat-icon>
-    </button>
-  </div>
-</div>
-
-<!-- Content -->
-<div class="msk-dialog-content" *transloco="let t; read: 'people.details'">
+<msk-dialog
+  *transloco="let t; read: 'people.details'"
+  [title]="t(data.action, { code: data.item?.code })"
+  [hasAction]="data.action !== 'view'"
+  [primaryAction]="primaryAction"
+>
+  <!-- Content -->
   <ng-container
     [ngTemplateOutlet]="data.action === 'view' ? viewTemplate : formTemplate"
     [ngTemplateOutletContext]="{ t: t }"
+    msk-dialog-content
   ></ng-container>
-</div>
 
-<!-- Actions -->
-@if (data.action !== 'view') {
-<div class="msk-dialog-footer" align="end" *transloco="let t">
-  <button mat-button matDialogClose="cancelled">
-    {{ t('cancel') }}
-  </button>
-  <button mat-button [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
-    {{ t('save') }}
-  </button>
-</div>
-}
+  <ng-template #primaryAction>
+    <button mat-button [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+      <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
+    </button>
+  </ng-template>
+</msk-dialog>
 
 <ng-template #viewTemplate let-t="t">
   <div class="msk-mat-card-filled mb-2 p-4">
@@ -80,7 +68,7 @@
 </ng-template>
 
 <ng-template #formTemplate let-t="t">
-  <form [formGroup]="form">
+  <form class="flex flex-auto flex-col" [formGroup]="form">
     <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
       <!-- FirstName -->
       <mat-form-field>

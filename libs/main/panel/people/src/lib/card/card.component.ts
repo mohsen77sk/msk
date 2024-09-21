@@ -50,7 +50,6 @@ export class PeopleCardComponent implements OnInit {
       .open(PeopleCardDetailsComponent, {
         autoFocus: true,
         disableClose: action !== 'view',
-        panelClass: 'msk-dialog',
         direction: this.layoutDirection,
         data: {
           action,

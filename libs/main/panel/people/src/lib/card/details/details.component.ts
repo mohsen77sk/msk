@@ -15,9 +15,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { MskDialogData } from '@msk/shared/data-access';
+import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { mskAnimations } from '@msk/shared/animations';
@@ -41,8 +42,9 @@ import { Person } from '../../people.types';
     MatTooltipModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    MatDialogClose,
+    MatDialogModule,
     TranslocoDirective,
+    MskDialogComponent,
     MskSpinnerDirective,
     MskDateTimePipe,
   ],
@@ -77,10 +79,8 @@ export class PeopleCardDetailsComponent implements OnInit {
       gender: ['', Validators.required],
       note: '',
     });
-    // if update => patch form
-    if (this.data.action === 'edit') {
-      this.form.patchValue(this.data.item || {});
-    }
+    // Patch value form
+    this.form.patchValue(this.data.item || {});
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -92,5 +92,10 @@ export class PeopleCardDetailsComponent implements OnInit {
    */
   saveAndClose(): void {
     //
+    this.form.disable();
+
+    setTimeout(() => {
+      this.form.enable();
+    }, 5000);
   }
 }

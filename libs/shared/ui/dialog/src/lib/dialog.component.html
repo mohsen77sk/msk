@@ -1,0 +1,46 @@
+@if (isLoading()) {
+<div class="h-30 flex items-center justify-center">
+  <mat-spinner mode="indeterminate" diameter="40"></mat-spinner>
+</div>
+} @else {
+<!-- Header -->
+<div class="z-10 flex items-center justify-between" [class.mat-elevation-z2]="isScrolled()" mat-dialog-title>
+  <div class="flex items-center truncate">
+    @if (isFullScreen()) {
+    <ng-container [ngTemplateOutlet]="closeIconButton"></ng-container>
+    }
+    <label [ngClass]="{ 'mt-1': isFullScreen }"> {{ title() }} </label>
+  </div>
+  <div class="flex items-center">
+    @if (!isFullScreen()) {
+    <ng-container [ngTemplateOutlet]="closeIconButton"></ng-container>
+    } @if(hasAction() && isFullScreen()) {
+    <ng-container [ngTemplateOutlet]="primaryAction() || null"></ng-container>
+    }
+  </div>
+</div>
+
+<!-- Content -->
+<mat-dialog-content>
+  <ng-content select="[msk-dialog-content]"></ng-content>
+</mat-dialog-content>
+
+<!-- Actions -->
+@if (hasAction() && !isFullScreen()) {
+<mat-dialog-actions align="end">
+  <ng-container [ngTemplateOutlet]="closeActionButton"></ng-container>
+  <ng-container [ngTemplateOutlet]="primaryAction() || null"></ng-container>
+</mat-dialog-actions>
+} }
+
+<ng-template #closeIconButton>
+  <button mat-icon-button [ngClass]="{ 'me-1': isFullScreen() }" matDialogClose="cancelled" [tabIndex]="-1">
+    <mat-icon class="text-current">close</mat-icon>
+  </button>
+</ng-template>
+
+<ng-template #closeActionButton>
+  <button mat-button matDialogClose="cancelled" *transloco="let t">
+    {{ t('cancel') }}
+  </button>
+</ng-template>
