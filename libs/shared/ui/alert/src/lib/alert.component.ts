@@ -1,20 +1,18 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
-  EventEmitter,
   HostBinding,
-  Input,
-  OnChanges,
   OnInit,
-  Output,
-  SimpleChanges,
   ViewEncapsulation,
+  booleanAttribute,
+  effect,
   inject,
+  input,
+  output,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { mskAnimations } from '@msk/shared/animations';
@@ -34,19 +32,26 @@ import { filter } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatButtonModule],
 })
-export class MskAlertComponent implements OnChanges, OnInit {
+export class MskAlertComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _mskAlertService = inject(MskAlertService);
   private _mskUtilsService = inject(MskUtilsService);
-  private _changeDetectorRef = inject(ChangeDetectorRef);
 
-  @Input() appearance: MskAlertAppearance = 'soft';
-  @Input() dismissed = false;
-  @Input() dismissible = false;
-  @Input() name: string = this._mskUtilsService.randomId();
-  @Input() showIcon = true;
-  @Input() type: MskAlertType = 'basic';
-  @Output() readonly dismissedChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
+  hasDismissed = signal(false);
+
+  name = input<string>(this._mskUtilsService.randomId());
+  type = input<MskAlertType>('basic');
+  showIcon = input(true, { transform: booleanAttribute });
+  dismissed = input(false, { transform: booleanAttribute });
+  dismissible = input(false, { transform: booleanAttribute });
+  appearance = input<MskAlertAppearance>('soft');
+  dismissedChanged = output<boolean>();
+
+  constructor() {
+    effect(() => {
+      this._toggleDismiss(this.dismissed());
+    });
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -57,11 +62,11 @@ export class MskAlertComponent implements OnChanges, OnInit {
    */
   @HostBinding('class') get classList(): object {
     return {
-      [`msk-alert-appearance-${this.appearance}`]: true,
-      'msk-alert-dismissed': this.dismissed,
-      'msk-alert-dismissible': this.dismissible,
-      'msk-alert-show-icon': this.showIcon,
-      [`msk-alert-type-${this.type}`]: true,
+      [`msk-alert-appearance-${this.appearance()}`]: true,
+      'msk-alert-dismissed': this.hasDismissed(),
+      'msk-alert-dismissible': this.dismissible(),
+      'msk-alert-show-icon': this.showIcon(),
+      [`msk-alert-type-${this.type()}`]: true,
     };
   }
 
@@ -70,58 +75,24 @@ export class MskAlertComponent implements OnChanges, OnInit {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * On changes
-   *
-   * @param changes
-   */
-  ngOnChanges(changes: SimpleChanges): void {
-    // Dismissed
-    if ('dismissed' in changes) {
-      // Coerce the value to a boolean
-      this.dismissed = coerceBooleanProperty(changes['dismissed'].currentValue);
-
-      // Dismiss/show the alert
-      this._toggleDismiss(this.dismissed);
-    }
-
-    // Dismissible
-    if ('dismissible' in changes) {
-      // Coerce the value to a boolean
-      this.dismissible = coerceBooleanProperty(changes['dismissible'].currentValue);
-    }
-
-    // Show icon
-    if ('showIcon' in changes) {
-      // Coerce the value to a boolean
-      this.showIcon = coerceBooleanProperty(changes['showIcon'].currentValue);
-    }
-  }
-
-  /**
    * On init
    */
   ngOnInit(): void {
     // Subscribe to the dismiss calls
     this._mskAlertService.onDismiss
       .pipe(
-        filter((name) => this.name === name),
+        filter((name) => this.name() === name),
         takeUntilDestroyed(this._destroyRef)
       )
-      .subscribe(() => {
-        // Dismiss the alert
-        this.dismiss();
-      });
+      .subscribe(() => this.dismiss());
 
     // Subscribe to the show calls
     this._mskAlertService.onShow
       .pipe(
-        filter((name) => this.name === name),
+        filter((name) => this.name() === name),
         takeUntilDestroyed(this._destroyRef)
       )
-      .subscribe(() => {
-        // Show the alert
-        this.show();
-      });
+      .subscribe(() => this.show());
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -133,7 +104,7 @@ export class MskAlertComponent implements OnChanges, OnInit {
    */
   dismiss(): void {
     // Return if the alert is already dismissed
-    if (this.dismissed) {
+    if (this.hasDismissed()) {
       return;
     }
 
@@ -146,7 +117,7 @@ export class MskAlertComponent implements OnChanges, OnInit {
    */
   show(): void {
     // Return if the alert is already showing
-    if (!this.dismissed) {
+    if (!this.hasDismissed()) {
       return;
     }
 
@@ -166,17 +137,14 @@ export class MskAlertComponent implements OnChanges, OnInit {
    */
   private _toggleDismiss(dismissed: boolean): void {
     // Return if the alert is not dismissible
-    if (!this.dismissible) {
+    if (!this.dismissible()) {
       return;
     }
 
     // Set the dismissed
-    this.dismissed = dismissed;
+    this.hasDismissed.set(dismissed);
 
     // Execute the observable
-    this.dismissedChanged.next(this.dismissed);
-
-    // Notify the change detector
-    this._changeDetectorRef.markForCheck();
+    this.dismissedChanged.emit(dismissed);
   }
 }
