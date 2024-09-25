@@ -1,6 +1,6 @@
 <!-- Button -->
-<button mat-icon-button [matTooltip]="tooltip" (click)="toggleFullscreen()">
-  <ng-container [ngTemplateOutlet]="iconTpl || defaultIconTpl"></ng-container>
+<button mat-icon-button [matTooltip]="tooltip()" (click)="toggleFullscreen()">
+  <ng-container [ngTemplateOutlet]="iconTpl() || defaultIconTpl"></ng-container>
 </button>
 
 <!-- Default icon -->

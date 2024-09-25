@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewEncapsulation, inject, input } from '@angular/core';
 import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,8 +17,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class MskFullscreenComponent {
   private _document = inject(DOCUMENT);
 
-  @Input() iconTpl!: TemplateRef<unknown>;
-  @Input() tooltip!: string;
+  iconTpl = input<TemplateRef<unknown>>();
+  tooltip = input<string>();
 
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
