@@ -5,15 +5,16 @@ import {
   Component,
   ElementRef,
   EmbeddedViewRef,
-  Input,
-  OnChanges,
   SecurityContext,
-  SimpleChanges,
   TemplateRef,
-  ViewChild,
   ViewContainerRef,
   ViewEncapsulation,
+  effect,
   inject,
+  input,
+  model,
+  signal,
+  viewChild,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -32,33 +33,26 @@ import { MskHighlightService } from './highlight.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgClass, ClipboardModule, MatIconModule, MatButtonModule],
 })
-export class MskHighlightComponent implements OnChanges, AfterViewInit {
+export class MskHighlightComponent implements AfterViewInit {
   private _clipboard = inject(Clipboard);
   private _elementRef = inject(ElementRef);
   private _domSanitizer = inject(DomSanitizer);
   private _viewContainerRef = inject(ViewContainerRef);
   private _mskHighlightService = inject(MskHighlightService);
 
-  @Input() code!: string;
-  @Input() lang!: string;
-  @ViewChild(TemplateRef) templateRef!: TemplateRef<unknown>;
+  code = model<string>();
+  lang = input.required<string>();
+  templateRef = viewChild.required(TemplateRef);
 
-  isCopied = false;
+  isCopied = signal<boolean>(false);
   highlightedCode!: string | null;
   private _viewRef!: EmbeddedViewRef<unknown> | null;
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Lifecycle hooks
-  // -----------------------------------------------------------------------------------------------------
-
   /**
-   * On changes
-   *
-   * @param changes
+   * Constructor
    */
-  ngOnChanges(changes: SimpleChanges): void {
-    // Code & Lang
-    if ('code' in changes || 'lang' in changes) {
+  constructor() {
+    effect(() => {
       // Return if the viewContainerRef is not available
       if (!this._viewContainerRef.length) {
         return;
@@ -66,23 +60,22 @@ export class MskHighlightComponent implements OnChanges, AfterViewInit {
 
       // Highlight and insert the code
       this._highlightAndInsert();
-    }
+    });
   }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Lifecycle hooks
+  // -----------------------------------------------------------------------------------------------------
 
   /**
    * After view init
    */
   ngAfterViewInit(): void {
-    // Return if there is no language set
-    if (!this.lang) {
-      return;
-    }
-
     // If there is no code input, get the code from
     // the textarea
-    if (!this.code) {
+    if (!this.code()) {
       // Get the code
-      this.code = this._elementRef.nativeElement.value;
+      this.code.update(() => this._elementRef.nativeElement.value);
     }
 
     // Highlight and insert
@@ -97,11 +90,11 @@ export class MskHighlightComponent implements OnChanges, AfterViewInit {
    * Copy the code
    */
   copyCode(): void {
-    this.isCopied = true;
-    this._clipboard.copy(this.code);
+    this.isCopied.set(true);
+    this._clipboard.copy(this.code() || '');
 
     setTimeout(() => {
-      this.isCopied = false;
+      this.isCopied.set(false);
     }, 1000);
   }
 
@@ -116,12 +109,12 @@ export class MskHighlightComponent implements OnChanges, AfterViewInit {
    */
   private _highlightAndInsert(): void {
     // Return if the template reference is not available
-    if (!this.templateRef) {
+    if (!this.templateRef()) {
       return;
     }
 
     // Return if the code or language is not defined
-    if (!this.code || !this.lang) {
+    if (!this.code() || !this.lang()) {
       return;
     }
 
@@ -134,7 +127,7 @@ export class MskHighlightComponent implements OnChanges, AfterViewInit {
     // Highlight and sanitize the code just in case
     this.highlightedCode = this._domSanitizer.sanitize(
       SecurityContext.HTML,
-      this._mskHighlightService.highlight(this.code, this.lang)
+      this._mskHighlightService.highlight(this.code() || '', this.lang())
     );
 
     // Return if the highlighted code is null
@@ -143,7 +136,7 @@ export class MskHighlightComponent implements OnChanges, AfterViewInit {
     }
 
     // Render and insert the template
-    this._viewRef = this._viewContainerRef.createEmbeddedView(this.templateRef, {
+    this._viewRef = this._viewContainerRef.createEmbeddedView(this.templateRef(), {
       highlightedCode: this.highlightedCode,
       lang: this.lang,
     });

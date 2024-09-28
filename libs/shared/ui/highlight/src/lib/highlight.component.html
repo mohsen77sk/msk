@@ -2,14 +2,16 @@
 
 <ng-template let-highlightedCode="highlightedCode" let-lang="lang">
   <div class="msk-highlight msk-highlight-code-container not-prose" dir="ltr">
-    <pre [ngClass]="'language-' + lang"><code [ngClass]="'language-' + lang" [innerHTML]="highlightedCode"></code></pre>
+    <pre [ngClass]="'language-' + lang()">
+      <code [ngClass]="'language-' + lang()" [innerHTML]="highlightedCode"></code>
+    </pre>
 
     <div class="msk-highlight-action">
       <button mat-icon-button type="button" (click)="copyCode()">
         <mat-icon
           class="transition"
-          [ngClass]="{ 'text-green-500': isCopied }"
-          [svgIcon]="isCopied ? 'heroicons_outline:clipboard-document-check' : 'heroicons_outline:clipboard-document'"
+          [ngClass]="{ 'text-green-500': isCopied() }"
+          [svgIcon]="isCopied() ? 'heroicons_outline:clipboard-document-check' : 'heroicons_outline:clipboard-document'"
         ></mat-icon>
       </button>
     </div>

@@ -47,6 +47,9 @@ export class MskAlertComponent implements OnInit {
   appearance = input<MskAlertAppearance>('soft');
   dismissedChanged = output<boolean>();
 
+  /**
+   * Constructor
+   */
   constructor() {
     effect(() => {
       this._toggleDismiss(this.dismissed());
