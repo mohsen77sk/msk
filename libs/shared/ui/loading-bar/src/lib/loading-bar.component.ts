@@ -1,15 +1,14 @@
 import {
   Component,
   DestroyRef,
-  Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
   ViewEncapsulation,
+  booleanAttribute,
+  effect,
   inject,
+  input,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progress-bar';
 import { MskLoadingBarService } from './loading-bar.service';
 import { map } from 'rxjs';
@@ -23,31 +22,28 @@ import { map } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
   imports: [MatProgressBarModule],
 })
-export class MskLoadingBarComponent implements OnChanges, OnInit {
+export class MskLoadingBarComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _mskLoadingBarService = inject(MskLoadingBarService);
 
-  @Input() autoMode = true;
+  autoMode = input(true, { transform: booleanAttribute });
   mode!: ProgressBarMode;
   progress = 0;
   show = false;
 
+  /**
+   * Constructor
+   */
+  constructor() {
+    effect(() => {
+      // Set the auto mode in the service
+      this._mskLoadingBarService.setAutoMode(this.autoMode());
+    });
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On changes
-   *
-   * @param changes
-   */
-  ngOnChanges(changes: SimpleChanges): void {
-    // Auto mode
-    if ('autoMode' in changes) {
-      // Set the auto mode in the service
-      this._mskLoadingBarService.setAutoMode(coerceBooleanProperty(changes['autoMode'].currentValue));
-    }
-  }
 
   /**
    * On init

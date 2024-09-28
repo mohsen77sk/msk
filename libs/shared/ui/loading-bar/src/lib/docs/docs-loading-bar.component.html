@@ -34,10 +34,7 @@
         </thead>
         <tbody>
           <tr>
-            <td class="text-md text-secondary">
-              <div>&#64;Input()</div>
-              <div>autoMode: boolean</div>
-            </td>
+            <td class="text-md text-secondary">autoMode: <i>&lt;boolean&gt;</i></td>
             <td>Turn on or off the Auto Mode.</td>
             <td>
               <code>true</code>
@@ -76,6 +73,58 @@
         Sets the progress manually. Only available on
         <code>determinate</code> mode.
       </div>
+    </div>
+
+    <h3 class="sticky-header">Examples</h3>
+    <div class="example-viewer">
+      <div class="header">
+        <div class="title">Show / hide the loading bar manually</div>
+        <div class="action"></div>
+      </div>
+      <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
+        <mat-tab label="Preview">
+          <ng-template matTabContent>
+            <div class="mx-auto flex space-x-4">
+              <button mat-flat-button (click)="showLoadingBar()">Show loading bar</button>
+              <button mat-flat-button (click)="hideLoadingBar()">Hide loading bar</button>
+            </div>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="HTML">
+          <ng-template matTabContent>
+            <textarea msk-highlight [lang]="'html'">
+              <div class="mx-auto flex space-x-4">
+                <button mat-flat-button (click)="showLoadingBar()">Show loading bar</button>
+                <button mat-flat-button (click)="hideLoadingBar()">Hide loading bar</button>
+              </div>
+            </textarea>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Typescript">
+          <ng-template matTabContent>
+            <textarea msk-highlight [lang]="'typescript'">
+              /**
+                * Constructor
+                */
+              constructor(private _mskLoadingService: MskLoadingBarService) {}
+
+              /**
+                * Show the loading bar
+                */
+              showLoadingBar(): void {
+                this._mskLoadingService.show();
+              }
+
+              /**
+                * Hide the loading bar
+                */
+              hideLoadingBar(): void {
+                this._mskLoadingService.hide();
+              }
+            </textarea>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
     </div>
 
     <div class="mb-6"></div>
