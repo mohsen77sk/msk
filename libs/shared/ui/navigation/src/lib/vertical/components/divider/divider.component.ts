@@ -3,10 +3,10 @@ import {
   ChangeDetectorRef,
   Component,
   DestroyRef,
-  Input,
   OnInit,
   ViewEncapsulation,
   inject,
+  input,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgClass } from '@angular/common';
@@ -27,8 +27,8 @@ export class MskVerticalNavigationDividerItemComponent implements OnInit {
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _mskNavigationService = inject(MskNavigationService);
 
-  @Input() item!: MskNavigationItem;
-  @Input() name!: string;
+  name = input.required<string>();
+  item = input.required<MskNavigationItem>();
 
   private _mskVerticalNavigationComponent!: MskVerticalNavigationComponent;
 
@@ -41,7 +41,7 @@ export class MskVerticalNavigationDividerItemComponent implements OnInit {
    */
   ngOnInit(): void {
     // Get the parent navigation component
-    this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name);
+    this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name());
 
     // Subscribe to onRefreshed on the navigation component
     this._mskVerticalNavigationComponent.onRefreshed.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {

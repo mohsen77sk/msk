@@ -3,10 +3,10 @@ import {
   ChangeDetectorRef,
   Component,
   DestroyRef,
-  Input,
   OnInit,
   ViewEncapsulation,
   inject,
+  input,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
@@ -32,8 +32,8 @@ export class MskVerticalNavigationBasicItemComponent implements OnInit {
   private _mskNavigationService = inject(MskNavigationService);
   private _mskUtilsService = inject(MskUtilsService);
 
-  @Input() item!: MskNavigationItem;
-  @Input() name!: string;
+  name = input.required<string>();
+  item = input.required<MskNavigationItem>();
 
   // Set the equivalent of {exact: false} as default for active match options.
   // We are not assigning the item.isActiveMatchOptions directly to the
@@ -54,12 +54,12 @@ export class MskVerticalNavigationBasicItemComponent implements OnInit {
     // "isActiveMatchOptions" or the equivalent form of
     // item's "exactMatch" option
     this.isActiveMatchOptions =
-      this.item.isActiveMatchOptions ?? this.item.exactMatch
+      this.item().isActiveMatchOptions ?? this.item().exactMatch
         ? this._mskUtilsService.exactMatchOptions
         : this._mskUtilsService.subsetMatchOptions;
 
     // Get the parent navigation component
-    this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name);
+    this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name());
 
     // Mark for check
     this._changeDetectorRef.markForCheck();

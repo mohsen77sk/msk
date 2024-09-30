@@ -93,6 +93,12 @@
             "title": "Loading bar",
             "type": "basic",
             "link": "docs/ui/loading-bar"
+          },
+          {
+            "id": "docs.ui.navigation",
+            "title": "Navigation",
+            "type": "basic",
+            "link": "docs/ui/navigation"
           }
         ]
       },

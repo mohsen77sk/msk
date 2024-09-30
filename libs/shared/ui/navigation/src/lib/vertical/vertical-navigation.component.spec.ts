@@ -1,9 +1,11 @@
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MskVerticalNavigationComponent } from './vertical-navigation.component';
 
 describe('MskVerticalNavigationComponent', () => {
   let component: MskVerticalNavigationComponent;
+  let componentRef: ComponentRef<MskVerticalNavigationComponent>;
   let fixture: ComponentFixture<MskVerticalNavigationComponent>;
 
   beforeEach(async () => {
@@ -14,7 +16,8 @@ describe('MskVerticalNavigationComponent', () => {
 
     fixture = TestBed.createComponent(MskVerticalNavigationComponent);
     component = fixture.componentInstance;
-    component.navigation = [];
+    componentRef = fixture.componentRef;
+    componentRef.setInput('navigation', []);
     fixture.detectChanges();
   });
 

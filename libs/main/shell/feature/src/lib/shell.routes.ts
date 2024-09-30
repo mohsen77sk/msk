@@ -118,10 +118,15 @@ export const mainRoutes: Route[] = [
             path: 'ui/loading-bar',
             loadComponent: () => import('@msk/shared/ui/loading-bar').then((r) => r.MskDocsLoadingBarComponent),
           },
+          {
+            path: 'ui/navigation',
+            loadComponent: () => import('@msk/shared/ui/navigation').then((r) => r.MskDocsNavigationComponent),
+          },
           // Services
           {
             path: 'services/confirmation',
-            loadComponent: () => import('@msk/shared/services/confirmation').then((r) => r.MskDocsConfirmationComponent),
+            loadComponent: () =>
+              import('@msk/shared/services/confirmation').then((r) => r.MskDocsConfirmationComponent),
           },
           // Pages
           {

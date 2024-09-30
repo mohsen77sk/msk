@@ -18,7 +18,6 @@ export interface MskNavigationItem {
   target?: '_blank' | '_self' | '_parent' | '_top' | string;
   exactMatch?: boolean;
   isActiveMatchOptions?: IsActiveMatchOptions;
-  function?: (item: MskNavigationItem) => void;
   classes?: {
     icon?: string;
     title?: string;

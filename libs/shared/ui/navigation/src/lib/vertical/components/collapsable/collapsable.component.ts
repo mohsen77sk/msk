@@ -7,7 +7,7 @@ import {
   forwardRef,
   HostBinding,
   inject,
-  Input,
+  input,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
@@ -47,9 +47,9 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _mskNavigationService = inject(MskNavigationService);
 
-  @Input() autoCollapse!: boolean;
-  @Input() item!: MskNavigationItem;
-  @Input() name!: string;
+  name = input.required<string>();
+  item = input.required<MskNavigationItem>();
+  autoCollapse = input<boolean>(false);
 
   isCollapsed = true;
   isExpanded = false;
@@ -78,16 +78,16 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
    */
   ngOnInit(): void {
     // Get the parent navigation component
-    this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name);
+    this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name());
 
     // If the item has a children that has a matching url with the current url, expand...
-    if (this._hasActiveChild(this.item, this._router.url)) {
+    if (this._hasActiveChild(this.item(), this._router.url)) {
       this.expand();
     }
     // Otherwise...
     else {
       // If the autoCollapse is on, collapse...
-      if (this.autoCollapse) {
+      if (this.autoCollapse()) {
         this.collapse();
       }
     }
@@ -102,13 +102,13 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
         }
 
         // Collapse if this is a children of the collapsed item
-        if (this._isChildrenOf(collapsedItem, this.item)) {
+        if (this._isChildrenOf(collapsedItem, this.item())) {
           this.collapse();
         }
       });
 
     // Listen for the onCollapsableItemExpanded from the service if the autoCollapse is on
-    if (this.autoCollapse) {
+    if (this.autoCollapse()) {
       this._mskVerticalNavigationComponent.onCollapsableItemExpanded
         .pipe(takeUntilDestroyed(this._destroyRef))
         .subscribe((expandedItem) => {
@@ -118,17 +118,17 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
           }
 
           // Check if this is a parent of the expanded item
-          if (this._isChildrenOf(this.item, expandedItem)) {
+          if (this._isChildrenOf(this.item(), expandedItem)) {
             return;
           }
 
           // Check if this has a children with a matching url with the current active url
-          if (this._hasActiveChild(this.item, this._router.url)) {
+          if (this._hasActiveChild(this.item(), this._router.url)) {
             return;
           }
 
           // Check if this is the expanded item
-          if (this.item === expandedItem) {
+          if (this.item() === expandedItem) {
             return;
           }
 
@@ -145,13 +145,13 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
       )
       .subscribe((event: NavigationEnd) => {
         // If the item has a children that has a matching url with the current url, expand...
-        if (this._hasActiveChild(this.item, event.urlAfterRedirects)) {
+        if (this._hasActiveChild(this.item(), event.urlAfterRedirects)) {
           this.expand();
         }
         // Otherwise...
         else {
           // If the autoCollapse is on, collapse...
-          if (this.autoCollapse) {
+          if (this.autoCollapse()) {
             this.collapse();
           }
         }
@@ -173,7 +173,7 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
    */
   collapse(): void {
     // Return if the item is disabled
-    if (this.item.disabled) {
+    if (this.item().disabled) {
       return;
     }
 
@@ -190,7 +190,7 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
     this._changeDetectorRef.markForCheck();
 
     // Execute the observable
-    this._mskVerticalNavigationComponent.onCollapsableItemCollapsed.next(this.item);
+    this._mskVerticalNavigationComponent.onCollapsableItemCollapsed.next(this.item());
   }
 
   /**
@@ -198,7 +198,7 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
    */
   expand(): void {
     // Return if the item is disabled
-    if (this.item.disabled) {
+    if (this.item().disabled) {
       return;
     }
 
@@ -215,7 +215,7 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
     this._changeDetectorRef.markForCheck();
 
     // Execute the observable
-    this._mskVerticalNavigationComponent.onCollapsableItemExpanded.next(this.item);
+    this._mskVerticalNavigationComponent.onCollapsableItemExpanded.next(this.item());
   }
 
   /**

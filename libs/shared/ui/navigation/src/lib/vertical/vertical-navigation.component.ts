@@ -5,32 +5,29 @@ import {
   Component,
   DestroyRef,
   ElementRef,
-  EventEmitter,
   HostBinding,
   HostListener,
-  Input,
-  OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   QueryList,
   Renderer2,
-  SimpleChanges,
-  ViewChild,
   ViewChildren,
   ViewEncapsulation,
+  booleanAttribute,
   inject,
+  input,
+  model,
+  viewChild,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { AnimationBuilder, AnimationPlayer, animate, style } from '@angular/animations';
 import { NavigationEnd, Router } from '@angular/router';
 import { Directionality } from '@angular/cdk/bidi';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ScrollStrategy, ScrollStrategyOptions } from '@angular/cdk/overlay';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskUtilsService } from '@msk/shared/services/utils';
 import { MskScrollbarDirective } from '@msk/shared/directives/scrollbar';
-import { ReplaySubject, Subscription, delay, filter, merge } from 'rxjs';
+import { ReplaySubject, Subscription, delay, filter, map, merge, pairwise } from 'rxjs';
 import { MskVerticalNavigationAsideItemComponent } from './components/aside/aside.component';
 import { MskVerticalNavigationBasicItemComponent } from './components/basic/basic.component';
 import { MskVerticalNavigationCollapsableItemComponent } from './components/collapsable/collapsable.component';
@@ -62,7 +59,7 @@ import {
     MskVerticalNavigationGroupItemComponent,
   ],
 })
-export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
+export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   private _destroyRef = inject(DestroyRef);
   private _animationBuilder = inject(AnimationBuilder);
   private _changeDetectorRef = inject(ChangeDetectorRef);
@@ -74,25 +71,17 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
   private _mskNavigationService = inject(MskNavigationService);
   private _mskUtilsService = inject(MskUtilsService);
 
-  @Input() name: string = this._mskUtilsService.randomId();
-  @Input() inner = false;
-  @Input() opened = true;
-  @Input() autoCollapse = true;
-  @Input() mode: MskVerticalNavigationMode = 'side';
-  @Input() position: MskVerticalNavigationPosition = 'start';
-  @Input() appearance: MskVerticalNavigationAppearance = 'default';
-  @Input() transparentOverlay = false;
-  @Input() navigation!: MskNavigationItem[];
-  @Output() readonly openedChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output()
-  readonly appearanceChanged: EventEmitter<MskVerticalNavigationAppearance> =
-    new EventEmitter<MskVerticalNavigationAppearance>();
-  @Output() readonly modeChanged: EventEmitter<MskVerticalNavigationMode> =
-    new EventEmitter<MskVerticalNavigationMode>();
-  @Output()
-  readonly positionChanged: EventEmitter<MskVerticalNavigationPosition> =
-    new EventEmitter<MskVerticalNavigationPosition>();
-  @ViewChild('navigationContent') private _navigationContentEl!: ElementRef;
+  navigation = input.required<MskNavigationItem[]>();
+  name = input<string>(this._mskUtilsService.randomId());
+  inner = input(false, { transform: booleanAttribute });
+  autoCollapse = input(true, { transform: booleanAttribute });
+  transparentOverlay = input(false, { transform: booleanAttribute });
+  opened = model(true);
+  mode = model<MskVerticalNavigationMode>('side');
+  position = model<MskVerticalNavigationPosition>('start');
+  appearance = model<MskVerticalNavigationAppearance>('default');
+  //
+  private _navigationContent = viewChild.required(ElementRef);
 
   activeAsideItemId: string | null = null;
   onCollapsableItemCollapsed: ReplaySubject<MskNavigationItem> = new ReplaySubject<MskNavigationItem>(1);
@@ -113,6 +102,42 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
    * Constructor
    */
   constructor() {
+    toObservable(this.appearance).pipe(map(() => this._fixNavigationData()));
+    toObservable(this.navigation).pipe(map(() => this._fixNavigationData()));
+
+    toObservable(this.mode).pipe(
+      pairwise(),
+      map(([previousMode, currentMode]) => {
+        // Disable the animations
+        this._disableAnimations();
+
+        // If the mode changes: 'over -> side'
+        if (previousMode === 'over' && currentMode === 'side') {
+          // Hide the overlay
+          this._hideOverlay();
+        }
+
+        // If the mode changes: 'side -> over'
+        if (previousMode === 'side' && currentMode === 'over') {
+          // Close the aside
+          this.closeAside();
+
+          // If the navigation is opened
+          if (this.opened()) {
+            // Show the overlay
+            this._showOverlay();
+          }
+        }
+
+        // Enable the animations after a delay
+        // The delay must be bigger than the current transition-duration
+        // to make sure nothing will be animated while the mode changing
+        setTimeout(() => {
+          this._enableAnimations();
+        }, 500);
+      })
+    );
+
     this._handleAsideOverlayClick = (): void => {
       this.closeAside();
     };
@@ -131,14 +156,14 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
   @HostBinding('class') get classList(): object {
     return {
       'msk-vertical-navigation-animations-enabled': this._animationsEnabled,
-      [`msk-vertical-navigation-appearance-${this.appearance}`]: true,
+      [`msk-vertical-navigation-appearance-${this.appearance()}`]: true,
       'msk-vertical-navigation-hover': this._hovered,
-      'msk-vertical-navigation-inner': this.inner,
-      'msk-vertical-navigation-mode-over': this.mode === 'over',
-      'msk-vertical-navigation-mode-side': this.mode === 'side',
-      'msk-vertical-navigation-opened': this.opened,
-      'msk-vertical-navigation-position-start': this.position === 'start',
-      'msk-vertical-navigation-position-end': this.position === 'end',
+      'msk-vertical-navigation-inner': this.inner(),
+      'msk-vertical-navigation-mode-over': this.mode() === 'over',
+      'msk-vertical-navigation-mode-side': this.mode() === 'side',
+      'msk-vertical-navigation-opened': this.opened(),
+      'msk-vertical-navigation-position-start': this.position() === 'start',
+      'msk-vertical-navigation-position-end': this.position() === 'end',
     };
   }
 
@@ -147,7 +172,7 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
    */
   @HostBinding('style') get styleList(): object {
     return {
-      visibility: this.opened ? 'visible' : 'hidden',
+      visibility: this.opened() ? 'visible' : 'hidden',
     };
   }
 
@@ -217,106 +242,11 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * On changes
-   *
-   * @param changes
-   */
-  ngOnChanges(changes: SimpleChanges): void {
-    // Appearance
-    if ('appearance' in changes) {
-      // Fix navigation data by appearance
-      this._fixNavigationData();
-
-      // Execute the observable
-      this.appearanceChanged.next(changes['appearance'].currentValue);
-    }
-
-    // Inner
-    if ('inner' in changes) {
-      // Coerce the value to a boolean
-      this.inner = coerceBooleanProperty(changes['inner'].currentValue);
-    }
-
-    // Mode
-    if ('mode' in changes) {
-      // Get the previous and current values
-      const currentMode = changes['mode'].currentValue;
-      const previousMode = changes['mode'].previousValue;
-
-      // Disable the animations
-      this._disableAnimations();
-
-      // If the mode changes: 'over -> side'
-      if (previousMode === 'over' && currentMode === 'side') {
-        // Hide the overlay
-        this._hideOverlay();
-      }
-
-      // If the mode changes: 'side -> over'
-      if (previousMode === 'side' && currentMode === 'over') {
-        // Close the aside
-        this.closeAside();
-
-        // If the navigation is opened
-        if (this.opened) {
-          // Show the overlay
-          this._showOverlay();
-        }
-      }
-
-      // Execute the observable
-      this.modeChanged.next(currentMode);
-
-      // Enable the animations after a delay
-      // The delay must be bigger than the current transition-duration
-      // to make sure nothing will be animated while the mode changing
-      setTimeout(() => {
-        this._enableAnimations();
-      }, 500);
-    }
-
-    // Navigation
-    if ('navigation' in changes) {
-      // Fix navigation data by appearance
-      this._fixNavigationData();
-
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
-    }
-
-    // Opened
-    if ('opened' in changes) {
-      // Coerce the value to a boolean
-      this.opened = coerceBooleanProperty(changes['opened'].currentValue);
-
-      // Open/close the navigation
-      this._toggleOpened(this.opened);
-    }
-
-    // Position
-    if ('position' in changes) {
-      // Execute the observable
-      this.positionChanged.next(changes['position'].currentValue);
-    }
-
-    // Transparent overlay
-    if ('transparentOverlay' in changes) {
-      // Coerce the value to a boolean
-      this.transparentOverlay = coerceBooleanProperty(changes['transparentOverlay'].currentValue);
-    }
-  }
-
-  /**
    * On init
    */
   ngOnInit(): void {
-    // Make sure the name input is not an empty string
-    if (this.name === '') {
-      this.name = this._mskUtilsService.randomId();
-    }
-
     // Register the navigation component
-    this._mskNavigationService.registerComponent(this.name, this);
+    this._mskNavigationService.registerComponent(this.name(), this);
 
     // Subscribe to the 'NavigationEnd' event
     this._router.events
@@ -326,13 +256,13 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
       )
       .subscribe(() => {
         // If the mode is 'over' and the navigation is opened...
-        if (this.mode === 'over' && this.opened) {
+        if (this.mode() === 'over' && this.opened()) {
           // Close the navigation
           this.close();
         }
 
         // If the mode is 'side' and the aside is active...
-        if (this.mode === 'side' && this.activeAsideItemId) {
+        if (this.mode() === 'side' && this.activeAsideItemId) {
           // Close the aside
           this.closeAside();
         }
@@ -345,15 +275,15 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
   ngAfterViewInit(): void {
     setTimeout(() => {
       // Return if 'navigation content' element does not exist
-      if (!this._navigationContentEl) {
+      if (!this._navigationContent) {
         return;
       }
 
       // If 'navigation content' element doesn't have
       // perfect scrollbar activated on it...
-      if (!this._navigationContentEl.nativeElement.classList.contains('ps')) {
+      if (!this._navigationContent().nativeElement.classList.contains('ps')) {
         // Find the active item
-        const activeItem = this._navigationContentEl.nativeElement.querySelector(
+        const activeItem = this._navigationContent().nativeElement.querySelector(
           '.msk-vertical-navigation-item-active'
         );
 
@@ -387,7 +317,7 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
     this.closeAside();
 
     // Deregister the navigation component from the registry
-    this._mskNavigationService.deregisterComponent(this.name);
+    this._mskNavigationService.deregisterComponent(this.name());
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -410,7 +340,7 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
    */
   open(): void {
     // Return if the navigation is already open
-    if (this.opened) {
+    if (this.opened()) {
       return;
     }
 
@@ -439,7 +369,7 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
    */
   toggle(): void {
     // Toggle
-    if (this.opened) {
+    if (this.opened()) {
       this.close();
     } else {
       this.open();
@@ -556,7 +486,7 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
     this._overlay?.classList.add('msk-vertical-navigation-overlay');
 
     // Add a class depending on the transparentOverlay option
-    if (this.transparentOverlay) {
+    if (this.transparentOverlay()) {
       this._overlay?.classList.add('msk-vertical-navigation-overlay-transparent');
     }
 
@@ -685,23 +615,20 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
    */
   private _toggleOpened(open: boolean): void {
     // Set the opened
-    this.opened = open;
+    this.opened.set(open);
 
     // Enable the animations
     this._enableAnimations();
 
     // If the navigation opened, and the mode
     // is 'over', show the overlay
-    if (this.mode === 'over') {
-      if (this.opened) {
+    if (this.mode() === 'over') {
+      if (this.opened()) {
         this._showOverlay();
       } else {
         this._hideOverlay();
       }
     }
-
-    // Execute the observable
-    this.openedChanged.next(open);
   }
 
   /**
@@ -711,13 +638,13 @@ export class MskVerticalNavigationComponent implements OnChanges, OnInit, AfterV
    */
   private _fixNavigationData(): void {
     // If the appearance is 'default'
-    if (this.appearance === 'default') {
-      this.navigation.forEach((item) => (item.type === 'aside' ? (item.type = 'group') : null));
+    if (this.appearance() === 'default') {
+      this.navigation().forEach((item) => (item.type === 'aside' ? (item.type = 'group') : null));
     }
 
     // If the appearance is 'rail'
-    if (this.appearance === 'rail') {
-      this.navigation.forEach((item) => (item.type === 'group' ? (item.type = 'aside') : null));
+    if (this.appearance() === 'rail') {
+      this.navigation().forEach((item) => (item.type === 'group' ? (item.type = 'aside') : null));
     }
   }
 }

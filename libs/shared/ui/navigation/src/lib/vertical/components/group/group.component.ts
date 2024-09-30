@@ -4,11 +4,11 @@ import {
   ChangeDetectorRef,
   Component,
   DestroyRef,
-  Input,
   OnInit,
   ViewEncapsulation,
   forwardRef,
   inject,
+  input,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,9 +39,9 @@ export class MskVerticalNavigationGroupItemComponent implements OnInit {
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _mskNavigationService = inject(MskNavigationService);
 
-  @Input() autoCollapse!: boolean;
-  @Input() item!: MskNavigationItem;
-  @Input() name!: string;
+  name = input.required<string>();
+  item = input.required<MskNavigationItem>();
+  autoCollapse = input<boolean>(false);
 
   private _mskVerticalNavigationComponent!: MskVerticalNavigationComponent;
 
@@ -54,7 +54,7 @@ export class MskVerticalNavigationGroupItemComponent implements OnInit {
    */
   ngOnInit(): void {
     // Get the parent navigation component
-    this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name);
+    this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name());
 
     // Subscribe to onRefreshed on the navigation component
     this._mskVerticalNavigationComponent.onRefreshed.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {

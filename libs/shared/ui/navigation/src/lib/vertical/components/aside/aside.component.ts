@@ -4,12 +4,11 @@ import {
   ChangeDetectorRef,
   Component,
   DestroyRef,
-  Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
   ViewEncapsulation,
+  effect,
   inject,
+  input,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
@@ -40,37 +39,33 @@ import { MskNavigationItem } from '../../../navigation.types';
     MskVerticalNavigationGroupItemComponent,
   ],
 })
-export class MskVerticalNavigationAsideItemComponent implements OnChanges, OnInit {
+export class MskVerticalNavigationAsideItemComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _router = inject(Router);
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _mskNavigationService = inject(MskNavigationService);
 
-  @Input() activeItemId!: string;
-  @Input() autoCollapse!: boolean;
-  @Input() item!: MskNavigationItem;
-  @Input() name!: string;
-  @Input() skipChildren!: boolean;
+  name = input.required<string>();
+  item = input.required<MskNavigationItem>();
+  activeItemId = input<string>();
+  autoCollapse = input<boolean>(false);
+  skipChildren = input<boolean>(false);
 
   active = false;
   private _mskVerticalNavigationComponent!: MskVerticalNavigationComponent;
 
+  /**
+   * Constructor
+   */
+  constructor() {
+    effect(() => {
+      this._markIfActive(this._router.url);
+    });
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On changes
-   *
-   * @param changes
-   */
-  ngOnChanges(changes: SimpleChanges): void {
-    // Active item id
-    if ('activeItemId' in changes) {
-      // Mark if active
-      this._markIfActive(this._router.url);
-    }
-  }
 
   /**
    * On init
@@ -91,7 +86,7 @@ export class MskVerticalNavigationAsideItemComponent implements OnChanges, OnIni
       });
 
     // Get the parent navigation component
-    this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name);
+    this._mskVerticalNavigationComponent = this._mskNavigationService.getComponent(this.name());
 
     // Subscribe to onRefreshed on the navigation component
     this._mskVerticalNavigationComponent.onRefreshed.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
@@ -147,11 +142,11 @@ export class MskVerticalNavigationAsideItemComponent implements OnChanges, OnIni
    */
   private _markIfActive(currentUrl: string): void {
     // Check if the activeItemId is equals to this item id
-    this.active = this.activeItemId === this.item.id;
+    this.active = this.activeItemId() === this.item().id;
 
     // If the aside has a children that is active,
     // always mark it as active
-    if (this._hasActiveChild(this.item, currentUrl)) {
+    if (this._hasActiveChild(this.item(), currentUrl)) {
       this.active = true;
     }
 

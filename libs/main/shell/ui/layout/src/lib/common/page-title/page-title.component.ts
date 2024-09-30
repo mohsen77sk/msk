@@ -66,7 +66,7 @@ export class MainPageTitleComponent implements AfterViewInit {
     // Get the navigation
     const navigation = this._mskNavigationService.getComponent<MskVerticalNavigationComponent>('mainNavigation');
     // Set title of current navigation
-    this.currentTitle = this._mskNavigationService.getItem(idPath, navigation.navigation)?.title ?? '';
+    this.currentTitle = this._mskNavigationService.getItem(idPath, navigation.navigation())?.title ?? '';
     // Mark for check
     this._changeDetectorRef.markForCheck();
   }
