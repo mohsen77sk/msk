@@ -1,0 +1,381 @@
+<div class="page-layout content-scroll md:py-4">
+  <!-- Main -->
+  <div class="content prose max-w-full">
+    <h3 class="sticky-header mt-4 md:mt-0">Component</h3>
+    <textarea msk-highlight lang="typescript">
+      import { MskVerticalNavigationComponent } from '@msk/shared/ui/navigation';
+    </textarea>
+
+    <p>
+      The <em>vertical</em> navigation comes with built-in drawer that can be programmed in various ways to show the
+      navigation in different styles and to control the mobile behavior.
+    </p>
+    <p><strong>Exported as: </strong><code>mskVerticalNavigation</code></p>
+
+    <msk-alert appearance="border" type="info">
+      msk-vertical-navigation designed to work with data and it must be supplied in certain format. If you want to
+      create a navigation from an HTML structure, this component is not for you.
+    </msk-alert>
+
+    <h3 class="sticky-header">Navigation item</h3>
+    <p>This is the interface of the <em>Navigation item</em></p>
+
+    <textarea msk-highlight lang="typescript">
+      export interface MskNavigationItem
+      {
+        id?: string;
+        icon?: string;
+        title?: string;
+        type: 'aside' | 'basic' | 'collapsable' | 'divider' | 'group';
+        hidden?: (item: MskNavigationItem) => boolean;
+        active?: boolean;
+        disabled?: boolean;
+        tooltip?: string;
+        link?: string;
+        fragment?: string;
+        preserveFragment?: boolean;
+        queryParams?: Params | null;
+        queryParamsHandling?: QueryParamsHandling | null;
+        externalLink?: boolean;
+        target?: '_blank' | '_self' | '_parent' | '_top' | string;
+        exactMatch?: boolean;
+        isActiveMatchOptions?: IsActiveMatchOptions;
+        classes?: {
+          icon?: string;
+          title?: string;
+          wrapper?: string;
+        };
+        badge?: {
+          title?: string;
+          classes?: string;
+        };
+        children?: MskNavigationItem[];
+      }
+    </textarea>
+    <div class="msk-mat-card-filled flex-shrink-0 overflow-auto p-4">
+      <table class="m-0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-md text-secondary">id</td>
+            <td>
+              Unique id of the navigation item. It's important to supply navigation items with ids if you want to access
+              and modify them after generating the navigation.
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">icon</td>
+            <td>Icon name for the navigation item.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">title</td>
+            <td>Title of the navigation item.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">type</td>
+            <td>Type of the navigation item.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">hidden</td>
+            <td>
+              A function that returns a boolean. It gets one parameter which is the navigation item. Returning
+              <code>true</code> from the function will hide the item and <code>false</code> will show it.
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">active</td>
+            <td>Whether to force the navigation item to be active.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">disabled</td>
+            <td>Whether the navigation item is disabled.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">tooltip</td>
+            <td>Tooltip to show on item hover. Empty string will remove the tooltip.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">link</td>
+            <td>
+              String representation of the item link. It can be either a <em>router</em> link or a normal, outgoing
+              link.
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">fragment</td>
+            <td>Sets the hash fragment for the URL.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">preserveFragment</td>
+            <td>When true, preserves the URL fragment for the next navigation.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">queryParams</td>
+            <td>Sets query parameters to the URL.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">queryParamsHandling</td>
+            <td>How to handle query parameters in the router link for the next navigation.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">externalLink</td>
+            <td>
+              Whether the supplied link should be parsed as an external link. It must be <strong>true</strong> if you
+              supply a normal, outgoing link in the <strong>link</strong> property.
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">target</td>
+            <td>Sets the <em>target</em> attribute of the external, outgoing link.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">exactMatch</td>
+            <td>Sets the <em>exact</em> parameter on the <em>[routerLinkActiveOptions]</em>.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">isActiveMatchOptions</td>
+            <td>
+              Sets the <em>isActiveMatchOptions</em> object on the <em>[routerLinkActiveOptions]</em>. If provided,
+              <em>exactMatch</em> option will be ignored.
+              <a href="https://angular.io/api/router/IsActiveMatchOptions" target="_blank" rel="noreferrer">
+                https://angular.io/api/router/IsActiveMatchOptions
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">classes</td>
+            <td>
+              Custom class names for the navigation item's specific parts. Multiple class names can be added by
+              separating them with whitespace: <code>'class1 class2 class3'</code>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">badge.title</td>
+            <td>Title of the badge.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">badge.classes</td>
+            <td>Classes to add to the badge. This can be used to customize the look of the badge.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">children</td>
+            <td>Array of navigation items to create child items.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">meta</td>
+            <td>
+              An object to hold custom data for the navigation item. It can be used for anything such as storing the
+              access role and authorization of the navigation item.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sticky-header">Vertical navigation / Usage</h3>
+    <p>Here's the basic usage of the <code>msk-vertical-navigation</code>:</p>
+    <textarea msk-highlight lang="html">
+      <msk-vertical-navigation
+        [name]="'startNavigation'"
+        [appearance]="'default'"
+        [autoCollapse]="true"
+        [inner]="false"
+        [mode]="isScreenSmall ? 'over' : 'side'"
+        [navigation]="navigationData"
+        [opened]="!isScreenSmall"
+        [position]="'start'"
+        [transparentOverlay]="false">
+      </msk-vertical-navigation>
+    </textarea>
+
+    <h3 class="sticky-header">Vertical navigation / Properties</h3>
+    <div class="msk-mat-card-filled flex-shrink-0 overflow-auto p-4">
+      <table class="m-0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-md text-secondary">name: <i>&lt;string&gt;</i></td>
+            <td>Unique name of the navigation. Required for navigation and its drawer to work correctly.</td>
+            <td>
+              <code class="whitespace-nowrap">-</code>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">appearance: <i>&lt;MskVerticalNavigationAppearance&gt;</i></td>
+            <td>
+              Appearance of the navigation and its drawer. This is a string type and can be used to override the style
+              of the navigation.
+            </td>
+            <td>
+              <code class="whitespace-nowrap">default</code>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">autoCollapse: <i>&lt;boolean&gt;</i></td>
+            <td>
+              Whether expanding an expandable navigation item should close other expanded items excluding the active
+              menu item's parent.
+            </td>
+            <td>
+              <code class="whitespace-nowrap">true</code>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">inner: <i>&lt;boolean&gt;</i></td>
+            <td>
+              Whether the inner mode is active. This mode allows using navigation without its drawer. Suitable for using
+              it inside <strong>mat-sidenav</strong> or <strong>mat-drawer</strong>.
+            </td>
+            <td>
+              <code class="whitespace-nowrap">false</code>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">mode: <i>&lt;MskVerticalNavigationMode&gt;</i></td>
+            <td>
+              <strong>over</strong> mode can be used to place the drawer on top of the content and
+              <strong>side</strong> mode can be used to push the content and place the drawer next to it.
+            </td>
+            <td>
+              <code class="whitespace-nowrap">side</code>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">navigation: <i>&lt;MskNavigationItem[]&gt;</i></td>
+            <td>Array of navigation items to build the navigation from.</td>
+            <td>
+              <code class="whitespace-nowrap">-</code>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">opened: <i>&lt;boolean&gt;</i></td>
+            <td>Whether the navigation drawer is opened. Only works with <strong>over</strong> mode.</td>
+            <td>
+              <code class="whitespace-nowrap">false</code>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">position: <i>&lt;MskVerticalNavigationPosition&gt;</i></td>
+            <td>Position of the drawer.</td>
+            <td>
+              <code class="whitespace-nowrap">start</code>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">transparentOverlay: <i>&lt;boolean&gt;</i></td>
+            <td>Whether the overlay of the drawer is transparent. Only works with <strong>over</strong> mode.</td>
+            <td>
+              <code class="whitespace-nowrap">false</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="msk-mat-card-filled mt-2 flex-shrink-0 overflow-auto p-4">
+      <table class="m-0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-md text-secondary">openedChanged: <i>&lt;boolean&gt;</i></td>
+            <td>An event emitted after the opened status of the navigation changed.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">modeChanged: <i>&lt;MskVerticalNavigationMode&gt;</i></td>
+            <td>An event emitted after the mode of the navigation changed.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">positionChanged: <i>&lt;MskVerticalNavigationPosition&gt;</i></td>
+            <td>An event emitted after the position of the navigation changed.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">appearanceChanged: <i>&lt;MskVerticalNavigationAppearance&gt;</i></td>
+            <td>An event emitted after the appearance of the navigation changed.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sticky-header">Vertical navigation / Custom content hooks</h3>
+    <p>
+      Since the entire navigation will be created from the supplied navigation data, it's only possible to attach custom
+      content inside the navigation drawer using custom content hooks. There are four of these hooks;
+    </p>
+    <div class="msk-mat-card-filled flex-shrink-0 overflow-auto p-4">
+      <table class="m-0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-md text-secondary">mskVerticalNavigationHeader</td>
+            <td>Fixed header hook. Anything put inside this hook will not scroll with drawer content.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">mskVerticalNavigationContentHeader</td>
+            <td>Header hook. Anything put inside this hook will be scrolled with the drawer content.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">mskVerticalNavigationFooter</td>
+            <td>Fixed footer hook. Anything put inside this hook will not scroll with drawer content.</td>
+          </tr>
+          <tr>
+            <td class="text-md text-secondary">mskVerticalNavigationContentFooter</td>
+            <td>Footer hook. Anything put inside this hook will be scrolled with the drawer content.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <textarea msk-highlight lang="html">
+      <!-- Navigation -->
+      <msk-vertical-navigation>
+          <div mskVerticalNavigationHeader>
+            At the top, fixed into position.
+          </div>
+
+          <div mskVerticalNavigationContentHeader>
+            At the top, scrolls with the content.
+          </div>
+
+          <div mskVerticalNavigationContentFooter>
+            At the bottom, scrolls with the content.
+          </div>
+
+          <div mskVerticalNavigationFooter>
+            At the bottom, fixed into position.
+          </div>
+      </msk-vertical-navigation>
+    </textarea>
+
+    <h3 class="sticky-header">Vertical navigation / Type aliases</h3>
+    <textarea msk-highlight lang="typescript">
+      export type MskVerticalNavigationMode = 'over' | 'side'
+    </textarea>
+    <textarea msk-highlight lang="typescript">
+      export type MskVerticalNavigationPosition = 'start' | 'end';
+    </textarea>
+    <textarea msk-highlight lang="typescript">
+      export type MskVerticalNavigationAppearance = 'default' | 'rail'
+    </textarea>
+
+    <div class="mb-6"></div>
+  </div>
+</div>

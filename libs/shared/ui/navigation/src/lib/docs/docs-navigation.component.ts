@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskHighlightComponent } from '@msk/shared/ui/highlight';
 
 @Component({
@@ -7,6 +8,6 @@ import { MskHighlightComponent } from '@msk/shared/ui/highlight';
   templateUrl: './docs-navigation.component.html',
   styleUrl: './docs-navigation.component.scss',
   encapsulation: ViewEncapsulation.None,
-  imports: [MskHighlightComponent],
+  imports: [MskAlertComponent, MskHighlightComponent],
 })
 export class MskDocsNavigationComponent {}
