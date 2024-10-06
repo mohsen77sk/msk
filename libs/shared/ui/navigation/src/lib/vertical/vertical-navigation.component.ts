@@ -81,7 +81,7 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
   position = model<MskVerticalNavigationPosition>('start');
   appearance = model<MskVerticalNavigationAppearance>('default');
   //
-  private _navigationContent = viewChild.required(ElementRef);
+  private _navigationContent = viewChild.required<ElementRef>('navigationContent');
 
   activeAsideItemId: string | null = null;
   onCollapsableItemCollapsed: ReplaySubject<MskNavigationItem> = new ReplaySubject<MskNavigationItem>(1);
@@ -275,7 +275,7 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
   ngAfterViewInit(): void {
     setTimeout(() => {
       // Return if 'navigation content' element does not exist
-      if (!this._navigationContent) {
+      if (!this._navigationContent()) {
         return;
       }
 
