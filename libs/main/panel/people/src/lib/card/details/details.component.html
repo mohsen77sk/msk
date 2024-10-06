@@ -68,7 +68,14 @@
 </ng-template>
 
 <ng-template #formTemplate let-t="t">
-  <form class="flex flex-auto flex-col" [formGroup]="form">
+  <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
+    <!-- Alert -->
+    @if(alert().show) {
+    <msk-alert class="mb-4" appearance="outline" type="error" @shake>
+      {{ alert().message }}
+    </msk-alert>
+    }
+
     <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
       <!-- FirstName -->
       <mat-form-field>
@@ -111,6 +118,7 @@
         <mat-option [value]="item">{{ t('people.genders.' + item) }}</mat-option>
         }
       </mat-select>
+      <mat-error>{{ formErrors.gender }}</mat-error>
     </mat-form-field>
 
     <!-- Note -->
