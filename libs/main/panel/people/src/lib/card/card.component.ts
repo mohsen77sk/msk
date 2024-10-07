@@ -1,5 +1,13 @@
 import { getLocaleDirection } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, DestroyRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  inject,
+  DestroyRef,
+  Injector,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Direction } from '@angular/cdk/bidi';
@@ -20,6 +28,7 @@ import { map } from 'rxjs';
 })
 export class PeopleCardComponent implements OnInit {
   private _router = inject(Router);
+  private _injector = inject(Injector);
   private _matDialog = inject(MatDialog);
   private _destroyRef = inject(DestroyRef);
   private _activatedRoute = inject(ActivatedRoute);
@@ -60,7 +69,7 @@ export class PeopleCardComponent implements OnInit {
       .subscribe((result) => {
         // Refresh list if needed
         if (action !== 'view' && result != 'cancelled') {
-          inject(PeopleListComponent).getPersons().subscribe();
+          this._injector.get(PeopleListComponent).getPersons().subscribe();
         }
         // Go back to list page
         this._router.navigate([this._activatedRoute.snapshot.url.map(() => '../').join('')], {

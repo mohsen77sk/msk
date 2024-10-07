@@ -15,7 +15,11 @@ import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
-import { MskHandleFormErrors, MskValidateFormFields } from '@msk/shared/utils/error-handler';
+import {
+  MskHandleFormErrors,
+  MskValidateFormFields,
+  MskSetServerErrorsFormFields,
+} from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
 import { Person } from '../../people.types';
 import { PeopleService } from '../../people.service';
@@ -73,10 +77,10 @@ export class PeopleCardDetailsComponent implements OnInit {
     // Create the form
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
       nationalCode: '',
-      dateOfBirth: '',
+      dateOfBirth: null,
       gender: ['', Validators.required],
       note: '',
     });
@@ -121,6 +125,8 @@ export class PeopleCardDetailsComponent implements OnInit {
           this.form.enable();
           // Set the alert
           this.alert.set({ show: true, message: response.error.message });
+          // Set validation error message
+          MskSetServerErrorsFormFields(response.error.errors, this.form);
           // Return
           return EMPTY;
         })
