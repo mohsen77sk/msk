@@ -64,6 +64,18 @@ export class MainAuthService {
    * Sign out
    */
   signOut(): Observable<boolean> {
+    // Client sign out if the user is logged in
+    if (!this._authenticated) {
+      // Remove the access token from the local storage
+      localStorage.removeItem('accessToken');
+
+      // Set the authenticated flag to false
+      this._authenticated = false;
+
+      // Return the observable
+      return of(true);
+    }
+
     return this._httpClient.post<void>(`${this._appConfig.apiEndpoint}/auth/logout`, null).pipe(
       switchMap(() => {
         // Remove the access token from the local storage
