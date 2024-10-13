@@ -6,9 +6,9 @@ import { PeopleListComponent } from './list/list.component';
 import { PeopleCardComponent } from './card/card.component';
 
 import { scopeLoader } from '@msk/shared/utils/transloco';
+import { MskErrorResponse } from '@msk/shared/data-access';
 import { provideTranslocoScope } from '@jsverse/transloco';
 import { catchError, throwError } from 'rxjs';
-import { MskErrorResponse } from '@msk/shared/data-access';
 
 /**
  * Person resolver
