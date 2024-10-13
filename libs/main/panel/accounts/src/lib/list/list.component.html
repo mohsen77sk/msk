@@ -1,7 +1,78 @@
-<div class="absolute inset-0 flex min-w-0 flex-col overflow-y-auto sm:overflow-hidden">
+<div class="page-layout grid-scroll">
   <!-- Header -->
-  <div class="flex flex-row items-center justify-between p-4 md:px-8"></div>
+  <div class="header">
+    <form class="flex items-center justify-end space-x-1 rtl:space-x-reverse" [formGroup]="filterForm"></form>
+  </div>
 
   <!-- Main -->
-  <div class="flex flex-auto sm:overflow-hidden"></div>
+  <div class="content">
+    <!-- List -->
+    <div class="content-grid" cdkScrollable>
+      <div class="content-grid-list account-content-grid">
+        <!-- Header -->
+        <div class="content-grid-list-header" matSort matSortDisableClear>
+          <ng-container *transloco="let t; read: 'accounts.column'">
+            <a mat-sort-header="code">{{ t('code') }}</a>
+            <a>{{ t('people') }}</a>
+            <a class="hidden sm:block" mat-sort-header="accountTypeName">{{ t('type-name') }}</a>
+            <a mat-sort-header="isActive">{{ t('status') }}</a>
+          </ng-container>
+        </div>
+        <!-- Rows -->
+        @for (account of accounts$ | async; track account.id) {
+        <div class="content-grid-list-row" [routerLink]="['card', 'view', account.id]" matRipple>
+          <!-- Code -->
+          <div class="truncate">
+            {{ account.code }}
+          </div>
+          <!-- People -->
+          <div class="truncate">
+            <!--  -->
+          </div>
+          <!-- TypeName -->
+          <div class="hidden truncate sm:block">
+            {{ account.accountTypeName }}
+          </div>
+          <!-- Status -->
+          <div class="flex items-center justify-center">
+            <!-- <main-account-status [value]="account.isActive"></main-account-status> -->
+          </div>
+        </div>
+        } @empty {
+        <div class="text-secondary p-8 text-center text-xl font-semibold tracking-tight sm:p-16" *transloco="let t">
+          {{ t('accounts.empty-list') }}
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Fab -->
+    <div class="content-fab-container">
+      <button
+        mat-fab
+        extended
+        [routerLink]="['card', 'new']"
+        [ngClass]="{ 'mat-mdc-extended-fab-collapses': isFabCollapses }"
+        @zoomIn
+      >
+        <mat-icon>add</mat-icon>
+        <span *transloco="let t">{{ t('new') }}</span>
+      </button>
+    </div>
+
+    <mat-paginator
+      class="content-paginator"
+      [length]="pagination.total"
+      [pageIndex]="pagination.pageIndex"
+      [pageSize]="pagination.pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="true"
+      [disabled]="isLoading"
+    ></mat-paginator>
+  </div>
+</div>
+
+<!-- Invisible router-outlet for card component -->
+<div class="pointer-events-none invisible absolute h-0 w-0 opacity-0">
+  <router-outlet></router-outlet>
 </div>

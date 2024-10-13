@@ -1,1 +1,10 @@
-{}
+{
+  "column": {
+    "code": "Code",
+    "people": "Owners",
+    "type-name": "Type",
+    "status": "Status"
+  },
+  "search": "Search accounts",
+  "empty-list": "There are no accounts!"
+}
