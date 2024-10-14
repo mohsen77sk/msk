@@ -6,9 +6,9 @@ import {
   Component,
   DestroyRef,
   OnInit,
-  ViewChild,
   ViewEncapsulation,
   inject,
+  viewChild,
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -61,9 +61,9 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
   private _accountService = inject(AccountService);
   private _changeDetectorRef = inject(ChangeDetectorRef);
 
-  @ViewChild(CdkScrollable) private _gridContent!: CdkScrollable;
-  @ViewChild(MatPaginator) private _paginator!: MatPaginator;
-  @ViewChild(MatSort) private _sort!: MatSort;
+  private _gridContent = viewChild.required(CdkScrollable);
+  private _paginator = viewChild.required(MatPaginator);
+  private _sort = viewChild.required(MatSort);
 
   isLoading = false;
   isFabCollapses = false;
@@ -107,29 +107,32 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this._sort && this._paginator) {
       // Set the initial sort
-      this._sort.sort({
+      this._sort().sort({
         id: DefaultAccountSortId,
         start: DefaultAccountSortDirection,
         disableClear: true,
       });
 
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
-
       // If the user changes the sort order...
-      this._sort.sortChange.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
-        // Reset back to the first page
-        this._paginator.pageIndex = 0;
-      });
+      // Reset back to the first page
+      this._sort()
+        .sortChange.pipe(
+          takeUntilDestroyed(this._destroyRef),
+          tap(() => (this._paginator().pageIndex = 0))
+        )
+        .subscribe();
 
-      // Get accounts if sort or page changes
-      merge(this._sort.sortChange, this._paginator.page)
-        .pipe(switchMap(() => this.getAccounts()))
+      // Get persons if sort or page changes
+      merge(this._sort().sortChange, this._paginator().page)
+        .pipe(
+          takeUntilDestroyed(this._destroyRef),
+          switchMap(() => this.getAccounts())
+        )
         .subscribe();
     }
 
     // Get the scrolling
-    this._gridContent
+    this._gridContent()
       .elementScrolled()
       .pipe(
         takeUntilDestroyed(this._destroyRef),
@@ -166,9 +169,9 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
 
     return this._accountService
       .getAccounts(
-        firstPage ? 1 : this._paginator.pageIndex + 1,
-        this._paginator.pageSize,
-        `${this._sort.active} ${this._sort.direction}`
+        firstPage ? 1 : this._paginator().pageIndex + 1,
+        this._paginator().pageSize,
+        `${this._sort().active} ${this._sort().direction}`
       )
       .pipe(
         catchError((response) => {
