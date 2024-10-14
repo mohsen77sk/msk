@@ -24,6 +24,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
+import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageSizeOptions, MskPagination } from '@msk/shared/data-access';
 import { Observable, catchError, filter, finalize, map, merge, of, switchMap, tap } from 'rxjs';
 import { DefaultPeopleSortDirection, DefaultPeopleSortId, Person } from '../people.types';
@@ -55,6 +56,7 @@ import { UsersStatusComponent } from '../common/status/status.component';
     MatSortModule,
     MatPaginatorModule,
     TranslocoDirective,
+    MskAvatarComponent,
     UsersStatusComponent,
   ],
 })

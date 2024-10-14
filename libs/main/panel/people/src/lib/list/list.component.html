@@ -13,6 +13,7 @@
         <div class="content-grid-list-header" matSort matSortDisableClear>
           <ng-container *transloco="let t; read: 'people.column'">
             <a mat-sort-header="code">{{ t('code') }}</a>
+            <a></a>
             <a mat-sort-header="firstName">{{ t('name') }}</a>
             <a class="hidden sm:block" mat-sort-header="nationalCode">{{ t('nationalCode') }}</a>
             <a mat-sort-header="isActive">{{ t('status') }}</a>
@@ -25,6 +26,8 @@
           <div class="truncate">
             {{ person.code }}
           </div>
+          <!-- Avatar -->
+          <msk-avatar [name]="person.firstName"></msk-avatar>
           <!-- Name -->
           <div class="truncate">
             {{ person.firstName + ' ' + person.lastName }}

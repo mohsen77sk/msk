@@ -1,0 +1,9 @@
+@if (imageUrl()) {
+<div class="relative flex h-10 w-10 items-center justify-center rounded-full">
+  <img class="relative h-full w-full rounded-full" [src]="imageUrl()" />
+</div>
+} @else {
+<div class="bg-primary-container text-on-primary-container flex h-10 w-10 items-center justify-center rounded-full">
+  <span class="text-lg font-medium leading-6">{{ label }}</span>
+</div>
+}
