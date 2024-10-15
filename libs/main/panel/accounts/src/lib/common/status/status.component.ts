@@ -5,13 +5,13 @@ import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   standalone: true,
-  selector: 'main-person-status',
+  selector: 'main-accounts-status',
   templateUrl: './status.component.html',
-  styles: 'main-person-status { display: flex }',
+  styles: 'main-accounts-status { display: flex }',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatTooltipModule, TranslocoDirective],
 })
-export class UsersStatusComponent {
+export class AccountsStatusComponent {
   value = input(true, { transform: booleanAttribute });
 }

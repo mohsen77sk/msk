@@ -28,6 +28,7 @@ import { MskPageSizeOptions, MskPagination } from '@msk/shared/data-access';
 import { Observable, catchError, filter, finalize, map, merge, of, switchMap, tap } from 'rxjs';
 import { DefaultAccountSortDirection, DefaultAccountSortId, Account } from '../accounts.types';
 import { AccountService } from '../accounts.service';
+import { AccountsStatusComponent } from '../common/status/status.component';
 
 @Component({
   standalone: true,
@@ -54,6 +55,7 @@ import { AccountService } from '../accounts.service';
     MatSortModule,
     MatPaginatorModule,
     TranslocoDirective,
+    AccountsStatusComponent,
   ],
 })
 export class AccountsListComponent implements OnInit, AfterViewInit {
