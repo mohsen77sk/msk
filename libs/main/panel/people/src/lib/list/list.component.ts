@@ -67,7 +67,7 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
 
   private _gridContent = viewChild.required(CdkScrollable);
   private _paginator = viewChild.required(MatPaginator);
-  private _sort = viewChild.required(MatSort);
+  private _sort = new MatSort(); // viewChild.required(MatSort);
 
   isLoading = false;
   isFabCollapses = false;
@@ -111,7 +111,7 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this._sort && this._paginator) {
       // Set the initial sort
-      this._sort().sort({
+      this._sort.sort({
         id: DefaultPeopleSortId,
         start: DefaultPeopleSortDirection,
         disableClear: true,
@@ -119,15 +119,15 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
 
       // If the user changes the sort order...
       // Reset back to the first page
-      this._sort()
-        .sortChange.pipe(
+      this._sort.sortChange
+        .pipe(
           takeUntilDestroyed(this._destroyRef),
           tap(() => (this._paginator().pageIndex = 0))
         )
         .subscribe();
 
       // Get persons if sort or page changes
-      merge(this._sort().sortChange, this._paginator().page)
+      merge(this._sort.sortChange, this._paginator().page)
         .pipe(
           takeUntilDestroyed(this._destroyRef),
           switchMap(() => this.getPersons())
@@ -175,7 +175,7 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
       .getPersons(
         firstPage ? 1 : this._paginator().pageIndex + 1,
         this._paginator().pageSize,
-        `${this._sort().active} ${this._sort().direction}`
+        `${this._sort.active} ${this._sort.direction}`
       )
       .pipe(
         catchError((response) => {
