@@ -31,7 +31,7 @@
     </div>
     <!-- National Code -->
     <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>assignment_ind</mat-icon></div>
+      <div class="msk-list-item-icon"><mat-icon>badge</mat-icon></div>
       <div class="msk-list-item-content">
         <span>{{ data.item?.nationalCode || '-' }}</span>
         <span>{{ t('nationalCode') }}</span>
@@ -47,7 +47,7 @@
     </div>
     <!-- Gender -->
     <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>wc</mat-icon></div>
+      <div class="msk-list-item-icon"><mat-icon>male</mat-icon></div>
       <div class="msk-list-item-content">
         <span *transloco="let t; read: 'people.genders'">{{ t(data.item?.gender?.toString() ?? '') }}</span>
         <span>{{ t('gender') }}</span>

@@ -37,7 +37,7 @@ const config = {
       'medium': 'var(--sys-corner-medium)',
       'large': 'var(--sys-corner-large)',
       'extra-large': 'var(--sys-corner-extra-large)',
-      'full': '9999px',
+      'full': 'var(--sys-corner-full)',
     },
     boxShadow: {
       'level-0': 'var(--mat-app-elevation-shadow-level-0)',

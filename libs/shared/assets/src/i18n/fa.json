@@ -2,6 +2,9 @@
   "new": "جدید",
   "active": "فعال",
   "inactive": "غیر فعال",
+  "export": "خروجی",
+  "filter": "فیلتر",
+  "sort": "ترتیب",
   "save": "ذخیره",
   "cancel": "لغو",
   "layout": {

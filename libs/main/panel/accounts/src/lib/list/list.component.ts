@@ -24,6 +24,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
+import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageSizeOptions, MskPagination } from '@msk/shared/data-access';
 import { Observable, catchError, filter, finalize, map, merge, of, switchMap, tap } from 'rxjs';
 import { DefaultAccountSortDirection, DefaultAccountSortId, Account } from '../accounts.types';
@@ -34,7 +35,6 @@ import { AccountsStatusComponent } from '../common/status/status.component';
   standalone: true,
   selector: 'main-accounts-list',
   templateUrl: './list.component.html',
-  styleUrl: './list.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: mskAnimations,
@@ -55,6 +55,7 @@ import { AccountsStatusComponent } from '../common/status/status.component';
     MatSortModule,
     MatPaginatorModule,
     TranslocoDirective,
+    MskAvatarComponent,
     AccountsStatusComponent,
   ],
 })
@@ -65,7 +66,7 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
 
   private _gridContent = viewChild.required(CdkScrollable);
   private _paginator = viewChild.required(MatPaginator);
-  private _sort = viewChild.required(MatSort);
+  private _sort = new MatSort(); // viewChild.required(MatSort);
 
   isLoading = false;
   isFabCollapses = false;
@@ -109,7 +110,7 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this._sort && this._paginator) {
       // Set the initial sort
-      this._sort().sort({
+      this._sort.sort({
         id: DefaultAccountSortId,
         start: DefaultAccountSortDirection,
         disableClear: true,
@@ -117,15 +118,15 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
 
       // If the user changes the sort order...
       // Reset back to the first page
-      this._sort()
-        .sortChange.pipe(
+      this._sort.sortChange
+        .pipe(
           takeUntilDestroyed(this._destroyRef),
           tap(() => (this._paginator().pageIndex = 0))
         )
         .subscribe();
 
       // Get persons if sort or page changes
-      merge(this._sort().sortChange, this._paginator().page)
+      merge(this._sort.sortChange, this._paginator().page)
         .pipe(
           takeUntilDestroyed(this._destroyRef),
           switchMap(() => this.getAccounts())
@@ -173,7 +174,7 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
       .getAccounts(
         firstPage ? 1 : this._paginator().pageIndex + 1,
         this._paginator().pageSize,
-        `${this._sort().active} ${this._sort().direction}`
+        `${this._sort.active} ${this._sort.direction}`
       )
       .pipe(
         catchError((response) => {

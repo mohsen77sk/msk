@@ -1,52 +1,42 @@
 <div class="page-layout grid-scroll">
   <!-- Header -->
-  <div class="header">
-    <form class="flex items-center justify-end space-x-1 rtl:space-x-reverse" [formGroup]="filterForm"></form>
+  <div class="header" *transloco="let t">
+    <form class="flex w-full items-center" [formGroup]="filterForm">
+      <div class="msk-mat-search-bar w-full">
+        <mat-icon>search</mat-icon>
+        <input formControlName="search" autocomplete="off" [placeholder]="t('people.search')" />
+      </div>
+    </form>
   </div>
 
   <!-- Main -->
   <div class="content">
     <!-- List -->
     <div class="content-grid" cdkScrollable>
-      <div class="content-grid-list people-content-grid">
-        <!-- Header -->
-        <div class="content-grid-list-header" matSort matSortDisableClear>
-          <ng-container *transloco="let t; read: 'people.column'">
-            <a mat-sort-header="code">{{ t('code') }}</a>
-            <a></a>
-            <a mat-sort-header="firstName">{{ t('name') }}</a>
-            <a class="hidden sm:block" mat-sort-header="nationalCode">{{ t('nationalCode') }}</a>
-            <a mat-sort-header="isActive">{{ t('status') }}</a>
-          </ng-container>
-        </div>
-        <!-- Rows -->
-        @for (person of persons$ | async; track person.id) {
-        <div class="content-grid-list-row" [routerLink]="['card', 'view', person.id]" matRipple>
-          <!-- Code -->
-          <div class="truncate">
-            {{ person.code }}
-          </div>
-          <!-- Avatar -->
+      <!-- Rows -->
+      @for (person of persons$ | async; track person.id) {
+      <div class="content-grid-item tow-line" [routerLink]="['card', 'view', person.id]" matRipple>
+        <!-- Avatar -->
+        <div class="content-grid-item-avatar">
           <msk-avatar [name]="person.firstName"></msk-avatar>
-          <!-- Name -->
+        </div>
+        <!-- Content -->
+        <div class="content-grid-item-content" *transloco="let t; read: 'people.details'">
+          <div class="truncate">{{ person.firstName + ' ' + person.lastName }}</div>
           <div class="truncate">
-            {{ person.firstName + ' ' + person.lastName }}
-          </div>
-          <!-- National code -->
-          <div class="hidden truncate sm:block">
-            {{ person.nationalCode }}
-          </div>
-          <!-- Status -->
-          <div class="flex items-center justify-center">
-            <main-person-status [value]="person.isActive"></main-person-status>
+            <span>#{{ person.code }}</span>
           </div>
         </div>
-        } @empty {
-        <div class="text-secondary p-8 text-center text-xl font-semibold tracking-tight sm:p-16" *transloco="let t">
-          {{ t('people.empty-list') }}
+        <!-- End -->
+        <div class="content-grid-item-end">
+          <main-person-status [value]="person.isActive"></main-person-status>
         </div>
-        }
       </div>
+      } @empty {
+      <div class="text-secondary p-8 text-center text-xl font-semibold tracking-tight sm:p-16" *transloco="let t">
+        {{ t('people.empty-list') }}
+      </div>
+      }
     </div>
 
     <!-- Fab -->

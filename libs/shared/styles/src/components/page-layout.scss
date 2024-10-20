@@ -34,20 +34,36 @@
       > .content-grid {
         @apply flex flex-auto flex-col overflow-y-auto;
 
-        > .content-grid-list {
-          @apply text-on-surface-variant grid transition;
+        > .content-grid-item {
+          @apply flex-0 text-on-surface flex h-14 items-center gap-4 border-b px-4 py-2 transition md:px-8;
 
-          > .content-grid-list-header {
-            @apply text-md text-on-surface bg-surface sticky top-0 z-10 grid gap-4 border-b p-4 font-semibold md:px-8;
+          &.tow-line {
+            @apply h-18;
           }
 
-          > .content-grid-list-row {
-            @apply grid h-14 items-center gap-4 border-b px-4 py-2 md:px-8;
+          &:hover {
+            @apply cursor-pointer;
+            background-color: color-mix(in srgb, var(--sys-on-surface) 8%, transparent);
+          }
 
-            &:hover {
-              @apply cursor-pointer;
-              background-color: color-mix(in srgb, var(--sys-on-surface) 8%, transparent);
+          .content-grid-item-avatar {
+            @apply flex-0;
+          }
+
+          .content-grid-item-content {
+            @apply flex flex-1 flex-col overflow-hidden;
+
+            > div:nth-child(1) {
+              @apply font-medium leading-6;
             }
+
+            > div:nth-child(2) {
+              @apply text-on-surface-variant text-sm leading-5;
+            }
+          }
+
+          .content-grid-item-end {
+            @apply flex-0;
           }
         }
       }

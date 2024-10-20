@@ -2,6 +2,9 @@
   "new": "New",
   "active": "Active",
   "inactive": "Inactive ",
+  "export": "Export",
+  "filter": "Filter",
+  "sort": "Sort",
   "save": "Save",
   "cancel": "Cancel",
   "layout": {

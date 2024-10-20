@@ -1,10 +1,4 @@
 {
-  "column": {
-    "code": "کد",
-    "name": "نام",
-    "nationalCode": "کد ملی",
-    "status": "وضعیت"
-  },
   "details": {
     "new": "کاربر جدید",
     "edit": "ویرایش کاربر",

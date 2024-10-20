@@ -1,10 +1,4 @@
 {
-  "column": {
-    "code": "Code",
-    "name": "Name",
-    "nationalCode": "National Id",
-    "status": "Status"
-  },
   "details": {
     "new": "New person",
     "edit": "Edit person",
