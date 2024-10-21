@@ -19,17 +19,18 @@
 </msk-dialog>
 
 <ng-template #viewTemplate let-t="t">
+  <div class="mb-2 flex flex-col items-center gap-5 p-4">
+    <msk-avatar [name]="data.item?.firstName ?? ''" size="big"></msk-avatar>
+    <div class="text-headline-small text-on-surface">
+      {{ data.item?.firstName + ' ' + data.item?.lastName }}
+    </div>
+  </div>
   <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="mb-2 font-bold">{{ t('about', { name: data.item?.firstName }) }}</div>
-    <!-- Name -->
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>person</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item?.firstName + ' ' + data.item?.lastName }}</span>
-        <span>{{ t('name') }}</span>
-      </div>
+    <div class="text-secondary mb-2 font-bold">
+      {{ t('about', { name: data.item?.firstName + ' ' + data.item?.lastName }) }}
     </div>
     <!-- National Code -->
+    @if (data.item?.nationalCode) {
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>badge</mat-icon></div>
       <div class="msk-list-item-content">
@@ -37,7 +38,9 @@
         <span>{{ t('nationalCode') }}</span>
       </div>
     </div>
+    }
     <!-- Birthday -->
+    @if (data.item?.dateOfBirth) {
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>cake</mat-icon></div>
       <div class="msk-list-item-content">
@@ -45,7 +48,9 @@
         <span>{{ t('birthday') }}</span>
       </div>
     </div>
+    }
     <!-- Gender -->
+    @if (data.item?.gender) {
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>male</mat-icon></div>
       <div class="msk-list-item-content">
@@ -53,10 +58,11 @@
         <span>{{ t('gender') }}</span>
       </div>
     </div>
+    }
   </div>
   @if (data.item?.note) {
   <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="mb-2 font-bold">{{ t('note') }}</div>
+    <div class="text-secondary mb-2 font-bold">{{ t('note') }}</div>
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>sticky_note_2</mat-icon></div>
       <div class="msk-list-item-content">

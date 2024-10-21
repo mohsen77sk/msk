@@ -12,6 +12,7 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
+import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
@@ -46,6 +47,7 @@ import { catchError, EMPTY, tap } from 'rxjs';
     MatDialogModule,
     TranslocoDirective,
     MskAlertComponent,
+    MskAvatarComponent,
     MskDialogComponent,
     MskSpinnerDirective,
     MskDateTimePipe,

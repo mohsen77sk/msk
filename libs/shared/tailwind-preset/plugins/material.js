@@ -253,12 +253,18 @@ module.exports = plugin(({ addComponents, addUtilities, theme }) => {
     },
     '.msk-list-item-content span:nth-child(1)': {
       fontWeight: '500',
+      lineHeight: '1.5rem',
+      color: 'var(--sys-on-surface)',
     },
     '.msk-list-item-content span:nth-child(2)': {
-      color: 'var(--sys-secondary)',
+      color: 'var(--sys-on-surface-variant)',
+      fontSize: '0.75rem',
+      lineHeight: '1rem',
     },
     '.msk-list-item-content span:nth-child(3)': {
-      color: 'var(--sys-secondary)',
+      color: 'var(--sys-on-surface-variant)',
+      fontSize: '0.75rem',
+      lineHeight: '1rem',
     },
   });
 });
