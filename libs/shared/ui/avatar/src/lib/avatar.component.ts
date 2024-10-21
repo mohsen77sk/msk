@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -7,11 +8,12 @@ import { ChangeDetectionStrategy, Component, input, ViewEncapsulation } from '@a
   exportAs: 'mskAvatar',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [NgClass],
 })
 export class MskAvatarComponent {
   name = input.required<string>();
   imageUrl = input<string>();
+  size = input<'small' | 'medium' | 'big'>('medium');
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
