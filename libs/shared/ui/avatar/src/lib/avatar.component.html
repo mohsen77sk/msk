@@ -1,19 +1,10 @@
 @if (imageUrl()) {
-<div
-  class="relative flex items-center justify-center rounded-full"
-  [ngClass]="{ 'h-7 w-7': size() === 'small', 'h-10 w-10': size() === 'medium', 'h-24 w-24': size() === 'big' }"
->
-  <img class="relative h-full w-full rounded-full" [src]="imageUrl()" />
+<div class="relative flex size-full items-center justify-center rounded-full">
+  <img class="relative size-full rounded-full" [src]="imageUrl()" />
 </div>
 } @else {
-<div
-  class="bg-primary-container text-on-primary-container flex items-center justify-center rounded-full"
-  [ngClass]="{ 'h-7 w-7': size() === 'small', 'h-10 w-10': size() === 'medium', 'h-24 w-24': size() === 'big' }"
->
-  <span
-    class="font-medium"
-    [ngClass]="{ 'text-base': size() === 'small', 'text-lg': size() === 'medium', 'text-7xl': size() === 'big' }"
-  >
+<div class="flex size-full items-center justify-center rounded-full" [ngClass]="color">
+  <span class="font-medium">
     {{ label }}
   </span>
 </div>
