@@ -18,11 +18,11 @@
       <div class="content-grid-item tow-line" [routerLink]="['card', 'view', person.id]" matRipple>
         <!-- Avatar -->
         <div class="content-grid-item-avatar">
-          <msk-avatar [name]="person.firstName"></msk-avatar>
+          <msk-avatar [name]="person.fullName"></msk-avatar>
         </div>
         <!-- Content -->
         <div class="content-grid-item-content" *transloco="let t; read: 'people.details'">
-          <div class="truncate">{{ person.firstName + ' ' + person.lastName }}</div>
+          <div class="truncate">{{ person.fullName }}</div>
           <div class="truncate">
             <span>#{{ person.code }}</span>
           </div>

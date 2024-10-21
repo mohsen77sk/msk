@@ -31,4 +31,8 @@ export class Person {
     this.note = input.note;
     this.isActive = input.isActive;
   }
+
+  get fullName(): string {
+    return this.firstName + ' ' + this.lastName;
+  }
 }

@@ -20,14 +20,14 @@
 
 <ng-template #viewTemplate let-t="t">
   <div class="mb-2 flex flex-col items-center gap-5 p-4">
-    <msk-avatar [name]="data.item?.firstName ?? ''" size="big"></msk-avatar>
+    <msk-avatar [name]="data.item?.fullName ?? ''" size="big"></msk-avatar>
     <div class="text-headline-small text-on-surface">
-      {{ data.item?.firstName + ' ' + data.item?.lastName }}
+      {{ data.item?.fullName }}
     </div>
   </div>
   <div class="msk-mat-card-filled mb-2 p-4">
     <div class="text-secondary mb-2 font-bold">
-      {{ t('about', { name: data.item?.firstName + ' ' + data.item?.lastName }) }}
+      {{ t('about', { name: data.item?.fullName }) }}
     </div>
     <!-- National Code -->
     @if (data.item?.nationalCode) {
