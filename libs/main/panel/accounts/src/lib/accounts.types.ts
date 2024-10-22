@@ -3,6 +3,25 @@ import { SortDirection } from '@angular/material/sort';
 export const DefaultAccountSortId = 'code';
 export const DefaultAccountSortDirection: SortDirection = 'asc';
 
+export interface ICreateAccount {
+  accountTypeId: number;
+  initCredit: number;
+  createDate: Date;
+  personId: number[];
+  note?: string;
+}
+
+export interface IUpdateAccount {
+  id: number;
+  personId?: number[];
+  note?: string;
+}
+
+export interface ICloseAccount {
+  id: number;
+  closeDate: Date;
+}
+
 export class Account {
   id: number;
   code: string;

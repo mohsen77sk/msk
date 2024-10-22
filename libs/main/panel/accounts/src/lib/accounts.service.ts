@@ -3,7 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskPagingResponse, MskPagination } from '@msk/shared/data-access';
-import { DefaultAccountSortDirection, DefaultAccountSortId, Account } from './accounts.types';
+import {
+  DefaultAccountSortDirection,
+  DefaultAccountSortId,
+  Account,
+  ICreateAccount,
+  IUpdateAccount,
+  ICloseAccount,
+} from './accounts.types';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -62,5 +69,49 @@ export class AccountService {
           this._accounts.next(response.items);
         })
       );
+  }
+
+  /**
+   * Get account
+   *
+   * @param id
+   */
+  getAccount(id: number | string): Observable<Account> {
+    return this._httpClient
+      .get<Account>(`${this._appConfig.apiEndpoint}/api/account/${id}`)
+      .pipe(map((response) => new Account(response)));
+  }
+
+  /**
+   * Create account
+   *
+   * @param account
+   */
+  createAccount(account: ICreateAccount): Observable<Account> {
+    return this._httpClient
+      .post<Account>(`${this._appConfig.apiEndpoint}/api/account`, account)
+      .pipe(map((response) => new Account(response)));
+  }
+
+  /**
+   * Update account
+   *
+   * @param account
+   */
+  updateAccount(account: IUpdateAccount): Observable<Account> {
+    return this._httpClient
+      .put<Account>(`${this._appConfig.apiEndpoint}/api/account`, account)
+      .pipe(map((response) => new Account(response)));
+  }
+
+  /**
+   * Close account
+   *
+   * @param account
+   */
+  closeAccount(account: ICloseAccount): Observable<Account> {
+    return this._httpClient
+      .put<Account>(`${this._appConfig.apiEndpoint}/api/account/close`, account)
+      .pipe(map((response) => new Account(response)));
   }
 }
