@@ -22,6 +22,11 @@ export interface ICloseAccount {
   closeDate: Date;
 }
 
+export interface IBalanceAccount {
+  id: number;
+  balance: number;
+}
+
 export class Account {
   id: number;
   code: string;
@@ -29,6 +34,7 @@ export class Account {
   accountTypeName: string;
   createDate: Date;
   closeDate?: Date;
+  balance?: number;
   persons: AccountPeople[];
   note?: string;
   isActive: boolean;
@@ -40,6 +46,7 @@ export class Account {
     this.accountTypeName = input.accountTypeName;
     this.createDate = new Date(input.createDate);
     this.closeDate = input.closeDate ? new Date(input.closeDate) : undefined;
+    this.balance = input.balance;
     this.persons = input.persons?.map((ap) => new AccountPeople(ap));
     this.note = input.note;
     this.isActive = input.isActive;

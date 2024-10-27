@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
-import { MskPagingResponse, MskPagination } from '@msk/shared/data-access';
+import { MskPagingResponse, MskPagination, MskLookupResponse } from '@msk/shared/data-access';
 import { DefaultPeopleSortDirection, DefaultPeopleSortId, Person } from './people.types';
 
 @Injectable({ providedIn: 'root' })
@@ -62,6 +62,15 @@ export class PeopleService {
           this._persons.next(response.items);
         })
       );
+  }
+
+  /**
+   * Get lookup persons
+   */
+  getLookupPersons(): Observable<MskLookupResponse> {
+    return this._httpClient
+      .get<MskLookupResponse>(`${this._appConfig.apiEndpoint}/api/person/lookup`)
+      .pipe(map((response) => response));
   }
 
   /**

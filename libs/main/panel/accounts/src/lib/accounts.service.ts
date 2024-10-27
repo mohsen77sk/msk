@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
-import { MskPagingResponse, MskPagination } from '@msk/shared/data-access';
+import { MskPagingResponse, MskPagination, MskLookupResponse } from '@msk/shared/data-access';
 import {
   DefaultAccountSortDirection,
   DefaultAccountSortId,
@@ -10,6 +10,7 @@ import {
   ICreateAccount,
   IUpdateAccount,
   ICloseAccount,
+  IBalanceAccount,
 } from './accounts.types';
 
 @Injectable({ providedIn: 'root' })
@@ -72,6 +73,24 @@ export class AccountService {
   }
 
   /**
+   * Get lookup accounts
+   */
+  getLookupAccounts(): Observable<MskLookupResponse> {
+    return this._httpClient
+      .get<MskLookupResponse>(`${this._appConfig.apiEndpoint}/api/account/lookup`)
+      .pipe(map((response) => response));
+  }
+
+  /**
+   * Get lookup account types
+   */
+  getLookupAccountTypes(): Observable<MskLookupResponse> {
+    return this._httpClient
+      .get<MskLookupResponse>(`${this._appConfig.apiEndpoint}/api/accountType/lookup`)
+      .pipe(map((response) => response));
+  }
+
+  /**
    * Get account
    *
    * @param id
@@ -80,6 +99,28 @@ export class AccountService {
     return this._httpClient
       .get<Account>(`${this._appConfig.apiEndpoint}/api/account/${id}`)
       .pipe(map((response) => new Account(response)));
+  }
+
+  /**
+   * Get balance account
+   *
+   * @param id
+   */
+  getBalanceAccount(id: number | string): Observable<IBalanceAccount> {
+    return this._httpClient
+      .get<IBalanceAccount>(`${this._appConfig.apiEndpoint}/api/account/${id}/balance`)
+      .pipe(map((response) => response));
+  }
+
+  /**
+   * Get account
+   *
+   * @param id
+   */
+  getAccountWithBalance(id: number | string): Observable<Account> {
+    return forkJoin([this.getAccount(id), this.getBalanceAccount(id)]).pipe(
+      map((value) => new Account({ ...value[0], ...value[1] }))
+    );
   }
 
   /**

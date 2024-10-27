@@ -21,7 +21,7 @@
 <ng-template #viewTemplate let-t="t">
   <div class="mb-2 flex flex-col gap-4 p-4">
     <span class="text-on-surface-variant text-label-medium">{{ t('credit') }}</span>
-    <span class="text-on-surface text-title-large">{{ 0 }}</span>
+    <span class="text-on-surface text-title-large">{{ data.item?.balance | currency }}</span>
   </div>
   <div class="msk-mat-card-filled mb-2 p-4">
     <div class="text-secondary mb-2 font-bold">{{ t('owners') }}</div>

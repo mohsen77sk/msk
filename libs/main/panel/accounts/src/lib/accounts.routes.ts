@@ -20,7 +20,7 @@ const accountResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapsh
   const accountService = inject(AccountService);
   const router = inject(Router);
 
-  return accountService.getAccount(route.paramMap.get('id') ?? 0).pipe(
+  return accountService.getAccountWithBalance(route.paramMap.get('id') ?? 0).pipe(
     // Error here means the requested contact is not available
     catchError((error: MskErrorResponse) => {
       // Log the error
