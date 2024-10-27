@@ -11,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
+import { MskDialogData, MskHttpErrorResponse, MskLookupItem } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
@@ -23,9 +23,10 @@ import {
   MskSetServerErrorsFormFields,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
+import { PeopleService } from '@msk/main/panel/people';
 import { Account } from '../../accounts.types';
 import { AccountService } from '../../accounts.service';
-import { catchError, EMPTY, tap } from 'rxjs';
+import { catchError, EMPTY, map, tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -60,16 +61,32 @@ export class AccountsCardDetailsComponent implements OnInit {
   readonly data = inject<MskDialogData<Account | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<AccountsCardDetailsComponent>);
   private _formBuilder = inject(FormBuilder);
+  private _peopleService = inject(PeopleService);
   private _accountService = inject(AccountService);
   private _translocoService = inject(TranslocoService);
 
   form!: FormGroup;
   formErrors: any = {};
+  personList: MskLookupItem[] = [];
+  accountTypeList: MskLookupItem[] = [];
 
   alert = signal({
     show: false,
     message: '',
   });
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Accessors
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Getter for selected persons
+   */
+  get personIdTitles(): string {
+    const ids: number[] = this.form.get('personId')?.value;
+    const firesName = this.personList.find((p) => p.id === ids[0])?.name;
+    return firesName + (ids.length > 1 ? ` (+${ids.length - 1} ${this._translocoService.translate('other')})` : '');
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -82,9 +99,9 @@ export class AccountsCardDetailsComponent implements OnInit {
     // Create the form
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
-      personId: [[0], Validators.required],
+      personId: [[], Validators.required],
       accountTypeId: ['', Validators.required],
-      initCredit: [0, [Validators.required, Validators.min(1000)]],
+      initCredit: ['', [Validators.required, Validators.min(1000)]],
       createDate: [new Date(), Validators.required],
       note: '',
     });
@@ -92,6 +109,17 @@ export class AccountsCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     this.form.patchValue(this.data.item || {});
+
+    // Get initial form value
+    this._accountService
+      .getLookupAccountTypes()
+      .pipe(map((res) => (this.accountTypeList = res)))
+      .subscribe();
+
+    this._peopleService
+      .getLookupPersons()
+      .pipe(map((res) => (this.personList = res)))
+      .subscribe();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -116,12 +144,8 @@ export class AccountsCardDetailsComponent implements OnInit {
     // Reset the alert
     this.alert.set({ show: false, message: '' });
 
-    const result =
-      this.data.action === 'edit'
-        ? this._accountService.updateAccount(this.form.value)
-        : this._accountService.createAccount(this.form.value);
-
-    result
+    this._accountService
+      .createAccount(this.form.value)
       .pipe(
         tap((response) => this.dialogRef.close(response)),
         catchError((response: MskHttpErrorResponse) => {

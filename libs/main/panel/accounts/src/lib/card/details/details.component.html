@@ -92,6 +92,47 @@
     </msk-alert>
     }
 
+    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+      <!-- AccountType -->
+      <mat-form-field>
+        <mat-label>{{ t('accountType') }}</mat-label>
+        <mat-select formControlName="accountTypeId">
+          @for (item of accountTypeList; track item) {
+          <mat-option [value]="item.id">{{ item.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error>{{ formErrors.accountTypeId }}</mat-error>
+      </mat-form-field>
+
+      <!-- CreateDate -->
+      <mat-form-field>
+        <mat-label>{{ t('createDate') }}</mat-label>
+        <input matInput formControlName="createDate" [matDatepicker]="picker" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>{{ formErrors.createDate }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Owners -->
+    <mat-form-field>
+      <mat-label>{{ t('owners') }}</mat-label>
+      <mat-select formControlName="personId" multiple>
+        <mat-select-trigger>{{ personIdTitles }}</mat-select-trigger>
+        @for (item of personList; track item) {
+        <mat-option [value]="item.id">{{ item.name }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>{{ formErrors.personId }}</mat-error>
+    </mat-form-field>
+
+    <!-- InitCredit -->
+    <mat-form-field>
+      <mat-label>{{ t('initCredit') }}</mat-label>
+      <input matInput formControlName="initCredit" autocomplete="off" />
+      <mat-error>{{ formErrors.initCredit }}</mat-error>
+    </mat-form-field>
+
     <!-- Note -->
     <mat-form-field>
       <textarea matInput formControlName="note" [placeholder]="t('note')" [rows]="2"></textarea>

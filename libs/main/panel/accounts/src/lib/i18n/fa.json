@@ -8,6 +8,7 @@
     "accountNumber": "شماره حساب",
     "createDate": "تاریخ ایجاد",
     "closeDate": "تاریخ بستن",
+    "initCredit": "موجودی اولیه",
     "credit": "موجودی",
     "owners": "صاحبان حساب",
     "note": "توضیحات",
