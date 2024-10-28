@@ -1,9 +1,9 @@
-import { Inject, Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
-import { Locale, enUS } from 'date-fns/locale';
-import { format as gregorianFormat } from 'date-fns';
+import { Locale } from 'date-fns/locale';
 import { faIR } from 'date-fns-jalali/locale';
+import { format as gregorianFormat } from 'date-fns';
 import { format as jalaliFormat } from 'date-fns-jalali';
 
 const localeFormat = {
@@ -20,36 +20,19 @@ const localeFormat = {
   pure: false,
 })
 export class MskDateTimePipe implements PipeTransform {
+  matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
+
   /** Calendar type. */
   private _calendarType: 'gregorian' | 'jalali' = 'gregorian';
 
   /**
    * Constructor
    */
-  constructor(@Inject(MAT_DATE_LOCALE) private _dateLocale: string | Locale) {
-    this.setLocale(_dateLocale);
-  }
-
-  /**
-   * Sets the locale used for dates.
-   *
-   * @param locale The new locale
-   */
-  setLocale(locale: string | Locale): void {
-    const _locale = typeof locale === 'string' ? locale : locale.code;
-
-    if (_locale === 'en-US') {
-      this._dateLocale = enUS;
-      return;
-    }
-
-    if (_locale === 'fa-IR') {
-      this._dateLocale = faIR;
+  constructor() {
+    if (this.matDateLocale.code === 'fa-IR') {
       this._calendarType = 'jalali';
-      return;
+      this.matDateLocale = faIR;
     }
-
-    this._dateLocale = locale;
   }
 
   /**
@@ -94,7 +77,7 @@ export class MskDateTimePipe implements PipeTransform {
 
   private _formatDate(value: Date | string | number, format: string): string {
     return localeFormat[this._calendarType](new Date(value), format, {
-      locale: this._dateLocale as Locale,
+      locale: this.matDateLocale as Locale,
     });
   }
 }

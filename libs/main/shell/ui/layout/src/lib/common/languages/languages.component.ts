@@ -6,10 +6,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MskLayoutConfigService } from '@msk/shared/services/config';
+import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
 import { AvailableLangsIds, availableLangs } from '@msk/shared/utils/transloco';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Locale } from 'date-fns';
-import { enUS, faIR } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
+import { faIR } from 'date-fns-jalali/locale';
 
 const locale = {
   en: 'en-US',
@@ -34,6 +36,7 @@ export class MainLanguagesComponent implements OnInit {
   private _dateAdapter = inject(DateAdapter<Locale>);
   private _translocoService = inject(TranslocoService);
   private _layoutConfigService = inject(MskLayoutConfigService);
+  private _splashScreenService = inject(MskSplashScreenService);
 
   availableLangs = availableLangs;
   activeLang!: AvailableLangsIds;
@@ -63,13 +66,19 @@ export class MainLanguagesComponent implements OnInit {
    * @param lang
    */
   setActiveLang(lang: AvailableLangsIds): void {
-    // Set the active locale
-    this._dateAdapter.setLocale(localeDate[lang]);
-    // Set the active lang
-    this._translocoService.setActiveLang(lang);
-    // Set the active locale in config
-    this._layoutConfigService.config = {
-      locale: locale[lang],
-    };
+    // Show splash screen
+    this._splashScreenService.show();
+    setTimeout(() => {
+      // Set the active locale
+      this._dateAdapter.setLocale(localeDate[lang]);
+      // Set the active lang
+      this._translocoService.setActiveLang(lang);
+      // Set the active locale in config
+      this._layoutConfigService.config = {
+        locale: locale[lang],
+      };
+      // reload
+      window.location.reload();
+    }, 1000);
   }
 }

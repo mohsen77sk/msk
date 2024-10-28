@@ -5,6 +5,7 @@ import { DateAdapter } from '@angular/material/core';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MskLayoutConfigService } from '@msk/shared/services/config';
+import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
 import { AvailableLangsIds, availableLangs } from '@msk/shared/utils/transloco';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Locale } from 'date-fns';
@@ -34,6 +35,7 @@ export class MainLayoutLanguageDialogComponent implements OnInit {
   private _dateAdapter = inject(DateAdapter<Locale>);
   private _translocoService = inject(TranslocoService);
   private _layoutConfigService = inject(MskLayoutConfigService);
+  private _splashScreenService = inject(MskSplashScreenService);
 
   availableLangs = availableLangs;
   activeLang!: AvailableLangsIds;
@@ -63,13 +65,19 @@ export class MainLayoutLanguageDialogComponent implements OnInit {
    * @param event
    */
   setActiveLang(event: MatRadioChange): void {
-    // Set the active locale
-    this._dateAdapter.setLocale(localeDate[event.value as AvailableLangsIds]);
-    // Set the active lang
-    this._translocoService.setActiveLang(event.value);
-    // Set the active locale in config
-    this._layoutConfigService.config = {
-      locale: locale[event.value as AvailableLangsIds],
-    };
+    // Show splash screen
+    this._splashScreenService.show();
+    setTimeout(() => {
+      // Set the active locale
+      this._dateAdapter.setLocale(localeDate[event.value as AvailableLangsIds]);
+      // Set the active lang
+      this._translocoService.setActiveLang(event.value);
+      // Set the active locale in config
+      this._layoutConfigService.config = {
+        locale: locale[event.value as AvailableLangsIds],
+      };
+      // reload
+      window.location.reload();
+    }, 1000);
   }
 }
