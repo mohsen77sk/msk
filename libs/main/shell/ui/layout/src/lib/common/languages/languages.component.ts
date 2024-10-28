@@ -9,8 +9,7 @@ import { MskLayoutConfigService } from '@msk/shared/services/config';
 import { AvailableLangsIds, availableLangs } from '@msk/shared/utils/transloco';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Locale } from 'date-fns';
-import { enUS } from 'date-fns/locale';
-import { faIR } from 'date-fns-jalali/locale';
+import { enUS, faIR } from 'date-fns/locale';
 
 const locale = {
   en: 'en-US',

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
 import { getLocaleCurrencyCode, registerLocaleData } from '@angular/common';
-import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideDateFnsAdapter } from 'ngx-material-date-fns-adapter';
 
@@ -27,6 +27,13 @@ import { mainRoutes } from './shell.routes';
 
 import localeFaIR from '@angular/common/locales/fa';
 registerLocaleData(localeFaIR, 'fa-IR');
+
+import { Locale } from 'date-fns';
+import { enUS, faIR } from 'date-fns/locale';
+const localeDate: { [key: string]: Locale } = {
+  'en-US': enUS,
+  'fa-IR': faIR,
+};
 
 /**
  * Shell provider
@@ -66,6 +73,13 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
       useFactory: (): string => {
         const locale = inject(LOCALE_ID);
         return getLocaleCurrencyCode(locale) as string;
+      },
+    },
+    {
+      provide: MAT_DATE_LOCALE,
+      useFactory: (): Locale => {
+        const locale = inject(LOCALE_ID);
+        return localeDate[locale];
       },
     },
 
