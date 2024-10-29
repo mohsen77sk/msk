@@ -12,7 +12,9 @@
     <label [ngClass]="{ 'mt-1': isFullScreen }"> {{ title() }} </label>
   </div>
   <div class="flex items-center">
-    @if (!isFullScreen()) {
+    @if(!hasAction()) {
+    <ng-container [ngTemplateOutlet]="trailing() || null"></ng-container>
+    } @if (!isFullScreen()) {
     <ng-container [ngTemplateOutlet]="closeIconButton"></ng-container>
     } @if(hasAction() && isFullScreen()) {
     <ng-container [ngTemplateOutlet]="primaryAction() || null"></ng-container>
@@ -34,7 +36,7 @@
 } }
 
 <ng-template #closeIconButton>
-  <button mat-icon-button [ngClass]="{ 'me-1': isFullScreen() }" matDialogClose="cancelled" [tabIndex]="-1">
+  <button mat-icon-button [ngClass]="{ 'me-1': isFullScreen() }" matDialogClose="cancelled">
     <mat-icon class="text-current">close</mat-icon>
   </button>
 </ng-template>

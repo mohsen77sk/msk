@@ -10,7 +10,8 @@
     "nationalCode": "کد ملی",
     "birthday": "تاریخ تولد",
     "gender": "جنسیت",
-    "note": "توضیحات"
+    "note": "توضیحات",
+    "disable-person": "غیر فعال کردن کاربر"
   },
   "genders": {
     "1": "مرد",

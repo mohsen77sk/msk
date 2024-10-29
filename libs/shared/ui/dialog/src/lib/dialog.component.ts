@@ -53,6 +53,7 @@ export class MskDialogComponent implements OnInit, AfterViewInit {
   isLoading = input<boolean>(false);
   hasAction = input<boolean>(false);
   primaryAction = input<TemplateRef<HTMLElement>>();
+  trailing = input<TemplateRef<HTMLElement>>();
 
   isScrolled = signal<boolean>(false);
   isFullScreen = signal<boolean>(false);

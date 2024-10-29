@@ -60,11 +60,6 @@ export const routes: Routes = [
             resolve: {},
           },
           {
-            path: 'card/edit/:id',
-            component: PeopleCardComponent,
-            resolve: { card: personResolver },
-          },
-          {
             path: 'card/view/:id',
             component: PeopleCardComponent,
             resolve: { card: personResolver },

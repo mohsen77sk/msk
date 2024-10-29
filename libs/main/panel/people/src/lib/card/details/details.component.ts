@@ -3,6 +3,7 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, 
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -39,6 +40,7 @@ import { catchError, EMPTY, tap } from 'rxjs';
     ReactiveFormsModule,
     MatIconModule,
     MatInputModule,
+    MatRippleModule,
     MatButtonModule,
     MatSelectModule,
     MatTooltipModule,

@@ -3,6 +3,7 @@
   [title]="t(data.action, { code: data.item?.code })"
   [hasAction]="data.action !== 'view'"
   [primaryAction]="primaryAction"
+  [trailing]="trailing"
 >
   <!-- Content -->
   <ng-container
@@ -10,6 +11,12 @@
     [ngTemplateOutletContext]="{ t: t }"
     msk-dialog-content
   ></ng-container>
+
+  <ng-template #trailing>
+    <button mat-icon-button (click)="data.action = 'edit'">
+      <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+    </button>
+  </ng-template>
 
   <ng-template #primaryAction>
     <button mat-button [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
@@ -71,6 +78,16 @@
     </div>
   </div>
   }
+  <div class="my-4 border-t"></div>
+  <div class="mb-2">
+    <div class="text-secondary mb-2 font-bold" *transloco="let t">{{ t('settings') }}</div>
+    <div class="msk-list-item -mx-6 cursor-pointer" matRipple>
+      <div class="msk-list-item-icon"><mat-icon>do_not_disturb_on</mat-icon></div>
+      <div class="msk-list-item-content">
+        <span>{{ t('disable-person') }}</span>
+      </div>
+    </div>
+  </div>
 </ng-template>
 
 <ng-template #formTemplate let-t="t">

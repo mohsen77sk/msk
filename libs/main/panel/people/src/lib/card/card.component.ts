@@ -57,7 +57,7 @@ export class PeopleCardComponent implements OnInit {
     // Launch the modal
     this._matDialog
       .open(PeopleCardDetailsComponent, {
-        autoFocus: true,
+        autoFocus: action !== 'view',
         disableClose: action !== 'view',
         direction: this.layoutDirection,
         data: {

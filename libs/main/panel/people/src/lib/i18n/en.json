@@ -10,7 +10,8 @@
     "nationalCode": "National Id",
     "birthday": "Birthday",
     "gender": "Gender",
-    "note": "Note"
+    "note": "Note",
+    "disable-person": "Disable person"
   },
   "genders": {
     "1": "Male",
