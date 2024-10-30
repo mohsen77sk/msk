@@ -101,9 +101,17 @@ export class PeopleService {
    * @param person
    */
   updatePerson(person: Person): Observable<Person> {
-    return this._httpClient
-      .put<Person>(`${this._appConfig.apiEndpoint}/api/person`, person)
-      .pipe(map((response) => new Person(response)));
+    return this._httpClient.put<Person>(`${this._appConfig.apiEndpoint}/api/person`, person).pipe(
+      map((response) => new Person(response)),
+      // Update the persons
+      tap((newPerson) => {
+        if (this._persons.value) {
+          const index = this._persons.value.findIndex((x) => x.id === newPerson.id) ?? 0;
+          this._persons.value[index] = newPerson;
+          this._persons.next(this._persons.value);
+        }
+      })
+    );
   }
 
   /**
@@ -112,8 +120,16 @@ export class PeopleService {
    * @param person
    */
   updatePersonStatus(person: Person): Observable<Person> {
-    return this._httpClient
-      .patch<Person>(`${this._appConfig.apiEndpoint}/api/person`, person)
-      .pipe(map((response) => new Person(response)));
+    return this._httpClient.patch<Person>(`${this._appConfig.apiEndpoint}/api/person`, person).pipe(
+      map((response) => new Person(response)),
+      // Update the persons
+      tap((newPerson) => {
+        if (this._persons.value) {
+          const index = this._persons.value.findIndex((x) => x.id === newPerson.id) ?? 0;
+          this._persons.value[index] = newPerson;
+          this._persons.next(this._persons.value);
+        }
+      })
+    );
   }
 }

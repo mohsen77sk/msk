@@ -1,5 +1,13 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  inject,
+  signal,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -16,6 +24,7 @@ import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
+import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import {
   MskHandleFormErrors,
@@ -25,7 +34,7 @@ import {
 import { mskAnimations } from '@msk/shared/animations';
 import { Person } from '../../people.types';
 import { PeopleService } from '../../people.service';
-import { catchError, EMPTY, tap } from 'rxjs';
+import { catchError, EMPTY, map, tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -61,6 +70,8 @@ export class PeopleCardDetailsComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
   private _peopleService = inject(PeopleService);
   private _translocoService = inject(TranslocoService);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+  private _mskConfirmationService = inject(MskConfirmationService);
 
   form!: FormGroup;
   formErrors: any = {};
@@ -97,6 +108,52 @@ export class PeopleCardDetailsComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Update the status
+   */
+  updateStatus(): void {
+    const isActive = this.data.item?.isActive;
+    // Open the confirmation dialog
+    const confirmation = this._mskConfirmationService.open({
+      title: this._translocoService.translate(isActive ? 'people.deactivate' : 'people.activate'),
+      message: this._translocoService.translate(isActive ? 'people.deactivate-message' : 'people.activate-message', {
+        name: this.data.item?.fullName,
+      }),
+      actions: {
+        confirm: { label: this._translocoService.translate(isActive ? 'deactivate' : 'activate') },
+        cancel: { label: this._translocoService.translate('cancel') },
+      },
+    });
+    // Subscribe to the confirmation dialog
+    confirmation.afterClosed().subscribe((result) => {
+      // If don't confirm, return
+      if (result !== 'confirmed') return;
+
+      // If confirm
+      const model = {
+        id: this.data.item?.id,
+        isActive: !this.data.item?.isActive,
+      } as Person;
+
+      this._peopleService
+        .updatePersonStatus(model)
+        .pipe(
+          map((response) => {
+            // Update the person
+            this.data.item = response;
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+          }),
+          catchError((response) => {
+            // Show error
+            // ---
+            return EMPTY;
+          })
+        )
+        .subscribe();
+    });
+  }
 
   /**
    * Save and close

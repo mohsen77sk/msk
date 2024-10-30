@@ -2,6 +2,8 @@
   "new": "جدید",
   "active": "فعال",
   "inactive": "غیر فعال",
+  "activate": "فعال کردن",
+  "deactivate": "غیر فعال کردن",
   "export": "خروجی",
   "filter": "فیلتر",
   "sort": "ترتیب",

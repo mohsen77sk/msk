@@ -2,6 +2,8 @@
   "new": "New",
   "active": "Active",
   "inactive": "Inactive ",
+  "activate": "Activate",
+  "deactivate": "Deactivate",
   "export": "Export",
   "filter": "Filter",
   "sort": "Sort",
