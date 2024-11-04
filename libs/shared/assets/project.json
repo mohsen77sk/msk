@@ -1,7 +1,0 @@
-{
-  "name": "shared-assets",
-  "sourceRoot": "libs/shared/assets",
-  "tags": ["scope:shared"],
-  "projectType": "library",
-  "targets": {}
-}

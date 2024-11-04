@@ -1,9 +1,0 @@
-{
-  "css.customData": [".vscode/tailwind.json"],
-  "scss.lint.unknownAtRules": "ignore",
-  "cSpell.words": [
-    "fullscreen",
-    "transloco"
-  ],
-  "cSpell.language": "en,fa"
-}
