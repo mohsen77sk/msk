@@ -2,7 +2,10 @@
   "name": "@msk/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "lint": "npx nx run-many --target=lint --all=true",
+    "build-demo": "npx nx run main:build --configuration=production --base-Href=/msk/"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "18.2.8",
