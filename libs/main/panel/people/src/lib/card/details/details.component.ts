@@ -110,6 +110,13 @@ export class PeopleCardDetailsComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
 
   /**
+   * Go to edit mode
+   */
+  editMode(): void {
+    this.data.action = 'edit';
+  }
+
+  /**
    * Update the status
    */
   updateStatus(): void {

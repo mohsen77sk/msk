@@ -1,4 +1,4 @@
-import { NgTemplateOutlet, CurrencyPipe } from '@angular/common';
+import { NgTemplateOutlet, CurrencyPipe, AsyncPipe } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { MskDialogData, MskHttpErrorResponse, MskLookupItem } from '@msk/shared/data-access';
+import { MskDialogData, MskHttpErrorResponse, MskLookupItem, MskLookupResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
@@ -24,9 +24,9 @@ import {
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
 import { PeopleService } from '@msk/main/panel/people';
-import { Account } from '../../accounts.types';
+import { Account, IUpdateAccount } from '../../accounts.types';
 import { AccountService } from '../../accounts.service';
-import { catchError, EMPTY, map, tap } from 'rxjs';
+import { catchError, EMPTY, Observable, tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -37,6 +37,7 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
+    AsyncPipe,
     CurrencyPipe,
     FormsModule,
     ReactiveFormsModule,
@@ -67,26 +68,13 @@ export class AccountsCardDetailsComponent implements OnInit {
 
   form!: FormGroup;
   formErrors: any = {};
-  personList: MskLookupItem[] = [];
-  accountTypeList: MskLookupItem[] = [];
+  personList$: Observable<MskLookupResponse> = this._peopleService.getLookupPersons();
+  accountTypeList$: Observable<MskLookupResponse> = this._accountService.getLookupAccountTypes();
 
   alert = signal({
     show: false,
     message: '',
   });
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Accessors
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Getter for selected persons
-   */
-  get personIdTitles(): string {
-    const ids: number[] = this.form.get('personId')?.value;
-    const firesName = this.personList.find((p) => p.id === ids[0])?.name;
-    return firesName + (ids.length > 1 ? ` (+${ids.length - 1} ${this._translocoService.translate('other')})` : '');
-  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -109,22 +97,29 @@ export class AccountsCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     this.form.patchValue(this.data.item || {});
-
-    // Get initial form value
-    this._accountService
-      .getLookupAccountTypes()
-      .pipe(map((res) => (this.accountTypeList = res)))
-      .subscribe();
-
-    this._peopleService
-      .getLookupPersons()
-      .pipe(map((res) => (this.personList = res)))
-      .subscribe();
+    this.form.get('personId')?.patchValue(this.data.item?.persons.map((x) => x.id) || []);
   }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Getter for selected persons
+   */
+  personIdTitles(personList: MskLookupItem[] | null): string {
+    const ids: number[] = this.form.get('personId')?.value;
+    const firesName = personList?.find((p) => p.id === ids[0])?.name;
+    return firesName + (ids.length > 1 ? ` (+${ids.length - 1} ${this._translocoService.translate('other')})` : '');
+  }
+
+  /**
+   * Go to edit mode
+   */
+  editMode(): void {
+    this.data.action = 'edit';
+    this.form.get('initCredit')?.clearValidators();
+  }
 
   /**
    * Save and close
@@ -144,8 +139,16 @@ export class AccountsCardDetailsComponent implements OnInit {
     // Reset the alert
     this.alert.set({ show: false, message: '' });
 
-    this._accountService
-      .createAccount(this.form.value)
+    const result =
+      this.data.action === 'edit'
+        ? this._accountService.updateAccount({
+            id: this.form.value.id,
+            personId: this.form.value.personId,
+            note: this.form.value.note,
+          } as IUpdateAccount)
+        : this._accountService.createAccount(this.form.value);
+
+    result
       .pipe(
         tap((response) => this.dialogRef.close(response)),
         catchError((response: MskHttpErrorResponse) => {

@@ -68,7 +68,7 @@ export class AccountsCardComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         // Refresh list if needed
-        if (action !== 'view' && result != 'cancelled') {
+        if (action === 'new' && result != 'cancelled') {
           this._injector.get(AccountsListComponent).getAccounts().subscribe();
         }
         // Go back to list page

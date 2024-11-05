@@ -3,6 +3,7 @@
   [title]="t(data.action, { code: data.item?.code })"
   [hasAction]="data.action !== 'view'"
   [primaryAction]="primaryAction"
+  [trailing]="trailing"
 >
   <!-- Content -->
   <ng-container
@@ -10,6 +11,12 @@
     [ngTemplateOutletContext]="{ t: t }"
     msk-dialog-content
   ></ng-container>
+
+  <ng-template #trailing>
+    <button mat-icon-button (click)="editMode()">
+      <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+    </button>
+  </ng-template>
 
   <ng-template #primaryAction>
     <button mat-button [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
@@ -97,7 +104,7 @@
       <mat-form-field>
         <mat-label>{{ t('accountType') }}</mat-label>
         <mat-select formControlName="accountTypeId">
-          @for (item of accountTypeList; track item) {
+          @for (item of accountTypeList$ | async; track item) {
           <mat-option [value]="item.id">{{ item.name }}</mat-option>
           }
         </mat-select>
@@ -118,7 +125,8 @@
     <mat-form-field>
       <mat-label>{{ t('owners') }}</mat-label>
       <mat-select formControlName="personId" multiple>
-        <mat-select-trigger>{{ personIdTitles }}</mat-select-trigger>
+        @let personList = personList$ | async;
+        <mat-select-trigger>{{ personIdTitles(personList) }}</mat-select-trigger>
         @for (item of personList; track item) {
         <mat-option [value]="item.id">{{ item.name }}</mat-option>
         }

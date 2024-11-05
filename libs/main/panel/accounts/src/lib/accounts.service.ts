@@ -140,9 +140,17 @@ export class AccountService {
    * @param account
    */
   updateAccount(account: IUpdateAccount): Observable<Account> {
-    return this._httpClient
-      .put<Account>(`${this._appConfig.apiEndpoint}/api/account`, account)
-      .pipe(map((response) => new Account(response)));
+    return this._httpClient.put<Account>(`${this._appConfig.apiEndpoint}/api/account`, account).pipe(
+      map((response) => new Account(response)),
+      // Update the accounts
+      tap((newAccount) => {
+        if (this._accounts.value) {
+          const index = this._accounts.value.findIndex((x) => x.id === newAccount.id) ?? 0;
+          this._accounts.value[index] = newAccount;
+          this._accounts.next(this._accounts.value);
+        }
+      })
+    );
   }
 
   /**
@@ -151,8 +159,16 @@ export class AccountService {
    * @param account
    */
   closeAccount(account: ICloseAccount): Observable<Account> {
-    return this._httpClient
-      .put<Account>(`${this._appConfig.apiEndpoint}/api/account/close`, account)
-      .pipe(map((response) => new Account(response)));
+    return this._httpClient.put<Account>(`${this._appConfig.apiEndpoint}/api/account/close`, account).pipe(
+      map((response) => new Account(response)),
+      // Update the accounts
+      tap((newAccount) => {
+        if (this._accounts.value) {
+          const index = this._accounts.value.findIndex((x) => x.id === newAccount.id) ?? 0;
+          this._accounts.value[index] = newAccount;
+          this._accounts.next(this._accounts.value);
+        }
+      })
+    );
   }
 }
