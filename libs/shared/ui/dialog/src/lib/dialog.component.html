@@ -4,7 +4,17 @@
 </div>
 } @else {
 <!-- Header -->
-<div class="z-10 flex items-center justify-between" [class.mat-elevation-z2]="isScrolled()" mat-dialog-title>
+<div
+  class="z-10 flex items-center justify-between"
+  [class.cursor-move]="hasDrag() && !isFullScreen()"
+  [class.mat-elevation-z2]="isScrolled()"
+  cdkDrag
+  cdkDragHandle
+  cdkDragRootElement=".cdk-overlay-pane"
+  [cdkDragFreeDragPosition]="dragPosition"
+  [cdkDragDisabled]="!hasDrag() || isFullScreen()"
+  mat-dialog-title
+>
   <div class="flex items-center truncate">
     @if (isFullScreen()) {
     <ng-container [ngTemplateOutlet]="closeIconButton"></ng-container>
