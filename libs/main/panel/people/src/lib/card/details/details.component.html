@@ -83,7 +83,7 @@
     <div class="text-secondary mb-2 font-bold">{{ t('settings') }}</div>
     <div class="msk-list-item -mx-6 cursor-pointer" matRipple (click)="updateStatus()">
       <div class="msk-list-item-icon me-2">
-        <mat-icon>{{ data.item?.isActive ? 'do_not_disturb_on' : 'check_circle' }}</mat-icon>
+        <mat-icon>{{ data.item?.isActive ? 'cancel' : 'check_circle' }}</mat-icon>
       </div>
       <div class="msk-list-item-content">
         <span>{{ data.item?.isActive ? t('people.deactivate') : t('people.activate') }}</span>

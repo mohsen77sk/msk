@@ -29,7 +29,7 @@ import { MskPageSizeOptions, MskPagination } from '@msk/shared/data-access';
 import { Observable, catchError, filter, finalize, map, merge, of, switchMap, tap } from 'rxjs';
 import { DefaultPeopleSortDirection, DefaultPeopleSortId, Person } from '../people.types';
 import { PeopleService } from '../people.service';
-import { UsersStatusComponent } from '../common/status/status.component';
+import { PeopleStatusComponent } from '../common/status/status.component';
 
 @Component({
   standalone: true,
@@ -56,7 +56,7 @@ import { UsersStatusComponent } from '../common/status/status.component';
     MatPaginatorModule,
     TranslocoDirective,
     MskAvatarComponent,
-    UsersStatusComponent,
+    PeopleStatusComponent,
   ],
 })
 export class PeopleListComponent implements OnInit, AfterViewInit {
