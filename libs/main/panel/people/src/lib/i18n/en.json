@@ -19,8 +19,8 @@
   },
   "search": "Search people",
   "empty-list": "There are no persons!",
-  "activate": "Activate the person",
+  "activate": "Activate person",
   "activate-message": "Are you sure you want to activate <b>{{name}}</b> person?",
-  "deactivate": "Deactivate the person",
+  "deactivate": "Deactivate person",
   "deactivate-message": "Are you sure you want to deactivate <b>{{name}}</b> person?"
 }

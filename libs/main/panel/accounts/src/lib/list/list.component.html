@@ -23,9 +23,7 @@
         <!-- Content -->
         <div class="content-grid-item-content" *transloco="let t; read: 'accounts.details'">
           <div class="truncate">
-            {{ account.accountTypeName }} - {{ account.persons[0].name }} @if (account.persons.length > 1) { (+{{
-              account.persons.length - 1
-            }}) }
+            {{ account.fullName }}
           </div>
           <div class="flex items-center gap-2 truncate">
             <span>#{{ account.code }}</span>

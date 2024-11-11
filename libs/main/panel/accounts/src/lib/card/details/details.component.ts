@@ -1,5 +1,13 @@
-import { NgTemplateOutlet, CurrencyPipe, AsyncPipe } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { NgTemplateOutlet, CurrencyPipe, AsyncPipe, NgClass } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  inject,
+  signal,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -16,6 +24,7 @@ import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
+import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import {
   MskHandleFormErrors,
@@ -24,9 +33,9 @@ import {
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
 import { PeopleService } from '@msk/main/panel/people';
-import { Account, IUpdateAccount } from '../../accounts.types';
+import { Account, ICloseAccount, IUpdateAccount } from '../../accounts.types';
 import { AccountService } from '../../accounts.service';
-import { catchError, EMPTY, Observable, tap } from 'rxjs';
+import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -36,6 +45,7 @@ import { catchError, EMPTY, Observable, tap } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NgClass,
     NgTemplateOutlet,
     AsyncPipe,
     CurrencyPipe,
@@ -65,6 +75,8 @@ export class AccountsCardDetailsComponent implements OnInit {
   private _peopleService = inject(PeopleService);
   private _accountService = inject(AccountService);
   private _translocoService = inject(TranslocoService);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
+  private _mskConfirmationService = inject(MskConfirmationService);
 
   form!: FormGroup;
   formErrors: any = {};
@@ -119,6 +131,55 @@ export class AccountsCardDetailsComponent implements OnInit {
   editMode(): void {
     this.data.action = 'edit';
     this.form.get('initCredit')?.clearValidators();
+  }
+
+  /**
+   * Update the status
+   */
+  updateStatus(): void {
+    const isActive = this.data.item?.isActive;
+    // Open the confirmation dialog
+    const confirmation = this._mskConfirmationService.open({
+      title: this._translocoService.translate(isActive ? 'accounts.deactivate' : 'accounts.activate'),
+      message: this._translocoService.translate(
+        isActive ? 'accounts.deactivate-message' : 'accounts.activate-message',
+        {
+          name: this.data.item?.fullName,
+        }
+      ),
+      actions: {
+        confirm: { label: this._translocoService.translate(isActive ? 'close' : 'open') },
+        cancel: { label: this._translocoService.translate('cancel') },
+      },
+    });
+    // Subscribe to the confirmation dialog
+    confirmation.afterClosed().subscribe((result) => {
+      // If don't confirm, return
+      if (result !== 'confirmed') return;
+
+      // If confirm
+      const model = {
+        id: this.data.item?.id,
+        closeDate: new Date(),
+      } as ICloseAccount;
+
+      this._accountService
+        .closeAccount(model)
+        .pipe(
+          map((response) => {
+            // Update the account
+            this.data.item = response;
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+          }),
+          catchError((response) => {
+            // Show error
+            // ---
+            return EMPTY;
+          })
+        )
+        .subscribe();
+    });
   }
 
   /**

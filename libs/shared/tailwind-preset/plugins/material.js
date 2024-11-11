@@ -236,6 +236,7 @@ module.exports = plugin(({ addComponents, addUtilities, theme }) => {
     '.msk-list-item': {
       display: 'flex',
       padding: '8px 16px',
+      gap: '16px',
     },
     '.msk-list-item-icon': {
       width: '40px',
@@ -243,13 +244,13 @@ module.exports = plugin(({ addComponents, addUtilities, theme }) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      marginInlineEnd: '16px',
       color: 'var(--sys-on-surface-variant)',
     },
     '.msk-list-item-content': {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
+      flex: '1 1 0%',
     },
     '.msk-list-item-content span:nth-child(1)': {
       fontWeight: '500',
@@ -257,14 +258,14 @@ module.exports = plugin(({ addComponents, addUtilities, theme }) => {
       color: 'var(--sys-on-surface)',
     },
     '.msk-list-item-content span:nth-child(2)': {
-      color: 'var(--sys-on-surface-variant)',
       fontSize: '0.75rem',
       lineHeight: '1rem',
+      color: 'var(--sys-on-surface-variant)',
     },
     '.msk-list-item-content span:nth-child(3)': {
-      color: 'var(--sys-on-surface-variant)',
       fontSize: '0.75rem',
       lineHeight: '1rem',
+      color: 'var(--sys-on-surface-variant)',
     },
   });
 });

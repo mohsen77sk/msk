@@ -51,6 +51,10 @@ export class Account {
     this.note = input.note;
     this.isActive = input.isActive;
   }
+
+  get fullName(): string {
+    return this.accountTypeName + ' ' + this.persons.map((p) => p.name).join('/');
+  }
 }
 
 export class AccountPeople {

@@ -15,5 +15,11 @@
     "status": "وضعیت"
   },
   "search": "جستجوی حساب ها",
-  "empty-list": "هیچ حسابی وجود ندارد!"
+  "empty-list": "هیچ حسابی وجود ندارد!",
+  "info-edit-title": "اطلاعات",
+  "info-edit-description": "توضیحات",
+  "activate": "باز کردن حساب",
+  "activate-message": "آیا مطمئن هستید که می خواهید حساب <b>{{name}}</b> را باز کنید؟",
+  "deactivate": "بستن حساب",
+  "deactivate-message": "آیا مطمئن هستید که می خواهید حساب <b>{{name}}</b> را ببندید؟"
 }

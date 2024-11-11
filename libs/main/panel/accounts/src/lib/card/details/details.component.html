@@ -26,9 +26,23 @@
 </msk-dialog>
 
 <ng-template #viewTemplate let-t="t">
-  <div class="mb-2 flex flex-col gap-4 p-4">
+  <div class="flex flex-col gap-4 p-4">
     <span class="text-on-surface-variant text-label-medium">{{ t('credit') }}</span>
     <span class="text-on-surface text-title-large">{{ data.item?.balance | currency }}</span>
+  </div>
+  <div class="grid grid-cols-3 gap-4 py-4" *transloco="let t">
+    <button mat-flat-button>
+      <mat-icon class="hidden sm:block">arrow_upward</mat-icon>
+      {{ t('deposit') }}
+    </button>
+    <button mat-stroked-button>
+      <mat-icon class="hidden sm:block">arrow_downward</mat-icon>
+      {{ t('withdraw') }}
+    </button>
+    <button mat-stroked-button>
+      <mat-icon class="hidden sm:block">swap_horiz</mat-icon>
+      {{ t('transfer') }}
+    </button>
   </div>
   <div class="msk-mat-card-filled mb-2 p-4">
     <div class="text-secondary mb-2 font-bold">{{ t('owners') }}</div>
@@ -40,6 +54,9 @@
       <div class="msk-list-item-content">
         <span>{{ person.name }}</span>
         <span>#{{ person.code }}</span>
+      </div>
+      <div class="msk-list-item-icon">
+        <mat-icon>open_in_new</mat-icon>
       </div>
     </div>
     }
@@ -88,10 +105,34 @@
     </div>
   </div>
   }
+  <div class="my-4 border-t"></div>
+  <div class="mb-2" *transloco="let t">
+    <div class="text-secondary mb-2 font-bold">{{ t('settings') }}</div>
+    <div class="msk-list-item -mx-6 cursor-pointer gap-2" matRipple (click)="updateStatus()">
+      <div class="msk-list-item-icon">
+        <mat-icon [ngClass]="{ '!text-error': data.item?.isActive }">
+          {{ data.item?.isActive ? 'cancel' : 'check_circle' }}
+        </mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span [ngClass]="{ '!text-error': data.item?.isActive }">
+          {{ data.item?.isActive ? t('accounts.deactivate') : t('accounts.activate') }}
+        </span>
+      </div>
+    </div>
+  </div>
 </ng-template>
 
 <ng-template #formTemplate let-t="t">
   <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
+    <!-- Info alert for edit -->
+    @if (data.action === "edit") {
+    <msk-alert class="mb-4" appearance="outline" type="info" dismissible *transloco="let t; read: 'accounts'">
+      <span mskAlertTitle>{{ t('info-edit-title') }}</span>
+      {{ t('info-edit-description') }}
+    </msk-alert>
+    }
+
     <!-- Alert -->
     @if(alert().show) {
     <msk-alert class="mb-4" appearance="outline" type="error" @shake>
@@ -99,6 +140,8 @@
     </msk-alert>
     }
 
+    <!-- AccountType and CreateDate -->
+    @if (data.action === "new") {
     <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
       <!-- AccountType -->
       <mat-form-field>
@@ -120,6 +163,7 @@
         <mat-error>{{ formErrors.createDate }}</mat-error>
       </mat-form-field>
     </div>
+    }
 
     <!-- Owners -->
     <mat-form-field>
@@ -135,11 +179,13 @@
     </mat-form-field>
 
     <!-- InitCredit -->
+    @if (data.action === "new") {
     <mat-form-field>
       <mat-label>{{ t('initCredit') }}</mat-label>
       <input matInput formControlName="initCredit" autocomplete="off" />
       <mat-error>{{ formErrors.initCredit }}</mat-error>
     </mat-form-field>
+    }
 
     <!-- Note -->
     <mat-form-field>

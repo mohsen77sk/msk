@@ -1,4 +1,4 @@
-import { NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -44,6 +44,7 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NgClass,
     NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
