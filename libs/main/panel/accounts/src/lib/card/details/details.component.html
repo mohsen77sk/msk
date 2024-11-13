@@ -30,6 +30,7 @@
     <span class="text-on-surface-variant text-label-medium">{{ t('credit') }}</span>
     <span class="text-on-surface text-title-large">{{ data.item?.balance | currency }}</span>
   </div>
+  @if (data.item?.isActive) {
   <div class="grid grid-cols-3 gap-4 py-4" *transloco="let t">
     <button mat-flat-button>
       <mat-icon class="hidden sm:block">arrow_upward</mat-icon>
@@ -44,6 +45,7 @@
       {{ t('transfer') }}
     </button>
   </div>
+  }
   <div class="msk-mat-card-filled mb-2 p-4">
     <div class="text-secondary mb-2 font-bold">{{ t('owners') }}</div>
     @for (person of data.item?.persons; track person.id) {
