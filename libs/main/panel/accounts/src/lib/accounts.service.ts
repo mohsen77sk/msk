@@ -160,7 +160,7 @@ export class AccountService {
    */
   closeAccount(account: ICloseAccount): Observable<Account> {
     return this._httpClient.post<Account>(`${this._appConfig.apiEndpoint}/api/account/close`, account).pipe(
-      map((response) => new Account(response)),
+      map((response) => new Account({ ...response, balance: 0 } as Account)),
       // Update the accounts
       tap((newAccount) => {
         if (this._accounts.value) {

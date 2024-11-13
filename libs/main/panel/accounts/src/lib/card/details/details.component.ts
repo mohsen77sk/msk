@@ -102,7 +102,7 @@ export class AccountsCardDetailsComponent implements OnInit {
       personId: [[], Validators.required],
       accountTypeId: ['', Validators.required],
       initCredit: ['', [Validators.required, Validators.min(1000)]],
-      createDate: [new Date(), Validators.required],
+      createDate: [new Date(new Date().setHours(0, 0, 0, 0)), Validators.required],
       note: '',
     });
     // Handling errors
@@ -160,7 +160,7 @@ export class AccountsCardDetailsComponent implements OnInit {
       // If confirm
       const model = {
         id: this.data.item?.id,
-        closeDate: new Date(),
+        closeDate: new Date(new Date().setSeconds(0, 0)),
       } as ICloseAccount;
 
       this._accountService
