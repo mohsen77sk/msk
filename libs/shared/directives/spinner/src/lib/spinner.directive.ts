@@ -3,12 +3,13 @@ import {
   Directive,
   ElementRef,
   HostBinding,
-  Input,
   ViewContainerRef,
   inject,
   numberAttribute,
   booleanAttribute,
   Renderer2,
+  input,
+  effect,
 } from '@angular/core';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
@@ -26,18 +27,17 @@ export class MskSpinnerDirective {
   private _spinnerParent!: HTMLDivElement;
   private _spinner!: ComponentRef<MatProgressSpinner>;
 
+  private readonly MAT_SELECT = 'MAT-SELECT';
+
   /**
    * Directive value - show or hide spinner
    */
-  @Input({ transform: booleanAttribute })
-  set mskSpinner(val: boolean) {
-    val ? this.show() : this.hide();
-  }
+  mskSpinner = input(true, { transform: booleanAttribute });
 
   /**
    * Spinner diameter (will set width and height of svg)
    */
-  @Input({ transform: numberAttribute }) mskSpinnerDiameter = 24;
+  mskSpinnerDiameter = input(24, { transform: numberAttribute });
 
   /**
    * constructor
@@ -46,16 +46,25 @@ export class MskSpinnerDirective {
     // Create parent division for spinner
     this._spinnerParent = document.createElement('div');
     this._spinnerParent.classList.add('absolute', 'inset-0', 'flex', 'items-center', 'justify-center', 'z-99999');
+    //
+    effect(() => (this.mskSpinner() ? this.show() : this.hide()));
   }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
+  /**
+   * Getter for nativeElement tagName
+   */
+  get nativeElementTagName(): string {
+    return this._elementRef.nativeElement.tagName;
+  }
+
   @HostBinding('class') get classList(): object {
     return {
-      relative: this._isSpinnerExist,
-      'overflow-hidden': this._isSpinnerExist,
+      relative: this.nativeElementTagName !== this.MAT_SELECT && this._isSpinnerExist,
+      'overflow-hidden': this.nativeElementTagName !== this.MAT_SELECT && this._isSpinnerExist,
     };
   }
 
@@ -85,11 +94,24 @@ export class MskSpinnerDirective {
       // Create spinner
       this._spinner = this._viewContainerRef.createComponent(MatProgressSpinner);
       this._spinner.instance.mode = 'indeterminate';
-      this._spinner.instance.diameter = this.mskSpinnerDiameter;
+      this._spinner.instance.diameter = this.mskSpinnerDiameter();
+
       // Add spinner to parent division
       this._renderer.appendChild(this._spinnerParent, this._spinner.location.nativeElement);
+
       // Add parent spinner to host element
-      this._renderer.appendChild(this._elementRef.nativeElement, this._spinnerParent);
+      switch (this.nativeElementTagName) {
+        case this.MAT_SELECT:
+          // render in mat-form-field-flex
+          this._renderer.appendChild(this._elementRef.nativeElement.parentElement?.parentElement, this._spinnerParent);
+          break;
+
+        default:
+          // render in root element
+          this._renderer.appendChild(this._elementRef.nativeElement, this._spinnerParent);
+          break;
+      }
+
       // Set flag to true
       this._isSpinnerExist = true;
     }
