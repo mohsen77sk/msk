@@ -33,6 +33,7 @@
       "@msk/shared/data-access": ["libs/shared/data-access/src/index.ts"],
       "@msk/shared/directives/scroll-reset": ["libs/shared/directives/scroll-reset/src/index.ts"],
       "@msk/shared/directives/scrollbar": ["libs/shared/directives/scrollbar/src/index.ts"],
+      "@msk/shared/directives/select-search": ["libs/shared/directives/select-search/src/index.ts"],
       "@msk/shared/directives/spinner": ["libs/shared/directives/spinner/src/index.ts"],
       "@msk/shared/pipes/date-time": ["libs/shared/pipes/date-time/src/index.ts"],
       "@msk/shared/pipes/find-by-key": ["libs/shared/pipes/find-by-key/src/index.ts"],

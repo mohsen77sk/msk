@@ -151,8 +151,16 @@
       <!-- AccountType -->
       <mat-form-field>
         <mat-label>{{ t('accountType') }}</mat-label>
-        <mat-select formControlName="accountTypeId">
-          @for (item of accountTypeList$ | async; track item) {
+        @let accountTypeList = accountTypeList$ | async;
+        <mat-select
+          formControlName="accountTypeId"
+          mskSelectSearch
+          [searchList]="accountTypeList"
+          [searchItems]="'name'"
+          [searchPlaceholder]="'search' | transloco"
+          #searchAccountTypes="mskSelectSearch"
+        >
+          @for (item of searchAccountTypes.filteredList | async; track item) {
           <mat-option [value]="item.id">{{ item.name }}</mat-option>
           }
         </mat-select>
@@ -173,10 +181,18 @@
     <!-- Owners -->
     <mat-form-field>
       <mat-label>{{ t('owners') }}</mat-label>
-      <mat-select formControlName="personId" multiple>
-        @let personList = personList$ | async;
+      @let personList = personList$ | async;
+      <mat-select
+        formControlName="personId"
+        multiple
+        mskSelectSearch
+        [searchList]="personList"
+        [searchItems]="'name'"
+        [searchPlaceholder]="'search' | transloco"
+        #searchPersons="mskSelectSearch"
+      >
         <mat-select-trigger>{{ personIdTitles(personList) }}</mat-select-trigger>
-        @for (item of personList; track item) {
+        @for (item of searchPersons.filteredList | async; track item) {
         <mat-option [value]="item.id">{{ item.name }}</mat-option>
         }
       </mat-select>

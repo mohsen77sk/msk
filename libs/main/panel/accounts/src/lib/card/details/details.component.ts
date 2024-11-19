@@ -1,4 +1,4 @@
-import { NgTemplateOutlet, CurrencyPipe, AsyncPipe, NgClass } from '@angular/common';
+import { NgTemplateOutlet, CurrencyPipe, AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -18,13 +18,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MskDialogData, MskHttpErrorResponse, MskLookupItem, MskLookupResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
+import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import {
   MskHandleFormErrors,
@@ -45,7 +46,6 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     NgTemplateOutlet,
     AsyncPipe,
     CurrencyPipe,
@@ -60,11 +60,13 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
     MatFormFieldModule,
     MatDatepickerModule,
     MatDialogModule,
+    TranslocoPipe,
     TranslocoDirective,
     MskAlertComponent,
     MskAvatarComponent,
     MskDialogComponent,
     MskSpinnerDirective,
+    MskSelectSearchDirective,
     MskDateTimePipe,
   ],
 })
