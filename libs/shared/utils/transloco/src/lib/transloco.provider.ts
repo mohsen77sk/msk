@@ -14,7 +14,6 @@ export const provideMskTransloco = (): Array<Provider | EnvironmentProviders> =>
     provideTransloco({
       config: {
         availableLangs: availableLangs,
-        reRenderOnLangChange: true,
         prodMode: !isDevMode(),
       },
       loader: TranslocoHttpLoader,
