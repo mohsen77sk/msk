@@ -31,6 +31,7 @@
       "@msk/main/shell/ui/layout": ["libs/main/shell/ui/layout/src/index.ts"],
       "@msk/shared/animations": ["libs/shared/animations/src/index.ts"],
       "@msk/shared/data-access": ["libs/shared/data-access/src/index.ts"],
+      "@msk/shared/directives/currency-mask": ["libs/shared/directives/currency-mask/src/index.ts"],
       "@msk/shared/directives/scroll-reset": ["libs/shared/directives/scroll-reset/src/index.ts"],
       "@msk/shared/directives/scrollbar": ["libs/shared/directives/scrollbar/src/index.ts"],
       "@msk/shared/directives/select-search": ["libs/shared/directives/select-search/src/index.ts"],
