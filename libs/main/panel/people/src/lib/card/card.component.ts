@@ -6,7 +6,6 @@ import { PeopleListComponent } from '../list/list.component';
 import { PeopleCardDetailsComponent } from './details/details.component';
 
 @Component({
-  standalone: true,
   selector: 'main-people-card',
   template: '',
   encapsulation: ViewEncapsulation.None,

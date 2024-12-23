@@ -1,10 +1,10 @@
 import {
   DEFAULT_CURRENCY_CODE,
-  ENVIRONMENT_INITIALIZER,
   EnvironmentProviders,
   LOCALE_ID,
   Provider,
   inject,
+  provideEnvironmentInitializer,
 } from '@angular/core';
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
@@ -104,26 +104,10 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
     provideMskLoading(),
     provideMskTransloco(),
     // Provide services
-    {
-      provide: ENVIRONMENT_INITIALIZER,
-      useValue: () => inject(MskMediaWatcherService),
-      multi: true,
-    },
-    {
-      provide: ENVIRONMENT_INITIALIZER,
-      useValue: () => inject(MskPlatformService),
-      multi: true,
-    },
-    {
-      provide: ENVIRONMENT_INITIALIZER,
-      useValue: () => inject(MskSplashScreenService),
-      multi: true,
-    },
-    {
-      provide: ENVIRONMENT_INITIALIZER,
-      useValue: () => inject(MskUtilsService),
-      multi: true,
-    },
+    provideEnvironmentInitializer(() => inject(MskMediaWatcherService)),
+    provideEnvironmentInitializer(() => inject(MskPlatformService)),
+    provideEnvironmentInitializer(() => inject(MskSplashScreenService)),
+    provideEnvironmentInitializer(() => inject(MskUtilsService)),
 
     // Service Worker
     provideMskServiceWorker(),

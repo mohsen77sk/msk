@@ -24,7 +24,6 @@ import { MskNavigationService } from '../../../navigation.service';
 import { MskNavigationItem } from '../../../navigation.types';
 
 @Component({
-  standalone: true,
   selector: 'msk-vertical-navigation-aside-item',
   templateUrl: './aside.component.html',
   encapsulation: ViewEncapsulation.None,

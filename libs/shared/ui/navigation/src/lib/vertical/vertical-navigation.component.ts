@@ -42,7 +42,6 @@ import {
 } from '../navigation.types';
 
 @Component({
-  standalone: true,
   selector: 'msk-vertical-navigation',
   templateUrl: './vertical-navigation.component.html',
   styleUrl: './vertical-navigation.component.scss',

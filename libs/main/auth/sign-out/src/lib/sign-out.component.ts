@@ -5,7 +5,6 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { finalize, takeWhile, tap, timer } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'main-sign-out',
   templateUrl: './sign-out.component.html',
   encapsulation: ViewEncapsulation.None,

@@ -13,7 +13,6 @@ import { Locale } from 'date-fns';
 import { locale, localeDate } from '../../layout.types';
 
 @Component({
-  standalone: true,
   selector: 'main-languages',
   templateUrl: './languages.component.html',
   encapsulation: ViewEncapsulation.None,

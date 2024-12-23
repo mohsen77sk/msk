@@ -1,17 +1,17 @@
 // Tailwind Base
-@import 'tailwind/base';
+@use 'tailwind/base';
 
 // Themes
-@import 'themes';
+@use 'themes';
 
 // Vendors
-@import 'vendors';
+@use 'vendors';
 
 // Main
-@import 'main';
+@use 'main';
 
 // Styles
-@import 'styles';
+@use 'styles';
 
 // Tailwind Utils
-@import 'tailwind/utilities';
+@use 'tailwind/utilities';

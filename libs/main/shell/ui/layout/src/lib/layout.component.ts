@@ -1,6 +1,6 @@
 import { Component, DestroyRef, OnInit, Renderer2, ViewEncapsulation, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DOCUMENT, getLocaleDirection } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
@@ -13,7 +13,6 @@ import { MainLayoutEmptyComponent } from './layouts/empty/empty.component';
 import { MainLayoutMaterialComponent } from './layouts/material/material.component';
 
 @Component({
-  standalone: true,
   selector: 'main-layout',
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

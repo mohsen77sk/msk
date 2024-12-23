@@ -15,7 +15,6 @@ import { MskNavigationService } from '../../../navigation.service';
 import { MskNavigationItem } from '../../../navigation.types';
 
 @Component({
-  standalone: true,
   selector: 'msk-vertical-navigation-divider-item',
   templateUrl: './divider.component.html',
   encapsulation: ViewEncapsulation.None,

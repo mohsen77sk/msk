@@ -24,22 +24,12 @@ import { MainLayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-
 import { MainLayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
 
 @Component({
-  standalone: true,
   selector: 'main-user',
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    NgClass,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogModule,
-    TranslocoDirective,
-    MainLayoutSchemeDialogComponent,
-    MainLayoutLanguageDialogComponent,
-  ],
+  imports: [NgClass, MatMenuModule, MatIconModule, MatButtonModule, MatDialogModule, TranslocoDirective],
 })
 export class MainUserComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

@@ -37,7 +37,6 @@ import { PeopleService } from '../../people.service';
 import { catchError, EMPTY, map, tap } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'main-people-details',
   templateUrl: './details.component.html',
   animations: mskAnimations,

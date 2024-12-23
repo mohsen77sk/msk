@@ -4,9 +4,9 @@ import {
   Component,
   ElementRef,
   OnInit,
-  ViewChild,
   ViewEncapsulation,
   inject,
+  viewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -25,7 +25,6 @@ import { mskAnimations } from '@msk/shared/animations';
 import { catchError, map } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'main-sign-in',
   templateUrl: './sign-in.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -54,7 +53,7 @@ export class SignInComponent implements OnInit {
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _authService = inject(MainAuthService);
 
-  @ViewChild('signInNgForm') signInNgForm!: NgForm;
+  signInNgForm = viewChild.required<NgForm>('signInNgForm');
 
   alert: { type: MskAlertType; message: string } = {
     type: 'error',

@@ -19,7 +19,6 @@ import { MskNavigationService } from '../../../navigation.service';
 import { MskNavigationItem } from '../../../navigation.types';
 
 @Component({
-  standalone: true,
   selector: 'msk-vertical-navigation-basic-item',
   templateUrl: './basic.component.html',
   encapsulation: ViewEncapsulation.None,

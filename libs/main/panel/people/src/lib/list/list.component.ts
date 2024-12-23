@@ -32,7 +32,6 @@ import { PeopleService } from '../people.service';
 import { PeopleStatusComponent } from '../common/status/status.component';
 
 @Component({
-  standalone: true,
   selector: 'main-people-list',
   templateUrl: './list.component.html',
   encapsulation: ViewEncapsulation.None,

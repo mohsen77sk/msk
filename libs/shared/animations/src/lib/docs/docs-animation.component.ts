@@ -7,7 +7,6 @@ import { MskHighlightComponent } from '@msk/shared/ui/highlight';
 import { mskAnimations } from '../public-api';
 
 @Component({
-  standalone: true,
   selector: 'msk-docs-animation',
   templateUrl: './docs-animation.component.html',
   styleUrl: './docs-animation.component.scss',

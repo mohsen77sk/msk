@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -10,17 +9,14 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
 import { MskNavigationService, MskVerticalNavigationComponent } from '@msk/shared/ui/navigation';
 import { filter } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'main-page-title',
   templateUrl: './page-title.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, MatIcon],
 })
 export class MainPageTitleComponent implements AfterViewInit {
   private _destroyRef = inject(DestroyRef);

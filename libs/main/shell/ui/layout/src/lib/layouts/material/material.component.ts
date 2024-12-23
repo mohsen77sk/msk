@@ -15,7 +15,6 @@ import { MainLanguagesComponent } from '../../common/languages/languages.compone
 import { MainPageTitleComponent } from '../../common/page-title/page-title.component';
 
 @Component({
-  standalone: true,
   selector: 'main-layout-material',
   templateUrl: './material.component.html',
   encapsulation: ViewEncapsulation.None,

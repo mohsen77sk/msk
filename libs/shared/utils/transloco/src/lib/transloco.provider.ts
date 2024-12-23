@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, EnvironmentProviders, inject, isDevMode, LOCALE_ID, Provider } from '@angular/core';
+import { EnvironmentProviders, inject, isDevMode, LOCALE_ID, Provider, provideAppInitializer } from '@angular/core';
 import {
   provideTransloco,
   TranslocoService,
@@ -18,10 +18,8 @@ export const provideMskTransloco = (): Array<Provider | EnvironmentProviders> =>
       },
       loader: TranslocoHttpLoader,
     }),
-    {
-      // Preload the default language before the app starts to prevent empty/jumping content
-      provide: APP_INITIALIZER,
-      useFactory: () => {
+    provideAppInitializer(() => {
+      const initializerFn = (() => {
         // Get lang id from locale
         const lang_id = inject(LOCALE_ID).slice(0, 2);
         // Set default and active language
@@ -30,9 +28,9 @@ export const provideMskTransloco = (): Array<Provider | EnvironmentProviders> =>
         translocoService.setActiveLang(lang_id);
         // Load active language
         return () => firstValueFrom(translocoService.load(lang_id));
-      },
-      multi: true,
-    },
+      })();
+      return initializerFn();
+    }),
   ];
 };
 

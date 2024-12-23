@@ -20,7 +20,6 @@ import { MskNavigationService } from '../../../navigation.service';
 import { MskNavigationItem } from '../../../navigation.types';
 
 @Component({
-  standalone: true,
   selector: 'msk-vertical-navigation-group-item',
   templateUrl: './group.component.html',
   encapsulation: ViewEncapsulation.None,

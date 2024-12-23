@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  standalone: true,
   selector: 'msk-fullscreen',
   templateUrl: './fullscreen.component.html',
   styleUrls: ['./fullscreen.component.scss'],

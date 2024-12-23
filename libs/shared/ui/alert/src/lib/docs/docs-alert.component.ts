@@ -6,7 +6,6 @@ import { MskAlertComponent } from '../alert.component';
 import { MskAlertService } from '../alert.service';
 
 @Component({
-  standalone: true,
   selector: 'msk-docs-alert',
   templateUrl: './docs-alert.component.html',
   styleUrl: './docs-alert.component.scss',

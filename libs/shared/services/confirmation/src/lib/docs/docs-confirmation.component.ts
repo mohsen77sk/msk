@@ -10,7 +10,6 @@ import { MskHighlightComponent } from '@msk/shared/ui/highlight';
 import { MskConfirmationService } from '../confirmation.service';
 
 @Component({
-  standalone: true,
   selector: 'msk-docs-confirmation',
   templateUrl: './docs-confirmation.component.html',
   encapsulation: ViewEncapsulation.None,

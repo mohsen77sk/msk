@@ -1,10 +1,10 @@
 import {
-  ENVIRONMENT_INITIALIZER,
   EnvironmentProviders,
   importProvidersFrom,
   inject,
   isDevMode,
   Provider,
+  provideEnvironmentInitializer,
 } from '@angular/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { provideServiceWorker } from '@angular/service-worker';
@@ -18,11 +18,7 @@ export const provideMskServiceWorker = (): Array<Provider | EnvironmentProviders
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    {
-      provide: ENVIRONMENT_INITIALIZER,
-      useValue: () => inject(MskServiceWorkerService),
-      multi: true,
-    },
+    provideEnvironmentInitializer(() => inject(MskServiceWorkerService)),
     importProvidersFrom(MatSnackBarModule),
     provideTranslocoScope({
       scope: 'serviceWorker',

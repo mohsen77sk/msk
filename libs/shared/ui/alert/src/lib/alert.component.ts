@@ -22,7 +22,6 @@ import { MskAlertAppearance, MskAlertType } from './alert.types';
 import { filter } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'msk-alert',
   templateUrl: './alert.component.html',
   styleUrl: './alert.component.scss',

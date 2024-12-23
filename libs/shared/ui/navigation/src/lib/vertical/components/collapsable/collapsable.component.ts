@@ -25,7 +25,6 @@ import { MskNavigationService } from '../../../navigation.service';
 import { MskNavigationItem } from '../../../navigation.types';
 
 @Component({
-  standalone: true,
   selector: 'msk-vertical-navigation-collapsable-item',
   templateUrl: './collapsable.component.html',
   animations: mskAnimations,

@@ -6,7 +6,6 @@ import { AccountsListComponent } from '../list/list.component';
 import { AccountsCardDetailsComponent } from './details/details.component';
 
 @Component({
-  standalone: true,
   selector: 'main-accounts-card',
   template: '',
   encapsulation: ViewEncapsulation.None,

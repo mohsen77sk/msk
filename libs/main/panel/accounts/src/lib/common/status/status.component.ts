@@ -5,7 +5,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
-  standalone: true,
   selector: 'main-accounts-status',
   templateUrl: './status.component.html',
   styles: 'main-accounts-status { display: flex }',

@@ -14,7 +14,6 @@ import { MskLoadingBarService } from './loading-bar.service';
 import { map } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'msk-loading-bar',
   templateUrl: './loading-bar.component.html',
   styleUrls: ['./loading-bar.component.scss'],

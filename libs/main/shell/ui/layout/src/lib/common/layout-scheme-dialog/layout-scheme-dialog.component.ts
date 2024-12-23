@@ -7,7 +7,6 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
 
 @Component({
-  standalone: true,
   selector: 'main-layout-scheme-dialog',
   templateUrl: './layout-scheme-dialog.component.html',
   encapsulation: ViewEncapsulation.None,

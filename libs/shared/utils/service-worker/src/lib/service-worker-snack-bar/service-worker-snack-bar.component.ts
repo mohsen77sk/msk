@@ -6,7 +6,6 @@ import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel } from '@angula
 import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
-  standalone: true,
   selector: 'msk-service-worker-snack-bar',
   templateUrl: './service-worker-snack-bar.component.html',
   encapsulation: ViewEncapsulation.None,

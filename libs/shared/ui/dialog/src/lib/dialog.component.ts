@@ -26,7 +26,6 @@ import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
 import { filter, map } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'msk-dialog',
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.scss',

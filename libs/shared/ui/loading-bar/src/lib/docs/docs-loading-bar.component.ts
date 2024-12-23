@@ -5,7 +5,6 @@ import { MskHighlightComponent } from '@msk/shared/ui/highlight';
 import { MskLoadingBarService } from '../loading-bar.service';
 
 @Component({
-  standalone: true,
   selector: 'msk-docs-loading-bar',
   templateUrl: './docs-loading-bar.component.html',
   styleUrl: './docs-loading-bar.component.scss',

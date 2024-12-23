@@ -41,7 +41,6 @@ import { AccountService } from '../../accounts.service';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'main-people-details',
   templateUrl: './details.component.html',
   animations: mskAnimations,

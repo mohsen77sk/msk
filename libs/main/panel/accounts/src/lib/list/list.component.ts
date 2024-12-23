@@ -32,7 +32,6 @@ import { AccountService } from '../accounts.service';
 import { AccountsStatusComponent } from '../common/status/status.component';
 
 @Component({
-  standalone: true,
   selector: 'main-accounts-list',
   templateUrl: './list.component.html',
   encapsulation: ViewEncapsulation.None,

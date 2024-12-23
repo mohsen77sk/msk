@@ -2,7 +2,6 @@ import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostBinding, input, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  standalone: true,
   selector: 'msk-avatar',
   templateUrl: './avatar.component.html',
   exportAs: 'mskAvatar',

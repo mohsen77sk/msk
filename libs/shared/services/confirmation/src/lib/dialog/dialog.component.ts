@@ -6,7 +6,6 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MskConfirmationConfig } from '../confirmation.types';
 
 @Component({
-  standalone: true,
   selector: 'msk-confirmation-dialog',
   templateUrl: './dialog.component.html',
   encapsulation: ViewEncapsulation.None,

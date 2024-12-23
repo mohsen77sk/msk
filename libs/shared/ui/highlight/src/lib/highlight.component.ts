@@ -24,7 +24,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MskHighlightService } from './highlight.service';
 
 @Component({
-  standalone: true,
   selector: 'textarea[msk-highlight]',
   templateUrl: './highlight.component.html',
   styleUrl: './highlight.component.scss',
