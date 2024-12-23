@@ -199,9 +199,9 @@ export class MainLayoutComponent implements OnInit {
    */
   private _updateLayoutDirection(): void {
     // 1. Get the direction from the layoutConfig
-    this.layoutDirection = getLocaleDirection(this.layoutConfig.locale);
+    this.layoutDirection = this.layoutConfig.locale.direction;
     // 2. Change lang attribute for the currently selected language
-    this._document.documentElement.setAttribute('lang', this.layoutConfig.locale.slice(0, 2));
+    this._document.documentElement.setAttribute('lang', this.layoutConfig.locale.id.slice(0, 2));
     // 3. Change dir attribute for the currently selected direction
     this._document.documentElement.setAttribute('dir', this.layoutDirection);
     this._document.body.setAttribute('dir', this.layoutDirection);

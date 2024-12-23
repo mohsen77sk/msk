@@ -2,6 +2,7 @@ import { ApplicationConfig } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
+import { locale } from '@msk/main/shell/ui/layout';
 import { provideMainShell } from '@msk/main/shell/feature';
 import { provideMskAppConfig } from '@msk/shared/utils/app-config';
 
@@ -13,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideMskAppConfig(environment),
     provideMainShell({
-      locale: 'en-US',
+      locale: locale['fa'],
       type: 'material',
       scheme: 'auto',
       screens: {

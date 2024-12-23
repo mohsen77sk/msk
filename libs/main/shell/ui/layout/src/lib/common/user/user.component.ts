@@ -1,4 +1,4 @@
-import { NgClass, getLocaleDirection } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -22,7 +22,6 @@ import { availableLangs } from '@msk/shared/utils/transloco';
 import { MainUserService, User } from '@msk/main/shell/core/user';
 import { MainLayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { MainLayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
-import { Direction } from '@angular/cdk/bidi';
 
 @Component({
   standalone: true,
@@ -56,7 +55,6 @@ export class MainUserComponent implements OnInit {
 
   activeLang!: string;
   layoutScheme!: LayoutScheme;
-  layoutDirection!: Direction;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -78,7 +76,6 @@ export class MainUserComponent implements OnInit {
     this._layoutConfigService.config$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((config) => {
       // Get the config
       this.layoutScheme = config.scheme;
-      this.layoutDirection = getLocaleDirection(config.locale);
       // Mark for check
       this._changeDetectorRef.markForCheck();
     });
@@ -100,14 +97,14 @@ export class MainUserComponent implements OnInit {
    * Open schema dialog
    */
   openLayoutSchemeDialog() {
-    this._dialog.open(MainLayoutSchemeDialogComponent, { direction: this.layoutDirection }).afterClosed().subscribe();
+    this._dialog.open(MainLayoutSchemeDialogComponent).afterClosed().subscribe();
   }
 
   /**
    * Open language dialog
    */
   openLayoutLanguageDialog() {
-    this._dialog.open(MainLayoutLanguageDialogComponent, { direction: this.layoutDirection }).afterClosed().subscribe();
+    this._dialog.open(MainLayoutLanguageDialogComponent).afterClosed().subscribe();
   }
 
   /**

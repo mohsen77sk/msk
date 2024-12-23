@@ -9,18 +9,7 @@ import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
 import { AvailableLangsIds, availableLangs } from '@msk/shared/utils/transloco';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Locale } from 'date-fns';
-import { enUS } from 'date-fns/locale';
-import { faIR } from 'date-fns-jalali/locale';
-
-const locale = {
-  en: 'en-US',
-  fa: 'fa-IR',
-};
-
-const localeDate = {
-  en: enUS,
-  fa: faIR,
-};
+import { locale, localeDate } from '../../layout.types';
 
 @Component({
   standalone: true,

@@ -25,6 +25,8 @@ import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
+import { MskCurrencyMaskDirective } from '@msk/shared/directives/currency-mask';
+import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import {
@@ -66,6 +68,8 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
     MskAvatarComponent,
     MskDialogComponent,
     MskSpinnerDirective,
+    MskCurrencyMaskDirective,
+    MskCurrencySymbolDirective,
     MskSelectSearchDirective,
     MskDateTimePipe,
   ],
