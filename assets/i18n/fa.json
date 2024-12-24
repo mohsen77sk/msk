@@ -39,5 +39,14 @@
     "max": "حداکثر مقدار {{max}} است",
     "email": "لطفا یک آدرس ایمیل معتبر وارد کنید",
     "passwords-must-match": "رمزهای عبور باید مطابقت داشته باشند"
+  },
+  "paginator": {
+    "items-per-page-label": "تعداد در صفحه:",
+    "next-page-label": "صفحه بعد",
+    "previous-page-label": "صفحه قبل",
+    "first-page-label": "صفحه اول",
+    "last-page-label": "صفحه آخر",
+    "range-page-label-1": "0 از {{length}}",
+    "range-page-label-2": "{{startIndex}} - {{endIndex}} از {{length}}"
   }
 }
