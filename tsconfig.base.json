@@ -58,6 +58,7 @@
       "@msk/shared/utils/error-handler": ["libs/shared/utils/error-handler/src/index.ts"],
       "@msk/shared/utils/icons": ["libs/shared/utils/icons/src/index.ts"],
       "@msk/shared/utils/loading": ["libs/shared/utils/loading/src/index.ts"],
+      "@msk/shared/utils/material-intl": ["libs/shared/utils/material-intl/src/index.ts"],
       "@msk/shared/utils/service-worker": ["libs/shared/utils/service-worker/src/index.ts"],
       "@msk/shared/utils/transloco": ["libs/shared/utils/transloco/src/index.ts"]
     }

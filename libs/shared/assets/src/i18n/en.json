@@ -39,5 +39,14 @@
     "max": "Max value is {{max}}",
     "email": "Please enter a valid email address",
     "passwords-must-match": "Passwords must match"
+  },
+  "paginator": {
+    "items-per-page-label": "Items per page:",
+    "next-page-label": "Next page",
+    "previous-page-label": "Previous page",
+    "first-page-label": "First page",
+    "last-page-label": "Last page",
+    "range-page-label-1": "0 of {{length}}",
+    "range-page-label-2": "{{startIndex}} - {{endIndex}} of {{length}}"
   }
 }

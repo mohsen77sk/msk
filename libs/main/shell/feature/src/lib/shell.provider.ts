@@ -19,6 +19,7 @@ import { MskPlatformService } from '@msk/shared/services/platform';
 import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
 import { MskUtilsService } from '@msk/shared/services/utils';
 import { provideMskIcons } from '@msk/shared/utils/icons';
+import { provideMskMatIntl } from '@msk/shared/utils/material-intl';
 import { provideMskServiceWorker } from '@msk/shared/utils/service-worker';
 import { provideMskTransloco } from '@msk/shared/utils/transloco';
 import { provideMskLoading } from '@msk/shared/utils/loading';
@@ -103,6 +104,7 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
     provideMskIcons(),
     provideMskLoading(),
     provideMskTransloco(),
+    provideMskMatIntl(),
     // Provide services
     provideEnvironmentInitializer(() => inject(MskMediaWatcherService)),
     provideEnvironmentInitializer(() => inject(MskPlatformService)),
