@@ -1,4 +1,4 @@
-import { NgTemplateOutlet, CurrencyPipe, AsyncPipe } from '@angular/common';
+import { NgTemplateOutlet, DecimalPipe, AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -49,7 +49,7 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
   imports: [
     NgTemplateOutlet,
     AsyncPipe,
-    CurrencyPipe,
+    DecimalPipe,
     FormsModule,
     ReactiveFormsModule,
     MatIconModule,
