@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1735034922723,
+  "timestamp": 1735907410710,
   "index": "/msk/index.html",
   "assetGroups": [
     {
@@ -162,8 +162,8 @@
     "/msk/assets/fonts/IRANSansX/woff2/IRANSansX-UltraLight.woff2": "abb8722b68d3898ef456a59593f6f30402138438",
     "/msk/assets/i18n/en.json": "873beb809ea7b75eb750ed50b5811a46bd528408",
     "/msk/assets/i18n/fa.json": "a2b902e987313c5618316295710829e410c463f6",
-    "/msk/assets/icons/heroicons-outline.svg": "02b30c181518eb941d8fcec6dff9af1f4d085ed4",
-    "/msk/assets/icons/heroicons-solid.svg": "33909d2bf1892f251ad7904e7552e1ab3fe20e46",
+    "/msk/assets/icons/heroicons-outline.svg": "d18d0282cc707d1fcffbe0aaeb4f6d606fe3d130",
+    "/msk/assets/icons/heroicons-solid.svg": "e73b00b6915839f689cbbea53647b1be72c100da",
     "/msk/assets/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
     "/msk/assets/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
     "/msk/assets/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
