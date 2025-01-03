@@ -1,10 +1,10 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   inject,
+  signal,
   ViewEncapsulation,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -22,10 +22,9 @@ export class MainPageTitleComponent implements AfterViewInit {
   private _destroyRef = inject(DestroyRef);
   private _router = inject(Router);
   private _activatedRoute = inject(ActivatedRoute);
-  private _changeDetectorRef = inject(ChangeDetectorRef);
   private _mskNavigationService = inject(MskNavigationService);
 
-  currentTitle!: string;
+  currentTitle = signal<string>('');
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -47,6 +46,10 @@ export class MainPageTitleComponent implements AfterViewInit {
       .subscribe(() => this.getCurrentTitle());
   }
 
+  // -----------------------------------------------------------------------------------------------------
+  // @ Public methods
+  // -----------------------------------------------------------------------------------------------------
+
   /**
    * Get current page title
    */
@@ -62,8 +65,6 @@ export class MainPageTitleComponent implements AfterViewInit {
     // Get the navigation
     const navigation = this._mskNavigationService.getComponent<MskVerticalNavigationComponent>('mainNavigation');
     // Set title of current navigation
-    this.currentTitle = this._mskNavigationService.getItem(idPath, navigation.navigation())?.title ?? '';
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
+    this.currentTitle.set(this._mskNavigationService.getItem(idPath, navigation.navigation())?.title ?? '');
   }
 }

@@ -51,6 +51,10 @@ export class MainBreadcrumbComponent implements AfterViewInit {
       .subscribe(() => this.createBreadcrumb());
   }
 
+  // -----------------------------------------------------------------------------------------------------
+  // @ Public methods
+  // -----------------------------------------------------------------------------------------------------
+
   /**
    * Create breadcrumb
    */
@@ -70,7 +74,7 @@ export class MainBreadcrumbComponent implements AfterViewInit {
       // Push the navigation path
       this.breadcrumb.push({
         id: idPath,
-        title: this._mskNavigationService.getItem(idPath, navigation.navigation)?.title ?? '',
+        title: this._mskNavigationService.getItem(idPath, navigation.navigation())?.title ?? '',
       });
     });
     // Mark for check
