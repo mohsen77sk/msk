@@ -19,17 +19,18 @@ export class MskCurrencyMaskDirective implements ControlValueAccessor {
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
-  @HostListener('input', ['$event']) onInput(event: KeyboardEvent) {
+  @HostListener('input', ['$event']) onInput(event: InputEvent) {
     // Remove all non-numeric characters except for decimal point and minus sign
     const value = this._elementRef.nativeElement.value.replace(/[^\d.-]/g, '');
 
     if (this.onChange) {
-      this.onChange(parseFloat(value));
+      const numberValue = parseFloat(value);
+      this.onChange(!isNaN(numberValue) ? numberValue : '');
     }
     this._formatInputValue();
   }
 
-  @HostListener('blur', ['$event']) onBlur(event: unknown) {
+  @HostListener('blur', ['$event']) onBlur(event: FocusEvent) {
     if (this.onTouched) {
       this.onTouched();
     }
@@ -49,11 +50,11 @@ export class MskCurrencyMaskDirective implements ControlValueAccessor {
     }
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: typeof this.onChange): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: typeof this.onTouched): void {
     this.onTouched = fn;
   }
 
@@ -75,6 +76,8 @@ export class MskCurrencyMaskDirective implements ControlValueAccessor {
         const formattedValue = formatCurrency(numberValue, this._localeId, '', '', '1.0-2');
         this._elementRef.nativeElement.value = formattedValue;
       }
+    } else {
+      this._elementRef.nativeElement.value = '';
     }
   }
 }
