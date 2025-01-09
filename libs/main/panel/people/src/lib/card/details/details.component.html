@@ -110,14 +110,14 @@
       <mat-form-field>
         <mat-label>{{ t('firstName') }}</mat-label>
         <input matInput formControlName="firstName" maxlength="128" autocomplete="off" />
-        <mat-error>{{ formErrors.firstName }}</mat-error>
+        <mat-error>{{ formErrors['firstName'] }}</mat-error>
       </mat-form-field>
 
       <!-- LastName -->
       <mat-form-field>
         <mat-label>{{ t('lastName') }}</mat-label>
         <input matInput formControlName="lastName" maxlength="128" autocomplete="off" />
-        <mat-error>{{ formErrors.lastName }}</mat-error>
+        <mat-error>{{ formErrors['lastName'] }}</mat-error>
       </mat-form-field>
     </div>
 
@@ -126,7 +126,7 @@
       <mat-form-field>
         <mat-label>{{ t('nationalCode') }}</mat-label>
         <input matInput formControlName="nationalCode" maxlength="10" autocomplete="off" />
-        <mat-error>{{ formErrors.nationalCode }}</mat-error>
+        <mat-error>{{ formErrors['nationalCode'] }}</mat-error>
       </mat-form-field>
 
       <!-- Birthday -->
@@ -135,7 +135,7 @@
         <input matInput formControlName="dateOfBirth" [matDatepicker]="picker" />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-error>{{ formErrors.dateOfBirth }}</mat-error>
+        <mat-error>{{ formErrors['dateOfBirth'] }}</mat-error>
       </mat-form-field>
     </div>
 
@@ -147,13 +147,13 @@
         <mat-option [value]="item">{{ t('people.genders.' + item) }}</mat-option>
         }
       </mat-select>
-      <mat-error>{{ formErrors.gender }}</mat-error>
+      <mat-error>{{ formErrors['gender'] }}</mat-error>
     </mat-form-field>
 
     <!-- Note -->
     <mat-form-field>
       <textarea matInput formControlName="note" [placeholder]="t('note')" [rows]="2"></textarea>
-      <mat-error>{{ formErrors.note }}</mat-error>
+      <mat-error>{{ formErrors['note'] }}</mat-error>
     </mat-form-field>
   </form>
 </ng-template>

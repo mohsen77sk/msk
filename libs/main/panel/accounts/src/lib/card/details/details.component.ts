@@ -33,6 +33,7 @@ import {
   MskHandleFormErrors,
   MskValidateFormFields,
   MskSetServerErrorsFormFields,
+  FormError,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
 import { PeopleService } from '@msk/main/panel/people';
@@ -84,7 +85,7 @@ export class AccountsCardDetailsComponent implements OnInit {
   private _mskConfirmationService = inject(MskConfirmationService);
 
   form!: FormGroup;
-  formErrors: any = {};
+  formErrors: FormError = {};
   personList$: Observable<MskLookupResponse> = this._peopleService.getLookupPersons();
   accountTypeList$: Observable<MskLookupResponse> = this._accountService.getLookupAccountTypes();
 
@@ -165,7 +166,7 @@ export class AccountsCardDetailsComponent implements OnInit {
       // If confirm
       const model = {
         id: this.data.item?.id,
-        closeDate: new Date(new Date().setSeconds(0, 0)),
+        closeDate: new Date(new Date().setMinutes(new Date().getMinutes() - 1, 0, 0)),
       } as ICloseAccount;
 
       this._accountService

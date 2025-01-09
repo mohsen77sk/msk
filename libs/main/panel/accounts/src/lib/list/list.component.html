@@ -47,7 +47,7 @@
         mat-fab
         extended
         [routerLink]="['card', 'new']"
-        [ngClass]="{ 'mat-mdc-extended-fab-collapses': isFabCollapses }"
+        [ngClass]="{ 'mat-mdc-extended-fab-collapses': isFabCollapses() }"
         @zoomIn
       >
         <mat-icon>add</mat-icon>
@@ -57,12 +57,12 @@
 
     <mat-paginator
       class="content-paginator"
-      [length]="pagination.total"
-      [pageIndex]="pagination.pageIndex"
-      [pageSize]="pagination.pageSize"
+      [length]="(pagination$ | async)?.total"
+      [pageIndex]="(pagination$ | async)?.pageIndex"
+      [pageSize]="(pagination$ | async)?.pageSize"
       [pageSizeOptions]="pageSizeOptions"
       [showFirstLastButtons]="true"
-      [disabled]="isLoading"
+      [disabled]="isLoading()"
     ></mat-paginator>
   </div>
 </div>

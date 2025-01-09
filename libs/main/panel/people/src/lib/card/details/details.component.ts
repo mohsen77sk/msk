@@ -30,6 +30,7 @@ import {
   MskHandleFormErrors,
   MskValidateFormFields,
   MskSetServerErrorsFormFields,
+  FormError,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
 import { Person } from '../../people.types';
@@ -74,7 +75,7 @@ export class PeopleCardDetailsComponent implements OnInit {
   private _mskConfirmationService = inject(MskConfirmationService);
 
   form!: FormGroup;
-  formErrors: any = {};
+  formErrors: FormError = {};
 
   alert = signal({
     show: false,

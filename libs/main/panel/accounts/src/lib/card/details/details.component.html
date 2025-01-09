@@ -166,7 +166,7 @@
           <mat-option [value]="item.id">{{ item.name }}</mat-option>
           }
         </mat-select>
-        <mat-error>{{ formErrors.accountTypeId }}</mat-error>
+        <mat-error>{{ formErrors['accountTypeId'] }}</mat-error>
       </mat-form-field>
 
       <!-- CreateDate -->
@@ -175,7 +175,7 @@
         <input matInput formControlName="createDate" [matDatepicker]="picker" />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-error>{{ formErrors.createDate }}</mat-error>
+        <mat-error>{{ formErrors['createDate'] }}</mat-error>
       </mat-form-field>
     </div>
     }
@@ -198,7 +198,7 @@
         <mat-option [value]="item.id">{{ item.name }}</mat-option>
         }
       </mat-select>
-      <mat-error>{{ formErrors.personId }}</mat-error>
+      <mat-error>{{ formErrors['personId'] }}</mat-error>
     </mat-form-field>
 
     <!-- InitCredit -->
@@ -207,14 +207,14 @@
       <mat-label>{{ t('initCredit') }}</mat-label>
       <input matInput formControlName="initCredit" mskCurrencyMask autocomplete="off" />
       <span matTextSuffix mskCurrencySymbol></span>
-      <mat-error>{{ formErrors.initCredit }}</mat-error>
+      <mat-error>{{ formErrors['initCredit'] }}</mat-error>
     </mat-form-field>
     }
 
     <!-- Note -->
     <mat-form-field>
       <textarea matInput formControlName="note" [placeholder]="t('note')" [rows]="2"></textarea>
-      <mat-error>{{ formErrors.note }}</mat-error>
+      <mat-error>{{ formErrors['note'] }}</mat-error>
     </mat-form-field>
   </form>
 </ng-template>

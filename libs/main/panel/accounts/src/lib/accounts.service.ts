@@ -36,7 +36,7 @@ export class AccountService {
   /**
    * Getter for accounts
    */
-  get _accounts$(): Observable<Account[] | null> {
+  get accounts$(): Observable<Account[] | null> {
     return this._accounts.asObservable();
   }
 

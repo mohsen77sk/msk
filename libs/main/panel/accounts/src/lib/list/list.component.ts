@@ -2,12 +2,12 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   OnInit,
   ViewEncapsulation,
   inject,
+  signal,
   viewChild,
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
@@ -26,7 +26,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageSizeOptions, MskPagination } from '@msk/shared/data-access';
-import { Observable, catchError, filter, finalize, map, merge, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, finalize, map, merge, of, switchMap, tap } from 'rxjs';
 import { DefaultAccountSortDirection, DefaultAccountSortId, Account } from '../accounts.types';
 import { AccountService } from '../accounts.service';
 import { AccountsStatusComponent } from '../common/status/status.component';
@@ -61,17 +61,16 @@ import { AccountsStatusComponent } from '../common/status/status.component';
 export class AccountsListComponent implements OnInit, AfterViewInit {
   private _destroyRef = inject(DestroyRef);
   private _accountService = inject(AccountService);
-  private _changeDetectorRef = inject(ChangeDetectorRef);
 
   private _gridContent = viewChild.required(CdkScrollable);
   private _paginator = viewChild.required(MatPaginator);
   private _sort = new MatSort(); // viewChild.required(MatSort);
 
-  isLoading = false;
-  isFabCollapses = false;
+  isLoading = signal(false);
+  isFabCollapses = signal(false);
   lastOffsetScroll = 0;
   pageSizeOptions = MskPageSizeOptions;
-  pagination!: MskPagination;
+  pagination$!: Observable<MskPagination | null>;
   accounts$!: Observable<Account[] | null>;
   filterForm: FormGroup = new FormGroup({
     search: new FormControl<string>(''),
@@ -86,21 +85,9 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
    * On init
    */
   ngOnInit(): void {
-    // Get the pagination
-    this._accountService.pagination$
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        filter((pagination): pagination is MskPagination => !!pagination)
-      )
-      .subscribe((pagination) => {
-        // Update the pagination
-        this.pagination = pagination;
-        // Mark for check
-        this._changeDetectorRef.markForCheck();
-      });
-
     // Get the account list
-    this.accounts$ = this._accountService._accounts$;
+    this.accounts$ = this._accountService.accounts$;
+    this.pagination$ = this._accountService.pagination$;
   }
 
   /**
@@ -142,9 +129,8 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
         tap((scrollTop) => {
           const isFabCollapses = scrollTop > 10 ? this.lastOffsetScroll < scrollTop : false;
           // If the FAB collapses state has changed...
-          if (this.isFabCollapses !== isFabCollapses) {
-            this.isFabCollapses = isFabCollapses;
-            this._changeDetectorRef.markForCheck();
+          if (this.isFabCollapses() !== isFabCollapses) {
+            this.isFabCollapses.set(isFabCollapses);
           }
           // Update lastOffsetScroll
           this.lastOffsetScroll = scrollTop;
@@ -164,11 +150,8 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
    */
   getAccounts(firstPage = false): Observable<unknown> {
     // Set isLoading to true
-    this.isLoading = true;
-
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
-
+    this.isLoading.set(true);
+    // Call api
     return this._accountService
       .getAccounts(
         firstPage ? 1 : this._paginator().pageIndex + 1,
@@ -182,10 +165,7 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
           return of();
         }),
         finalize(() => {
-          // Set isLoading to false
-          this.isLoading = false;
-          // Mark for check
-          this._changeDetectorRef.markForCheck();
+          this.isLoading.set(false);
         })
       );
   }

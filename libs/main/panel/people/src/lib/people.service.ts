@@ -28,7 +28,7 @@ export class PeopleService {
   /**
    * Getter for persons
    */
-  get _persons$(): Observable<Person[] | null> {
+  get persons$(): Observable<Person[] | null> {
     return this._persons.asObservable();
   }
 
