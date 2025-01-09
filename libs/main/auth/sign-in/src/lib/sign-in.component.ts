@@ -4,8 +4,10 @@ import {
   Component,
   ElementRef,
   OnInit,
+  Signal,
   ViewEncapsulation,
   inject,
+  signal,
   viewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -55,13 +57,13 @@ export class SignInComponent implements OnInit {
 
   signInNgForm = viewChild.required<NgForm>('signInNgForm');
 
-  alert: { type: MskAlertType; message: string } = {
+  showAlert = signal(false);
+  alert = signal<{ type: MskAlertType; message: string }>({
     type: 'error',
     message: '',
-  };
+  });
 
   signInForm!: FormGroup;
-  showAlert = false;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -99,7 +101,7 @@ export class SignInComponent implements OnInit {
     this.signInForm.disable();
 
     // Hide the alert
-    this.showAlert = false;
+    this.showAlert.set(false);
 
     // Sign in
     this._authService
@@ -128,16 +130,13 @@ export class SignInComponent implements OnInit {
           this.signInForm.reset({ rememberMe: false });
 
           // Set the alert
-          this.alert = {
+          this.alert.set({
             type: 'error',
             message: response.error.message,
-          };
+          });
 
           // Show the alert
-          this.showAlert = true;
-
-          // Mark for check
-          this._changeDetectorRef.markForCheck();
+          this.showAlert.set(true);
 
           // Set focus in username field
           setTimeout(() => this.usernameFocus());

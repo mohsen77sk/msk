@@ -20,15 +20,15 @@
       </div>
 
       <!-- Alert -->
-      @if (showAlert) {
+      @if (showAlert()) {
       <msk-alert
         class="mt-8"
         [appearance]="'outline'"
         [showIcon]="false"
-        [type]="alert.type"
-        [@shake]="alert.type === 'error'"
+        [type]="alert().type"
+        [@shake]="alert().type === 'error'"
       >
-        {{ alert.message }}
+        {{ alert().message }}
       </msk-alert>
       }
 

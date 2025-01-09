@@ -14,14 +14,9 @@
       <!-- Content -->
       <div class="mt-1 flex justify-center font-medium">
         <!-- Redirect countdown -->
-        @if (countdown > 0) {
-        {{ t('signOut.redirecting-in-seconds', { seconds: countdown }) }}
-        }
-
+        @if (countdown() > 0) { {{ t('signOut.redirecting-in-seconds', { seconds: countdown() }) }} }
         <!-- Redirect message -->
-        @if (countdown === 0) {
-        {{ t('signOut.you-are-now-being-redirected') }}
-        }
+        @else { {{ t('signOut.you-are-now-being-redirected') }} }
       </div>
 
       <!-- Form footer -->
