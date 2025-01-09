@@ -213,7 +213,9 @@ export class AccountsCardDetailsComponent implements OnInit {
           // Set the alert
           this.alert.set({ show: true, message: response.error.message });
           // Set validation error message
-          MskSetServerErrorsFormFields(response.error.errors, this.form);
+          if (response.error.errors) {
+            MskSetServerErrorsFormFields(response.error.errors, this.form);
+          }
           // Return
           return EMPTY;
         })

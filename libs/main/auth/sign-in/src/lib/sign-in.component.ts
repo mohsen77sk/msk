@@ -20,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MainAuthService } from '@msk/main/shell/core/auth';
-import { MskErrorResponse } from '@msk/shared/data-access';
+import { MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent, MskAlertType } from '@msk/shared/ui/alert';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { mskAnimations } from '@msk/shared/animations';
@@ -122,7 +122,7 @@ export class SignInComponent implements OnInit {
             this._router.navigate(['/two-step-verification'], { queryParams: { redirectURL } });
           }
         }),
-        catchError((response: { error: MskErrorResponse }) => {
+        catchError((response: MskHttpErrorResponse) => {
           // Re-enable the form
           this.signInForm.enable();
 

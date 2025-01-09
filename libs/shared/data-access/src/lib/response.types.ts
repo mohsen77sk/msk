@@ -15,7 +15,7 @@ export interface MskHttpErrorResponse extends HttpErrorResponse {
 
 export interface MskErrorResponse {
   message: string;
-  errors: MskErrorResponseItem;
+  errors?: MskErrorResponseItem;
 }
 
 export interface MskErrorResponseItem {
