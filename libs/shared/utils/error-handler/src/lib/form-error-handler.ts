@@ -1,7 +1,7 @@
 import { FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { TranslocoService } from '@jsverse/transloco';
 
-interface FormError {
+export interface FormError {
   [key: string]: any;
 }
 
@@ -28,9 +28,7 @@ export class MskHandleFormErrors {
    */
   private _handleFormErrors(form: FormGroup, errorObject: object): void {
     form.statusChanges.subscribe(() => {
-      if (form.invalid) {
-        this._findErrors(form, errorObject);
-      }
+      this._findErrors(form, errorObject);
     });
   }
 
@@ -75,8 +73,12 @@ export class MskHandleFormErrors {
       // Set error to errorObject
       Object.defineProperty(errorObject, field, {
         writable: true,
+        configurable: true,
         value: this._getErrorMessage(control.errors),
       });
+    } else {
+      // Remove field from error object if no error exists on this field anymore.
+      delete errorObject[field];
     }
   }
 
