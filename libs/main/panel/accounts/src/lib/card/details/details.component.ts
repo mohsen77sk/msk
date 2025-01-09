@@ -1,13 +1,5 @@
 import { NgTemplateOutlet, DecimalPipe, AsyncPipe } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  ChangeDetectionStrategy,
-  inject,
-  signal,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -81,7 +73,6 @@ export class AccountsCardDetailsComponent implements OnInit {
   private _peopleService = inject(PeopleService);
   private _accountService = inject(AccountService);
   private _translocoService = inject(TranslocoService);
-  private _changeDetectorRef = inject(ChangeDetectorRef);
   private _mskConfirmationService = inject(MskConfirmationService);
 
   form!: FormGroup;
@@ -114,8 +105,8 @@ export class AccountsCardDetailsComponent implements OnInit {
     // Handling errors
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
-    this.form.patchValue(this.data.item || {});
-    this.form.get('personId')?.patchValue(this.data.item?.persons.map((x) => x.id) || []);
+    this.form.patchValue(this.data.item() || {});
+    this.form.get('personId')?.patchValue(this.data.item()?.persons.map((x) => x.id) || []);
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -135,7 +126,7 @@ export class AccountsCardDetailsComponent implements OnInit {
    * Go to edit mode
    */
   editMode(): void {
-    this.data.action = 'edit';
+    this.data.action.set('edit');
     this.form.get('initCredit')?.clearValidators();
   }
 
@@ -143,14 +134,14 @@ export class AccountsCardDetailsComponent implements OnInit {
    * Update the status
    */
   updateStatus(): void {
-    const isActive = this.data.item?.isActive;
+    const isActive = this.data.item()?.isActive;
     // Open the confirmation dialog
     const confirmation = this._mskConfirmationService.open({
       title: this._translocoService.translate(isActive ? 'accounts.deactivate' : 'accounts.activate'),
       message: this._translocoService.translate(
         isActive ? 'accounts.deactivate-message' : 'accounts.activate-message',
         {
-          name: this.data.item?.fullName,
+          name: this.data.item()?.fullName,
         }
       ),
       actions: {
@@ -165,7 +156,7 @@ export class AccountsCardDetailsComponent implements OnInit {
 
       // If confirm
       const model = {
-        id: this.data.item?.id,
+        id: this.data.item()?.id,
         closeDate: new Date(new Date().setMinutes(new Date().getMinutes() - 1, 0, 0)),
       } as ICloseAccount;
 
@@ -174,9 +165,7 @@ export class AccountsCardDetailsComponent implements OnInit {
         .pipe(
           map((response) => {
             // Update the account
-            this.data.item = response;
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
+            this.data.item.set(response);
           }),
           catchError((response) => {
             // Show error
@@ -207,7 +196,7 @@ export class AccountsCardDetailsComponent implements OnInit {
     this.alert.set({ show: false, message: '' });
 
     const result =
-      this.data.action === 'edit'
+      this.data.action() === 'edit'
         ? this._accountService.updateAccount({
             id: this.form.value.id,
             personId: this.form.value.personId,

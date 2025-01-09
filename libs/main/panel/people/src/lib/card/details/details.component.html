@@ -1,13 +1,13 @@
 <msk-dialog
   *transloco="let t; read: 'people.details'"
-  [title]="t(data.action, { code: data.item?.code })"
-  [hasAction]="data.action !== 'view'"
+  [title]="t(data.action(), { code: data.item()?.code })"
+  [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
 >
   <!-- Content -->
   <ng-container
-    [ngTemplateOutlet]="data.action === 'view' ? viewTemplate : formTemplate"
+    [ngTemplateOutlet]="data.action() === 'view' ? viewTemplate : formTemplate"
     [ngTemplateOutletContext]="{ t: t }"
     msk-dialog-content
   ></ng-container>
@@ -27,53 +27,53 @@
 
 <ng-template #viewTemplate let-t="t">
   <div class="mb-2 flex flex-col items-center gap-5 p-4">
-    <msk-avatar [name]="data.item?.fullName ?? ''" size="big"></msk-avatar>
+    <msk-avatar [name]="data.item()?.fullName ?? ''" size="big"></msk-avatar>
     <div class="text-headline-small text-on-surface">
-      {{ data.item?.fullName }}
+      {{ data.item()?.fullName }}
     </div>
   </div>
   <div class="msk-mat-card-filled mb-2 p-4">
     <div class="text-secondary mb-2 font-bold">
-      {{ t('about', { name: data.item?.fullName }) }}
+      {{ t('about', { name: data.item()?.fullName }) }}
     </div>
     <!-- National Code -->
-    @if (data.item?.nationalCode) {
+    @if (data.item()?.nationalCode) {
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>badge</mat-icon></div>
       <div class="msk-list-item-content">
-        <span>{{ data.item?.nationalCode || '-' }}</span>
+        <span>{{ data.item()?.nationalCode || '-' }}</span>
         <span>{{ t('nationalCode') }}</span>
       </div>
     </div>
     }
     <!-- Birthday -->
-    @if (data.item?.dateOfBirth) {
+    @if (data.item()?.dateOfBirth) {
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>cake</mat-icon></div>
       <div class="msk-list-item-content">
-        <span>{{ (data.item?.dateOfBirth | mskDateTime : 'longDate') || '-' }}</span>
+        <span>{{ (data.item()?.dateOfBirth | mskDateTime : 'longDate') || '-' }}</span>
         <span>{{ t('birthday') }}</span>
       </div>
     </div>
     }
     <!-- Gender -->
-    @if (data.item?.gender) {
+    @if (data.item()?.gender) {
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>male</mat-icon></div>
       <div class="msk-list-item-content">
-        <span *transloco="let t; read: 'people.genders'">{{ t(data.item?.gender?.toString() ?? '') }}</span>
+        <span *transloco="let t; read: 'people.genders'">{{ t(data.item()?.gender?.toString() ?? '') }}</span>
         <span>{{ t('gender') }}</span>
       </div>
     </div>
     }
   </div>
-  @if (data.item?.note) {
+  @if (data.item()?.note) {
   <div class="msk-mat-card-filled mb-2 p-4">
     <div class="text-secondary mb-2 font-bold">{{ t('note') }}</div>
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>sticky_note_2</mat-icon></div>
       <div class="msk-list-item-content">
-        <span>{{ data.item?.note }}</span>
+        <span>{{ data.item()?.note }}</span>
       </div>
     </div>
   </div>
@@ -83,13 +83,13 @@
     <div class="text-secondary mb-2 font-bold">{{ t('settings') }}</div>
     <div class="msk-list-item -mx-6 cursor-pointer gap-2" matRipple (click)="updateStatus()">
       <div class="msk-list-item-icon">
-        <mat-icon [ngClass]="{ '!text-error': data.item?.isActive }">
-          {{ data.item?.isActive ? 'cancel' : 'check_circle' }}
+        <mat-icon [ngClass]="{ '!text-error': data.item()?.isActive }">
+          {{ data.item()?.isActive ? 'cancel' : 'check_circle' }}
         </mat-icon>
       </div>
       <div class="msk-list-item-content">
-        <span [ngClass]="{ '!text-error': data.item?.isActive }">
-          {{ data.item?.isActive ? t('people.deactivate') : t('people.activate') }}
+        <span [ngClass]="{ '!text-error': data.item()?.isActive }">
+          {{ data.item()?.isActive ? t('people.deactivate') : t('people.activate') }}
         </span>
       </div>
     </div>

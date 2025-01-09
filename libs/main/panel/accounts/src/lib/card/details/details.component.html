@@ -1,19 +1,19 @@
 <msk-dialog
   *transloco="let t; read: 'accounts.details'"
-  [title]="t(data.action, { code: data.item?.code })"
-  [hasAction]="data.action !== 'view'"
+  [title]="t(data.action(), { code: data.item()?.code })"
+  [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
 >
   <!-- Content -->
   <ng-container
-    [ngTemplateOutlet]="data.action === 'view' ? viewTemplate : formTemplate"
+    [ngTemplateOutlet]="data.action() === 'view' ? viewTemplate : formTemplate"
     [ngTemplateOutletContext]="{ t: t }"
     msk-dialog-content
   ></ng-container>
 
   <ng-template #trailing>
-    @if (data.item?.isActive) {
+    @if (data.item()?.isActive) {
     <button mat-icon-button (click)="editMode()">
       <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
     </button>
@@ -31,10 +31,10 @@
   <div class="flex flex-col gap-4 p-4">
     <span class="text-on-surface-variant text-label-medium">{{ t('credit') }}</span>
     <span class="text-on-surface text-title-large">
-      {{ data.item?.balance | number }} <small mskCurrencySymbol></small>
+      {{ data.item()?.balance | number }} <small mskCurrencySymbol></small>
     </span>
   </div>
-  @if (data.item?.isActive) {
+  @if (data.item()?.isActive) {
   <div class="grid grid-cols-3 gap-4 py-4" *transloco="let t">
     <button mat-flat-button>
       <mat-icon class="hidden sm:block">arrow_upward</mat-icon>
@@ -52,7 +52,7 @@
   }
   <div class="msk-mat-card-filled mb-2 p-4">
     <div class="text-secondary mb-2 font-bold">{{ t('owners') }}</div>
-    @for (person of data.item?.persons; track person.id) {
+    @for (person of data.item()?.persons; track person.id) {
     <div class="msk-list-item -mx-4 cursor-pointer" matRipple>
       <div class="msk-list-item-icon">
         <msk-avatar [name]="person.name"></msk-avatar>
@@ -70,49 +70,49 @@
   <div class="msk-mat-card-filled mb-2 p-4">
     <div class="text-secondary mb-2 font-bold">{{ t('about') }}</div>
     <!-- TypeName -->
-    @if (data.item?.accountTypeName) {
+    @if (data.item()?.accountTypeName) {
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>credit_card_gear</mat-icon></div>
       <div class="msk-list-item-content">
-        <span>{{ data.item?.accountTypeName }}</span>
+        <span>{{ data.item()?.accountTypeName }}</span>
         <span>{{ t('accountType') }}</span>
       </div>
     </div>
     }
     <!-- CreateDate -->
-    @if (data.item?.createDate) {
+    @if (data.item()?.createDate) {
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>calendar_add_on</mat-icon></div>
       <div class="msk-list-item-content">
-        <span>{{ (data.item?.createDate | mskDateTime : 'longDate') || '-' }}</span>
+        <span>{{ (data.item()?.createDate | mskDateTime : 'longDate') || '-' }}</span>
         <span>{{ t('createDate') }}</span>
       </div>
     </div>
     }
     <!-- CloseDate -->
-    @if (data.item?.closeDate) {
+    @if (data.item()?.closeDate) {
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>event_busy</mat-icon></div>
       <div class="msk-list-item-content">
-        <span>{{ (data.item?.closeDate | mskDateTime : 'longDate') || '-' }}</span>
+        <span>{{ (data.item()?.closeDate | mskDateTime : 'longDate') || '-' }}</span>
         <span>{{ t('closeDate') }}</span>
       </div>
     </div>
     }
   </div>
-  @if (data.item?.note) {
+  @if (data.item()?.note) {
   <div class="msk-mat-card-filled mb-2 p-4">
     <div class="text-secondary mb-2 font-bold">{{ t('note') }}</div>
     <div class="msk-list-item -mx-4">
       <div class="msk-list-item-icon"><mat-icon>sticky_note_2</mat-icon></div>
       <div class="msk-list-item-content">
-        <span>{{ data.item?.note }}</span>
+        <span>{{ data.item()?.note }}</span>
       </div>
     </div>
   </div>
   }
   <!-- Settings -->
-  @if (data.item?.isActive) {
+  @if (data.item()?.isActive) {
   <div class="my-4 border-t"></div>
   <div class="mb-2" *transloco="let t">
     <div class="text-secondary mb-2 font-bold">{{ t('settings') }}</div>
@@ -133,7 +133,7 @@
 <ng-template #formTemplate let-t="t">
   <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
     <!-- Info alert for edit -->
-    @if (data.action === "edit") {
+    @if (data.action() === "edit") {
     <msk-alert class="mb-4" appearance="outline" type="info" dismissible *transloco="let t; read: 'accounts'">
       <span mskAlertTitle>{{ t('info-edit-title') }}</span>
       {{ t('info-edit-description') }}
@@ -148,7 +148,7 @@
     }
 
     <!-- AccountType and CreateDate -->
-    @if (data.action === "new") {
+    @if (data.action() === "new") {
     <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
       <!-- AccountType -->
       <mat-form-field>
@@ -202,7 +202,7 @@
     </mat-form-field>
 
     <!-- InitCredit -->
-    @if (data.action === "new") {
+    @if (data.action() === "new") {
     <mat-form-field>
       <mat-label>{{ t('initCredit') }}</mat-label>
       <input matInput formControlName="initCredit" mskCurrencyMask autocomplete="off" />

@@ -6,7 +6,7 @@ import {
   ChangeDetectionStrategy,
   inject,
   signal,
-  ChangeDetectorRef,
+  WritableSignal,
 } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -71,7 +71,6 @@ export class PeopleCardDetailsComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
   private _peopleService = inject(PeopleService);
   private _translocoService = inject(TranslocoService);
-  private _changeDetectorRef = inject(ChangeDetectorRef);
   private _mskConfirmationService = inject(MskConfirmationService);
 
   form!: FormGroup;
@@ -103,7 +102,7 @@ export class PeopleCardDetailsComponent implements OnInit {
     // Handling errors
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
-    this.form.patchValue(this.data.item || {});
+    this.form.patchValue(this.data.item() || {});
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -114,19 +113,19 @@ export class PeopleCardDetailsComponent implements OnInit {
    * Go to edit mode
    */
   editMode(): void {
-    this.data.action = 'edit';
+    this.data.action.set('edit');
   }
 
   /**
    * Update the status
    */
   updateStatus(): void {
-    const isActive = this.data.item?.isActive;
+    const isActive = this.data.item()?.isActive;
     // Open the confirmation dialog
     const confirmation = this._mskConfirmationService.open({
       title: this._translocoService.translate(isActive ? 'people.deactivate' : 'people.activate'),
       message: this._translocoService.translate(isActive ? 'people.deactivate-message' : 'people.activate-message', {
-        name: this.data.item?.fullName,
+        name: this.data.item()?.fullName,
       }),
       actions: {
         confirm: { label: this._translocoService.translate(isActive ? 'deactivate' : 'activate') },
@@ -140,8 +139,8 @@ export class PeopleCardDetailsComponent implements OnInit {
 
       // If confirm
       const model = {
-        id: this.data.item?.id,
-        isActive: !this.data.item?.isActive,
+        id: this.data.item()?.id,
+        isActive: !this.data.item()?.isActive,
       } as Person;
 
       this._peopleService
@@ -149,9 +148,7 @@ export class PeopleCardDetailsComponent implements OnInit {
         .pipe(
           map((response) => {
             // Update the person
-            this.data.item = response;
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
+            this.data.item.set(response);
           }),
           catchError((response) => {
             // Show error
@@ -182,7 +179,7 @@ export class PeopleCardDetailsComponent implements OnInit {
     this.alert.set({ show: false, message: '' });
 
     const result =
-      this.data.action === 'edit'
+      this.data.action() === 'edit'
         ? this._peopleService.updatePerson(this.form.value)
         : this._peopleService.createPerson(this.form.value);
 

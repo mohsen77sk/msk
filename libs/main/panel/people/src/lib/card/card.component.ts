@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, Injector } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, Injector, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MskDialogDataAction } from '@msk/shared/data-access';
@@ -34,8 +34,8 @@ export class PeopleCardComponent implements OnInit {
         autoFocus: action !== 'view',
         disableClose: action !== 'view',
         data: {
-          action,
-          item: this._activatedRoute.snapshot.data['card'],
+          action: signal(action),
+          item: signal(this._activatedRoute.snapshot.data['card']),
         },
       })
       .afterClosed()
