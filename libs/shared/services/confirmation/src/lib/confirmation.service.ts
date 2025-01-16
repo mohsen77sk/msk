@@ -31,6 +31,12 @@ export class MskConfirmationService {
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
 
+  /**
+   * Opens the confirm dialog
+   *
+   * @param config
+   * @returns
+   */
   open(config: MskConfirmationConfig = {}): MatDialogRef<MskConfirmationDialogComponent> {
     // Merge the user config with the default config
     const userConfig = merge({}, this._defaultConfig, config);

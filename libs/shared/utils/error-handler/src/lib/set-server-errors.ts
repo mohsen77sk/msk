@@ -1,6 +1,6 @@
 import { FormGroup } from '@angular/forms';
 import { MskErrorResponseItem } from '@msk/shared/data-access';
-import { camelCase } from 'lodash';
+import { camelCase } from 'lodash-es';
 
 /**
  * Takes server error obj and set errors to appropriate fields at form given.

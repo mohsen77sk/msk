@@ -7,7 +7,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'msk-fullscreen',
   templateUrl: './fullscreen.component.html',
-  styleUrls: ['./fullscreen.component.scss'],
   exportAs: 'mskFullscreen',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

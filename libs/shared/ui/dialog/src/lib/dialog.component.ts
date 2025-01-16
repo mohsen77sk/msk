@@ -28,7 +28,6 @@ import { filter, map } from 'rxjs';
 @Component({
   selector: 'msk-dialog',
   templateUrl: './dialog.component.html',
-  styleUrl: './dialog.component.scss',
   exportAs: 'mskDialog',
   animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
