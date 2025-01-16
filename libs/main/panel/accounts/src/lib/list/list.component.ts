@@ -25,8 +25,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
-import { MskPageSizeOptions, MskPagination } from '@msk/shared/data-access';
-import { Observable, catchError, finalize, map, merge, of, switchMap, tap } from 'rxjs';
+import { MskPageData, MskPageSizeOptions } from '@msk/shared/data-access';
+import { EMPTY, Observable, catchError, finalize, map, merge, switchMap, tap } from 'rxjs';
 import { DefaultAccountSortDirection, DefaultAccountSortId, Account } from '../accounts.types';
 import { AccountService } from '../accounts.service';
 import { AccountsStatusComponent } from '../common/status/status.component';
@@ -70,8 +70,7 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
   isFabCollapses = signal(false);
   lastOffsetScroll = 0;
   pageSizeOptions = MskPageSizeOptions;
-  pagination$!: Observable<MskPagination | null>;
-  accounts$!: Observable<Account[] | null>;
+  accounts$!: Observable<MskPageData<Account>>;
   filterForm: FormGroup = new FormGroup({
     search: new FormControl<string>(''),
     isActive: new FormControl<boolean | null>(null),
@@ -87,7 +86,6 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     // Get the account list
     this.accounts$ = this._accountService.accounts$;
-    this.pagination$ = this._accountService.pagination$;
   }
 
   /**
@@ -162,7 +160,7 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
         catchError((response) => {
           // Show error
           // ---
-          return of();
+          return EMPTY;
         }),
         finalize(() => {
           this.isLoading.set(false);

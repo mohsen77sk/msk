@@ -6,6 +6,7 @@ import { initialMainDataResolver } from './shell.resolvers';
 export const mainRoutes: Route[] = [
   // Redirect empty path to '/panel/dashboard'
   { path: '', pathMatch: 'full', redirectTo: 'panel/dashboard' },
+  { path: 'panel', pathMatch: 'full', redirectTo: 'panel/dashboard' },
 
   // Redirect signed in user to the '/panel/dashboard'
   //

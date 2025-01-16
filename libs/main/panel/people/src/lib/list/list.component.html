@@ -14,14 +14,14 @@
     <!-- List -->
     <div class="content-grid" cdkScrollable>
       <!-- Rows -->
-      @for (person of persons$ | async; track person.id) {
+      @for (person of (persons$ | async)?.items; track person.id) {
       <div class="content-grid-item tow-line" [routerLink]="['card', 'view', person.id]" matRipple>
         <!-- Avatar -->
         <div class="content-grid-item-avatar">
           <msk-avatar [name]="person.fullName"></msk-avatar>
         </div>
         <!-- Content -->
-        <div class="content-grid-item-content" *transloco="let t; read: 'people.details'">
+        <div class="content-grid-item-content">
           <div class="truncate">{{ person.fullName }}</div>
           <div class="truncate">
             <span>#{{ person.code }}</span>
@@ -55,9 +55,9 @@
 
     <mat-paginator
       class="content-paginator"
-      [length]="(pagination$ | async)?.total"
-      [pageIndex]="(pagination$ | async)?.pageIndex"
-      [pageSize]="(pagination$ | async)?.pageSize"
+      [length]="(persons$ | async)?.total"
+      [pageIndex]="(persons$ | async)?.pageIndex"
+      [pageSize]="(persons$ | async)?.pageSize"
       [pageSizeOptions]="pageSizeOptions"
       [showFirstLastButtons]="true"
       [disabled]="isLoading()"

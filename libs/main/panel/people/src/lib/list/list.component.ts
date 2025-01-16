@@ -25,8 +25,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
-import { MskPageSizeOptions, MskPagination } from '@msk/shared/data-access';
-import { Observable, catchError, finalize, map, merge, of, switchMap, tap } from 'rxjs';
+import { MskPageData, MskPageSizeOptions } from '@msk/shared/data-access';
+import { EMPTY, Observable, catchError, finalize, map, merge, switchMap, tap } from 'rxjs';
 import { DefaultPeopleSortDirection, DefaultPeopleSortId, Person } from '../people.types';
 import { PeopleService } from '../people.service';
 import { PeopleStatusComponent } from '../common/status/status.component';
@@ -70,8 +70,7 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
   isFabCollapses = signal(false);
   lastOffsetScroll = 0;
   pageSizeOptions = MskPageSizeOptions;
-  pagination$!: Observable<MskPagination | null>;
-  persons$!: Observable<Person[] | null>;
+  persons$!: Observable<MskPageData<Person>>;
   filterForm: FormGroup = new FormGroup({
     search: new FormControl<string>(''),
     isActive: new FormControl<boolean | null>(null),
@@ -87,7 +86,6 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     // Get the persons list
     this.persons$ = this._peopleService.persons$;
-    this.pagination$ = this._peopleService.pagination$;
   }
 
   /**
@@ -162,7 +160,7 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
         catchError((response) => {
           // Show error
           // ---
-          return of();
+          return EMPTY;
         }),
         finalize(() => {
           // Set isLoading to false

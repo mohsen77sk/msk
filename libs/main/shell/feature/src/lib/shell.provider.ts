@@ -8,8 +8,9 @@ import {
 } from '@angular/core';
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogConfig } from '@angular/material/dialog';
-import { MAT_DATE_LOCALE, MATERIAL_SANITY_CHECKS } from '@angular/material/core';
+import { MAT_SNACK_BAR_DATA, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideDateFnsAdapter } from 'ngx-material-date-fns-adapter';
 
@@ -37,15 +38,6 @@ registerLocaleData(localeFaIR, 'fa-IR');
 export const provideMainShell = (config: LayoutConfig): Array<Provider | EnvironmentProviders> => {
   // Base providers
   const providers: Array<Provider | EnvironmentProviders> = [
-    {
-      // Disable 'theme' sanity check
-      provide: MATERIAL_SANITY_CHECKS,
-      useValue: {
-        doctype: true,
-        theme: false,
-        version: true,
-      },
-    },
     {
       // Use the 'fill' appearance on Angular Material form fields by default
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -82,6 +74,14 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
       // Set the default direction by default
       provide: MAT_DIALOG_DEFAULT_OPTIONS,
       useFactory: (): MatDialogConfig => {
+        const layoutConfigService = inject(MskLayoutConfigService);
+        return { direction: layoutConfigService.config.locale.direction };
+      },
+    },
+    {
+      // Set the default direction by default
+      provide: MAT_SNACK_BAR_DATA,
+      useFactory: (): MatSnackBarConfig => {
         const layoutConfigService = inject(MskLayoutConfigService);
         return { direction: layoutConfigService.config.locale.direction };
       },

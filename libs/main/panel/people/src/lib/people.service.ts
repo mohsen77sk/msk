@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
-import { MskPagingResponse, MskPagination, MskLookupResponse } from '@msk/shared/data-access';
+import { MskPagingResponse, MskLookupResponse, MskPageData, EmptyPageData } from '@msk/shared/data-access';
 import { DefaultPeopleSortDirection, DefaultPeopleSortId, Person } from './people.types';
 
 @Injectable({ providedIn: 'root' })
@@ -11,24 +11,16 @@ export class PeopleService {
   private _httpClient = inject(HttpClient);
 
   // Private
-  private _pagination: BehaviorSubject<MskPagination | null> = new BehaviorSubject<MskPagination | null>(null);
-  private _persons: BehaviorSubject<Person[] | null> = new BehaviorSubject<Person[] | null>(null);
+  private _persons: BehaviorSubject<MskPageData<Person>> = new BehaviorSubject<MskPageData<Person>>(EmptyPageData);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for pagination
-   */
-  get pagination$(): Observable<MskPagination | null> {
-    return this._pagination.asObservable();
-  }
-
-  /**
    * Getter for persons
    */
-  get persons$(): Observable<Person[] | null> {
+  get persons$(): Observable<MskPageData<Person>> {
     return this._persons.asObservable();
   }
 
@@ -47,20 +39,19 @@ export class PeopleService {
     page = 1,
     pageSize = 10,
     sortBy = `${DefaultPeopleSortId} ${DefaultPeopleSortDirection}`
-  ): Observable<{ pagination: MskPagination; items: Person[] }> {
+  ): Observable<MskPageData<Person>> {
     return this._httpClient
       .get<MskPagingResponse<Person>>(`${this._appConfig.apiEndpoint}/api/person/all`, {
         params: { page, pageSize, sortBy },
       })
       .pipe(
-        map((response) => ({
-          pagination: new MskPagination(response),
-          items: response.items.map((row) => new Person(row)),
-        })),
-        tap((response) => {
-          this._pagination.next(response.pagination);
-          this._persons.next(response.items);
-        })
+        map((response) => {
+          return new MskPageData({
+            ...response,
+            items: response.items.map((item) => new Person(item)),
+          });
+        }),
+        tap((response) => this._persons.next(response))
       );
   }
 
@@ -106,8 +97,8 @@ export class PeopleService {
       // Update the persons
       tap((newPerson) => {
         if (this._persons.value) {
-          const index = this._persons.value.findIndex((x) => x.id === newPerson.id) ?? 0;
-          this._persons.value[index] = newPerson;
+          const index = this._persons.value.items.findIndex((x) => x.id === newPerson.id) ?? 0;
+          this._persons.value.items[index] = newPerson;
           this._persons.next(this._persons.value);
         }
       })
@@ -125,8 +116,8 @@ export class PeopleService {
       // Update the persons
       tap((newPerson) => {
         if (this._persons.value) {
-          const index = this._persons.value.findIndex((x) => x.id === newPerson.id) ?? 0;
-          this._persons.value[index] = newPerson;
+          const index = this._persons.value.items.findIndex((x) => x.id === newPerson.id) ?? 0;
+          this._persons.value.items[index] = newPerson;
           this._persons.next(this._persons.value);
         }
       })

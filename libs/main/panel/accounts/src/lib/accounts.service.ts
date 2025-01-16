@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, forkJoin, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
-import { MskPagingResponse, MskPagination, MskLookupResponse } from '@msk/shared/data-access';
+import { MskPagingResponse, MskLookupResponse, MskPageData, EmptyPageData } from '@msk/shared/data-access';
 import {
   DefaultAccountSortDirection,
   DefaultAccountSortId,
@@ -19,24 +19,16 @@ export class AccountService {
   private _httpClient = inject(HttpClient);
 
   // Private
-  private _pagination: BehaviorSubject<MskPagination | null> = new BehaviorSubject<MskPagination | null>(null);
-  private _accounts: BehaviorSubject<Account[] | null> = new BehaviorSubject<Account[] | null>(null);
+  private _accounts: BehaviorSubject<MskPageData<Account>> = new BehaviorSubject<MskPageData<Account>>(EmptyPageData);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for pagination
-   */
-  get pagination$(): Observable<MskPagination | null> {
-    return this._pagination.asObservable();
-  }
-
-  /**
    * Getter for accounts
    */
-  get accounts$(): Observable<Account[] | null> {
+  get accounts$(): Observable<MskPageData<Account>> {
     return this._accounts.asObservable();
   }
 
@@ -55,20 +47,19 @@ export class AccountService {
     page = 1,
     pageSize = 10,
     sortBy = `${DefaultAccountSortId} ${DefaultAccountSortDirection}`
-  ): Observable<{ pagination: MskPagination; items: Account[] }> {
+  ): Observable<MskPageData<Account>> {
     return this._httpClient
       .get<MskPagingResponse<Account>>(`${this._appConfig.apiEndpoint}/api/account/all`, {
         params: { page, pageSize, sortBy },
       })
       .pipe(
-        map((response) => ({
-          pagination: new MskPagination(response),
-          items: response.items.map((row) => new Account(row)),
-        })),
-        tap((response) => {
-          this._pagination.next(response.pagination);
-          this._accounts.next(response.items);
-        })
+        map((response) => {
+          return new MskPageData({
+            ...response,
+            items: response.items.map((item) => new Account(item)),
+          });
+        }),
+        tap((response) => this._accounts.next(response))
       );
   }
 
@@ -145,8 +136,8 @@ export class AccountService {
       // Update the accounts
       tap((newAccount) => {
         if (this._accounts.value) {
-          const index = this._accounts.value.findIndex((x) => x.id === newAccount.id) ?? 0;
-          this._accounts.value[index] = newAccount;
+          const index = this._accounts.value.items.findIndex((x) => x.id === newAccount.id) ?? 0;
+          this._accounts.value.items[index] = newAccount;
           this._accounts.next(this._accounts.value);
         }
       })
@@ -164,8 +155,8 @@ export class AccountService {
       // Update the accounts
       tap((newAccount) => {
         if (this._accounts.value) {
-          const index = this._accounts.value.findIndex((x) => x.id === newAccount.id) ?? 0;
-          this._accounts.value[index] = newAccount;
+          const index = this._accounts.value.items.findIndex((x) => x.id === newAccount.id) ?? 0;
+          this._accounts.value.items[index] = newAccount;
           this._accounts.next(this._accounts.value);
         }
       })

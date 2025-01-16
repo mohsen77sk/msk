@@ -4,7 +4,6 @@ import {
   Component,
   ElementRef,
   OnInit,
-  Signal,
   ViewEncapsulation,
   inject,
   signal,
