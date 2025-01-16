@@ -1,0 +1,38 @@
+<div
+  class="flex"
+  [ngClass]="{
+    'text-blue-400 dark:text-blue-700': data.type === 'info',
+    'text-green-400 dark:text-green-700': data.type === 'success',
+    'text-amber-400 dark:text-amber-700': data.type === 'warning',
+    'text-red-400 dark:text-red-700': data.type === 'error'
+  }"
+>
+  <div class="me-3 flex">
+    @switch (data.type) { @case ('basic') {
+    <mat-icon svgIcon="heroicons_solid:check-circle"></mat-icon>
+    } @case ('info') {
+    <mat-icon svgIcon="heroicons_solid:information-circle"></mat-icon>
+    } @case ('success') {
+    <mat-icon svgIcon="heroicons_solid:check-circle"></mat-icon>
+    } @case ('warning') {
+    <mat-icon svgIcon="heroicons_solid:exclamation-triangle"></mat-icon>
+    } @case ('error') {
+    <mat-icon svgIcon="heroicons_solid:x-circle"></mat-icon>
+    } }
+  </div>
+
+  <div class="flex flex-1 flex-col leading-5">
+    @if (data.title) {
+    <div class="font-semibold">{{ data.title }}</div>
+    }
+    <div [ngClass]="{ 'mt-1': data.title }" [innerText]="data.message"></div>
+  </div>
+
+  @if (data.dismissible) {
+  <div matSnackBarActions>
+    <button mat-icon-button matSnackBarAction (click)="sbRef.dismiss()">
+      <mat-icon class="text-inverse-on-surface">close</mat-icon>
+    </button>
+  </div>
+  }
+</div>

@@ -129,6 +129,10 @@ export const mainRoutes: Route[] = [
             loadComponent: () =>
               import('@msk/shared/services/confirmation').then((r) => r.MskDocsConfirmationComponent),
           },
+          {
+            path: 'services/snackbar',
+            loadComponent: () => import('@msk/shared/services/snack-bar').then((r) => r.MskDocsSnackbarComponent),
+          },
           // Pages
           {
             path: 'pages/not-found',

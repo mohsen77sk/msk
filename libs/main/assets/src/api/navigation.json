@@ -113,6 +113,12 @@
             "title": "Confirmation",
             "type": "basic",
             "link": "docs/services/confirmation"
+          },
+          {
+            "id": "docs.services.snackbar",
+            "title": "Snackbar",
+            "type": "basic",
+            "link": "docs/services/snackbar"
           }
         ]
       },

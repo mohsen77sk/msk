@@ -1,0 +1,85 @@
+<div class="page-layout content-scroll md:py-4" dir="ltr">
+  <!-- Main -->
+  <div class="content prose max-w-full">
+    <h3 class="sticky-header mt-4 md:mt-0">Service</h3>
+    <textarea msk-highlight lang="typescript">
+      import { MskSnackBarService } from '@msk/shared/services/snack-bar';
+    </textarea>
+
+    <p>
+      <strong>MskSnackBarService</strong> is a singleton service for creating snackbar. Internally it uses MatSnackBar
+      to create and show the snackbar.
+    </p>
+
+    <h3 class="sticky-header">Snackbar Config</h3>
+    <p>Here is the interface for the <em>snack bar configuration</em>:</p>
+    <textarea msk-highlight lang="typescript">
+      export interface MskSnackBarConfig
+      {
+        title: string;
+        message: string;
+        dismissible: boolean;
+        type: 'basic' | 'info' | 'success' | 'warning' | 'error';
+      }
+    </textarea>
+
+    <h3 class="sticky-header">Methods</h3>
+    <div class="msk-mat-card-filled mt-4">
+      <div class="text-secondary text-title-small border-b px-6 py-3">
+        open(config: MskSnackBarConfig): MatSnackBarRef&lt;MskSnackbarComponent&gt;
+      </div>
+      <div class="p-6">Opens the snackbar with the given configuration</div>
+    </div>
+
+    <h3 class="sticky-header">Demo</h3>
+    <p>
+      Below you can configure and preview the snackbar. You can use the generated configuration object within your code
+      to have the exact same snackbar.
+    </p>
+    <div class="msk-mat-card-outlined flex-shrink-0 overflow-auto p-4">
+      <div class="text-title-medium mb-6">Configure the snackbar and preview it</div>
+
+      <form [formGroup]="configForm" class="flex flex-col items-start">
+        <div class="grid w-full grid-cols-2 gap-4">
+          <!-- Type -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option value="basic">Basic</mat-option>
+              <mat-option value="info">Info</mat-option>
+              <mat-option value="success">Success</mat-option>
+              <mat-option value="warning">Warning</mat-option>
+              <mat-option value="error">Error</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Title -->
+          <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
+        </div>
+
+        <!-- Message -->
+        <mat-form-field class="mt-4 w-full" subscriptSizing="dynamic">
+          <mat-label>Message</mat-label>
+          <textarea matInput formControlName="message"> </textarea>
+        </mat-form-field>
+
+        <!-- Divider -->
+        <div class="mb-4 mt-6 w-full border-b"></div>
+
+        <!-- Dismissible -->
+        <mat-checkbox formControlName="dismissible"> Dismissible </mat-checkbox>
+
+        <div class="mt-12">
+          <button mat-flat-button (click)="openSnackbar()">Open Snackbar</button>
+        </div>
+      </form>
+    </div>
+
+    <textarea msk-highlight [code]="configForm.value | json" lang="json"></textarea>
+
+    <div class="mb-6"></div>
+  </div>
+</div>
