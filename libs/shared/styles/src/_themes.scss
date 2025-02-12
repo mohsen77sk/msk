@@ -1,21 +1,21 @@
 @use '@angular/material' as mat;
 @use 'theme-m3' as themeM3;
-@use 'theme-vars' as themeVars;
 
-// Include the common styles for Angular Material.
-@include mat.elevation-classes();
-@include mat.app-background();
-
-// Include the default theme styles.
 body {
-  @include mat.system-level-colors(themeM3.$light-theme);
-  @include mat.system-level-typography(themeM3.$light-theme);
-  @include themeVars.system-level-corner(themeM3.$light-theme);
+  color-scheme: light;
 
-  @include mat.all-component-themes(themeM3.$light-theme);
+  @include mat.theme(
+    (
+      color: (
+        primary: themeM3.$primary-palette,
+        tertiary: themeM3.$tertiary-palette,
+      ),
+      typography: theme('fontFamily.sans'),
+      density: 0,
+    )
+  );
 }
 
-// Include the dark theme color styles.
 .dark {
-  @include mat.system-level-colors(themeM3.$dark-theme);
+  color-scheme: dark;
 }

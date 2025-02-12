@@ -5,7 +5,7 @@
   width: 384px !important;
   min-width: 240px !important;
   max-width: 384px !important;
-  border-radius: var(--sys-corner-extra-large) !important;
+  border-radius: var(--mat-sys-corner-extra-large) !important;
   box-shadow: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 
   > .mat-mdc-menu-content {
@@ -30,21 +30,21 @@
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    border-radius: var(--sys-corner-extra-small);
-    background-color: var(--sys-surface-container-lowest);
+    border-radius: var(--mat-sys-corner-extra-small);
+    background-color: var(--mat-sys-surface-container-lowest);
 
     &:first-child {
-      border-top-left-radius: var(--sys-corner-extra-large);
-      border-top-right-radius: var(--sys-corner-extra-large);
+      border-top-left-radius: var(--mat-sys-corner-extra-large);
+      border-top-right-radius: var(--mat-sys-corner-extra-large);
     }
 
     &:last-child {
-      border-bottom-left-radius: var(--sys-corner-extra-large);
-      border-bottom-right-radius: var(--sys-corner-extra-large);
+      border-bottom-left-radius: var(--mat-sys-corner-extra-large);
+      border-bottom-right-radius: var(--mat-sys-corner-extra-large);
     }
 
     &:hover {
-      background-color: var(--sys-surface-container-highest);
+      background-color: var(--mat-sys-surface-container-highest);
     }
 
     > div {

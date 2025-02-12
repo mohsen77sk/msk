@@ -15,7 +15,7 @@ msk-vertical-navigation {
   min-height: 100%;
   max-height: 100%;
   z-index: 200;
-  background-color: var(--sys-surface-container);
+  background-color: var(--mat-sys-surface-container);
   box-shadow: var(--mat-app-elevation-shadow-level-0);
 
   /* ----------------------------------------------------------------------------------------------------- */
@@ -43,7 +43,7 @@ msk-vertical-navigation {
     bottom: 0;
     border-start-end-radius: 16px;
     border-end-end-radius: 16px;
-    background-color: var(--sys-surface-container-low);
+    background-color: var(--mat-sys-surface-container-low);
     box-shadow: var(--mat-app-elevation-shadow-level-1);
 
     /* Wrapper */
@@ -248,13 +248,13 @@ msk-vertical-navigation {
 
         .msk-vertical-navigation-item-icon {
           margin-inline-end: 16px;
-          color: var(--sys-on-surface-variant);
+          color: var(--mat-sys-on-surface-variant);
           font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
           transition: font-variation-settings 0.2s cubic-bezier(0.2, 0, 0, 1);
         }
 
         .msk-vertical-navigation-item-title {
-          color: var(--sys-on-surface-variant);
+          color: var(--mat-sys-on-surface-variant);
         }
 
         .msk-vertical-navigation-item-badge {
@@ -296,16 +296,16 @@ msk-vertical-navigation {
         &:not(.msk-vertical-navigation-item-disabled) {
           &.msk-vertical-navigation-item-active,
           &.msk-vertical-navigation-item-active-forced {
-            background-color: var(--sys-secondary-container);
+            background-color: var(--mat-sys-secondary-container);
 
             .msk-vertical-navigation-item-icon {
-              color: var(--sys-on-secondary-container);
+              color: var(--mat-sys-on-secondary-container);
               font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             }
 
             .msk-vertical-navigation-item-title {
               font-weight: 700;
-              color: var(--sys-on-secondary-container);
+              color: var(--mat-sys-on-secondary-container);
             }
           }
         }
@@ -313,22 +313,22 @@ msk-vertical-navigation {
         /* Hover state */
         &:not(.msk-vertical-navigation-item-disabled) {
           &:hover {
-            background-color: color-mix(in srgb, var(--sys-on-surface) 8%, transparent);
+            background-color: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
 
             .msk-vertical-navigation-item-title {
-              color: var(--sys-on-surface);
+              color: var(--mat-sys-on-surface);
             }
 
             &.msk-vertical-navigation-item-active,
             &.msk-vertical-navigation-item-active-forced {
-              background-color: color-mix(in srgb, var(--sys-on-surface) 8%, var(--sys-secondary-container));
+              background-color: color-mix(in srgb, var(--mat-sys-on-surface) 8%, var(--mat-sys-secondary-container));
 
               .msk-vertical-navigation-item-icon {
-                color: var(--sys-on-secondary-container);
+                color: var(--mat-sys-on-secondary-container);
               }
 
               .msk-vertical-navigation-item-title {
-                color: var(--sys-on-secondary-container);
+                color: var(--mat-sys-on-secondary-container);
               }
             }
           }
@@ -425,7 +425,7 @@ msk-vertical-navigation {
 
     .msk-vertical-navigation-item-wrapper {
       margin: 0 28px;
-      border-bottom: 1px solid var(--sys-outline);
+      border-bottom: 1px solid var(--mat-sys-outline);
     }
   }
 
@@ -435,7 +435,7 @@ msk-vertical-navigation {
       .msk-vertical-navigation-item {
         .msk-vertical-navigation-item-title-wrapper {
           .msk-vertical-navigation-item-title {
-            color: var(--sys-on-surface);
+            color: var(--mat-sys-on-surface);
           }
         }
 
@@ -513,7 +513,7 @@ msk-vertical-navigation {
   inset: 0px;
   opacity: 0;
   z-index: 170;
-  background-color: color-mix(in srgb, var(--sys-scrim) 40%, transparent);
+  background-color: color-mix(in srgb, var(--mat-sys-scrim) 40%, transparent);
 
   + .msk-vertical-navigation-aside-overlay {
     background-color: transparent;
@@ -528,5 +528,5 @@ msk-vertical-navigation {
   inset: 0px;
   opacity: 0;
   z-index: 169;
-  background-color: color-mix(in srgb, var(--sys-scrim) 40%, transparent);
+  background-color: color-mix(in srgb, var(--mat-sys-scrim) 40%, transparent);
 }

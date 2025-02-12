@@ -59,14 +59,14 @@
   --mat-dialog-content-padding: 24px 24px;
   --mat-dialog-actions-padding: 24px 24px;
   --mat-dialog-with-actions-content-padding: 24px 24px 0;
-  --mdc-dialog-container-color: var(--sys-surface-container-high);
+  --mdc-dialog-container-color: var(--mat-sys-surface-container-high);
 
   .mat-mdc-dialog-icon {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: var(--mat-dialog-headline-padding);
-    color: var(--sys-secondary);
+    color: var(--mat-sys-secondary);
   }
 
   .mat-mdc-dialog-title::before {
@@ -87,11 +87,11 @@
   height: 100%;
 
   .mat-mdc-dialog-title {
-    font-family: var(--sys-title-large-font);
-    line-height: var(--sys-title-large-line-height);
-    font-size: var(--sys-title-large-size);
-    font-weight: var(--sys-title-large-weight);
-    letter-spacing: var(--sys-title-large-tracking);
+    font-family: var(--mat-sys-title-large-font);
+    line-height: var(--mat-sys-title-large-line-height);
+    font-size: var(--mat-sys-title-large-size);
+    font-weight: var(--mat-sys-title-large-weight);
+    letter-spacing: var(--mat-sys-title-large-tracking);
   }
 
   .mat-mdc-dialog-content {

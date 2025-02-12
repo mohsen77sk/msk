@@ -43,7 +43,7 @@
 
           &:hover {
             @apply cursor-pointer;
-            background-color: color-mix(in srgb, var(--sys-on-surface) 8%, transparent);
+            background-color: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
           }
 
           .content-grid-item-avatar {
