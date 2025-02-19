@@ -16,6 +16,7 @@ jobs:
     strategy:
       matrix:
         node-version: [22.14]
+        npm-version: [11.0]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -28,8 +29,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Update npm
-        run: npm install -g npm@latest
+      - name: Install npm ${{ matrix.npm-version }}
+        run: npm install -g npm@${{ matrix.npm-version }}
 
       - name: Install Dependencies
         run: npm ci
