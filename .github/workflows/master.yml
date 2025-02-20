@@ -27,8 +27,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Update
+      - name: Update npm
         run: npm install -g npm@latest
+
+      - name: Install angular
+        run: npm install -g @angular/cli
 
       - name: Install Dependencies
         run: npm ci
