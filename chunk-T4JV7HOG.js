@@ -1,0 +1,1 @@
+import"./chunk-FIRXXYNY.js";var l="\u0628\u0631\u0648\u0632\u0631\u0633\u0627\u0646\u06CC",d={update:l,"update-available":"\u0646\u0633\u062E\u0647 \u062C\u062F\u06CC\u062F!","update-available-message":"\u0646\u0633\u062E\u0647 \u062C\u062F\u06CC\u062F \u0645\u0648\u062C\u0648\u062F \u0627\u0633\u062A!"};export{d as default,l as update};

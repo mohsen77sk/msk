@@ -1,1 +1,0 @@
-import"./chunk-2R6CW7ES.js";var o="Username",a="Password",s={"sign-in":"Sign in","sign-up":"Sign up","do-not-have-an-account":"Don't have an account?","forgot-password":"Forgot password?","remember-me":"Remember me",username:o,password:a};export{s as default,a as password,o as username};
