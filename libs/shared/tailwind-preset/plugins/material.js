@@ -211,21 +211,21 @@ module.exports = plugin(({ addComponents, addUtilities, theme }) => {
   addComponents({
     '.msk-mat-card-elevated': {
       position: 'relative',
-      boxShadow: 'var(--mat-app-elevation-shadow-level-1)',
+      boxShadow: 'var(--mat-sys-level1)',
       borderRadius: 'var(--mat-sys-corner-medium)',
       backgroundColor: 'var(--mat-sys-surface-container-low)',
     },
 
     '.msk-mat-card-filled': {
       position: 'relative',
-      boxShadow: 'var(--mat-app-elevation-shadow-level-0)',
+      boxShadow: 'var(--mat-sys-level0)',
       borderRadius: 'var(--mat-sys-corner-medium)',
       backgroundColor: 'var(--mat-sys-surface-container-highest)',
     },
 
     '.msk-mat-card-outlined': {
       position: 'relative',
-      boxShadow: 'var(--mat-app-elevation-shadow-level-0)',
+      boxShadow: 'var(--mat-sys-level0)',
       borderRadius: 'var(--mat-sys-corner-medium)',
       backgroundColor: 'var(--mat-sys-surface)',
       border: '1px solid var(--mat-sys-outline-variant)',
