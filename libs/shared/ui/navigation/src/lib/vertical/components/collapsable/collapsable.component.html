@@ -5,6 +5,7 @@
     [ngClass]="{ 'msk-vertical-navigation-item-disabled': item().disabled }"
     [matTooltip]="item().tooltip || ''"
     (click)="toggleCollapsable()"
+    aria-hidden="true"
   >
     <!-- Icon -->
     @if (item().icon) {

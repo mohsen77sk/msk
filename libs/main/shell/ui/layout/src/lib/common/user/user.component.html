@@ -2,7 +2,7 @@
 <button mat-icon-button [matMenuTriggerFor]="userActions">
   <span class="relative h-7 w-7">
     @if (showAvatar && user.avatar) {
-    <img class="relative h-full w-full rounded-full" [src]="user.avatar" />
+    <img class="relative h-full w-full rounded-full" [src]="user.avatar" alt="user-image" />
     } @else {
     <mat-icon svgIcon="heroicons_outline:user-circle"> </mat-icon>
     }
@@ -33,7 +33,7 @@
       </button>
     </div>
     <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">
-      <div class="main-user-panel-profile-item" (click)="openLayoutSchemeDialog()">
+      <div class="main-user-panel-profile-item" (click)="openLayoutSchemeDialog()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">dark_mode</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.dark-theme') }}</span>
@@ -46,7 +46,7 @@
         <span class="text-sm font-light">{{ t('layout.off') }}</span>
         } }
       </div>
-      <div class="main-user-panel-profile-item" (click)="openLayoutLanguageDialog()">
+      <div class="main-user-panel-profile-item" (click)="openLayoutLanguageDialog()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">language</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.languages') }}</span>
@@ -55,7 +55,7 @@
       </div>
     </div>
     <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">
-      <div class="main-user-panel-profile-item" (click)="signOut()">
+      <div class="main-user-panel-profile-item" (click)="signOut()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">logout</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.sign-out') }}</span>
