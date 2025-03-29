@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'main-panel-accounts',
   preset: '../../../../jest.preset.js',

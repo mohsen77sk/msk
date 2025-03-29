@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-utils-service-worker',
   preset: '../../../../jest.preset.js',

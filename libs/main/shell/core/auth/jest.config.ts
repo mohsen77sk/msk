@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'main-shell-core-auth',
   preset: '../../../../../jest.preset.js',

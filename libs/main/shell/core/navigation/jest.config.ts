@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'main-shell-core-navigation',
   preset: '../../../../../jest.preset.js',

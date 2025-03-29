@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-services-splash-screen',
   preset: '../../../../jest.preset.js',

@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-directives-scroll-reset',
   preset: '../../../../jest.preset.js',

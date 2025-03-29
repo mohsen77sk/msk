@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-pipes-find-by-key',
   preset: '../../../../jest.preset.js',

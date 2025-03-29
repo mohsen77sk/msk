@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-pipes-date-time',
   preset: '../../../../jest.preset.js',

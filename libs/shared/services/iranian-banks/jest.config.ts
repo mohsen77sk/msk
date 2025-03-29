@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-services-iranian-banks',
   preset: '../../../../jest.preset.js',

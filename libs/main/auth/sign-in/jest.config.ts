@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'main-auth-sign-in',
   preset: '../../../../jest.preset.js',

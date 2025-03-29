@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'main-panel-people',
   preset: '../../../../jest.preset.js',

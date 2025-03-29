@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-services-config',
   preset: '../../../../jest.preset.js',

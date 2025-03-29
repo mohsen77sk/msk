@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'main-errors-not-found',
   preset: '../../../../jest.preset.js',

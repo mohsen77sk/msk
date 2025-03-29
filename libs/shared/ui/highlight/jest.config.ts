@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-ui-highlight',
   preset: '../../../../jest.preset.js',

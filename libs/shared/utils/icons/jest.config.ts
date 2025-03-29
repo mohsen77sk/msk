@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-utils-icons',
   preset: '../../../../jest.preset.js',

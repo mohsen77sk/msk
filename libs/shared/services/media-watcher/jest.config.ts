@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-services-media-watcher',
   preset: '../../../../jest.preset.js',

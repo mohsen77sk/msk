@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-services-snack-bar',
   preset: '../../../../jest.preset.js',

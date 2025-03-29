@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-directives-scrollbar',
   preset: '../../../../jest.preset.js',

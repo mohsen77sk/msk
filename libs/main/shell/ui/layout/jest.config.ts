@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'main-shell-ui-layout',
   preset: '../../../../../jest.preset.js',

@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'main-shell-core-user',
   preset: '../../../../../jest.preset.js',

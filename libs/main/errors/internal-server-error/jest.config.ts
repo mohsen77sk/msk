@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'main-errors-internal-server-error',
   preset: '../../../../jest.preset.js',

@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-utils-app-config',
   preset: '../../../../jest.preset.js',

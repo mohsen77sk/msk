@@ -56,7 +56,6 @@ export class AuthUtils {
       throw new Error("'atob' failed: The string to be decoded is not correctly encoded.");
     }
 
-    /* eslint-disable */
     for (
       // initialize result and counters
       let bc = 0, bs: any, buffer: any, idx = 0;

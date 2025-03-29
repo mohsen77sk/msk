@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'shared-directives-spinner',
   preset: '../../../../jest.preset.js',
