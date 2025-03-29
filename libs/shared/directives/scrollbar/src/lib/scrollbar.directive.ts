@@ -1,20 +1,9 @@
-import {
-  DestroyRef,
-  Directive,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-  inject,
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { DestroyRef, Directive, ElementRef, OnDestroy, OnInit, booleanAttribute, inject, input } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { Platform } from '@angular/cdk/platform';
+import { debounceTime, fromEvent } from 'rxjs';
 import { merge } from 'lodash-es';
 import PerfectScrollbar from 'perfect-scrollbar';
-import { debounceTime, fromEvent } from 'rxjs';
 import { ScrollbarGeometry, ScrollbarPosition } from './scrollbar.types';
 
 /**
@@ -25,17 +14,51 @@ import { ScrollbarGeometry, ScrollbarPosition } from './scrollbar.types';
   selector: '[mskScrollbar]',
   exportAs: 'mskScrollbar',
 })
-export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
+export class MskScrollbarDirective implements OnInit, OnDestroy {
   private _destroyRef = inject(DestroyRef);
   private _elementRef = inject(ElementRef);
   private _platform = inject(Platform);
 
-  @Input() mskScrollbar = true;
-  @Input() mskScrollbarOptions!: PerfectScrollbar.Options;
+  mskScrollbar = input(true, { transform: booleanAttribute });
+  mskScrollbarOptions = input<PerfectScrollbar.Options>();
 
   private _animation: number | undefined;
   private _options: PerfectScrollbar.Options | undefined;
   private _ps: PerfectScrollbar | undefined;
+
+  constructor() {
+    // Enabled
+    toObservable(this.mskScrollbar).subscribe((mskScrollbar) => {
+      // If enabled, init the directive
+      if (mskScrollbar) {
+        this._init();
+      }
+      // Otherwise destroy it
+      else {
+        this._destroy();
+      }
+    });
+
+    // Scrollbar options
+    toObservable(this.mskScrollbarOptions).subscribe((options) => {
+      // Merge the options
+      this._options = merge({}, this._options, options);
+
+      // Return if not initialized
+      if (!this._ps) {
+        return;
+      }
+
+      // Destroy and re-init the PerfectScrollbar to update its options
+      setTimeout(() => {
+        this._destroy();
+      });
+
+      setTimeout(() => {
+        this._init();
+      });
+    });
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -58,48 +81,6 @@ export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On changes
-   *
-   * @param changes
-   */
-  ngOnChanges(changes: SimpleChanges): void {
-    // Enabled
-    if ('scrollbar' in changes) {
-      // Interpret empty string as 'true'
-      this.mskScrollbar = coerceBooleanProperty(changes['scrollbar'].currentValue);
-
-      // If enabled, init the directive
-      if (this.mskScrollbar) {
-        this._init();
-      }
-      // Otherwise destroy it
-      else {
-        this._destroy();
-      }
-    }
-
-    // Scrollbar options
-    if ('scrollbarOptions' in changes) {
-      // Merge the options
-      this._options = merge({}, this._options, changes['scrollbarOptions'].currentValue);
-
-      // Return if not initialized
-      if (!this._ps) {
-        return;
-      }
-
-      // Destroy and re-init the PerfectScrollbar to update its options
-      setTimeout(() => {
-        this._destroy();
-      });
-
-      setTimeout(() => {
-        this._init();
-      });
-    }
-  }
 
   /**
    * On init
@@ -129,7 +110,7 @@ export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
    * Is enabled
    */
   isEnabled(): boolean {
-    return this.mskScrollbar;
+    return !!this._ps;
   }
 
   /**
@@ -375,7 +356,6 @@ export class MskScrollbarDirective implements OnChanges, OnInit, OnDestroy {
 
     // Return if on mobile or not on browser
     if (this._platform.ANDROID || this._platform.IOS || !this._platform.isBrowser) {
-      this.mskScrollbar = false;
       return;
     }
 
