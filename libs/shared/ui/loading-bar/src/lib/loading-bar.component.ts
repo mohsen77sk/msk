@@ -1,14 +1,5 @@
-import {
-  Component,
-  DestroyRef,
-  OnInit,
-  ViewEncapsulation,
-  booleanAttribute,
-  effect,
-  inject,
-  input,
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, OnInit, ViewEncapsulation, booleanAttribute, inject, input } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progress-bar';
 import { MskLoadingBarService } from './loading-bar.service';
 import { map } from 'rxjs';
@@ -34,9 +25,9 @@ export class MskLoadingBarComponent implements OnInit {
    * Constructor
    */
   constructor() {
-    effect(() => {
-      // Set the auto mode in the service
-      this._mskLoadingBarService.setAutoMode(this.autoMode());
+    // Set the auto mode in the service
+    toObservable(this.autoMode).subscribe((autoMode) => {
+      this._mskLoadingBarService.setAutoMode(autoMode);
     });
   }
 
