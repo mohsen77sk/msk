@@ -5,7 +5,6 @@ import { MskHighlightComponent } from '@msk/shared/ui/highlight';
 @Component({
   selector: 'msk-docs-navigation',
   templateUrl: './docs-navigation.component.html',
-  styleUrl: './docs-navigation.component.scss',
   encapsulation: ViewEncapsulation.None,
   imports: [MskAlertComponent, MskHighlightComponent],
 })

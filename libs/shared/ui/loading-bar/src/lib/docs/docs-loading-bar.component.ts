@@ -7,7 +7,6 @@ import { MskLoadingBarService } from '../loading-bar.service';
 @Component({
   selector: 'msk-docs-loading-bar',
   templateUrl: './docs-loading-bar.component.html',
-  styleUrl: './docs-loading-bar.component.scss',
   encapsulation: ViewEncapsulation.None,
   imports: [MskHighlightComponent, MatTabsModule, MatButtonModule],
 })
