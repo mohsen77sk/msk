@@ -15,7 +15,6 @@
         "browser": "apps/main/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/main/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
@@ -33,11 +32,11 @@
           },
           {
             "glob": "**/*",
-            "input": "libs/shared/services/splash-screen/src/lib/assets/",
+            "input": "libs/shared/services/splash-screen/src/lib/assets",
             "output": "assets"
           }
         ],
-        "styles": ["apps/main/src/styles.scss"],
+        "styles": ["libs/shared/styles/src/module.scss", "apps/main/src/styles.css"],
         "stylePreprocessorOptions": {
           "includePaths": ["libs/shared/styles/src"]
         },
@@ -104,6 +103,15 @@
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/main/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "main:build",
+        "port": 5100,
+        "staticFilePath": "dist/apps/main/browser",
+        "spa": true
       }
     }
   }
