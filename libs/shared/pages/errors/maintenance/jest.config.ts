@@ -1,8 +1,8 @@
 export default {
-  displayName: 'main-errors-not-found',
-  preset: '../../../../jest.preset.js',
+  displayName: 'main-errors-maintenance',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/main/errors/not-found',
+  coverageDirectory: '../../../../../coverage/libs/shared/pages/errors/maintenance',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

@@ -1,8 +1,8 @@
 export default {
-  displayName: 'main-errors-maintenance',
-  preset: '../../../../jest.preset.js',
+  displayName: 'main-errors-internal-server-error',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/main/errors/maintenance',
+  coverageDirectory: '../../../../../coverage/libs/shared/pages/errors/internal-server-error',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

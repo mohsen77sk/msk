@@ -136,15 +136,15 @@ export const mainRoutes: Route[] = [
           // Pages
           {
             path: 'pages/not-found',
-            loadChildren: () => import('@msk/main/errors/not-found').then((r) => r.routes),
+            loadChildren: () => import('@msk/shared/pages/errors/not-found').then((r) => r.routes),
           },
           {
             path: 'pages/internal-server-error',
-            loadChildren: () => import('@msk/main/errors/internal-server-error').then((r) => r.routes),
+            loadChildren: () => import('@msk/shared/pages/errors/internal-server-error').then((r) => r.routes),
           },
           {
             path: 'pages/maintenance',
-            loadChildren: () => import('@msk/main/errors/maintenance').then((r) => r.routes),
+            loadChildren: () => import('@msk/shared/pages/errors/maintenance').then((r) => r.routes),
           },
         ],
       },
@@ -161,15 +161,15 @@ export const mainRoutes: Route[] = [
     children: [
       {
         path: 'internal-server-error',
-        loadChildren: () => import('@msk/main/errors/internal-server-error').then((r) => r.routes),
+        loadChildren: () => import('@msk/shared/pages/errors/internal-server-error').then((r) => r.routes),
       },
       {
         path: 'maintenance',
-        loadChildren: () => import('@msk/main/errors/maintenance').then((r) => r.routes),
+        loadChildren: () => import('@msk/shared/pages/errors/maintenance').then((r) => r.routes),
       },
       {
         path: 'not-found',
-        loadChildren: () => import('@msk/main/errors/not-found').then((r) => r.routes),
+        loadChildren: () => import('@msk/shared/pages/errors/not-found').then((r) => r.routes),
       },
       { path: '**', redirectTo: 'not-found' },
     ],
