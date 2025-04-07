@@ -1,10 +1,10 @@
 {
-  "name": "main-errors-not-found",
+  "name": "shared-errors-not-found",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/pages/errors/not-found/src",
-  "prefix": "main",
+  "prefix": "msk",
   "projectType": "library",
-  "tags": ["scope:main", "type:feature"],
+  "tags": ["scope:shared", "type:feature"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",

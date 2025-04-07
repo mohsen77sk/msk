@@ -15,6 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@msk/docs/shell/core/navigation": ["libs/docs/shell/core/navigation/src/index.ts"],
+      "@msk/docs/shell/feature": ["libs/docs/shell/feature/src/index.ts"],
+      "@msk/docs/shell/ui/layout": ["libs/docs/shell/ui/layout/src/index.ts"],
       "@msk/main/auth/sign-in": ["libs/main/auth/sign-in/src/index.ts"],
       "@msk/main/auth/sign-out": ["libs/main/auth/sign-out/src/index.ts"],
       "@msk/main/panel/accounts": ["libs/main/panel/accounts/src/index.ts"],

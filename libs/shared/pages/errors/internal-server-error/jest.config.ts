@@ -1,5 +1,5 @@
 export default {
-  displayName: 'main-errors-internal-server-error',
+  displayName: 'shared-errors-internal-server-error',
   preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../../coverage/libs/shared/pages/errors/internal-server-error',

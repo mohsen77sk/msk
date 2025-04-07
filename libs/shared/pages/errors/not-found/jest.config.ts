@@ -1,5 +1,5 @@
 export default {
-  displayName: 'main-errors-not-found',
+  displayName: 'shared-errors-not-found',
   preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../../coverage/libs/shared/pages/errors/not-found',

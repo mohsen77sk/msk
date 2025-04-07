@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
-  selector: 'main-internal-server-error',
+  selector: 'msk-internal-server-error',
   templateUrl: './internal-server-error.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

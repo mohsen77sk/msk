@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
-  selector: 'main-maintenance',
+  selector: 'msk-maintenance',
   templateUrl: './maintenance.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

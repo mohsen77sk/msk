@@ -22,6 +22,11 @@
           },
           {
             "glob": "**/*",
+            "input": "libs/docs/assets/src",
+            "output": "assets"
+          },
+          {
+            "glob": "**/*",
             "input": "libs/shared/assets/src",
             "output": "assets"
           },
