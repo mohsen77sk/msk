@@ -1,0 +1,7 @@
+{
+  "name": "docs-assets",
+  "sourceRoot": "libs/docs/assets",
+  "tags": ["scope:docs"],
+  "projectType": "library",
+  "targets": {}
+}
