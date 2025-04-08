@@ -15,6 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@msk/docs/panel/colors": ["libs/docs/panel/colors/src/index.ts"],
+      "@msk/docs/panel/typography": ["libs/docs/panel/typography/src/index.ts"],
       "@msk/docs/shell/core/navigation": ["libs/docs/shell/core/navigation/src/index.ts"],
       "@msk/docs/shell/feature": ["libs/docs/shell/feature/src/index.ts"],
       "@msk/docs/shell/ui/layout": ["libs/docs/shell/ui/layout/src/index.ts"],
@@ -53,7 +55,6 @@
       "@msk/shared/ui/alert": ["libs/shared/ui/alert/src/index.ts"],
       "@msk/shared/ui/avatar": ["libs/shared/ui/avatar/src/index.ts"],
       "@msk/shared/ui/dialog": ["libs/shared/ui/dialog/src/index.ts"],
-      "@msk/shared/ui/documentation": ["libs/shared/ui/documentation/src/index.ts"],
       "@msk/shared/ui/fullscreen": ["libs/shared/ui/fullscreen/src/index.ts"],
       "@msk/shared/ui/highlight": ["libs/shared/ui/highlight/src/index.ts"],
       "@msk/shared/ui/loading-bar": ["libs/shared/ui/loading-bar/src/index.ts"],

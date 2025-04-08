@@ -1,8 +1,8 @@
 export default {
-  displayName: 'shared-ui-documentation',
+  displayName: 'docs-panel-typography',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/shared/ui/documentation',
+  coverageDirectory: '../../../../coverage/libs/docs/panel/typography',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
