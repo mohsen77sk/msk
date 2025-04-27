@@ -9,7 +9,7 @@ import { mskAnimations } from '../public-api';
 @Component({
   selector: 'msk-docs-animation',
   templateUrl: './docs-animation.component.html',
-  styleUrl: './docs-animation.component.scss',
+  styleUrl: './docs-animation.component.css',
   encapsulation: ViewEncapsulation.None,
   animations: mskAnimations,
   imports: [MskHighlightComponent, MatTabsModule, MatButtonModule, MatSelectModule, MatFormFieldModule],

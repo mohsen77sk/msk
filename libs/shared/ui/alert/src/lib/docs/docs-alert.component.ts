@@ -8,7 +8,7 @@ import { MskAlertService } from '../alert.service';
 @Component({
   selector: 'msk-docs-alert',
   templateUrl: './docs-alert.component.html',
-  styleUrl: './docs-alert.component.scss',
+  styleUrl: './docs-alert.component.css',
   encapsulation: ViewEncapsulation.None,
   imports: [MskAlertComponent, MskHighlightComponent, MatTabsModule, MatButtonModule],
 })

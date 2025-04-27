@@ -24,7 +24,7 @@ import { filter } from 'rxjs';
 @Component({
   selector: 'msk-alert',
   templateUrl: './alert.component.html',
-  styleUrl: './alert.component.scss',
+  styleUrl: './alert.component.css',
   exportAs: 'mskAlert',
   animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,

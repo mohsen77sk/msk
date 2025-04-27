@@ -15,7 +15,7 @@ import { MainLayoutMaterialComponent } from './layouts/material/material.compone
 @Component({
   selector: 'main-layout',
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
+  styleUrl: './layout.component.css',
   encapsulation: ViewEncapsulation.None,
   imports: [BidiModule, MskLoadingBarComponent, MainLayoutEmptyComponent, MainLayoutMaterialComponent],
 })

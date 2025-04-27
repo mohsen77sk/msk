@@ -26,7 +26,7 @@ import { MainLayoutLanguageDialogComponent } from '../layout-language-dialog/lay
 @Component({
   selector: 'main-user',
   templateUrl: './user.component.html',
-  styleUrl: './user.component.scss',
+  styleUrl: './user.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgClass, MatMenuModule, MatIconModule, MatButtonModule, MatDialogModule, TranslocoDirective],

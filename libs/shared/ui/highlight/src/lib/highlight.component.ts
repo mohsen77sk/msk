@@ -26,7 +26,7 @@ import { MskHighlightService } from './highlight.service';
 @Component({
   selector: 'textarea[msk-highlight]',
   templateUrl: './highlight.component.html',
-  styleUrl: './highlight.component.scss',
+  styleUrl: './highlight.component.css',
   exportAs: 'mskHighlight',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

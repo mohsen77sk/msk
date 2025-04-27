@@ -44,7 +44,7 @@ import {
 @Component({
   selector: 'msk-vertical-navigation',
   templateUrl: './vertical-navigation.component.html',
-  styleUrl: './vertical-navigation.component.scss',
+  styleUrls: ['./styles/default.css', './styles/rail.css'],
   exportAs: 'mskVerticalNavigation',
   animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,

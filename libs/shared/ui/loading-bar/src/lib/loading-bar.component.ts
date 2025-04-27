@@ -7,7 +7,7 @@ import { map } from 'rxjs';
 @Component({
   selector: 'msk-loading-bar',
   templateUrl: './loading-bar.component.html',
-  styleUrls: ['./loading-bar.component.scss'],
+  styleUrls: ['./loading-bar.component.css'],
   exportAs: 'mskLoadingBar',
   encapsulation: ViewEncapsulation.None,
   imports: [MatProgressBarModule],

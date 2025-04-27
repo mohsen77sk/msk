@@ -1,18 +1,20 @@
 /* Variables */
-$msk-vertical-navigation-rail-width: 100px;
+:root {
+  --msk-vertical-navigation-rail-width: 100px;
+}
 
 msk-vertical-navigation {
   /* Rail appearance overrides */
   &.msk-vertical-navigation-appearance-rail {
-    width: $msk-vertical-navigation-rail-width;
-    min-width: $msk-vertical-navigation-rail-width;
-    max-width: $msk-vertical-navigation-rail-width;
+    width: var(--msk-vertical-navigation-rail-width);
+    min-width: var(--msk-vertical-navigation-rail-width);
+    max-width: var(--msk-vertical-navigation-rail-width);
 
     /* Start positioned */
     &.msk-vertical-navigation-position-start {
       /* Side mode */
       &.msk-vertical-navigation-mode-side {
-        margin-inline-start: -$msk-vertical-navigation-rail-width;
+        margin-inline-start: calc(var(--msk-vertical-navigation-rail-width) * -1);
       }
 
       /* Opened */
@@ -25,7 +27,7 @@ msk-vertical-navigation {
     &.msk-vertical-navigation-position-end {
       /* Side mode */
       &.msk-vertical-navigation-mode-side {
-        margin-inline-end: -$msk-vertical-navigation-rail-width;
+        margin-inline-end: calc(var(--msk-vertical-navigation-rail-width) * -1);
       }
 
       /* Opened */
@@ -36,7 +38,7 @@ msk-vertical-navigation {
       /* Aside wrapper */
       .msk-vertical-navigation-aside-wrapper {
         left: auto;
-        right: $msk-vertical-navigation-rail-width;
+        right: var(--msk-vertical-navigation-rail-width);
       }
     }
 
@@ -156,7 +158,7 @@ msk-vertical-navigation {
 
     /* Aside wrapper */
     .msk-vertical-navigation-aside-wrapper {
-      left: $msk-vertical-navigation-rail-width;
+      left: var(--msk-vertical-navigation-rail-width);
     }
   }
 }
@@ -170,7 +172,7 @@ msk-vertical-navigation {
         /* Aside wrapper */
         .msk-vertical-navigation-aside-wrapper {
           right: auto;
-          left: $msk-vertical-navigation-rail-width;
+          left: var(--msk-vertical-navigation-rail-width);
         }
       }
 
@@ -195,7 +197,7 @@ msk-vertical-navigation {
       /* Aside wrapper */
       .msk-vertical-navigation-aside-wrapper {
         left: unset;
-        right: $msk-vertical-navigation-rail-width;
+        right: var(--msk-vertical-navigation-rail-width);
       }
     }
   }

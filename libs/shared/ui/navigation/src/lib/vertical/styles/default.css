@@ -1,5 +1,7 @@
 /* Variables */
-$msk-vertical-navigation-width: 280px;
+:root {
+  --msk-vertical-navigation-width: 280px;
+}
 
 msk-vertical-navigation {
   position: -webkit-sticky;
@@ -8,9 +10,9 @@ msk-vertical-navigation {
   flex-direction: column;
   flex: 1 0 auto;
   top: 0;
-  width: $msk-vertical-navigation-width;
-  min-width: $msk-vertical-navigation-width;
-  max-width: $msk-vertical-navigation-width;
+  width: var(--msk-vertical-navigation-width);
+  min-width: var(--msk-vertical-navigation-width);
+  max-width: var(--msk-vertical-navigation-width);
   height: 100%;
   min-height: 100%;
   max-height: 100%;
@@ -57,7 +59,7 @@ msk-vertical-navigation {
   &.msk-vertical-navigation-position-start {
     /* Side mode */
     &.msk-vertical-navigation-mode-side {
-      margin-inline-start: -$msk-vertical-navigation-width;
+      margin-inline-start: calc(var(--msk-vertical-navigation-width) * -1);
 
       &.msk-vertical-navigation-opened {
         margin-inline-start: 0;
@@ -84,7 +86,7 @@ msk-vertical-navigation {
   &.msk-vertical-navigation-position-end {
     /* Side mode */
     &.msk-vertical-navigation-mode-side {
-      margin-inline-end: -$msk-vertical-navigation-width;
+      margin-inline-end: calc(var(--msk-vertical-navigation-width) * -1);
 
       &.msk-vertical-navigation-opened {
         margin-inline-end: 0;
@@ -178,8 +180,8 @@ msk-vertical-navigation {
     flex-direction: column;
     top: 0;
     bottom: 0;
-    left: $msk-vertical-navigation-width;
-    width: $msk-vertical-navigation-width;
+    left: var(--msk-vertical-navigation-width);
+    width: var(--msk-vertical-navigation-width);
     height: 100%;
     z-index: 5;
     overflow-x: hidden;
@@ -205,7 +207,7 @@ msk-vertical-navigation {
   &.msk-vertical-navigation-position-end {
     .msk-vertical-navigation-aside-wrapper {
       left: auto;
-      right: $msk-vertical-navigation-width;
+      right: var(--msk-vertical-navigation-width);
     }
   }
 
@@ -493,13 +495,13 @@ msk-vertical-navigation {
     /* Aside wrapper */
     .msk-vertical-navigation-aside-wrapper {
       left: unset;
-      right: $msk-vertical-navigation-width;
+      right: var(--msk-vertical-navigation-width);
     }
 
     &.msk-vertical-navigation-position-end {
       .msk-vertical-navigation-aside-wrapper {
         right: auto;
-        left: $msk-vertical-navigation-width;
+        left: var(--msk-vertical-navigation-width);
       }
     }
   }
