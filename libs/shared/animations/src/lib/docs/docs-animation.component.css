@@ -19,7 +19,8 @@ msk-docs-animation {
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
-  @apply bg-tertiary-container shadow-level-2;
+  box-shadow: var(--mat-sys-level3);
+  background-color: var(--mat-sys-tertiary-container);
 
   .animated-box-content {
     display: flex;
@@ -30,6 +31,6 @@ msk-docs-animation {
     text-align: center;
     font-size: 12px;
     font-weight: 500;
-    @apply text-on-tertiary-container;
+    color: var(--mat-sys-on-tertiary-container);
   }
 }
