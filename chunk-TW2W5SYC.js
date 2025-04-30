@@ -1,1 +1,0 @@
-import"./chunk-FIRXXYNY.js";var n={"go-to":"Go to","sign-in":"Sign in","sign-out-title":"You have signed out!","redirecting-in-seconds":"Redirecting in {{ seconds }} seconds!","you-are-now-being-redirected":"You are now being redirected!"};export{n as default};
