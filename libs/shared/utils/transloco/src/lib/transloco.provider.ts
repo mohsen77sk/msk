@@ -1,16 +1,19 @@
 import { EnvironmentProviders, inject, isDevMode, LOCALE_ID, Provider, provideAppInitializer } from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
   provideTransloco,
   TranslocoService,
   TranslocoTestingModule,
   TranslocoTestingOptions,
 } from '@jsverse/transloco';
+import { translocoInterceptor } from './transloco.interceptor';
 import { TranslocoHttpLoader } from './transloco.http-loader';
 import { availableLangs } from './transloco.types';
 import { firstValueFrom } from 'rxjs';
 
 export const provideMskTransloco = (): Array<Provider | EnvironmentProviders> => {
   return [
+    provideHttpClient(withInterceptors([translocoInterceptor])),
     provideTransloco({
       config: {
         availableLangs: availableLangs,
