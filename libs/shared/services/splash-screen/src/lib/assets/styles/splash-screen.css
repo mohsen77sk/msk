@@ -1,4 +1,5 @@
 body splash-screen {
+  color-scheme: dark;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,8 +9,8 @@ body splash-screen {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #111827;
-  color: #f9fafb;
+  color: var(--mat-sys-on-surface);
+  background-color: var(--mat-sys-surface-container);
   z-index: 999999;
   pointer-events: none;
   opacity: 1;
@@ -33,7 +34,7 @@ body splash-screen .spinner {
 body splash-screen .spinner > div {
   width: 12px;
   height: 12px;
-  background-color: #1e96f7;
+  background-color: var(--mat-sys-primary);
   border-radius: 100%;
   display: inline-block;
   -webkit-animation: bouncedelay 1s infinite ease-in-out both;
