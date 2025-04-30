@@ -15,6 +15,7 @@ import { MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
+import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
@@ -63,6 +64,7 @@ export class PeopleCardDetailsComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
   private _peopleService = inject(PeopleService);
   private _translocoService = inject(TranslocoService);
+  private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
 
   form!: FormGroup;
@@ -144,7 +146,8 @@ export class PeopleCardDetailsComponent implements OnInit {
           }),
           catchError((response) => {
             // Show error
-            // ---
+            this._mskSnackbarService.error(response.error.message);
+            // Return
             return EMPTY;
           })
         )

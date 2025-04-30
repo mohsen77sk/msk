@@ -15,6 +15,7 @@ import { MskDialogData, MskHttpErrorResponse, MskLookupItem, MskLookupResponse }
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
+import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskCurrencyMaskDirective } from '@msk/shared/directives/currency-mask';
@@ -73,6 +74,7 @@ export class AccountsCardDetailsComponent implements OnInit {
   private _peopleService = inject(PeopleService);
   private _accountService = inject(AccountService);
   private _translocoService = inject(TranslocoService);
+  private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
 
   form!: FormGroup;
@@ -169,7 +171,8 @@ export class AccountsCardDetailsComponent implements OnInit {
           }),
           catchError((response) => {
             // Show error
-            // ---
+            this._mskSnackbarService.error(response.error.message);
+            // Return
             return EMPTY;
           })
         )
