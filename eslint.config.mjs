@@ -25,12 +25,12 @@ export default [
               onlyDependOnLibsWithTags: ['scope:shared', 'scope:docs'],
             },
             {
-              sourceTag: 'scope:docs',
-              onlyDependOnLibsWithTags: ['scope:shared', 'scope:docs'],
-            },
-            {
               sourceTag: 'scope:main',
               onlyDependOnLibsWithTags: ['scope:shared', 'scope:main'],
+            },
+            {
+              sourceTag: 'scope:docs',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:docs'],
             },
             {
               sourceTag: 'scope:shared',
