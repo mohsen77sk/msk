@@ -35,7 +35,10 @@
         </div>
       </div>
       } @empty {
-      <div class="text-secondary p-8 text-center text-xl font-semibold tracking-tight sm:p-16" *transloco="let t">
+      <div
+        class="text-secondary text-title-medium flex flex-1 items-center justify-center p-8 text-center"
+        *transloco="let t"
+      >
         {{ t('accounts.empty-list') }}
       </div>
       }

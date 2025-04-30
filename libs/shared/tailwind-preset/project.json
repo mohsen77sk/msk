@@ -1,7 +1,0 @@
-{
-  "name": "shared-tailwind-preset",
-  "sourceRoot": "libs/shared/tailwind-preset",
-  "tags": ["scope:shared"],
-  "projectType": "library",
-  "targets": {}
-}

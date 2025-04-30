@@ -1,13 +1,13 @@
 <div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t">
-  <div class="sm:msk-mat-card-elevated w-full px-4 py-8 sm:w-auto sm:p-12">
-    <div class="mx-auto w-full max-w-80 sm:mx-0 sm:w-80">
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
+    <div class="max-w-80 mx-auto w-full sm:mx-0 sm:w-80">
       <!-- Logo -->
       <div class="w-12">
         <img src="assets/images/logo/logo.svg" alt="logo" />
       </div>
 
       <!-- Title -->
-      <div class="mt-8 text-4xl font-extrabold leading-tight tracking-tight">
+      <div class="text-headline-medium mt-8 font-extrabold">
         {{ t('signIn.sign-in') }}
       </div>
       <div class="mt-0.5 flex items-baseline font-medium">
@@ -81,10 +81,7 @@
         <!-- Actions -->
         <div class="mt-2 inline-flex w-full items-center justify-between">
           <mat-checkbox formControlName="rememberMe"> {{ t('signIn.remember-me') }} </mat-checkbox>
-          <a
-            class="text-md text-primary font-medium hover:underline focus:underline"
-            [routerLink]="['/forgot-password']"
-          >
+          <a class="text-label-medium text-primary hover:underline focus:underline" [routerLink]="['/forgot-password']">
             {{ t('signIn.forgot-password') }}
           </a>
         </div>

@@ -52,7 +52,7 @@
         children?: MskNavigationItem[];
       }
     </textarea>
-    <div class="msk-mat-card-filled flex-shrink-0 overflow-auto p-4">
+    <div class="msk-mat-card-filled shrink-0 overflow-auto p-4">
       <table class="m-0">
         <thead>
           <tr>
@@ -62,83 +62,83 @@
         </thead>
         <tbody>
           <tr>
-            <td class="text-md text-secondary">id</td>
+            <td class="text-label-medium text-secondary">id</td>
             <td>
               Unique id of the navigation item. It's important to supply navigation items with ids if you want to access
               and modify them after generating the navigation.
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">icon</td>
+            <td class="text-label-medium text-secondary">icon</td>
             <td>Icon name for the navigation item.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">title</td>
+            <td class="text-label-medium text-secondary">title</td>
             <td>Title of the navigation item.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">type</td>
+            <td class="text-label-medium text-secondary">type</td>
             <td>Type of the navigation item.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">hidden</td>
+            <td class="text-label-medium text-secondary">hidden</td>
             <td>
               A function that returns a boolean. It gets one parameter which is the navigation item. Returning
               <code>true</code> from the function will hide the item and <code>false</code> will show it.
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">active</td>
+            <td class="text-label-medium text-secondary">active</td>
             <td>Whether to force the navigation item to be active.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">disabled</td>
+            <td class="text-label-medium text-secondary">disabled</td>
             <td>Whether the navigation item is disabled.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">tooltip</td>
+            <td class="text-label-medium text-secondary">tooltip</td>
             <td>Tooltip to show on item hover. Empty string will remove the tooltip.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">link</td>
+            <td class="text-label-medium text-secondary">link</td>
             <td>
               String representation of the item link. It can be either a <em>router</em> link or a normal, outgoing
               link.
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">fragment</td>
+            <td class="text-label-medium text-secondary">fragment</td>
             <td>Sets the hash fragment for the URL.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">preserveFragment</td>
+            <td class="text-label-medium text-secondary">preserveFragment</td>
             <td>When true, preserves the URL fragment for the next navigation.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">queryParams</td>
+            <td class="text-label-medium text-secondary">queryParams</td>
             <td>Sets query parameters to the URL.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">queryParamsHandling</td>
+            <td class="text-label-medium text-secondary">queryParamsHandling</td>
             <td>How to handle query parameters in the router link for the next navigation.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">externalLink</td>
+            <td class="text-label-medium text-secondary">externalLink</td>
             <td>
               Whether the supplied link should be parsed as an external link. It must be <strong>true</strong> if you
               supply a normal, outgoing link in the <strong>link</strong> property.
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">target</td>
+            <td class="text-label-medium text-secondary">target</td>
             <td>Sets the <em>target</em> attribute of the external, outgoing link.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">exactMatch</td>
+            <td class="text-label-medium text-secondary">exactMatch</td>
             <td>Sets the <em>exact</em> parameter on the <em>[routerLinkActiveOptions]</em>.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">isActiveMatchOptions</td>
+            <td class="text-label-medium text-secondary">isActiveMatchOptions</td>
             <td>
               Sets the <em>isActiveMatchOptions</em> object on the <em>[routerLinkActiveOptions]</em>. If provided,
               <em>exactMatch</em> option will be ignored.
@@ -148,26 +148,26 @@
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">classes</td>
+            <td class="text-label-medium text-secondary">classes</td>
             <td>
               Custom class names for the navigation item's specific parts. Multiple class names can be added by
               separating them with whitespace: <code>'class1 class2 class3'</code>
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">badge.title</td>
+            <td class="text-label-medium text-secondary">badge.title</td>
             <td>Title of the badge.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">badge.classes</td>
+            <td class="text-label-medium text-secondary">badge.classes</td>
             <td>Classes to add to the badge. This can be used to customize the look of the badge.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">children</td>
+            <td class="text-label-medium text-secondary">children</td>
             <td>Array of navigation items to create child items.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">meta</td>
+            <td class="text-label-medium text-secondary">meta</td>
             <td>
               An object to hold custom data for the navigation item. It can be used for anything such as storing the
               access role and authorization of the navigation item.
@@ -194,7 +194,7 @@
     </textarea>
 
     <h3 class="sticky-header">Vertical navigation / Properties</h3>
-    <div class="msk-mat-card-filled flex-shrink-0 overflow-auto p-4">
+    <div class="msk-mat-card-filled shrink-0 overflow-auto p-4">
       <table class="m-0">
         <thead>
           <tr>
@@ -205,14 +205,14 @@
         </thead>
         <tbody>
           <tr>
-            <td class="text-md text-secondary">name: <i>&lt;string&gt;</i></td>
+            <td class="text-label-medium text-secondary">name: <i>&lt;string&gt;</i></td>
             <td>Unique name of the navigation. Required for navigation and its drawer to work correctly.</td>
             <td>
               <code class="whitespace-nowrap">-</code>
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">appearance: <i>&lt;MskVerticalNavigationAppearance&gt;</i></td>
+            <td class="text-label-medium text-secondary">appearance: <i>&lt;MskVerticalNavigationAppearance&gt;</i></td>
             <td>
               Appearance of the navigation and its drawer. This is a string type and can be used to override the style
               of the navigation.
@@ -222,7 +222,7 @@
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">autoCollapse: <i>&lt;boolean&gt;</i></td>
+            <td class="text-label-medium text-secondary">autoCollapse: <i>&lt;boolean&gt;</i></td>
             <td>
               Whether expanding an expandable navigation item should close other expanded items excluding the active
               menu item's parent.
@@ -232,7 +232,7 @@
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">inner: <i>&lt;boolean&gt;</i></td>
+            <td class="text-label-medium text-secondary">inner: <i>&lt;boolean&gt;</i></td>
             <td>
               Whether the inner mode is active. This mode allows using navigation without its drawer. Suitable for using
               it inside <strong>mat-sidenav</strong> or <strong>mat-drawer</strong>.
@@ -242,7 +242,7 @@
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">mode: <i>&lt;MskVerticalNavigationMode&gt;</i></td>
+            <td class="text-label-medium text-secondary">mode: <i>&lt;MskVerticalNavigationMode&gt;</i></td>
             <td>
               <strong>over</strong> mode can be used to place the drawer on top of the content and
               <strong>side</strong> mode can be used to push the content and place the drawer next to it.
@@ -252,28 +252,28 @@
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">navigation: <i>&lt;MskNavigationItem[]&gt;</i></td>
+            <td class="text-label-medium text-secondary">navigation: <i>&lt;MskNavigationItem[]&gt;</i></td>
             <td>Array of navigation items to build the navigation from.</td>
             <td>
               <code class="whitespace-nowrap">-</code>
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">opened: <i>&lt;boolean&gt;</i></td>
+            <td class="text-label-medium text-secondary">opened: <i>&lt;boolean&gt;</i></td>
             <td>Whether the navigation drawer is opened. Only works with <strong>over</strong> mode.</td>
             <td>
               <code class="whitespace-nowrap">false</code>
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">position: <i>&lt;MskVerticalNavigationPosition&gt;</i></td>
+            <td class="text-label-medium text-secondary">position: <i>&lt;MskVerticalNavigationPosition&gt;</i></td>
             <td>Position of the drawer.</td>
             <td>
               <code class="whitespace-nowrap">start</code>
             </td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">transparentOverlay: <i>&lt;boolean&gt;</i></td>
+            <td class="text-label-medium text-secondary">transparentOverlay: <i>&lt;boolean&gt;</i></td>
             <td>Whether the overlay of the drawer is transparent. Only works with <strong>over</strong> mode.</td>
             <td>
               <code class="whitespace-nowrap">false</code>
@@ -282,7 +282,7 @@
         </tbody>
       </table>
     </div>
-    <div class="msk-mat-card-filled mt-2 flex-shrink-0 overflow-auto p-4">
+    <div class="msk-mat-card-filled mt-2 shrink-0 overflow-auto p-4">
       <table class="m-0">
         <thead>
           <tr>
@@ -292,19 +292,23 @@
         </thead>
         <tbody>
           <tr>
-            <td class="text-md text-secondary">openedChanged: <i>&lt;boolean&gt;</i></td>
+            <td class="text-label-medium text-secondary">openedChanged: <i>&lt;boolean&gt;</i></td>
             <td>An event emitted after the opened status of the navigation changed.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">modeChanged: <i>&lt;MskVerticalNavigationMode&gt;</i></td>
+            <td class="text-label-medium text-secondary">modeChanged: <i>&lt;MskVerticalNavigationMode&gt;</i></td>
             <td>An event emitted after the mode of the navigation changed.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">positionChanged: <i>&lt;MskVerticalNavigationPosition&gt;</i></td>
+            <td class="text-label-medium text-secondary">
+              positionChanged: <i>&lt;MskVerticalNavigationPosition&gt;</i>
+            </td>
             <td>An event emitted after the position of the navigation changed.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">appearanceChanged: <i>&lt;MskVerticalNavigationAppearance&gt;</i></td>
+            <td class="text-label-medium text-secondary">
+              appearanceChanged: <i>&lt;MskVerticalNavigationAppearance&gt;</i>
+            </td>
             <td>An event emitted after the appearance of the navigation changed.</td>
           </tr>
         </tbody>
@@ -316,7 +320,7 @@
       Since the entire navigation will be created from the supplied navigation data, it's only possible to attach custom
       content inside the navigation drawer using custom content hooks. There are four of these hooks;
     </p>
-    <div class="msk-mat-card-filled flex-shrink-0 overflow-auto p-4">
+    <div class="msk-mat-card-filled shrink-0 overflow-auto p-4">
       <table class="m-0">
         <thead>
           <tr>
@@ -326,19 +330,19 @@
         </thead>
         <tbody>
           <tr>
-            <td class="text-md text-secondary">mskVerticalNavigationHeader</td>
+            <td class="text-label-medium text-secondary">mskVerticalNavigationHeader</td>
             <td>Fixed header hook. Anything put inside this hook will not scroll with drawer content.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">mskVerticalNavigationContentHeader</td>
+            <td class="text-label-medium text-secondary">mskVerticalNavigationContentHeader</td>
             <td>Header hook. Anything put inside this hook will be scrolled with the drawer content.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">mskVerticalNavigationFooter</td>
+            <td class="text-label-medium text-secondary">mskVerticalNavigationFooter</td>
             <td>Fixed footer hook. Anything put inside this hook will not scroll with drawer content.</td>
           </tr>
           <tr>
-            <td class="text-md text-secondary">mskVerticalNavigationContentFooter</td>
+            <td class="text-label-medium text-secondary">mskVerticalNavigationContentFooter</td>
             <td>Footer hook. Anything put inside this hook will be scrolled with the drawer content.</td>
           </tr>
         </tbody>

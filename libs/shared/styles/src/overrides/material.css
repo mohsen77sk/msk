@@ -59,7 +59,7 @@
   --mat-dialog-content-padding: 24px 24px;
   --mat-dialog-actions-padding: 24px 24px;
   --mat-dialog-with-actions-content-padding: 24px 24px 0;
-  --mdc-dialog-container-color: var(--mat-sys-surface-container-high);
+  --mdc-dialog-container-color: var(--mat-sys-surface-container);
 
   .mat-mdc-dialog-icon {
     display: flex;
@@ -105,10 +105,14 @@
   max-width: 640px !important;
 
   .mat-mdc-dialog-container > .mdc-dialog__container > .mat-mdc-dialog-surface > * {
-    @apply flex max-h-screen flex-col;
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
 
     & msk-dialog {
-      @apply flex max-h-screen flex-col;
+      display: flex;
+      flex-direction: column;
+      max-height: 100vh;
     }
   }
 }

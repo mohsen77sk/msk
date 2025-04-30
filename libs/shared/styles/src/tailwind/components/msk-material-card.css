@@ -1,0 +1,13 @@
+@layer components {
+  .msk-mat-card-elevated {
+    @apply shadow-level-1 rounded-medium bg-surface-container-low relative;
+  }
+
+  .msk-mat-card-filled {
+    @apply shadow-level-0 rounded-medium bg-surface-container-highest relative;
+  }
+
+  .msk-mat-card-outlined {
+    @apply shadow-level-0 rounded-medium bg-surface border-outline-variant relative border;
+  }
+}

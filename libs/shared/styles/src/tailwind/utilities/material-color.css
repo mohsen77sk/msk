@@ -1,0 +1,152 @@
+@utility bg-default {
+  background-color: var(--mat-sys-background);
+}
+@utility text-default {
+  color: var(--mat-sys-on-background);
+}
+
+@utility bg-surface {
+  background-color: var(--mat-sys-surface);
+}
+@utility bg-surface-bright {
+  background-color: var(--mat-sys-surface-bright);
+}
+@utility bg-surface-container {
+  background-color: var(--mat-sys-surface-container);
+}
+@utility bg-surface-container-low {
+  background-color: var(--mat-sys-surface-container-low);
+}
+@utility bg-surface-container-lowest {
+  background-color: var(--mat-sys-surface-container-lowest);
+}
+@utility bg-surface-container-high {
+  background-color: var(--mat-sys-surface-container-high);
+}
+@utility bg-surface-container-highest {
+  background-color: var(--mat-sys-surface-container-highest);
+}
+@utility bg-surface-dim {
+  background-color: var(--mat-sys-surface-dim);
+}
+@utility bg-surface-tint {
+  background-color: var(--mat-sys-surface-tint);
+}
+@utility bg-surface-variant {
+  background-color: var(--mat-sys-surface-variant);
+}
+
+@utility text-on-surface {
+  color: var(--mat-sys-on-surface);
+}
+@utility text-on-surface-variant {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+@utility bg-inverse-surface {
+  background-color: var(--mat-sys-inverse-surface);
+}
+@utility text-inverse-on-surface {
+  color: var(--mat-sys-inverse-surface);
+}
+
+@utility bg-primary {
+  background-color: var(--mat-sys-primary);
+}
+@utility text-primary {
+  color: var(--mat-sys-primary);
+}
+@utility bg-primary-container {
+  background-color: var(--mat-sys-primary-container);
+}
+@utility text-on-primary-container {
+  color: var(--mat-sys-on-primary-container);
+}
+@utility bg-primary-fixed {
+  background-color: var(--mat-sys-primary-fixed);
+}
+@utility text-on-primary-fixed {
+  color: var(--mat-sys-on-primary-fixed);
+}
+@utility bg-primary-fixed-dim {
+  background-color: var(--mat-sys-primary-fixed-dim);
+}
+@utility text-on-primary-fixed-variant {
+  background-color: var(--mat-sys-on-primary-fixed-variant);
+}
+
+@utility bg-secondary {
+  background-color: var(--mat-sys-secondary);
+}
+@utility text-secondary {
+  color: var(--mat-sys-secondary);
+}
+@utility bg-secondary-container {
+  background-color: var(--mat-sys-secondary-container);
+}
+@utility text-on-secondary-container {
+  color: var(--mat-sys-on-secondary-container);
+}
+@utility bg-secondary-fixed {
+  background-color: var(--mat-sys-secondary-fixed);
+}
+@utility text-on-secondary-fixed {
+  color: var(--mat-sys-on-secondary-fixed);
+}
+@utility bg-secondary-fixed-dim {
+  background-color: var(--mat-sys-secondary-fixed-dim);
+}
+@utility text-on-secondary-fixed-variant {
+  background-color: var(--mat-sys-on-secondary-fixed-variant);
+}
+
+@utility bg-tertiary {
+  background-color: var(--mat-sys-tertiary);
+}
+@utility text-tertiary {
+  color: var(--mat-sys-tertiary);
+}
+@utility bg-tertiary-container {
+  background-color: var(--mat-sys-tertiary-container);
+}
+@utility text-on-tertiary-container {
+  color: var(--mat-sys-on-tertiary-container);
+}
+@utility bg-tertiary-fixed {
+  background-color: var(--mat-sys-tertiary-fixed);
+}
+@utility text-on-tertiary-fixed {
+  color: var(--mat-sys-on-tertiary-fixed);
+}
+@utility bg-tertiary-fixed-dim {
+  background-color: var(--mat-sys-tertiary-fixed-dim);
+}
+@utility text-on-tertiary-fixed-variant {
+  background-color: var(--mat-sys-on-tertiary-fixed-variant);
+}
+
+@utility bg-error {
+  background-color: var(--mat-sys-error);
+}
+@utility text-error {
+  color: var(--mat-sys-error);
+}
+@utility bg-error-container {
+  background-color: var(--mat-sys-error-container);
+}
+@utility text-on-error-container {
+  color: var(--mat-sys-on-error-container);
+}
+
+@utility ring-outline {
+  --tw-ring-color: var(--mat-sys-outline);
+}
+@utility border-outline {
+  border-color: var(--mat-sys-outline);
+}
+@utility ring-outline-variant {
+  --tw-ring-color: var(--mat-sys-outline-variant);
+}
+@utility border-outline-variant {
+  border-color: var(--mat-sys-outline-variant);
+}

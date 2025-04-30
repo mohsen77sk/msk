@@ -1,16 +1,16 @@
 @use '@angular/material' as mat;
-@use 'theme-m3' as themeM3;
+@use 'theme-color' as theme;
 
-body {
+:root {
   color-scheme: light;
 
   @include mat.theme(
     (
       color: (
-        primary: themeM3.$primary-palette,
-        tertiary: themeM3.$tertiary-palette,
+        primary: theme.$primary-palette,
+        tertiary: theme.$tertiary-palette,
       ),
-      typography: theme('fontFamily.sans'),
+      typography: var(--default-font-family),
       density: 0,
     )
   );

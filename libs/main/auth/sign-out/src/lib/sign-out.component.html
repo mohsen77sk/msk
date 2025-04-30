@@ -1,13 +1,13 @@
 <div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t">
-  <div class="sm:msk-mat-card-elevated w-full px-4 py-8 sm:w-auto sm:p-12">
-    <div class="mx-auto w-full max-w-80 sm:mx-0 sm:w-80">
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
+    <div class="max-w-80 mx-auto w-full sm:mx-0 sm:w-80">
       <!-- Logo -->
       <div class="mx-auto w-12">
         <img src="assets/images/logo/logo.svg" alt="logo" />
       </div>
 
       <!-- Title -->
-      <div class="mt-8 text-center text-3xl font-extrabold leading-tight tracking-tight">
+      <div class="text-headline-small mt-8 text-center font-extrabold">
         {{ t('signOut.sign-out-title') }}
       </div>
 
@@ -20,7 +20,7 @@
       </div>
 
       <!-- Form footer -->
-      <div class="text-secondary text-md mt-8 text-center font-medium">
+      <div class="text-secondary text-label-medium mt-8 text-center">
         <span>{{ t('signOut.go-to') }}</span>
         <a class="text-primary ms-1 hover:underline" [routerLink]="['/sign-in']">
           {{ t('signOut.sign-in') }}

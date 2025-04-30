@@ -41,11 +41,11 @@ export class MskAvatarComponent {
   get classList(): object {
     return {
       'size-7': this.size() === 'small',
-      'text-sm': this.size() === 'small',
+      'text-label-medium': this.size() === 'small',
       'size-10': this.size() === 'medium',
-      'text-lg': this.size() === 'medium',
+      'text-title-medium': this.size() === 'medium',
       'size-24': this.size() === 'big',
-      'text-7xl': this.size() === 'big',
+      'text-headline-large': this.size() === 'big',
       block: true,
     };
   }

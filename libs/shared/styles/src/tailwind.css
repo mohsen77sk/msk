@@ -1,0 +1,53 @@
+@import 'tailwindcss' important;
+
+@plugin '@tailwindcss/typography';
+@config './tailwind.config.js';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --default-*: initial;
+  --default-font-family: 'IRANSansX', 'sans-serif';
+
+  --text-*: initial;
+
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 840px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1600px;
+
+  --radius-*: initial;
+  --radius-none: var(--mat-sys-corner-none);
+  --radius-extra-small: var(--mat-sys-corner-extra-small);
+  --radius-small: var(--mat-sys-corner-small);
+  --radius-medium: var(--mat-sys-corner-medium);
+  --radius-large: var(--mat-sys-corner-large);
+  --radius-extra-large: var(--mat-sys-corner-extra-large);
+  --radius-full: var(--mat-sys-corner-full);
+
+  --shadow-*: initial;
+  --shadow-level-0: var(--mat-sys-level0);
+  --shadow-level-1: var(--mat-sys-level1);
+  --shadow-level-2: var(--mat-sys-level2);
+  --shadow-level-3: var(--mat-sys-level3);
+  --shadow-level-4: var(--mat-sys-level4);
+  --shadow-level-5: var(--mat-sys-level5);
+}
+
+/* Base */
+@import './tailwind/base.css';
+
+/* Components */
+@import './tailwind/components/page-layout.css';
+@import './tailwind/components/example-viewer.css';
+@import './tailwind/components/msk-chips.css';
+@import './tailwind/components/msk-material-card.css';
+@import './tailwind/components/msk-material-list.css';
+@import './tailwind/components/msk-material-search.css';
+@import './tailwind/components/prose.css';
+
+/* Utils */
+@import './tailwind/utilities/avatar-color.css';
+@import './tailwind/utilities/icon-size.css';
+@import './tailwind/utilities/material-text.css';
+@import './tailwind/utilities/material-color.css';

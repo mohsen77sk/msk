@@ -1,0 +1,23 @@
+@layer components {
+  .msk-list-item {
+    @apply flex gap-4 px-4 py-2;
+
+    .msk-list-item-icon {
+      @apply size-10 text-on-surface-variant flex items-center justify-center;
+    }
+
+    .msk-list-item-content {
+      @apply flex flex-col justify-center;
+      flex: 1 1 0%;
+    }
+
+    span:nth-child(1) {
+      @apply text-body-large text-on-surface;
+    }
+
+    span:nth-child(2),
+    span:nth-child(3) {
+      @apply text-on-surface-variant text-body-medium;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+/* Tailwind */
+@import './tailwind.css';
+
+/* Overrides */
+@import './overrides/font-icons.css';
+@import './overrides/highlight-js.css';
+@import './overrides/perfect-scrollbar.css';
+@import './overrides/material.css';

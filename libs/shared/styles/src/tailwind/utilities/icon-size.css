@@ -1,0 +1,12 @@
+@utility icon-size-* {
+  width: calc(var(--spacing) * --value(integer));
+  height: calc(var(--spacing) * --value(integer));
+  min-width: calc(var(--spacing) * --value(integer));
+  min-height: calc(var(--spacing) * --value(integer));
+  font-size: calc(var(--spacing) * --value(integer));
+  line-height: calc(var(--spacing) * --value(integer));
+  svg {
+    width: calc(var(--spacing) * --value(integer));
+    height: calc(var(--spacing) * --value(integer));
+  }
+}

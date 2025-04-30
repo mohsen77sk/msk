@@ -1,0 +1,90 @@
+@layer components {
+  .page-layout {
+    @apply flex min-w-0 flex-auto flex-col;
+
+    > .header {
+      @apply bg-surface min-h-16 flex items-center justify-between px-4 sm:px-6;
+
+      > label {
+        @apply text-title-large;
+      }
+    }
+
+    > .content {
+      @apply bg-surface flex flex-auto flex-col px-4 sm:px-6;
+    }
+
+    &.page-scroll {
+      @apply absolute inset-0 flex-none overflow-y-auto;
+    }
+
+    &.content-scroll {
+      @apply absolute inset-0 flex-none overflow-hidden;
+
+      > .content {
+        @apply overflow-auto;
+      }
+    }
+
+    &.grid-scroll {
+      @apply absolute inset-0 flex-none overflow-hidden;
+
+      > .content {
+        @apply overflow-hidden p-0;
+
+        > .content-grid {
+          @apply flex flex-auto flex-col overflow-y-auto;
+
+          > .content-grid-item {
+            @apply text-on-surface flex h-14 flex-[0_0_auto] items-center gap-4 border-b px-4 py-2 transition md:px-8;
+
+            &.tow-line {
+              @apply h-18;
+            }
+
+            &:hover {
+              @apply cursor-pointer;
+              background-color: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
+            }
+
+            .content-grid-item-avatar {
+              @apply flex-[0_0_auto];
+            }
+
+            .content-grid-item-content {
+              @apply flex flex-1 flex-col overflow-hidden;
+
+              > div:nth-child(1) {
+                @apply font-medium leading-6;
+              }
+
+              > div:nth-child(2) {
+                @apply text-on-surface-variant text-body-small leading-5;
+              }
+            }
+
+            .content-grid-item-end {
+              @apply flex-[0_0_auto];
+            }
+          }
+        }
+
+        > .content-fab-container {
+          @apply bottom-18 absolute end-4 z-20 flex flex-col items-end gap-4;
+        }
+
+        > .content-paginator.mat-mdc-paginator {
+          @apply border-t;
+
+          .mat-mdc-paginator-container {
+            @apply sm:justify-between sm:px-4;
+
+            .mat-mdc-paginator-page-size {
+              @apply hidden sm:flex;
+            }
+          }
+        }
+      }
+    }
+  }
+}

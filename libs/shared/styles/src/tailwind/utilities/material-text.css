@@ -1,0 +1,45 @@
+@utility text-display-large {
+  font: var(--mat-sys-display-large);
+}
+@utility text-display-medium {
+  font: var(--mat-sys-display-medium);
+}
+@utility text-display-small {
+  font: var(--mat-sys-display-small);
+}
+@utility text-headline-large {
+  font: var(--mat-sys-headline-large);
+}
+@utility text-headline-medium {
+  font: var(--mat-sys-headline-medium);
+}
+@utility text-headline-small {
+  font: var(--mat-sys-headline-small);
+}
+@utility text-title-large {
+  font: var(--mat-sys-title-large);
+}
+@utility text-title-medium {
+  font: var(--mat-sys-title-medium);
+}
+@utility text-title-small {
+  font: var(--mat-sys-title-small);
+}
+@utility text-body-large {
+  font: var(--mat-sys-body-large);
+}
+@utility text-body-medium {
+  font: var(--mat-sys-body-medium);
+}
+@utility text-body-small {
+  font: var(--mat-sys-body-small);
+}
+@utility text-label-large {
+  font: var(--mat-sys-label-large);
+}
+@utility text-label-medium {
+  font: var(--mat-sys-label-medium);
+}
+@utility text-label-small {
+  font: var(--mat-sys-label-small);
+}

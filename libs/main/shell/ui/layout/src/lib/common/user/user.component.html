@@ -25,7 +25,7 @@
       <img class="relative h-full w-full rounded-full" [src]="user.avatar" alt="profile image" />
     </div>
     <div class="my-2">
-      <span class="text-2xl">{{ user.name }}</span>
+      <span class="text-title-medium">{{ user.name }}</span>
     </div>
     <div class="pb-6 pt-2" *transloco="let t">
       <button mat-stroked-button>
@@ -39,11 +39,11 @@
           <span class="ms-3 font-medium">{{ t('layout.dark-theme') }}</span>
         </div>
         @switch (layoutScheme) { @case ('auto') {
-        <span class="text-sm font-light">{{ t('layout.default') }}</span>
+        <span class="text-label-medium font-light">{{ t('layout.default') }}</span>
         } @case ('dark') {
-        <span class="text-sm font-light">{{ t('layout.on') }}</span>
+        <span class="text-label-medium font-light">{{ t('layout.on') }}</span>
         } @case ('light') {
-        <span class="text-sm font-light">{{ t('layout.off') }}</span>
+        <span class="text-label-medium font-light">{{ t('layout.off') }}</span>
         } }
       </div>
       <div class="main-user-panel-profile-item" (click)="openLayoutLanguageDialog()" aria-hidden="true">
@@ -51,7 +51,7 @@
           <mat-icon class="mat-icon-rtl-mirror">language</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.languages') }}</span>
         </div>
-        <span class="text-sm font-light">{{ activeLang }}</span>
+        <span class="text-label-medium font-light">{{ activeLang }}</span>
       </div>
     </div>
     <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">

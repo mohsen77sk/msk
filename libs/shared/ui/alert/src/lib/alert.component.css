@@ -1,3 +1,5 @@
+@reference '../../../../styles/src/tailwind.css';
+
 msk-alert {
   display: block;
 
