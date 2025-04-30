@@ -1,11 +1,11 @@
 @if (imageUrl()) {
-<div class="relative flex size-full items-center justify-center rounded-full">
-  <img class="relative size-full rounded-full" [src]="imageUrl()" alt="avatar" />
+<div class="size-full relative flex items-center justify-center rounded-full">
+  <img class="size-full relative rounded-full" [src]="imageUrl()" alt="avatar" />
 </div>
 } @else {
-<div class="flex size-full items-center justify-center rounded-full" [ngClass]="color">
-  <span class="font-medium">
+<div class="size-full flex items-center justify-center rounded-full" [ngClass]="color">
+  <div class="font-medium">
     {{ label }}
-  </span>
+  </div>
 </div>
 }
