@@ -1,0 +1,20 @@
+{
+  "name": "docs-panel-animations",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/docs/panel/animations/src",
+  "prefix": "doc",
+  "projectType": "library",
+  "tags": ["scope:docs", "type:feature"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/docs/panel/animations/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

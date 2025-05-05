@@ -22,7 +22,7 @@ export const docsRoutes: Route[] = [
           // Animation
           {
             path: 'animations',
-            loadComponent: () => import('@msk/shared/animations').then((r) => r.MskDocsAnimationComponent),
+            loadComponent: () => import('@msk/docs/panel/animations').then((r) => r.DocsAnimationsComponent),
           },
           {
             path: 'colors',

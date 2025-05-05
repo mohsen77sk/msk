@@ -4,17 +4,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MskHighlightComponent } from '@msk/shared/ui/highlight';
-import { mskAnimations } from '../public-api';
+import { mskAnimations } from '@msk/shared/animations';
 
 @Component({
-  selector: 'msk-docs-animation',
-  templateUrl: './docs-animation.component.html',
-  styleUrl: './docs-animation.component.css',
+  selector: 'doc-animations',
+  templateUrl: './animations.component.html',
+  styleUrl: './animations.component.css',
   encapsulation: ViewEncapsulation.None,
   animations: mskAnimations,
   imports: [MskHighlightComponent, MatTabsModule, MatButtonModule, MatSelectModule, MatFormFieldModule],
 })
-export class MskDocsAnimationComponent implements OnInit {
+export class DocsAnimationsComponent implements OnInit {
   animationStates!: any;
   visibilityStates!: any;
 
