@@ -26,11 +26,11 @@ export const docsRoutes: Route[] = [
           },
           {
             path: 'colors',
-            loadComponent: () => import('@msk/docs/panel/colors').then((r) => r.DocsPanelColorsComponent),
+            loadComponent: () => import('@msk/docs/panel/colors').then((r) => r.DocsColorsComponent),
           },
           {
             path: 'typography',
-            loadComponent: () => import('@msk/docs/panel/typography').then((r) => r.DocsPanelTypographyComponent),
+            loadComponent: () => import('@msk/docs/panel/typography').then((r) => r.DocsTypographyComponent),
           },
           // Ui
           {

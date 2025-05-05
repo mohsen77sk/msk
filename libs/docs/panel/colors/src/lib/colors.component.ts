@@ -6,4 +6,4 @@ import { Component, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
   imports: [],
 })
-export class DocsPanelColorsComponent {}
+export class DocsColorsComponent {}

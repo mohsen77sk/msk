@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DocsPanelColorsComponent } from './colors.component';
+import { DocsColorsComponent } from './colors.component';
 
-describe('DocsPanelColorsComponent', () => {
-  let component: DocsPanelColorsComponent;
-  let fixture: ComponentFixture<DocsPanelColorsComponent>;
+describe('DocsColorsComponent', () => {
+  let component: DocsColorsComponent;
+  let fixture: ComponentFixture<DocsColorsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DocsPanelColorsComponent],
+      imports: [DocsColorsComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DocsPanelColorsComponent);
+    fixture = TestBed.createComponent(DocsColorsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
