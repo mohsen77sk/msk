@@ -63,6 +63,11 @@ export const docsRoutes: Route[] = [
             path: 'services/snackbar',
             loadComponent: () => import('@msk/docs/panel/services/snack-bar').then((r) => r.DocsSnackBarComponent),
           },
+          {
+            path: 'services/splash-screen',
+            loadComponent: () =>
+              import('@msk/docs/panel/services/splash-screen').then((r) => r.DocsSplashScreenComponent),
+          },
           // Pages
           {
             path: 'pages/not-found',

@@ -1,0 +1,25 @@
+<div class="page-layout content-scroll md:py-4" dir="ltr">
+  <!-- Main -->
+  <div class="content prose max-w-full">
+    <h3 class="sticky-header mt-4 md:mt-0">Service</h3>
+    <textarea msk-highlight lang="typescript">
+      import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
+    </textarea>
+
+    <p>
+      <strong>MskSplashScreenService</strong> is a singleton service to control the splash screen. By default, the
+      splash screen goes away automatically as soon as Angular loads for the first time but, you can still show or hide
+      it using the service afterwards.
+    </p>
+
+    <h3 class="sticky-header">Methods</h3>
+    <div class="msk-mat-card-filled mt-4">
+      <div class="text-secondary text-title-small border-b px-6 py-3">show(): void</div>
+      <div class="p-6">Shows the splash screen.</div>
+    </div>
+    <div class="msk-mat-card-filled mt-4">
+      <div class="text-secondary text-title-small border-b px-6 py-3">hide(): void</div>
+      <div class="p-6">Hides the splash screen.</div>
+    </div>
+  </div>
+</div>

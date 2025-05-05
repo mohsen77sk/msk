@@ -82,6 +82,12 @@
             "title": "Snackbar",
             "type": "basic",
             "link": "docs/services/snackbar"
+          },
+          {
+            "id": "docs.services.splash-screen",
+            "title": "Splash screen",
+            "type": "basic",
+            "link": "docs/services/splash-screen"
           }
         ]
       },
