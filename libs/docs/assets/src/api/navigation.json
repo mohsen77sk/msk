@@ -88,6 +88,12 @@
             "title": "Splash screen",
             "type": "basic",
             "link": "docs/services/splash-screen"
+          },
+          {
+            "id": "docs.services.media-watcher",
+            "title": "Media Watcher",
+            "type": "basic",
+            "link": "docs/services/media-watcher"
           }
         ]
       },

@@ -68,6 +68,11 @@ export const docsRoutes: Route[] = [
             loadComponent: () =>
               import('@msk/docs/panel/services/splash-screen').then((r) => r.DocsSplashScreenComponent),
           },
+          {
+            path: 'services/media-watcher',
+            loadComponent: () =>
+              import('@msk/docs/panel/services/media-watcher').then((r) => r.DocsMediaWatcherComponent),
+          },
           // Pages
           {
             path: 'pages/not-found',

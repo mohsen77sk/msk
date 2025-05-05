@@ -1,0 +1,54 @@
+<div class="page-layout content-scroll md:py-4" dir="ltr">
+  <!-- Main -->
+  <div class="content prose max-w-full">
+    <h3 class="sticky-header mt-4 md:mt-0">Service</h3>
+    <textarea msk-highlight lang="typescript">
+      import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
+    </textarea>
+
+    <p>
+      <strong>MskMediaWatcherService</strong> is a singleton service to watch media changes. It automatically registers
+      the breakpoints from layout configuration, so you can use the service without needing to configure it first.
+    </p>
+
+    <h3 class="sticky-header">Methods</h3>
+    <p>To watch changes on registered breakpoints, you can use the <code>onMediaChange$</code> getter:</p>
+    <textarea msk-highlight lang="typescript">
+      import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
+
+      private _mskMediaWatcherService = inject(MskMediaWatcherService);
+
+      /**
+       * On init
+       */
+      ngOnInit(): void {
+        this._mskMediaWatcherService.onMediaChange$.subscribe(({ matchingAliases }) => {
+          // Check if the screen is small
+          this.isFullScreen.set(!matchingAliases.includes('md'));
+        });
+      }
+    </textarea>
+    <p>You can also listen for custom media queries using <code>onMediaQueryChange$(query: string)</code> method:</p>
+    <textarea msk-highlight lang="typescript">
+      import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
+
+      private _mskMediaWatcherService = inject(MskMediaWatcherService);
+
+      /**
+       * On init
+       */
+      ngOnInit(): void {
+        this._mskMediaWatcherService.onMediaQueryChange$([
+          '(prefers-color-scheme: dark)',
+          '(prefers-color-scheme: light)',
+        ]).subscribe((mql) => {
+          // If the scheme is set to 'auto'...
+          if (config.scheme === 'auto') {
+            // Decide the scheme using the media query
+            options.scheme = mql.breakpoints['(prefers-color-scheme: dark)'] ? 'dark' : 'light';
+          }
+        });
+      }
+    </textarea>
+  </div>
+</div>
