@@ -18,6 +18,8 @@
       "@msk/docs/panel/animations": ["libs/docs/panel/animations/src/index.ts"],
       "@msk/docs/panel/colors": ["libs/docs/panel/colors/src/index.ts"],
       "@msk/docs/panel/typography": ["libs/docs/panel/typography/src/index.ts"],
+      "@msk/docs/panel/services/confirmation": ["libs/docs/panel/services/confirmation/src/index.ts"],
+      "@msk/docs/panel/services/snack-bar": ["libs/docs/panel/services/snack-bar/src/index.ts"],
       "@msk/docs/shell/core/navigation": ["libs/docs/shell/core/navigation/src/index.ts"],
       "@msk/docs/shell/feature": ["libs/docs/shell/feature/src/index.ts"],
       "@msk/docs/shell/ui/layout": ["libs/docs/shell/ui/layout/src/index.ts"],

@@ -4,15 +4,14 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MskHighlightComponent } from '@msk/shared/ui/highlight';
-import { MskSnackbarService } from '../snack-bar.service';
+import { MskConfirmationService } from '@msk/shared/services/confirmation';
 
 @Component({
-  selector: 'msk-docs-snack-bar',
-  templateUrl: './docs-snack-bar.component.html',
+  selector: 'doc-confirmation',
+  templateUrl: './confirmation.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [
     JsonPipe,
@@ -21,15 +20,14 @@ import { MskSnackbarService } from '../snack-bar.service';
     MatTabsModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MskHighlightComponent,
   ],
 })
-export class MskDocsSnackbarComponent implements OnInit {
+export class DocsConfirmationComponent implements OnInit {
   private _formBuilder: FormBuilder = inject(FormBuilder);
-  private _mskSnackBarService: MskSnackbarService = inject(MskSnackbarService);
+  private _mskConfirmationService: MskConfirmationService = inject(MskConfirmationService);
 
   configForm!: FormGroup;
 
@@ -43,9 +41,23 @@ export class MskDocsSnackbarComponent implements OnInit {
   ngOnInit(): void {
     // Build the config form
     this.configForm = this._formBuilder.group({
-      type: 'error',
-      title: 'Error',
-      message: '500 Internal Server Error',
+      title: 'Remove contact',
+      message:
+        'Are you sure you want to remove this contact permanently? <br> <span class="font-medium">This action cannot be undone!</span>',
+      icon: this._formBuilder.group({
+        show: false,
+        name: 'delete',
+      }),
+      actions: this._formBuilder.group({
+        confirm: this._formBuilder.group({
+          show: true,
+          label: 'Remove',
+        }),
+        cancel: this._formBuilder.group({
+          show: true,
+          label: 'Cancel',
+        }),
+      }),
       dismissible: true,
     });
   }
@@ -55,10 +67,15 @@ export class MskDocsSnackbarComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Open snackbar
+   * Open confirmation dialog
    */
-  openSnackbar(): void {
-    // Open the snackbar and save the reference of it
-    const snackRef = this._mskSnackBarService.open(this.configForm.value);
+  openConfirmationDialog(): void {
+    // Open the dialog and save the reference of it
+    const dialogRef = this._mskConfirmationService.open(this.configForm.value);
+
+    // Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
   }
 }
