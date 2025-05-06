@@ -2,17 +2,16 @@ import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MskHighlightComponent } from '@msk/shared/ui/highlight';
-import { MskAlertComponent } from '../alert.component';
-import { MskAlertService } from '../alert.service';
+import { MskAlertComponent, MskAlertService } from '@msk/shared/ui/alert';
 
 @Component({
-  selector: 'msk-docs-alert',
-  templateUrl: './docs-alert.component.html',
-  styleUrl: './docs-alert.component.css',
+  selector: 'doc-alert',
+  templateUrl: './alert.component.html',
+  styleUrl: './alert.component.css',
   encapsulation: ViewEncapsulation.None,
   imports: [MskAlertComponent, MskHighlightComponent, MatTabsModule, MatButtonModule],
 })
-export class MskDocsAlertComponent {
+export class DocAlertComponent {
   private _mskAlertService = inject(MskAlertService);
 
   // -----------------------------------------------------------------------------------------------------

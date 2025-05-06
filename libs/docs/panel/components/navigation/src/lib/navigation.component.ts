@@ -3,9 +3,9 @@ import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskHighlightComponent } from '@msk/shared/ui/highlight';
 
 @Component({
-  selector: 'msk-docs-navigation',
-  templateUrl: './docs-navigation.component.html',
+  selector: 'doc-navigation',
+  templateUrl: './navigation.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [MskAlertComponent, MskHighlightComponent],
 })
-export class MskDocsNavigationComponent {}
+export class DocNavigationComponent {}

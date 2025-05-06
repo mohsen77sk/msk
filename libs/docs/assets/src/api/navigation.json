@@ -28,40 +28,40 @@
         "link": "docs/typography"
       },
       {
-        "id": "docs.ui",
-        "title": "Ui",
+        "id": "docs.components",
+        "title": "Components",
         "type": "collapsable",
         "icon": "responsive_layout",
         "children": [
           {
-            "id": "docs.ui.alert",
+            "id": "docs.components.alert",
             "title": "Alert",
             "type": "basic",
-            "link": "docs/ui/alert"
+            "link": "docs/components/alert"
           },
           {
-            "id": "docs.ui.fullscreen",
+            "id": "docs.components.fullscreen",
             "title": "Fullscreen",
             "type": "basic",
-            "link": "docs/ui/fullscreen"
+            "link": "docs/components/fullscreen"
           },
           {
-            "id": "docs.ui.highlight",
+            "id": "docs.components.highlight",
             "title": "Highlight",
             "type": "basic",
-            "link": "docs/ui/highlight"
+            "link": "docs/components/highlight"
           },
           {
-            "id": "docs.ui.loading-bar",
+            "id": "docs.components.loading-bar",
             "title": "Loading bar",
             "type": "basic",
-            "link": "docs/ui/loading-bar"
+            "link": "docs/components/loading-bar"
           },
           {
-            "id": "docs.ui.navigation",
+            "id": "docs.components.navigation",
             "title": "Navigation",
             "type": "basic",
-            "link": "docs/ui/navigation"
+            "link": "docs/components/navigation"
           }
         ]
       },

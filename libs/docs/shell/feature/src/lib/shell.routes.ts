@@ -34,24 +34,24 @@ export const docsRoutes: Route[] = [
           },
           // Ui
           {
-            path: 'ui/alert',
-            loadComponent: () => import('@msk/shared/ui/alert').then((r) => r.MskDocsAlertComponent),
+            path: 'components/alert',
+            loadComponent: () => import('@msk/docs/panel/components/alert').then((r) => r.DocAlertComponent),
           },
           {
-            path: 'ui/fullscreen',
-            loadComponent: () => import('@msk/shared/ui/fullscreen').then((r) => r.MskDocsFullscreenComponent),
+            path: 'components/fullscreen',
+            loadComponent: () => import('@msk/docs/panel/components/fullscreen').then((r) => r.DocFullscreenComponent),
           },
           {
-            path: 'ui/highlight',
-            loadComponent: () => import('@msk/shared/ui/highlight').then((r) => r.MskDocsHighlightComponent),
+            path: 'components/highlight',
+            loadComponent: () => import('@msk/docs/panel/components/highlight').then((r) => r.DocHighlightComponent),
           },
           {
-            path: 'ui/loading-bar',
-            loadComponent: () => import('@msk/shared/ui/loading-bar').then((r) => r.MskDocsLoadingBarComponent),
+            path: 'components/loading-bar',
+            loadComponent: () => import('@msk/docs/panel/components/loading-bar').then((r) => r.DocLoadingBarComponent),
           },
           {
-            path: 'ui/navigation',
-            loadComponent: () => import('@msk/shared/ui/navigation').then((r) => r.MskDocsNavigationComponent),
+            path: 'components/navigation',
+            loadComponent: () => import('@msk/docs/panel/components/navigation').then((r) => r.DocNavigationComponent),
           },
           // Services
           {

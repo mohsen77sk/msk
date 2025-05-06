@@ -2,15 +2,15 @@ import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MskHighlightComponent } from '@msk/shared/ui/highlight';
-import { MskLoadingBarService } from '../loading-bar.service';
+import { MskLoadingBarService } from '@msk/shared/ui/loading-bar';
 
 @Component({
-  selector: 'msk-docs-loading-bar',
-  templateUrl: './docs-loading-bar.component.html',
+  selector: 'doc-loading-bar',
+  templateUrl: './loading-bar.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [MskHighlightComponent, MatTabsModule, MatButtonModule],
 })
-export class MskDocsLoadingBarComponent {
+export class DocLoadingBarComponent {
   private _mskLoadingService = inject(MskLoadingBarService);
 
   // -----------------------------------------------------------------------------------------------------
