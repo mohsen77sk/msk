@@ -1,0 +1,128 @@
+[
+  {
+    "id": "docs",
+    "title": "Documentation",
+    "tooltip": "Documentation",
+    "type": "group",
+    "icon": "layers",
+    "children": [
+      {
+        "id": "docs.animations",
+        "title": "Animations",
+        "type": "basic",
+        "icon": "animation",
+        "link": "docs/animations"
+      },
+      {
+        "id": "docs.colors",
+        "title": "Colors",
+        "type": "basic",
+        "icon": "colors",
+        "link": "docs/colors"
+      },
+      {
+        "id": "docs.typography",
+        "title": "Typography",
+        "type": "basic",
+        "icon": "format_paragraph",
+        "link": "docs/typography"
+      },
+      {
+        "id": "docs.components",
+        "title": "Components",
+        "type": "collapsable",
+        "icon": "responsive_layout",
+        "children": [
+          {
+            "id": "docs.components.alert",
+            "title": "Alert",
+            "type": "basic",
+            "link": "docs/components/alert"
+          },
+          {
+            "id": "docs.components.fullscreen",
+            "title": "Fullscreen",
+            "type": "basic",
+            "link": "docs/components/fullscreen"
+          },
+          {
+            "id": "docs.components.highlight",
+            "title": "Highlight",
+            "type": "basic",
+            "link": "docs/components/highlight"
+          },
+          {
+            "id": "docs.components.loading-bar",
+            "title": "Loading bar",
+            "type": "basic",
+            "link": "docs/components/loading-bar"
+          },
+          {
+            "id": "docs.components.navigation",
+            "title": "Navigation",
+            "type": "basic",
+            "link": "docs/components/navigation"
+          }
+        ]
+      },
+      {
+        "id": "docs.services",
+        "title": "Services",
+        "type": "collapsable",
+        "icon": "layers",
+        "children": [
+          {
+            "id": "docs.services.confirmation",
+            "title": "Confirmation",
+            "type": "basic",
+            "link": "docs/services/confirmation"
+          },
+          {
+            "id": "docs.services.snackbar",
+            "title": "Snackbar",
+            "type": "basic",
+            "link": "docs/services/snackbar"
+          },
+          {
+            "id": "docs.services.splash-screen",
+            "title": "Splash screen",
+            "type": "basic",
+            "link": "docs/services/splash-screen"
+          },
+          {
+            "id": "docs.services.media-watcher",
+            "title": "Media Watcher",
+            "type": "basic",
+            "link": "docs/services/media-watcher"
+          }
+        ]
+      },
+      {
+        "id": "docs.pages",
+        "title": "Pages",
+        "type": "collapsable",
+        "icon": "pages",
+        "children": [
+          {
+            "id": "docs.pages.not-found",
+            "title": "Not found",
+            "type": "basic",
+            "link": "docs/pages/not-found"
+          },
+          {
+            "id": "docs.pages.internal-server-error",
+            "title": "Internal server error",
+            "type": "basic",
+            "link": "docs/pages/internal-server-error"
+          },
+          {
+            "id": "docs.pages.maintenance",
+            "title": "Maintenance",
+            "type": "basic",
+            "link": "docs/pages/maintenance"
+          }
+        ]
+      }
+    ]
+  }
+]
