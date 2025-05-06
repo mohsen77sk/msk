@@ -4,9 +4,8 @@
   "license": "MIT",
   "scripts": {
     "lint": "npx nx run-many --target=lint --all=true",
-    "build-doc": "npx nx run doc:build --configuration=production",
-    "build-main": "npx nx run main:build --configuration=production",
-    "build-demo": "npx nx run doc:build --configuration=production --base-Href=/msk/"
+    "build-docs": "npx nx run docs:build --configuration=production --base-Href=/msk/",
+    "build-main": "npx nx run main:build --configuration=production"
   },
   "private": true,
   "dependencies": {

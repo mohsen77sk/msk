@@ -39,8 +39,11 @@ jobs:
       - name: Lint Project
         run: npm run lint
 
+      - name: Build Docs Application
+        run: npm run build-docs
+
       - name: Build Main Application
-        run: npm run build-demo
+        run: npm run build-main
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -65,4 +68,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist/apps/main/browser
+          publish_dir: dist/apps/docs/browser
