@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { DocsAnimationsComponent } from './animations.component';
 
 describe('DocsAnimationsComponent', () => {
@@ -7,7 +8,7 @@ describe('DocsAnimationsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DocsAnimationsComponent],
+      imports: [provideAnimations(), DocsAnimationsComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DocsAnimationsComponent);
