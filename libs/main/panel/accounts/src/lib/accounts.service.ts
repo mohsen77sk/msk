@@ -11,6 +11,9 @@ import {
   IUpdateAccount,
   ICloseAccount,
   IBalanceAccount,
+  AccountTransaction,
+  ICreateAccountTransaction,
+  IUpdateAccountTransaction,
 } from './accounts.types';
 
 @Injectable({ providedIn: 'root' })
@@ -161,5 +164,38 @@ export class AccountService {
         }
       })
     );
+  }
+
+  /**
+   * Create account transaction
+   *
+   * @param transaction
+   */
+  createAccountTransaction(transaction: ICreateAccountTransaction): Observable<AccountTransaction> {
+    return this._httpClient
+      .post<AccountTransaction>(`${this._appConfig.apiEndpoint}/api/accountTransaction`, transaction)
+      .pipe(map((response) => new AccountTransaction(response)));
+  }
+
+  /**
+   * Update account transaction
+   *
+   * @param transaction
+   */
+  updateAccountTransaction(transaction: IUpdateAccountTransaction): Observable<AccountTransaction> {
+    return this._httpClient
+      .put<AccountTransaction>(`${this._appConfig.apiEndpoint}/api/accountTransaction`, transaction)
+      .pipe(map((response) => new AccountTransaction(response)));
+  }
+
+  /**
+   * Delete account transaction
+   *
+   * @param transaction
+   */
+  deleteAccountTransaction(transactionId: number): Observable<boolean> {
+    return this._httpClient
+      .delete<boolean>(`${this._appConfig.apiEndpoint}/api/accountTransaction/${transactionId}`)
+      .pipe(map((response) => response));
   }
 }

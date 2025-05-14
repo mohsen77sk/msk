@@ -14,6 +14,15 @@
     "note": "Note",
     "status": "Status"
   },
+  "transaction": {
+    "new-1": "New Credit",
+    "new-2": "New Withdrawal",
+    "new-3": "New Transfer",
+    "destination": "Destination account",
+    "amount": "Amount",
+    "date": "Date",
+    "note": "Note"
+  },
   "search": "Search accounts",
   "empty-list": "There are no accounts!",
   "info-edit-title": "Info",

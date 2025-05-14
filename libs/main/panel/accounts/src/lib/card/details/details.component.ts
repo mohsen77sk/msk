@@ -9,7 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MskDialogData, MskHttpErrorResponse, MskLookupItem, MskLookupResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
@@ -30,8 +31,15 @@ import {
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
 import { PeopleService } from '@msk/main/panel/people';
-import { Account, ICloseAccount, IUpdateAccount } from '../../accounts.types';
 import { AccountService } from '../../accounts.service';
+import {
+  Account,
+  AccountTransactionTypeEnum,
+  ICloseAccount,
+  ICreateAccountTransaction,
+  IUpdateAccount,
+} from '../../accounts.types';
+import { AccountsCreateTransactionComponent } from '../../common/create-transaction/create-transaction.component';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 
 @Component({
@@ -50,11 +58,12 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
     MatInputModule,
     MatRippleModule,
     MatButtonModule,
+    MatDialogModule,
     MatSelectModule,
     MatTooltipModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    MatDialogModule,
+    MatProgressSpinnerModule,
     TranslocoPipe,
     TranslocoDirective,
     MskAlertComponent,
@@ -70,6 +79,7 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 export class AccountsCardDetailsComponent implements OnInit {
   readonly data = inject<MskDialogData<Account | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<AccountsCardDetailsComponent>);
+  private _matDialog = inject(MatDialog);
   private _formBuilder = inject(FormBuilder);
   private _peopleService = inject(PeopleService);
   private _accountService = inject(AccountService);
@@ -81,6 +91,8 @@ export class AccountsCardDetailsComponent implements OnInit {
   formErrors: FormError = {};
   personList$: Observable<MskLookupResponse> = this._peopleService.getLookupPersons();
   accountTypeList$: Observable<MskLookupResponse> = this._accountService.getLookupAccountTypes();
+  AccountTransactionTypeEnum = AccountTransactionTypeEnum;
+  isLoadingBalance = signal(false);
 
   alert = signal({
     show: false,
@@ -178,6 +190,55 @@ export class AccountsCardDetailsComponent implements OnInit {
         )
         .subscribe();
     });
+  }
+
+  /**
+   * Open the create transaction dialog
+   *
+   * @param transactionType
+   */
+  openCreateTransaction(transactionType: AccountTransactionTypeEnum): void {
+    // Launch the modal
+    this._matDialog
+      .open(AccountsCreateTransactionComponent, {
+        autoFocus: true,
+        disableClose: true,
+        data: {
+          action: signal('new'),
+          item: signal<ICreateAccountTransaction>({
+            sourceAccountId: this.data.item()?.id ?? 0,
+            transactionType: transactionType,
+          }),
+        },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result != 'cancelled') {
+          // Set loading balance
+          this.isLoadingBalance.set(true);
+          // Get the balance
+          this._accountService
+            .getBalanceAccount(this.data.item()?.id ?? 0)
+            .pipe(
+              tap((response) => {
+                // Update the balance value
+                this.data.item.set({ ...this.data.item(), balance: response.balance } as Account);
+                this.isLoadingBalance.set(false);
+              }),
+              catchError((response: MskHttpErrorResponse) => {
+                // Show error
+                this._mskSnackbarService.error(response.error.message);
+                // Update the balance value
+                this.data.item.set({ ...this.data.item(), balance: 0 } as Account);
+                // Show balance
+                this.isLoadingBalance.set(false);
+                // Return
+                return EMPTY;
+              })
+            )
+            .subscribe();
+        }
+      });
   }
 
   /**

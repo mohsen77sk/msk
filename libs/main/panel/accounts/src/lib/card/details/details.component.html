@@ -31,20 +31,24 @@
   @if (data.item()?.isActive) {
   <div class="flex flex-col gap-4 p-4">
     <span class="text-on-surface-variant text-label-medium">{{ t('credit') }}</span>
-    <span class="text-on-surface text-title-large">
+    <span class="text-on-surface text-title-large h-8">
+      @if (isLoadingBalance()) {
+      <mat-spinner diameter="24"></mat-spinner>
+      } @else {
       {{ data.item()?.balance | number }} <small mskCurrencySymbol></small>
+      }
     </span>
   </div>
   <div class="grid grid-cols-3 gap-4 py-4" *transloco="let t">
-    <button mat-flat-button>
+    <button mat-flat-button (click)="openCreateTransaction(AccountTransactionTypeEnum.Deposit)">
       <mat-icon class="hidden sm:block">arrow_upward</mat-icon>
       {{ t('deposit') }}
     </button>
-    <button mat-stroked-button>
+    <button mat-stroked-button (click)="openCreateTransaction(AccountTransactionTypeEnum.Withdrawal)">
       <mat-icon class="hidden sm:block">arrow_downward</mat-icon>
       {{ t('withdraw') }}
     </button>
-    <button mat-stroked-button>
+    <button mat-stroked-button (click)="openCreateTransaction(AccountTransactionTypeEnum.Transfer)">
       <mat-icon class="hidden sm:block">swap_horiz</mat-icon>
       {{ t('transfer') }}
     </button>

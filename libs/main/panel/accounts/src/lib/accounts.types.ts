@@ -68,3 +68,43 @@ export class AccountPeople {
     this.name = input.name;
   }
 }
+
+export interface ICreateAccountTransaction {
+  sourceAccountId: number;
+  destinationAccountId?: number;
+  transactionType?: AccountTransactionTypeEnum;
+  date?: Date;
+  amount?: number;
+  note?: string;
+}
+
+export interface IUpdateAccountTransaction {
+  id: number;
+  note?: string;
+}
+
+export class AccountTransaction {
+  id: number;
+  code: string;
+  credit: number;
+  debit: number;
+  date: Date;
+  note: string;
+  editable: boolean;
+
+  constructor(input: AccountTransaction) {
+    this.id = input.id;
+    this.code = input.code;
+    this.credit = input.credit;
+    this.debit = input.debit;
+    this.date = new Date(input.date);
+    this.note = input.note;
+    this.editable = input.editable ?? false;
+  }
+}
+
+export enum AccountTransactionTypeEnum {
+  Deposit = 1,
+  Withdrawal = 2,
+  Transfer = 3,
+}
