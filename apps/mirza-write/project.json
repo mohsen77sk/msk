@@ -19,23 +19,46 @@
           {
             "glob": "**/*",
             "input": "apps/mirza-write/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/mirza/assets/src",
+            "output": "assets"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/shared/assets/src",
+            "output": "assets"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/shared/services/splash-screen/src/lib/assets",
+            "output": "assets"
           }
         ],
-        "styles": ["apps/mirza-write/src/styles.css"],
-        "scripts": []
+        "styles": [
+          "libs/shared/styles/src/themes.scss",
+          "libs/shared/styles/src/module.css",
+          "apps/mirza-write/src/styles.css"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": ["libs/shared/styles/src"]
+        },
+        "scripts": [],
+        "allowedCommonJsDependencies": ["flat"]
       },
       "configurations": {
         "production": {
           "budgets": [
             {
               "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumWarning": "2mb",
+              "maximumError": "3mb"
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "8kb"
+              "maximumWarning": "20kb",
+              "maximumError": "40kb"
             }
           ],
           "outputHashing": "all"

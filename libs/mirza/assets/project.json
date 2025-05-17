@@ -1,0 +1,7 @@
+{
+  "name": "mirza-assets",
+  "sourceRoot": "libs/mirza/assets",
+  "tags": ["scope:mirza"],
+  "projectType": "library",
+  "targets": {}
+}
