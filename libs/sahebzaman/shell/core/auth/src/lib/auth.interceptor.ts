@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { MainAuthService } from './auth.service';
+import { AuthService } from './auth.service';
 import { AuthUtils } from './auth.utils';
 import { Router } from '@angular/router';
 
@@ -11,9 +11,9 @@ import { Router } from '@angular/router';
  * @param req
  * @param next
  */
-export const mainAuthInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
+export const authInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
   const router = inject(Router);
-  const authService = inject(MainAuthService);
+  const authService = inject(AuthService);
 
   // Clone the request object
   let newReq = req.clone();

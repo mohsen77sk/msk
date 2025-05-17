@@ -1,11 +1,11 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { EnvironmentProviders, inject, Provider, provideEnvironmentInitializer } from '@angular/core';
-import { mainAuthInterceptor } from './auth.interceptor';
-import { MainAuthService } from './auth.service';
+import { authInterceptor } from './auth.interceptor';
+import { AuthService } from './auth.service';
 
-export const provideMainAuth = (): Array<Provider | EnvironmentProviders> => {
+export const provideAuth = (): Array<Provider | EnvironmentProviders> => {
   return [
-    provideHttpClient(withInterceptors([mainAuthInterceptor])),
-    provideEnvironmentInitializer(() => inject(MainAuthService)),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    provideEnvironmentInitializer(() => inject(AuthService)),
   ];
 };

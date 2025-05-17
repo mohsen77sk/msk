@@ -8,11 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MskFullscreenComponent } from '@msk/shared/ui/fullscreen';
 import { MskNavigationService, MskVerticalNavigationComponent } from '@msk/shared/ui/navigation';
 import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
-import { MainNavigationService, Navigation } from '@msk/sahebzaman/shell/core/navigation';
+import { NavigationService, Navigation } from '@msk/sahebzaman/shell/core/navigation';
 import { cloneDeep } from 'lodash-es';
-import { MainUserComponent } from '../../common/user/user.component';
-import { MainLanguagesComponent } from '../../common/languages/languages.component';
-import { MainPageTitleComponent } from '../../common/page-title/page-title.component';
+import { UserComponent } from '../../common/user/user.component';
+import { LanguagesComponent } from '../../common/languages/languages.component';
+import { PageTitleComponent } from '../../common/page-title/page-title.component';
 
 @Component({
   selector: 'sz-layout-material',
@@ -25,15 +25,15 @@ import { MainPageTitleComponent } from '../../common/page-title/page-title.compo
     MatButtonModule,
     MskFullscreenComponent,
     MskVerticalNavigationComponent,
-    MainUserComponent,
-    MainLanguagesComponent,
-    MainPageTitleComponent,
+    UserComponent,
+    LanguagesComponent,
+    PageTitleComponent,
     TranslocoDirective,
   ],
 })
-export class MainLayoutMaterialComponent implements OnInit {
+export class LayoutMaterialComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
-  private _navigationService = inject(MainNavigationService);
+  private _navigationService = inject(NavigationService);
   private _mskNavigationService = inject(MskNavigationService);
   private _mskMediaWatcherService = inject(MskMediaWatcherService);
 

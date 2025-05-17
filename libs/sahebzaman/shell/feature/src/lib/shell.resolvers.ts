@@ -1,11 +1,11 @@
 import { inject } from '@angular/core';
 import { forkJoin } from 'rxjs';
-import { MainUserService } from '@msk/sahebzaman/shell/core/user';
-import { MainNavigationService } from '@msk/sahebzaman/shell/core/navigation';
+import { UserService } from '@msk/sahebzaman/shell/core/user';
+import { NavigationService } from '@msk/sahebzaman/shell/core/navigation';
 
-export const initialMainDataResolver = () => {
-  const userService = inject(MainUserService);
-  const navigationService = inject(MainNavigationService);
+export const initialDataResolver = () => {
+  const userService = inject(UserService);
+  const navigationService = inject(NavigationService);
 
   // Fork join multiple API endpoint calls to wait all of them to finish
   return forkJoin([userService.get(), navigationService.get()]);

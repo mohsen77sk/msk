@@ -9,17 +9,17 @@ import { LayoutConfig, LayoutScheme, LayoutTheme, LayoutType } from '@msk/shared
 import { MskLayoutConfigService } from '@msk/shared/services/config';
 import { MskLoadingBarComponent } from '@msk/shared/ui/loading-bar';
 import { combineLatest, filter, map } from 'rxjs';
-import { MainLayoutEmptyComponent } from './layouts/empty/empty.component';
-import { MainLayoutMaterialComponent } from './layouts/material/material.component';
+import { LayoutEmptyComponent } from './layouts/empty/empty.component';
+import { LayoutMaterialComponent } from './layouts/material/material.component';
 
 @Component({
   selector: 'sz-layout',
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
   encapsulation: ViewEncapsulation.None,
-  imports: [BidiModule, MskLoadingBarComponent, MainLayoutEmptyComponent, MainLayoutMaterialComponent],
+  imports: [BidiModule, MskLoadingBarComponent, LayoutEmptyComponent, LayoutMaterialComponent],
 })
-export class MainLayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit {
   private _router = inject(Router);
   private _document = inject(DOCUMENT);
   private _renderer2 = inject(Renderer2);

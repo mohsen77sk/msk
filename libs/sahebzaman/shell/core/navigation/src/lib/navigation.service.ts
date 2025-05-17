@@ -5,7 +5,7 @@ import { Observable, ReplaySubject, tap } from 'rxjs';
 import { Navigation } from './navigation.types';
 
 @Injectable({ providedIn: 'root' })
-export class MainNavigationService {
+export class NavigationService {
   private _httpClient = inject(HttpClient);
   private _translocoService = inject(TranslocoService);
   private _navigation: ReplaySubject<Navigation> = new ReplaySubject<Navigation>(1);

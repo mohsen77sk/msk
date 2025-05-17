@@ -13,7 +13,7 @@ import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/confi
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, MatRadioModule, MatDialogModule, TranslocoDirective],
 })
-export class MainLayoutSchemeDialogComponent implements OnInit {
+export class LayoutSchemeDialogComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _layoutConfigService = inject(MskLayoutConfigService);
 

@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, ReplaySubject, map, tap } from 'rxjs';
+import { Observable, ReplaySubject, tap } from 'rxjs';
 import { User } from './user.types';
 
 @Injectable({ providedIn: 'root' })
-export class MainUserService {
+export class UserService {
   private _httpClient = inject(HttpClient);
   private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
 

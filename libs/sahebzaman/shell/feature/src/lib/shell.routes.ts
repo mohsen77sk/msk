@@ -1,9 +1,9 @@
 import { Route } from '@angular/router';
 import { AuthGuard, NoAuthGuard } from '@msk/sahebzaman/shell/core/auth';
-import { MainLayoutComponent } from '@msk/sahebzaman/shell/ui/layout';
-import { initialMainDataResolver } from './shell.resolvers';
+import { LayoutComponent } from '@msk/sahebzaman/shell/ui/layout';
+import { initialDataResolver } from './shell.resolvers';
 
-export const mainRoutes: Route[] = [
+export const routes: Route[] = [
   // Redirect empty path to '/panel/dashboard'
   { path: '', pathMatch: 'full', redirectTo: 'panel/dashboard' },
   { path: 'panel', pathMatch: 'full', redirectTo: 'panel/dashboard' },
@@ -24,7 +24,7 @@ export const mainRoutes: Route[] = [
     path: '',
     canActivate: [NoAuthGuard],
     canActivateChild: [NoAuthGuard],
-    component: MainLayoutComponent,
+    component: LayoutComponent,
     data: {
       layoutType: 'empty',
     },
@@ -41,7 +41,7 @@ export const mainRoutes: Route[] = [
     path: '',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
-    component: MainLayoutComponent,
+    component: LayoutComponent,
     data: {
       layoutType: 'empty',
     },
@@ -58,9 +58,9 @@ export const mainRoutes: Route[] = [
     path: '',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
-    component: MainLayoutComponent,
+    component: LayoutComponent,
     resolve: {
-      initial: initialMainDataResolver,
+      initial: initialDataResolver,
     },
     children: [
       // Panel
@@ -91,7 +91,7 @@ export const mainRoutes: Route[] = [
   // Error routes & Catch all
   {
     path: '',
-    component: MainLayoutComponent,
+    component: LayoutComponent,
     data: {
       layoutType: 'empty',
     },

@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { MainUserService } from '@msk/sahebzaman/shell/core/user';
+import { UserService } from '@msk/sahebzaman/shell/core/user';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { catchError, finalize, Observable, of, switchMap, throwError } from 'rxjs';
 import { AuthUtils } from './auth.utils';
 import { LoginRequest, LoginResponse } from './auth.types';
 
 @Injectable({ providedIn: 'root' })
-export class MainAuthService {
+export class AuthService {
   private _authenticated = false;
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
-  private _userService = inject(MainUserService);
+  private _userService = inject(UserService);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors

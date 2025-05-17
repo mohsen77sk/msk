@@ -18,7 +18,7 @@ import { filter } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainPageTitleComponent implements AfterViewInit {
+export class PageTitleComponent implements AfterViewInit {
   private _destroyRef = inject(DestroyRef);
   private _router = inject(Router);
   private _activatedRoute = inject(ActivatedRoute);

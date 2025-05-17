@@ -24,9 +24,9 @@ import { provideMskMatIntl } from '@msk/shared/utils/material-intl';
 import { provideMskServiceWorker } from '@msk/shared/utils/service-worker';
 import { provideMskTransloco } from '@msk/shared/utils/transloco';
 import { provideMskLoading } from '@msk/shared/utils/loading';
-import { provideMainAuth } from '@msk/sahebzaman/shell/core/auth';
+import { provideAuth } from '@msk/sahebzaman/shell/core/auth';
 
-import { mainRoutes } from './shell.routes';
+import { routes } from './shell.routes';
 
 import localeFaIR from '@angular/common/locales/fa';
 import { localeDate } from '@msk/sahebzaman/shell/ui/layout';
@@ -35,7 +35,7 @@ registerLocaleData(localeFaIR, 'fa-IR');
 /**
  * Shell provider
  */
-export const provideMainShell = (config: LayoutConfig): Array<Provider | EnvironmentProviders> => {
+export const provideShell = (config: LayoutConfig): Array<Provider | EnvironmentProviders> => {
   // Base providers
   const providers: Array<Provider | EnvironmentProviders> = [
     {
@@ -89,13 +89,13 @@ export const provideMainShell = (config: LayoutConfig): Array<Provider | Environ
 
     // Route
     provideRouter(
-      mainRoutes,
+      routes,
       withPreloading(PreloadAllModules),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
 
     // Provide Auth
-    provideMainAuth(),
+    provideAuth(),
 
     // Material Date Adapter
     provideDateFnsAdapter(),

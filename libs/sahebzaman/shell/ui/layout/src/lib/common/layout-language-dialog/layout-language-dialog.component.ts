@@ -18,7 +18,7 @@ import { locale, localeDate } from '../../layout.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, MatRadioModule, MatDialogModule, TranslocoDirective],
 })
-export class MainLayoutLanguageDialogComponent implements OnInit {
+export class LayoutLanguageDialogComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _dateAdapter = inject(DateAdapter<Locale>);
   private _translocoService = inject(TranslocoService);

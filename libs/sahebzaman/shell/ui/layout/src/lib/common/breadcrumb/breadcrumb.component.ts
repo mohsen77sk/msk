@@ -22,7 +22,7 @@ import { filter } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgClass, MatIcon],
 })
-export class MainBreadcrumbComponent implements AfterViewInit {
+export class BreadcrumbComponent implements AfterViewInit {
   private _destroyRef = inject(DestroyRef);
   private _router = inject(Router);
   private _activatedRoute = inject(ActivatedRoute);

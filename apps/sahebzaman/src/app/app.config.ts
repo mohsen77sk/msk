@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { locale } from '@msk/sahebzaman/shell/ui/layout';
-import { provideMainShell } from '@msk/sahebzaman/shell/feature';
+import { provideShell } from '@msk/sahebzaman/shell/feature';
 import { provideMskAppConfig } from '@msk/shared/utils/app-config';
 
 import { environment } from '../environments/environment';
@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(),
     provideMskAppConfig(environment),
-    provideMainShell({
+    provideShell({
       locale: locale['fa'],
       type: 'material',
       scheme: 'auto',

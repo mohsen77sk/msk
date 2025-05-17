@@ -18,7 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MainAuthService } from '@msk/sahebzaman/shell/core/auth';
+import { AuthService } from '@msk/sahebzaman/shell/core/auth';
 import { MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent, MskAlertType } from '@msk/shared/ui/alert';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
@@ -52,7 +52,7 @@ export class SignInComponent implements OnInit {
   private _formBuilder = inject(FormBuilder);
   private _activatedRoute = inject(ActivatedRoute);
   private _changeDetectorRef = inject(ChangeDetectorRef);
-  private _authService = inject(MainAuthService);
+  private _authService = inject(AuthService);
 
   signInNgForm = viewChild.required<NgForm>('signInNgForm');
 

@@ -7,4 +7,4 @@ import { RouterOutlet } from '@angular/router';
   encapsulation: ViewEncapsulation.None,
   imports: [RouterOutlet],
 })
-export class MainLayoutEmptyComponent {}
+export class LayoutEmptyComponent {}

@@ -19,9 +19,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
 import { availableLangs } from '@msk/shared/utils/transloco';
-import { MainUserService, User } from '@msk/sahebzaman/shell/core/user';
-import { MainLayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
-import { MainLayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
+import { UserService, User } from '@msk/sahebzaman/shell/core/user';
+import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
+import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
 
 @Component({
   selector: 'sz-user',
@@ -31,11 +31,11 @@ import { MainLayoutLanguageDialogComponent } from '../layout-language-dialog/lay
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgClass, MatMenuModule, MatIconModule, MatButtonModule, MatDialogModule, TranslocoDirective],
 })
-export class MainUserComponent implements OnInit {
+export class UserComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _router = inject(Router);
   private _dialog = inject(MatDialog);
-  private _userService = inject(MainUserService);
+  private _userService = inject(UserService);
   private _translocoService = inject(TranslocoService);
   private _layoutConfigService = inject(MskLayoutConfigService);
   private _changeDetectorRef = inject(ChangeDetectorRef);
@@ -87,14 +87,14 @@ export class MainUserComponent implements OnInit {
    * Open schema dialog
    */
   openLayoutSchemeDialog() {
-    this._dialog.open(MainLayoutSchemeDialogComponent).afterClosed().subscribe();
+    this._dialog.open(LayoutSchemeDialogComponent).afterClosed().subscribe();
   }
 
   /**
    * Open language dialog
    */
   openLayoutLanguageDialog() {
-    this._dialog.open(MainLayoutLanguageDialogComponent).afterClosed().subscribe();
+    this._dialog.open(LayoutLanguageDialogComponent).afterClosed().subscribe();
   }
 
   /**
