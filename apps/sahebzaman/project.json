@@ -114,7 +114,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "sahebzaman:build",
-        "port": 5100,
+        "port": 5200,
         "staticFilePath": "dist/apps/sahebzaman/browser",
         "spa": true
       }
