@@ -42,8 +42,8 @@ jobs:
       - name: Build Docs Application
         run: npm run build-docs
 
-      - name: Build Main Application
-        run: npm run build-main
+      - name: Build Sahebzaman Application
+        run: npm run build-sahebzaman
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

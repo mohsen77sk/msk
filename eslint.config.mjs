@@ -17,7 +17,7 @@ export default [
           allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?js$'],
           depConstraints: [
             {
-              sourceTag: 'scope:main-app',
+              sourceTag: 'scope:sahebzaman-app',
               onlyDependOnLibsWithTags: ['scope:shared', 'scope:main'],
             },
             {

@@ -19,7 +19,7 @@
 └── root
     ├── apps
     │    ├── docs (angular)
-    │    └── main (angular)
+    │    └── sahebzaman (angular)
     └── libs
         ├── docs (dir)
         │    ├── assets (dir)
@@ -32,7 +32,7 @@
         │         ├── colors (dir)
         │         ├── typography (dir)
         │         └── ...
-        ├── main (dir)
+        ├── sahebzaman (dir)
         │    ├── assets (dir)
         │    ├── shell (dir)
         │    │    ├── core (dir)
