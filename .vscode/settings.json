@@ -1,4 +1,5 @@
 {
   "cSpell.words": ["fullscreen", "transloco"],
-  "cSpell.language": "en,fa"
+  "cSpell.language": "en,fa",
+  "nxConsole.generateAiAgentRules": true
 }
