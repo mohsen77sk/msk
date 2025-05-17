@@ -1,0 +1,20 @@
+{
+  "name": "sahebzaman-auth-sign-in",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/sahebzaman/auth/sign-in/src",
+  "prefix": "sz",
+  "projectType": "library",
+  "tags": ["scope:sahebzaman", "type:feature"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/sahebzaman/auth/sign-in/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

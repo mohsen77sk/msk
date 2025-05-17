@@ -1,0 +1,76 @@
+<div class="page-layout grid-scroll">
+  <!-- Header -->
+  <div class="header" *transloco="let t">
+    <form class="flex w-full items-center" [formGroup]="filterForm">
+      <div class="msk-mat-search-bar w-full">
+        <mat-icon>search</mat-icon>
+        <input formControlName="search" autocomplete="off" [placeholder]="t('accounts.search')" />
+      </div>
+    </form>
+  </div>
+
+  <!-- Main -->
+  <div class="content">
+    <!-- List -->
+    <div class="content-grid" cdkScrollable>
+      <!-- Rows -->
+      @for (account of (accounts$ | async)?.items; track account.id) {
+      <div class="content-grid-item tow-line" [routerLink]="['card', 'view', account.id]" matRipple>
+        <!-- Avatar -->
+        <div class="content-grid-item-avatar">
+          <msk-avatar [name]="account.persons[0].name"></msk-avatar>
+        </div>
+        <!-- Content -->
+        <div class="content-grid-item-content">
+          <div class="truncate">
+            {{ account.fullName }}
+          </div>
+          <div class="flex items-center gap-2 truncate">
+            <span>#{{ account.code }}</span>
+          </div>
+        </div>
+        <!-- End -->
+        <div class="content-grid-item-end">
+          <sz-accounts-status [value]="account.isActive"></sz-accounts-status>
+        </div>
+      </div>
+      } @empty {
+      <div
+        class="text-secondary text-title-medium flex flex-1 items-center justify-center p-8 text-center"
+        *transloco="let t"
+      >
+        {{ t('accounts.empty-list') }}
+      </div>
+      }
+    </div>
+
+    <!-- Fab -->
+    <div class="content-fab-container">
+      <button
+        mat-fab
+        extended
+        [routerLink]="['card', 'new']"
+        [ngClass]="{ 'mat-mdc-extended-fab-collapses': isFabCollapses() }"
+        @zoomIn
+      >
+        <mat-icon>add</mat-icon>
+        <span *transloco="let t">{{ t('new') }}</span>
+      </button>
+    </div>
+
+    <mat-paginator
+      class="content-paginator"
+      [length]="(accounts$ | async)?.total"
+      [pageIndex]="(accounts$ | async)?.pageIndex"
+      [pageSize]="(accounts$ | async)?.pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="true"
+      [disabled]="isLoading()"
+    ></mat-paginator>
+  </div>
+</div>
+
+<!-- Invisible router-outlet for card component -->
+<div class="pointer-events-none invisible absolute h-0 w-0 opacity-0">
+  <router-outlet></router-outlet>
+</div>

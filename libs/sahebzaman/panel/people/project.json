@@ -1,0 +1,20 @@
+{
+  "name": "sahebzaman-panel-people",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/sahebzaman/panel/people/src",
+  "prefix": "sz",
+  "projectType": "library",
+  "tags": ["scope:sahebzaman", "type:feature"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/sahebzaman/panel/people/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

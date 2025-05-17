@@ -1,0 +1,7 @@
+{
+  "name": "sahebzaman-assets",
+  "sourceRoot": "libs/sahebzaman/assets",
+  "tags": ["scope:sahebzaman"],
+  "projectType": "library",
+  "targets": {}
+}

@@ -2,8 +2,8 @@ import { ApplicationConfig } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { locale } from '@msk/main/shell/ui/layout';
-import { provideMainShell } from '@msk/main/shell/feature';
+import { locale } from '@msk/sahebzaman/shell/ui/layout';
+import { provideMainShell } from '@msk/sahebzaman/shell/feature';
 import { provideMskAppConfig } from '@msk/shared/utils/app-config';
 
 import { environment } from '../environments/environment';

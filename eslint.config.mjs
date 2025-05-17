@@ -18,15 +18,15 @@ export default [
           depConstraints: [
             {
               sourceTag: 'scope:sahebzaman-app',
-              onlyDependOnLibsWithTags: ['scope:shared', 'scope:main'],
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:sahebzaman'],
             },
             {
               sourceTag: 'scope:docs-app',
               onlyDependOnLibsWithTags: ['scope:shared', 'scope:docs'],
             },
             {
-              sourceTag: 'scope:main',
-              onlyDependOnLibsWithTags: ['scope:shared', 'scope:main'],
+              sourceTag: 'scope:sahebzaman',
+              onlyDependOnLibsWithTags: ['scope:shared', 'scope:sahebzaman'],
             },
             {
               sourceTag: 'scope:docs',
