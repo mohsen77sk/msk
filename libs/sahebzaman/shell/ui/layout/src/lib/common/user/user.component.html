@@ -21,8 +21,8 @@
     </button>
   </div>
   <div class="sz-user-panel-profile-container" #container (scroll)="(null)">
-    <div class="relative mx-auto mt-4 h-20 w-20">
-      <img class="relative h-full w-full rounded-full" [src]="user.avatar" alt="profile image" />
+    <div class="mt-4 flex justify-center">
+      <msk-avatar [name]="user.name" [imageUrl]="user.avatar" size="big"></msk-avatar>
     </div>
     <div class="my-2">
       <span class="text-title-medium">{{ user.name }}</span>
