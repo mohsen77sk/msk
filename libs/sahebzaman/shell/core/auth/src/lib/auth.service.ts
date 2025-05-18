@@ -1,17 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { UserService } from '@msk/sahebzaman/shell/core/user';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { catchError, finalize, Observable, of, switchMap, throwError } from 'rxjs';
 import { AuthUtils } from './auth.utils';
-import { LoginRequest, LoginResponse } from './auth.types';
+import { AUTH_TOKEN, LoginRequest, LoginResponse } from './auth.types';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private _authenticated = false;
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
-  private _userService = inject(UserService);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -21,11 +19,11 @@ export class AuthService {
    * Setter & getter for access token
    */
   set accessToken(token: string) {
-    localStorage.setItem('accessToken', token);
+    localStorage.setItem(AUTH_TOKEN, token);
   }
 
   get accessToken(): string {
-    return localStorage.getItem('accessToken') ?? '';
+    return localStorage.getItem(AUTH_TOKEN) ?? '';
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -69,7 +67,7 @@ export class AuthService {
       catchError(() => of(false)),
       finalize(() => {
         // Remove the access token from the local storage
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem(AUTH_TOKEN);
 
         // Set the authenticated flag to false
         this._authenticated = false;
