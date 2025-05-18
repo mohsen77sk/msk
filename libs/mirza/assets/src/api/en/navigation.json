@@ -12,6 +12,13 @@
         "type": "basic",
         "icon": "dashboard",
         "link": "/panel/dashboard"
+      },
+      {
+        "id": "panel.customers",
+        "title": "Customers",
+        "type": "basic",
+        "icon": "groups",
+        "link": "/panel/customers"
       }
     ]
   }
