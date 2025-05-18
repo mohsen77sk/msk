@@ -1,0 +1,102 @@
+<div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t">
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
+    <div class="max-w-80 mx-auto w-full sm:mx-0 sm:w-80">
+      <!-- Logo -->
+      <div class="w-12">
+        <img src="assets/images/logo/logo.svg" alt="logo" />
+      </div>
+
+      <!-- Title -->
+      <div class="text-headline-medium mt-8 font-extrabold">
+        {{ t('signIn.sign-in') }}
+      </div>
+      <div class="mt-0.5 flex items-baseline font-medium">
+        <span>
+          {{ t('signIn.do-not-have-an-account') }}
+        </span>
+        <a class="text-primary ms-1 hover:underline" [routerLink]="['/sign-up']">
+          {{ t('signIn.sign-up') }}
+        </a>
+      </div>
+
+      <!-- Alert -->
+      @if (showAlert()) {
+      <msk-alert
+        class="mt-8"
+        [appearance]="'outline'"
+        [showIcon]="false"
+        [type]="alert().type"
+        [@shake]="alert().type === 'error'"
+      >
+        {{ alert().message }}
+      </msk-alert>
+      }
+
+      <!-- Sign in form -->
+      <form class="mt-6" [formGroup]="signInForm" #signInNgForm="ngForm">
+        <!-- Username field -->
+        <mat-form-field class="mt-2 w-full">
+          <mat-label> {{ t('signIn.username') }} </mat-label>
+          <input id="username" matInput formControlName="username" />
+          <mat-error> {{ t('error-validation.required') }} </mat-error>
+        </mat-form-field>
+
+        <!-- Password field -->
+        <mat-form-field class="mt-2 w-full">
+          <mat-label> {{ t('signIn.password') }} </mat-label>
+          <input
+            id="password"
+            matInput
+            type="password"
+            formControlName="password"
+            ngxTouchKeyboard
+            #passwordVirtualKeyboard="ngxTouchKeyboard"
+            #passwordField
+          />
+          <div matSuffix>
+            <button
+              type="button"
+              mat-icon-button
+              (click)="
+                passwordField.type === 'password' ? (passwordField.type = 'text') : (passwordField.type = 'password')
+              "
+              [disabled]="passwordField.disabled"
+            >
+              <mat-icon class="icon-size-5">
+                {{ passwordField.type === 'password' ? 'visibility' : 'visibility_off' }}
+              </mat-icon>
+            </button>
+            <button
+              type="button"
+              mat-icon-button
+              (click)="passwordVirtualKeyboard.togglePanel()"
+              [disabled]="passwordField.disabled"
+            >
+              <mat-icon class="icon-size-5">keyboard</mat-icon>
+            </button>
+          </div>
+          <mat-error> {{ t('error-validation.required') }} </mat-error>
+        </mat-form-field>
+
+        <!-- Actions -->
+        <div class="mt-2 inline-flex w-full items-center justify-between">
+          <mat-checkbox formControlName="rememberMe"> {{ t('signIn.remember-me') }} </mat-checkbox>
+          <a class="text-label-medium text-primary hover:underline focus:underline" [routerLink]="['/forgot-password']">
+            {{ t('signIn.forgot-password') }}
+          </a>
+        </div>
+
+        <!-- Submit button -->
+        <button
+          class="mt-6 w-full"
+          mat-flat-button
+          [disabled]="signInForm.disabled"
+          [mskSpinner]="signInForm.disabled"
+          (click)="signIn()"
+        >
+          {{ signInForm.enabled ? t('signIn.sign-in') : '' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

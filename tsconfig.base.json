@@ -30,6 +30,8 @@
       "@msk/docs/shell/core/navigation": ["libs/docs/shell/core/navigation/src/index.ts"],
       "@msk/docs/shell/feature": ["libs/docs/shell/feature/src/index.ts"],
       "@msk/docs/shell/ui/layout": ["libs/docs/shell/ui/layout/src/index.ts"],
+      "@msk/mirza/auth/sign-in": ["libs/mirza/auth/sign-in/src/index.ts"],
+      "@msk/mirza/auth/sign-out": ["libs/mirza/auth/sign-out/src/index.ts"],
       "@msk/mirza/shell/core/auth": ["libs/mirza/shell/core/auth/src/index.ts"],
       "@msk/mirza/shell/core/navigation": ["libs/mirza/shell/core/navigation/src/index.ts"],
       "@msk/mirza/shell/core/user": ["libs/mirza/shell/core/user/src/index.ts"],

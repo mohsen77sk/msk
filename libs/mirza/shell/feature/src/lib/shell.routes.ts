@@ -19,6 +19,40 @@ export const routes: Route[] = [
     redirectTo: 'panel/dashboard',
   },
 
+  // Auth routes for guests
+  {
+    path: '',
+    canActivate: [NoAuthGuard],
+    canActivateChild: [NoAuthGuard],
+    component: LayoutComponent,
+    data: {
+      layoutType: 'empty',
+    },
+    children: [
+      {
+        path: 'sign-in',
+        loadChildren: () => import('@msk/mirza/auth/sign-in').then((r) => r.routes),
+      },
+    ],
+  },
+
+  // Auth routes for authenticated users
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    component: LayoutComponent,
+    data: {
+      layoutType: 'empty',
+    },
+    children: [
+      {
+        path: 'sign-out',
+        loadChildren: () => import('@msk/mirza/auth/sign-out').then((r) => r.routes),
+      },
+    ],
+  },
+
   // Admin routes
   {
     path: '',

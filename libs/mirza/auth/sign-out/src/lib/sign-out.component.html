@@ -1,0 +1,31 @@
+<div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t">
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
+    <div class="max-w-80 mx-auto w-full sm:mx-0 sm:w-80">
+      <!-- Logo -->
+      <div class="mx-auto w-12">
+        <img src="assets/images/logo/logo.svg" alt="logo" />
+      </div>
+
+      <!-- Title -->
+      <div class="text-headline-small mt-8 text-center font-extrabold">
+        {{ t('signOut.sign-out-title') }}
+      </div>
+
+      <!-- Content -->
+      <div class="mt-1 flex justify-center font-medium">
+        <!-- Redirect countdown -->
+        @if (countdown() > 0) { {{ t('signOut.redirecting-in-seconds', { seconds: countdown() }) }} }
+        <!-- Redirect message -->
+        @else { {{ t('signOut.you-are-now-being-redirected') }} }
+      </div>
+
+      <!-- Form footer -->
+      <div class="text-secondary text-label-medium mt-8 text-center">
+        <span>{{ t('signOut.go-to') }}</span>
+        <a class="text-primary ms-1 hover:underline" [routerLink]="['/sign-in']">
+          {{ t('signOut.sign-in') }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

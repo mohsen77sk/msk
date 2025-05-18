@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { UserService } from '@msk/mirza/shell/core/user';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { Observable, of, switchMap, throwError } from 'rxjs';
-import { LoginRequest, LoginResponse } from './auth.types';
+import { AUTH_TOKEN, LoginRequest, LoginResponse, REFRESH_TOKEN } from './auth.types';
 import { AuthUtils } from './auth.utils';
 
 @Injectable({ providedIn: 'root' })
@@ -11,7 +10,6 @@ export class AuthService {
   private _authenticated = false;
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
-  private _userService = inject(UserService);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -21,22 +19,22 @@ export class AuthService {
    * Setter & getter for access token
    */
   set accessToken(token: string) {
-    localStorage.setItem('accessToken', token);
+    localStorage.setItem(AUTH_TOKEN, token);
   }
 
   get accessToken(): string {
-    return localStorage.getItem('accessToken') ?? '';
+    return localStorage.getItem(AUTH_TOKEN) ?? '';
   }
 
   /**
    * Setter & getter for refresh token
    */
   set refreshToken(token: string) {
-    localStorage.setItem('refreshToken', token);
+    localStorage.setItem(REFRESH_TOKEN, token);
   }
 
   get refreshToken(): string {
-    return localStorage.getItem('refreshToken') ?? '';
+    return localStorage.getItem(REFRESH_TOKEN) ?? '';
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -74,8 +72,8 @@ export class AuthService {
    */
   signOut(): void {
     // Remove the access token from the local storage
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem(AUTH_TOKEN);
+    localStorage.removeItem(REFRESH_TOKEN);
 
     // Set the authenticated flag to false
     this._authenticated = false;
