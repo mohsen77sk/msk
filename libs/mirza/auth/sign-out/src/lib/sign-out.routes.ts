@@ -4,7 +4,7 @@ import { SignOutComponent } from './sign-out.component';
 
 import { scopeLoader } from '@msk/shared/utils/transloco';
 import { provideTranslocoScope } from '@jsverse/transloco';
-import { AuthService } from '@msk/sahebzaman/shell/core/auth';
+import { AuthService } from '@msk/mirza/shell/core/auth';
 
 export const routes: Routes = [
   {
