@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
 import { availableLangs } from '@msk/shared/utils/transloco';
 import { UserService, User } from '@msk/mirza/shell/core/user';
@@ -29,7 +30,15 @@ import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-
   styleUrl: './user.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, MatMenuModule, MatIconModule, MatButtonModule, MatDialogModule, TranslocoDirective],
+  imports: [
+    NgClass,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    TranslocoDirective,
+    MskAvatarComponent,
+  ],
 })
 export class UserComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

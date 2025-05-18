@@ -9,7 +9,7 @@
   </span>
 </button>
 <!-- Menu -->
-<mat-menu [xPosition]="'before'" #userActions="matMenu" class="sz-user-panel-profile">
+<mat-menu [xPosition]="'before'" #userActions="matMenu" class="mz-user-panel-profile">
   <div
     class="sticky z-10 flex h-14 items-center justify-between px-2 transition"
     [ngClass]="{ 'bg-surface-container-high shadow-level-1': container.scrollTop > 24 }"
@@ -20,9 +20,9 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-  <div class="sz-user-panel-profile-container" #container (scroll)="(null)">
-    <div class="relative mx-auto mt-4 h-20 w-20">
-      <img class="relative h-full w-full rounded-full" [src]="user.avatar" alt="profile image" />
+  <div class="mz-user-panel-profile-container" #container (scroll)="(null)">
+    <div class="mt-4 flex justify-center">
+      <msk-avatar [name]="user.name" [imageUrl]="user.avatar" size="big"></msk-avatar>
     </div>
     <div class="my-2">
       <span class="text-title-medium">{{ user.name }}</span>
@@ -33,7 +33,7 @@
       </button>
     </div>
     <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">
-      <div class="sz-user-panel-profile-item" (click)="openLayoutSchemeDialog()" aria-hidden="true">
+      <div class="mz-user-panel-profile-item" (click)="openLayoutSchemeDialog()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">dark_mode</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.dark-theme') }}</span>
@@ -46,7 +46,7 @@
         <span class="text-label-medium font-light">{{ t('layout.off') }}</span>
         } }
       </div>
-      <div class="sz-user-panel-profile-item" (click)="openLayoutLanguageDialog()" aria-hidden="true">
+      <div class="mz-user-panel-profile-item" (click)="openLayoutLanguageDialog()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">language</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.languages') }}</span>
@@ -55,7 +55,7 @@
       </div>
     </div>
     <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">
-      <div class="sz-user-panel-profile-item" (click)="signOut()" aria-hidden="true">
+      <div class="mz-user-panel-profile-item" (click)="signOut()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">logout</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.sign-out') }}</span>

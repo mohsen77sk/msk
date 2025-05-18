@@ -62,7 +62,18 @@ export const routes: Route[] = [
     resolve: {
       initial: initialDataResolver,
     },
-    children: [],
+    children: [
+      // Panel
+      {
+        path: 'panel',
+        children: [
+          {
+            path: 'dashboard',
+            loadChildren: () => import('@msk/mirza/panel/dashboard').then((r) => r.routes),
+          },
+        ],
+      },
+    ],
   },
 
   // Error routes & Catch all
