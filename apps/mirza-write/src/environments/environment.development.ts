@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiEndpoint: 'https://api.cafemirza.ir',
+  apiEndpoint: 'https://dev.api.cafemirza.ir',
 };

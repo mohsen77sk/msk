@@ -20,9 +20,9 @@ export class CustomersService {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for persons
+   * Getter for customers
    */
-  get persons$(): Observable<MskPageData<Customer>> {
+  get customers$(): Observable<MskPageData<Customer>> {
     return this._customers.asObservable();
   }
 
@@ -31,12 +31,12 @@ export class CustomersService {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Get persons
+   * Get customers
    *
    * @param page
    * @param pageSize
    */
-  getPersons(page = 1, pageSize = 10): Observable<MskPageData<Customer>> {
+  getCustomers(page = 1, pageSize = 10): Observable<MskPageData<Customer>> {
     return this._httpClient
       .get<MskPagingResponse<Customer>>(`${this._appConfig.apiEndpoint}/customer`, {
         params: { page, take: pageSize },
