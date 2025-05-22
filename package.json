@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "npx nx run-many --target=lint --all=true",
     "build-docs": "npx nx run docs:build --configuration=production --base-Href=/msk/",
+    "build-mirza": "npx nx run mirza:build --configuration=production",
     "build-sahebzaman": "npx nx run sahebzaman:build --configuration=production"
   },
   "private": true,
