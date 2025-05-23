@@ -1,0 +1,20 @@
+{
+  "name": "mirza-shell-core-store",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mirza/shell/core/store/src",
+  "prefix": "mz",
+  "projectType": "library",
+  "tags": ["scope:mirza", "type:util"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/mirza/shell/core/store/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

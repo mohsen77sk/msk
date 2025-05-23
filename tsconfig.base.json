@@ -36,6 +36,7 @@
       "@msk/mirza/panel/dashboard": ["libs/mirza/panel/dashboard/src/index.ts"],
       "@msk/mirza/shell/core/auth": ["libs/mirza/shell/core/auth/src/index.ts"],
       "@msk/mirza/shell/core/navigation": ["libs/mirza/shell/core/navigation/src/index.ts"],
+      "@msk/mirza/shell/core/store": ["libs/mirza/shell/core/store/src/index.ts"],
       "@msk/mirza/shell/core/user": ["libs/mirza/shell/core/user/src/index.ts"],
       "@msk/mirza/shell/feature": ["libs/mirza/shell/feature/src/index.ts"],
       "@msk/mirza/shell/ui/layout": ["libs/mirza/shell/ui/layout/src/index.ts"],
