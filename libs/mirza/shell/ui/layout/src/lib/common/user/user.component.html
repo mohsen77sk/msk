@@ -36,14 +36,14 @@
       <div class="mz-user-panel-profile-item" (click)="openLayoutSchemeDialog()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">dark_mode</mat-icon>
-          <span class="ms-3 font-medium">{{ t('layout.dark-theme') }}</span>
+          <span class="ms-3 font-medium">{{ t('layout.themes') }}</span>
         </div>
         @switch (layoutScheme) { @case ('auto') {
         <span class="text-label-medium font-light">{{ t('layout.default') }}</span>
         } @case ('dark') {
-        <span class="text-label-medium font-light">{{ t('layout.on') }}</span>
+        <span class="text-label-medium font-light">{{ t('layout.dark') }}</span>
         } @case ('light') {
-        <span class="text-label-medium font-light">{{ t('layout.off') }}</span>
+        <span class="text-label-medium font-light">{{ t('layout.light') }}</span>
         } }
       </div>
       <div class="mz-user-panel-profile-item" (click)="openLayoutLanguageDialog()" aria-hidden="true">
