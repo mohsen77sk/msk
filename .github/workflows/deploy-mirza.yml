@@ -11,30 +11,49 @@ env:
   IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/mirza
 
 jobs:
-  check-affected:
+  check-ci-result:
     runs-on: ubuntu-latest
     outputs:
-      should_deploy: ${{ steps.check-affected.outputs.should_deploy }}
+      should_deploy: ${{ steps.check-result.outputs.should_deploy }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Check if mirza-write is affected
-        id: check-affected
+      - name: Check CI result
+        id: check-result
         run: |
-          AFFECTED=$(npx nx show projects --affected --type app --json | jq -r 'join(",")')
-          if [[ $AFFECTED == *"mirza-write"* ]]; then
+          if [ "${{ github.event.workflow_run.conclusion }}" == "success" ]; then
             echo "should_deploy=true" >> $GITHUB_OUTPUT
           else
             echo "should_deploy=false" >> $GITHUB_OUTPUT
           fi
 
+  check-affected:
+    needs: check-ci-result
+    if: needs.check-ci-result.outputs.should_deploy == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      is_affected: ${{ steps.check-affected.outputs.is_affected }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Try to download artifacts
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: built-projects
+          path: dist/apps/mirza-write
+
+      - name: Check if mirza-write was affected
+        id: check-affected
+        run: |
+          if [ -d "dist/apps/mirza-write" ]; then
+            echo "is_affected=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_affected=false" >> $GITHUB_OUTPUT
+          fi
+
   build:
     needs: check-affected
-    if: needs.check-affected.outputs.should_deploy == 'true'
+    if: needs.check-affected.outputs.is_affected == 'true'
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -65,7 +84,6 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - name: Set up kubeconfig
         run: |

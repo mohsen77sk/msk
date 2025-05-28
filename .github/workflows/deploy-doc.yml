@@ -22,10 +22,12 @@ jobs:
             echo "should_deploy=false" >> $GITHUB_OUTPUT
           fi
 
-  deploy:
+  check-affected:
     needs: check-ci-result
     if: needs.check-ci-result.outputs.should_deploy == 'true'
     runs-on: ubuntu-latest
+    outputs:
+      is_affected: ${{ steps.check-affected.outputs.is_affected }}
     steps:
       - uses: actions/checkout@v4
 
@@ -45,8 +47,20 @@ jobs:
             echo "is_affected=false" >> $GITHUB_OUTPUT
           fi
 
+  deploy:
+    needs: check-affected
+    if: needs.check-affected.outputs.is_affected == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Try to download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: built-projects
+          path: dist/apps/docs
+
       - name: Deploy to Production
-        if: steps.check-affected.outputs.is_affected == 'true'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
