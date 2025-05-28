@@ -1,0 +1,52 @@
+name: Deploy Docs
+
+on:
+  workflow_run:
+    workflows: ['Nx CI Pipeline']
+    branches: [master]
+    types:
+      - completed
+
+jobs:
+  check-ci-result:
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check-result.outputs.should_deploy }}
+    steps:
+      - name: Check CI result
+        id: check-result
+        run: |
+          if [ "${{ github.event.workflow_run.conclusion }}" == "success" ]; then
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          fi
+
+  deploy:
+    needs: check-ci-result
+    if: needs.check-ci-result.outputs.should_deploy == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: built-projects
+          path: dist/apps/docs
+
+      - name: Check if docs was affected
+        id: check-affected
+        run: |
+          if [ -d "dist/apps/docs" ]; then
+            echo "is_affected=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_affected=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy to Production
+        if: steps.check-affected.outputs.is_affected == 'true'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist/apps/docs/browser
