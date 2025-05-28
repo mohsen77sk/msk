@@ -1,0 +1,82 @@
+name: Deploy Mirza
+
+on:
+  workflow_run:
+    workflows: ['Nx CI Pipeline']
+    branches: [master]
+    types:
+      - completed
+
+env:
+  IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/mirza
+
+jobs:
+  check-affected:
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check-affected.outputs.should_deploy }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if mirza-write is affected
+        id: check-affected
+        run: |
+          AFFECTED=$(npx nx show projects --affected --type app --json | jq -r 'join(",")')
+          if [[ $AFFECTED == *"mirza-write"* ]]; then
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          fi
+
+  build:
+    needs: check-affected
+    if: needs.check-affected.outputs.should_deploy == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Define Docker TAG
+        id: vars
+        run: |
+          BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
+          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+          echo "TAG=${BRANCH_NAME}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "Docker tag will be: ${BRANCH_NAME}-${SHORT_SHA}"
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -f Dockerfile.mirza -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
+          docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:${GITHUB_REF##*/}
+
+      - name: Push Docker images
+        run: |
+          docker push $IMAGE_NAME:${{ steps.vars.outputs.TAG }}
+          docker push $IMAGE_NAME:${GITHUB_REF##*/}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Deploy to K3s
+        run: |
+          BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
+          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+          TAG=${BRANCH_NAME}-${SHORT_SHA}
+          kubectl set image deployment/angular-app angular-app=${{ secrets.DOCKER_USERNAME }}/mirza:$TAG
+          kubectl rollout status deployment/angular-app
