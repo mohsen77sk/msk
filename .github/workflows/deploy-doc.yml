@@ -29,7 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download artifacts
+      - name: Try to download artifacts
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: built-projects
