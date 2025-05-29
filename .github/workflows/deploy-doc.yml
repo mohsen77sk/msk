@@ -36,7 +36,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
-          path: dist/apps/docs
+          path: dist/
 
       - name: Check if docs was affected
         id: check-affected
@@ -58,7 +58,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
-          path: dist/apps/docs
+          path: dist/
 
       - name: Deploy to Production
         uses: peaceiris/actions-gh-pages@v4

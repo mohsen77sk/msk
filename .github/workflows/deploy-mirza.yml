@@ -39,7 +39,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
-          path: dist/apps/mirza-write
+          path: dist/
 
       - name: Check if mirza-write was affected
         id: check-affected
