@@ -35,7 +35,7 @@ jobs:
         continue-on-error: true
         uses: actions/download-artifact@v4
         with:
-          name: built-projects
+          name: dist
           path: dist/apps/docs
 
       - name: Check if docs was affected
@@ -57,7 +57,7 @@ jobs:
       - name: Try to download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: built-projects
+          name: dist
           path: dist/apps/docs
 
       - name: Deploy to Production
