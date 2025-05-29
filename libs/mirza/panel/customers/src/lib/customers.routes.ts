@@ -3,10 +3,10 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, Routes } from '@an
 import { CustomersService } from './customers.service';
 import { CustomersComponent } from './customers.component';
 import { CustomersListComponent } from './list/list.component';
+import { CustomersCardComponent } from './card/card.component';
 
 import { scopeLoader } from '@msk/shared/utils/transloco';
 import { provideTranslocoScope } from '@jsverse/transloco';
-import { CustomersCardComponent } from './card/card.component';
 import { MskErrorResponse } from '@msk/shared/data-access';
 import { catchError, throwError } from 'rxjs';
 

@@ -19,6 +19,13 @@
         "type": "basic",
         "icon": "groups",
         "link": "/panel/customers"
+      },
+      {
+        "id": "panel.vendors",
+        "title": "Vendors",
+        "type": "basic",
+        "icon": "patient_list",
+        "link": "/panel/vendors"
       }
     ]
   }
