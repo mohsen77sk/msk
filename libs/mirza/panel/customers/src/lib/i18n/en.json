@@ -1,1 +1,22 @@
-{}
+{
+  "details": {
+    "new": "New customer",
+    "edit": "Edit customer",
+    "view": "{{name}}",
+    "about": "About {{name}}",
+    "name": "Name",
+    "gender": "Gender",
+    "contactNumber": "Phone Number",
+    "address": "Address",
+    "note": "Note"
+  },
+  "genders": {
+    "male": "Male",
+    "female": "Female",
+    "company": "Other"
+  },
+  "search": "Search customers",
+  "empty-list": "There are no customers!",
+  "delete": "Delete customer",
+  "delete-message": "Are you sure you want to delete <b>{{name}}</b>?"
+}

@@ -51,4 +51,64 @@ export class CustomersService {
         tap((response) => this._customers.next(response))
       );
   }
+
+  /**
+   * Get customer
+   *
+   * @param id
+   */
+  getCustomer(id: number | string): Observable<Customer> {
+    return this._httpClient
+      .get<Customer>(`${this._appConfig.apiEndpoint}/customer/${id}`)
+      .pipe(map((response) => new Customer(response)));
+  }
+
+  /**
+   * Create customer
+   *
+   * @param customer
+   */
+  createCustomer(customer: Customer): Observable<Customer> {
+    return this._httpClient
+      .post<Customer>(`${this._appConfig.apiEndpoint}/customer`, customer)
+      .pipe(map((response) => new Customer(response)));
+  }
+
+  /**
+   * Update customer
+   *
+   * @param customer
+   */
+  updateCustomer(customer: Customer): Observable<Customer> {
+    return this._httpClient.patch<Customer>(`${this._appConfig.apiEndpoint}/customer/${customer.id}`, customer).pipe(
+      map((response) => new Customer(response)),
+      // Update the customers
+      tap((newCustomer) => {
+        if (this._customers.value) {
+          const index = this._customers.value.items.findIndex((x) => x.id === newCustomer.id) ?? 0;
+          this._customers.value.items[index] = newCustomer;
+          this._customers.next(this._customers.value);
+        }
+      })
+    );
+  }
+
+  /**
+   * Delete customer
+   *
+   * @param customer
+   */
+  deleteCustomer(customer: Customer): Observable<boolean> {
+    return this._httpClient.delete<boolean>(`${this._appConfig.apiEndpoint}/customer/${customer.id}`).pipe(
+      map((response) => response),
+      // remove the customers
+      tap(() => {
+        if (this._customers.value) {
+          const index = this._customers.value.items.findIndex((x) => x.id === customer.id) ?? 0;
+          this._customers.value.items.splice(index, 1);
+          this._customers.next(this._customers.value);
+        }
+      })
+    );
+  }
 }

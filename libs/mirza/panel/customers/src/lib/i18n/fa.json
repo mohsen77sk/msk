@@ -1,1 +1,22 @@
-{}
+{
+  "details": {
+    "new": "مشتری جدید",
+    "edit": "ویرایش مشتری",
+    "view": "{{name}}",
+    "about": "درباره {{name}}",
+    "name": "نام",
+    "gender": "جنسیت",
+    "contactNumber": "شماره تماس",
+    "address": "آدرس",
+    "note": "توضیحات"
+  },
+  "genders": {
+    "male": "مرد",
+    "female": "زن",
+    "company": "دیگر"
+  },
+  "search": "جستجوی مشتریان",
+  "empty-list": "هیچ مشتری وجود ندارد!",
+  "delete": "حذف مشتری",
+  "delete-message": "آیا مطمئن هستید که می خواهید <b>{{name}}</b> را حذف کنید؟"
+}
