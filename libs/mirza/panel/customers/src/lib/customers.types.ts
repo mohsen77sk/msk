@@ -1,6 +1,6 @@
 import { SortDirection } from '@angular/material/sort';
 
-export const DefaultCustomersSortId = 'code';
+export const DefaultCustomersSortId = 'name';
 export const DefaultCustomersSortDirection: SortDirection = 'asc';
 
 export enum GenderEnum {
