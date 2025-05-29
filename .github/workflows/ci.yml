@@ -112,6 +112,8 @@ jobs:
     if: needs.build.outputs.mirza_affected == 'true'
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Define Docker TAG
         id: vars
         run: |
