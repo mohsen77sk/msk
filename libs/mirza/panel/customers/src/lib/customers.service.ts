@@ -104,9 +104,11 @@ export class CustomersService {
       // remove the customers
       tap(() => {
         if (this._customers.value) {
-          const index = this._customers.value.items.findIndex((x) => x.id === customer.id) ?? 0;
-          this._customers.value.items.splice(index, 1);
-          this._customers.next(this._customers.value);
+          const index = this._customers.value.items.findIndex((x) => x.id === customer.id);
+          if (index > 0) {
+            this._customers.value.items.splice(index, 1);
+            this._customers.next(this._customers.value);
+          }
         }
       })
     );
