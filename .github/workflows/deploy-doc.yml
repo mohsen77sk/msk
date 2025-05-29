@@ -36,12 +36,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: built-projects
-          path: dist/apps/docs
+          path: apps/docs
 
       - name: Check if docs was affected
         id: check-affected
         run: |
-          if [ -d "dist/apps/docs" ]; then
+          if [ -d "apps/docs" ]; then
             echo "is_affected=true" >> $GITHUB_OUTPUT
           else
             echo "is_affected=false" >> $GITHUB_OUTPUT
@@ -58,10 +58,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: built-projects
-          path: dist/apps/docs
+          path: apps/docs
 
       - name: Deploy to Production
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist/apps/docs/browser
+          publish_dir: apps/docs/browser

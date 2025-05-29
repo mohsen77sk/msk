@@ -39,12 +39,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: built-projects
-          path: dist/apps/mirza-write
+          path: apps/mirza-write
 
       - name: Check if mirza-write was affected
         id: check-affected
         run: |
-          if [ -d "dist/apps/mirza-write" ]; then
+          if [ -d "apps/mirza-write" ]; then
             echo "is_affected=true" >> $GITHUB_OUTPUT
           else
             echo "is_affected=false" >> $GITHUB_OUTPUT
