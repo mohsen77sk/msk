@@ -26,7 +26,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageData, MskPageSizeOptions } from '@msk/shared/data-access';
-import { EMPTY, Observable, catchError, finalize, map, merge, switchMap, tap } from 'rxjs';
+import { EMPTY, Observable, catchError, debounceTime, finalize, map, merge, switchMap, tap } from 'rxjs';
 import { Vendor, DefaultVendorsSortDirection, DefaultVendorsSortId } from '../vendors.types';
 import { VendorsService } from '../vendors.service';
 
@@ -74,6 +74,24 @@ export class VendorsListComponent implements OnInit, AfterViewInit {
   });
 
   // -----------------------------------------------------------------------------------------------------
+  // @ Accessors
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Getter for the value of the search input
+   */
+  get filterSearchValue(): string {
+    return this.filterForm.get('search')?.value || '';
+  }
+
+  /**
+   * Getter for change of filter value
+   */
+  get filterValueChange(): Observable<unknown> {
+    return this.filterForm.valueChanges.pipe(debounceTime(300));
+  }
+
+  // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
 
@@ -89,31 +107,29 @@ export class VendorsListComponent implements OnInit, AfterViewInit {
    * After view init
    */
   ngAfterViewInit(): void {
-    if (this._sort && this._paginator) {
-      // Set the initial sort
-      this._sort.sort({
-        id: DefaultVendorsSortId,
-        start: DefaultVendorsSortDirection,
-        disableClear: true,
-      });
+    // Set the initial sort
+    this._sort.sort({
+      id: DefaultVendorsSortId,
+      start: DefaultVendorsSortDirection,
+      disableClear: true,
+    });
 
-      // If the user changes the sort order...
-      // Reset back to the first page
-      this._sort.sortChange
-        .pipe(
-          takeUntilDestroyed(this._destroyRef),
-          tap(() => (this._paginator().pageIndex = 0))
-        )
-        .subscribe();
+    // If the user changes the sort order or add filter...
+    // Reset back to the first page
+    merge(this._sort.sortChange, this.filterValueChange)
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap(() => (this._paginator().pageIndex = 0))
+      )
+      .subscribe();
 
-      // Get vendors if sort or page changes
-      merge(this._sort.sortChange, this._paginator().page)
-        .pipe(
-          takeUntilDestroyed(this._destroyRef),
-          switchMap(() => this.getVendors())
-        )
-        .subscribe();
-    }
+    // Get customers if sort or page or filter changes
+    merge(this._sort.sortChange, this._paginator().page, this.filterValueChange)
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        switchMap(() => this.getVendors())
+      )
+      .subscribe();
 
     // Get the scrolling
     this._gridContent()
@@ -140,15 +156,13 @@ export class VendorsListComponent implements OnInit, AfterViewInit {
 
   /**
    * Get vendors list
-   *
-   * @param firstPage
    */
-  getVendors(firstPage = false): Observable<unknown> {
+  getVendors(): Observable<unknown> {
     // Set isLoading to true
     this.isLoading.set(true);
     // Call api
     return this._vendorsService
-      .getVendors(firstPage ? 1 : this._paginator().pageIndex + 1, this._paginator().pageSize)
+      .getVendors(this._paginator().pageIndex + 1, this._paginator().pageSize, this.filterSearchValue)
       .pipe(
         catchError((response) => {
           // Show error

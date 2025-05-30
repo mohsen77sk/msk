@@ -1,0 +1,142 @@
+<msk-dialog
+  *transloco="let t; read: 'vendors.details'"
+  [title]="t(data.action(), { name: data.item()?.name })"
+  [hasAction]="data.action() !== 'view'"
+  [primaryAction]="primaryAction"
+  [trailing]="trailing"
+>
+  <!-- Content -->
+  <ng-container
+    [ngTemplateOutlet]="data.action() === 'view' ? viewTemplate : formTemplate"
+    [ngTemplateOutletContext]="{ t: t }"
+    msk-dialog-content
+  ></ng-container>
+
+  <ng-template #trailing>
+    <button mat-icon-button (click)="editMode()">
+      <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+    </button>
+  </ng-template>
+
+  <ng-template #primaryAction>
+    <button mat-button [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+      <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
+    </button>
+  </ng-template>
+</msk-dialog>
+
+<ng-template #viewTemplate let-t="t">
+  <div class="mb-2 flex flex-col items-center gap-5 p-4">
+    <msk-avatar [name]="data.item()?.name ?? ''" size="big"></msk-avatar>
+    <div class="text-headline-small text-on-surface">
+      {{ data.item()?.name }}
+    </div>
+  </div>
+  <div class="msk-mat-card-filled mb-2 p-4">
+    <div class="text-secondary mb-2 font-bold">
+      {{ t('about', { name: data.item()?.name }) }}
+    </div>
+    <!-- Gender -->
+    @if (data.item()?.gender) {
+    <div class="msk-list-item -mx-4">
+      <div class="msk-list-item-icon"><mat-icon>male</mat-icon></div>
+      <div class="msk-list-item-content">
+        <span *transloco="let t; read: 'vendors.genders'">{{ t(data.item()?.gender ?? '') }}</span>
+        <span>{{ t('gender') }}</span>
+      </div>
+    </div>
+    }
+    <!-- Contact Number -->
+    @if (data.item()?.contactNumber) {
+    <div class="msk-list-item -mx-4">
+      <div class="msk-list-item-icon"><mat-icon>call</mat-icon></div>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.contactNumber || '-' }}</span>
+        <span>{{ t('contactNumber') }}</span>
+      </div>
+    </div>
+    }
+    <!-- Address -->
+    @if (data.item()?.address) {
+    <div class="msk-list-item -mx-4">
+      <div class="msk-list-item-icon"><mat-icon>location_on</mat-icon></div>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.address || '-' }}</span>
+        <span>{{ t('address') }}</span>
+      </div>
+    </div>
+    }
+  </div>
+  @if (data.item()?.note) {
+  <div class="msk-mat-card-filled mb-2 p-4">
+    <div class="text-secondary mb-2 font-bold">{{ t('note') }}</div>
+    <div class="msk-list-item -mx-4">
+      <div class="msk-list-item-icon"><mat-icon>sticky_note_2</mat-icon></div>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.note }}</span>
+      </div>
+    </div>
+  </div>
+  }
+  <div class="my-4 border-t"></div>
+  <div class="mb-2" *transloco="let t">
+    <div class="text-secondary mb-2 font-bold">{{ t('settings') }}</div>
+    <div class="msk-list-item -mx-6 cursor-pointer gap-2" matRipple (click)="deleteVendor()" aria-hidden="true">
+      <div class="msk-list-item-icon">
+        <mat-icon class="text-error">delete</mat-icon>
+      </div>
+      <div class="msk-list-item-content text-error">
+        {{ t('vendors.delete') }}
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #formTemplate let-t="t">
+  <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
+    <!-- Alert -->
+    @if(alert().show) {
+    <msk-alert class="mb-4" appearance="outline" type="error" @shake>
+      {{ alert().message }}
+    </msk-alert>
+    }
+
+    <!-- Name -->
+    <mat-form-field>
+      <mat-label>{{ t('name') }}</mat-label>
+      <input matInput formControlName="name" maxlength="128" autocomplete="off" />
+      <mat-error>{{ formErrors['name'] }}</mat-error>
+    </mat-form-field>
+
+    <!-- Gender -->
+    <mat-form-field>
+      <mat-label>{{ t('gender') }}</mat-label>
+      <mat-select formControlName="gender" *transloco="let t">
+        @for (item of genderKeys; track item) {
+        <mat-option [value]="item">{{ t('vendors.genders.' + item) }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>{{ formErrors['gender'] }}</mat-error>
+    </mat-form-field>
+
+    <!-- Contact Number -->
+    <mat-form-field>
+      <mat-label>{{ t('contactNumber') }}</mat-label>
+      <input matInput formControlName="contactNumber" maxlength="11" autocomplete="off" />
+      <mat-error>{{ formErrors['contactNumber'] }}</mat-error>
+    </mat-form-field>
+
+    <!-- Address -->
+    <mat-form-field>
+      <mat-label>{{ t('address') }}</mat-label>
+      <input matInput formControlName="address" maxlength="128" autocomplete="off" />
+      <mat-error>{{ formErrors['address'] }}</mat-error>
+    </mat-form-field>
+
+    <!-- Note -->
+    <mat-form-field>
+      <textarea matInput formControlName="note" [placeholder]="t('note')" [rows]="2"></textarea>
+      <mat-error>{{ formErrors['note'] }}</mat-error>
+    </mat-form-field>
+  </form>
+</ng-template>

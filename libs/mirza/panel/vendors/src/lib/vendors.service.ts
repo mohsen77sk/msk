@@ -32,12 +32,13 @@ export class VendorsService {
    * Get vendors
    *
    * @param page
-   * @param pageSize
+   * @param take
+   * @param search
    */
-  getVendors(page = 1, pageSize = 10): Observable<MskPageData<Vendor>> {
+  getVendors(page = 1, take = 10, search = ''): Observable<MskPageData<Vendor>> {
     return this._httpClient
       .get<MskPagingResponse<Vendor>>(`${this._appConfig.apiEndpoint}/vendor`, {
-        params: { page, take: pageSize },
+        params: { page, take, search },
       })
       .pipe(
         map((response) => {
@@ -103,7 +104,7 @@ export class VendorsService {
       tap(() => {
         if (this._vendors.value) {
           const index = this._vendors.value.items.findIndex((x) => x.id === vendor.id);
-          if (index > 0) {
+          if (index > -1) {
             this._vendors.value.items.splice(index, 1);
             this._vendors.next(this._vendors.value);
           }

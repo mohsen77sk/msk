@@ -8,6 +8,7 @@ import { scopeLoader } from '@msk/shared/utils/transloco';
 import { provideTranslocoScope } from '@jsverse/transloco';
 import { MskErrorResponse } from '@msk/shared/data-access';
 import { catchError, throwError } from 'rxjs';
+import { VendorsCardComponent } from './card/card.component';
 
 /**
  * Vendor resolver
@@ -51,7 +52,18 @@ export const routes: Routes = [
         resolve: {
           vendors: () => inject(VendorsService).getVendors(),
         },
-        children: [],
+        children: [
+          {
+            path: 'card/new',
+            component: VendorsCardComponent,
+            resolve: {},
+          },
+          {
+            path: 'card/view/:id',
+            component: VendorsCardComponent,
+            resolve: { card: vendorResolver },
+          },
+        ],
       },
     ],
   },
