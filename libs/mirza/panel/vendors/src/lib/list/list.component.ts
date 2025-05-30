@@ -25,7 +25,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
-import { MskPageData, MskPageSizeOptions } from '@msk/shared/data-access';
+import { MskPageData, MskPageSizeOptions, MskPagingRequest } from '@msk/shared/data-access';
 import { EMPTY, Observable, catchError, debounceTime, finalize, map, merge, switchMap, tap } from 'rxjs';
 import { Vendor, DefaultVendorsSortDirection, DefaultVendorsSortId } from '../vendors.types';
 import { VendorsService } from '../vendors.service';
@@ -76,13 +76,6 @@ export class VendorsListComponent implements OnInit, AfterViewInit {
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Getter for the value of the search input
-   */
-  get filterSearchValue(): string {
-    return this.filterForm.get('search')?.value || '';
-  }
 
   /**
    * Getter for change of filter value
@@ -162,7 +155,7 @@ export class VendorsListComponent implements OnInit, AfterViewInit {
     this.isLoading.set(true);
     // Call api
     return this._vendorsService
-      .getVendors(this._paginator().pageIndex + 1, this._paginator().pageSize, this.filterSearchValue)
+      .getVendors(new MskPagingRequest(this._paginator(), this._sort, this.filterForm.value))
       .pipe(
         catchError((response) => {
           // Show error

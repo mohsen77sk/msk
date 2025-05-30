@@ -2,8 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
-import { MskPagingResponse, MskPageData, EmptyPageData } from '@msk/shared/data-access';
-import { Vendor } from './vendors.types';
+import {
+  MskPagingResponse,
+  MskPageData,
+  EmptyPageData,
+  MskPagingRequest,
+  convertToMirzaPagingRequest,
+} from '@msk/shared/data-access';
+import { DefaultVendorsSortDirection, DefaultVendorsSortId, Vendor } from './vendors.types';
 
 @Injectable({ providedIn: 'root' })
 export class VendorsService {
@@ -31,14 +37,18 @@ export class VendorsService {
   /**
    * Get vendors
    *
-   * @param page
-   * @param take
-   * @param search
+   * @param params
    */
-  getVendors(page = 1, take = 10, search = ''): Observable<MskPageData<Vendor>> {
+  getVendors(
+    params: MskPagingRequest = {
+      page: 1,
+      pageSize: 10,
+      sortBy: `${DefaultVendorsSortId} ${DefaultVendorsSortDirection}`,
+    }
+  ): Observable<MskPageData<Vendor>> {
     return this._httpClient
       .get<MskPagingResponse<Vendor>>(`${this._appConfig.apiEndpoint}/vendor`, {
-        params: { page, take, search },
+        params: convertToMirzaPagingRequest(params),
       })
       .pipe(
         map((response) => {

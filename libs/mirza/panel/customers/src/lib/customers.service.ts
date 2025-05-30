@@ -2,8 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
-import { MskPagingResponse, MskPageData, EmptyPageData } from '@msk/shared/data-access';
-import { Customer } from './customers.types';
+import {
+  MskPagingResponse,
+  MskPageData,
+  EmptyPageData,
+  MskPagingRequest,
+  convertToMirzaPagingRequest,
+} from '@msk/shared/data-access';
+import { Customer, DefaultCustomersSortDirection, DefaultCustomersSortId } from './customers.types';
 
 @Injectable({ providedIn: 'root' })
 export class CustomersService {
@@ -33,14 +39,18 @@ export class CustomersService {
   /**
    * Get customers
    *
-   * @param page
-   * @param take
-   * @param search
+   * @param params
    */
-  getCustomers(page = 1, take = 10, search = ''): Observable<MskPageData<Customer>> {
+  getCustomers(
+    params: MskPagingRequest = {
+      page: 1,
+      pageSize: 10,
+      sortBy: `${DefaultCustomersSortId} ${DefaultCustomersSortDirection}`,
+    }
+  ): Observable<MskPageData<Customer>> {
     return this._httpClient
       .get<MskPagingResponse<Customer>>(`${this._appConfig.apiEndpoint}/customer`, {
-        params: { page, take, search },
+        params: convertToMirzaPagingRequest(params),
       })
       .pipe(
         map((response) => {

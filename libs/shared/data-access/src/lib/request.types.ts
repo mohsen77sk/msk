@@ -1,6 +1,13 @@
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 
+/**
+ * MskPagingRequest is a class that encapsulates the parameters needed for paginated requests.
+ * It includes pagination details such as page number, page size, sorting and filter information.
+ *
+ * @example
+ * const request = new MskPagingRequest(paginator, sort, { search: 'example', isActive: true });
+ */
 export class MskPagingRequest {
   page: number;
   pageSize: number;
@@ -24,4 +31,24 @@ export class MskPagingRequest {
       });
     }
   }
+}
+
+export function convertToMirzaPagingRequest(params: MskPagingRequest): Record<string, string | number | boolean> {
+  const mirzaParams: Record<string, string | number | boolean> = {
+    page: params.page,
+    take: params.pageSize,
+    orderProperty: params.sortBy.split(' ')[0],
+    order: params.sortBy.split(' ')[1].toUpperCase(),
+  };
+
+  // Add other properties from params if they exist
+  Object.keys(params).forEach((key) => {
+    if (!['page', 'pageSize', 'sortBy'].includes(key)) {
+      if (['string', 'number', 'boolean'].includes(typeof params[key])) {
+        mirzaParams[key] = params[key];
+      }
+    }
+  });
+
+  return mirzaParams;
 }
