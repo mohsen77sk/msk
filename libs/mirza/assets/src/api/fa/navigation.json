@@ -26,6 +26,20 @@
         "type": "basic",
         "icon": "patient_list",
         "link": "/panel/vendors"
+      },
+      {
+        "id": "panel.product-categories",
+        "title": "دسته بندی محصولات",
+        "type": "basic",
+        "icon": "category",
+        "link": "/panel/product-categories"
+      },
+      {
+        "id": "panel.products",
+        "title": "محصولات",
+        "type": "basic",
+        "icon": "package",
+        "link": "/panel/products"
       }
     ]
   }

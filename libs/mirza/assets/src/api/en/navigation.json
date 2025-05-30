@@ -26,6 +26,20 @@
         "type": "basic",
         "icon": "patient_list",
         "link": "/panel/vendors"
+      },
+      {
+        "id": "panel.product-categories",
+        "title": "product categories",
+        "type": "basic",
+        "icon": "category",
+        "link": "/panel/product-categories"
+      },
+      {
+        "id": "panel.products",
+        "title": "Products",
+        "type": "basic",
+        "icon": "package",
+        "link": "/panel/products"
       }
     ]
   }

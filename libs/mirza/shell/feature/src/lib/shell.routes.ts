@@ -79,6 +79,14 @@ export const routes: Route[] = [
             path: 'vendors',
             loadChildren: () => import('@msk/mirza/panel/vendors').then((r) => r.routes),
           },
+          {
+            path: 'product-categories',
+            loadChildren: () => import('@msk/mirza/panel/product-categories').then((r) => r.routes),
+          },
+          {
+            path: 'products',
+            loadChildren: () => import('@msk/mirza/panel/products').then((r) => r.routes),
+          },
         ],
       },
     ],

@@ -34,6 +34,8 @@
       "@msk/mirza/auth/sign-out": ["libs/mirza/auth/sign-out/src/index.ts"],
       "@msk/mirza/panel/customers": ["libs/mirza/panel/customers/src/index.ts"],
       "@msk/mirza/panel/dashboard": ["libs/mirza/panel/dashboard/src/index.ts"],
+      "@msk/mirza/panel/product-categories": ["libs/mirza/panel/product-categories/src/index.ts"],
+      "@msk/mirza/panel/products": ["libs/mirza/panel/products/src/index.ts"],
       "@msk/mirza/panel/vendors": ["libs/mirza/panel/vendors/src/index.ts"],
       "@msk/mirza/shell/core/auth": ["libs/mirza/shell/core/auth/src/index.ts"],
       "@msk/mirza/shell/core/navigation": ["libs/mirza/shell/core/navigation/src/index.ts"],
