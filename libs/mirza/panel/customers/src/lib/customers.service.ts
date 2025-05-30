@@ -34,12 +34,13 @@ export class CustomersService {
    * Get customers
    *
    * @param page
-   * @param pageSize
+   * @param take
+   * @param search
    */
-  getCustomers(page = 1, pageSize = 10): Observable<MskPageData<Customer>> {
+  getCustomers(page = 1, take = 10, search = ''): Observable<MskPageData<Customer>> {
     return this._httpClient
       .get<MskPagingResponse<Customer>>(`${this._appConfig.apiEndpoint}/customer`, {
-        params: { page, take: pageSize },
+        params: { page, take, search },
       })
       .pipe(
         map((response) => {
@@ -105,7 +106,7 @@ export class CustomersService {
       tap(() => {
         if (this._customers.value) {
           const index = this._customers.value.items.findIndex((x) => x.id === customer.id);
-          if (index > 0) {
+          if (index > -1) {
             this._customers.value.items.splice(index, 1);
             this._customers.next(this._customers.value);
           }

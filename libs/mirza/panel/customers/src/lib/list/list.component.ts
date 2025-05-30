@@ -26,7 +26,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageData, MskPageSizeOptions } from '@msk/shared/data-access';
-import { EMPTY, Observable, catchError, finalize, map, merge, switchMap, tap } from 'rxjs';
+import { EMPTY, Observable, catchError, debounceTime, finalize, map, merge, switchMap, tap } from 'rxjs';
 import { Customer, DefaultCustomersSortDirection, DefaultCustomersSortId } from '../customers.types';
 import { CustomersService } from '../customers.service';
 
@@ -62,7 +62,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 
   private _gridContent = viewChild.required(CdkScrollable);
   private _paginator = viewChild.required(MatPaginator);
-  private _sort = new MatSort(); // viewChild.required(MatSort);
+  private _sort = new MatSort();
 
   isLoading = signal(false);
   isFabCollapses = signal(false);
@@ -72,6 +72,24 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
   filterForm: FormGroup = new FormGroup({
     search: new FormControl<string>(''),
   });
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Accessors
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Getter for the value of the search input
+   */
+  get filterSearchValue(): string {
+    return this.filterForm.get('search')?.value || '';
+  }
+
+  /**
+   * Getter for change of filter value
+   */
+  get filterValueChange(): Observable<unknown> {
+    return this.filterForm.valueChanges.pipe(debounceTime(300));
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -89,31 +107,29 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
    * After view init
    */
   ngAfterViewInit(): void {
-    if (this._sort && this._paginator) {
-      // Set the initial sort
-      this._sort.sort({
-        id: DefaultCustomersSortId,
-        start: DefaultCustomersSortDirection,
-        disableClear: true,
-      });
+    // Set the initial sort
+    this._sort.sort({
+      id: DefaultCustomersSortId,
+      start: DefaultCustomersSortDirection,
+      disableClear: true,
+    });
 
-      // If the user changes the sort order...
-      // Reset back to the first page
-      this._sort.sortChange
-        .pipe(
-          takeUntilDestroyed(this._destroyRef),
-          tap(() => (this._paginator().pageIndex = 0))
-        )
-        .subscribe();
+    // If the user changes the sort order or add filter...
+    // Reset back to the first page
+    merge(this._sort.sortChange, this.filterValueChange)
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap(() => (this._paginator().pageIndex = 0))
+      )
+      .subscribe();
 
-      // Get customers if sort or page changes
-      merge(this._sort.sortChange, this._paginator().page)
-        .pipe(
-          takeUntilDestroyed(this._destroyRef),
-          switchMap(() => this.getCustomers())
-        )
-        .subscribe();
-    }
+    // Get customers if sort or page or filter changes
+    merge(this._sort.sortChange, this._paginator().page, this.filterValueChange)
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        switchMap(() => this.getCustomers())
+      )
+      .subscribe();
 
     // Get the scrolling
     this._gridContent()
@@ -140,15 +156,13 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 
   /**
    * Get customers list
-   *
-   * @param firstPage
    */
-  getCustomers(firstPage = false): Observable<unknown> {
+  getCustomers(): Observable<unknown> {
     // Set isLoading to true
     this.isLoading.set(true);
     // Call api
     return this._customersService
-      .getCustomers(firstPage ? 1 : this._paginator().pageIndex + 1, this._paginator().pageSize)
+      .getCustomers(this._paginator().pageIndex + 1, this._paginator().pageSize, this.filterSearchValue)
       .pipe(
         catchError((response) => {
           // Show error
