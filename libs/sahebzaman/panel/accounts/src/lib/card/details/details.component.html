@@ -66,7 +66,7 @@
         <span>#{{ person.code }}</span>
       </div>
       <div class="msk-list-item-icon">
-        <mat-icon class="mat-icon-rtl-mirror">open_in_new</mat-icon>
+        <mat-icon>open_in_new</mat-icon>
       </div>
     </div>
     }
@@ -122,12 +122,10 @@
     <div class="text-secondary mb-2 font-bold">{{ t('settings') }}</div>
     <div class="msk-list-item -mx-6 cursor-pointer gap-2" matRipple (click)="updateStatus()" aria-hidden="true">
       <div class="msk-list-item-icon">
-        <mat-icon class="!text-error"> cancel </mat-icon>
+        <mat-icon class="text-error"> cancel </mat-icon>
       </div>
-      <div class="msk-list-item-content">
-        <span class="!text-error">
-          {{ t('accounts.deactivate') }}
-        </span>
+      <div class="msk-list-item-content text-error">
+        {{ t('accounts.deactivate') }}
       </div>
     </div>
   </div>

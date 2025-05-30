@@ -25,8 +25,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
-import { MskPageData, MskPageSizeOptions } from '@msk/shared/data-access';
-import { EMPTY, Observable, catchError, finalize, map, merge, switchMap, tap } from 'rxjs';
+import { MskPageData, MskPageSizeOptions, MskPagingRequest } from '@msk/shared/data-access';
+import { EMPTY, Observable, catchError, debounceTime, finalize, map, merge, switchMap, tap } from 'rxjs';
 import { DefaultPeopleSortDirection, DefaultPeopleSortId, Person } from '../people.types';
 import { PeopleService } from '../people.service';
 import { PeopleStatusComponent } from '../common/status/status.component';
@@ -64,7 +64,7 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
 
   private _gridContent = viewChild.required(CdkScrollable);
   private _paginator = viewChild.required(MatPaginator);
-  private _sort = new MatSort(); // viewChild.required(MatSort);
+  private _sort = new MatSort();
 
   isLoading = signal(false);
   isFabCollapses = signal(false);
@@ -75,6 +75,17 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
     search: new FormControl<string>(''),
     isActive: new FormControl<boolean | null>(null),
   });
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Accessors
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Getter for change of filter value
+   */
+  get filterValueChange(): Observable<unknown> {
+    return this.filterForm.valueChanges.pipe(debounceTime(300));
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -92,31 +103,29 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
    * After view init
    */
   ngAfterViewInit(): void {
-    if (this._sort && this._paginator) {
-      // Set the initial sort
-      this._sort.sort({
-        id: DefaultPeopleSortId,
-        start: DefaultPeopleSortDirection,
-        disableClear: true,
-      });
+    // Set the initial sort
+    this._sort.sort({
+      id: DefaultPeopleSortId,
+      start: DefaultPeopleSortDirection,
+      disableClear: true,
+    });
 
-      // If the user changes the sort order...
-      // Reset back to the first page
-      this._sort.sortChange
-        .pipe(
-          takeUntilDestroyed(this._destroyRef),
-          tap(() => (this._paginator().pageIndex = 0))
-        )
-        .subscribe();
+    // If the user changes the sort order or add filter...
+    // Reset back to the first page
+    merge(this._sort.sortChange, this.filterValueChange)
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap(() => (this._paginator().pageIndex = 0))
+      )
+      .subscribe();
 
-      // Get persons if sort or page changes
-      merge(this._sort.sortChange, this._paginator().page)
-        .pipe(
-          takeUntilDestroyed(this._destroyRef),
-          switchMap(() => this.getPersons())
-        )
-        .subscribe();
-    }
+    // Get customers if sort or page or filter changes
+    merge(this._sort.sortChange, this._paginator().page, this.filterValueChange)
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        switchMap(() => this.getPersons())
+      )
+      .subscribe();
 
     // Get the scrolling
     this._gridContent()
@@ -143,19 +152,13 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
 
   /**
    * Get persons list
-   *
-   * @param firstPage
    */
-  getPersons(firstPage = false): Observable<unknown> {
+  getPersons(): Observable<unknown> {
     // Set isLoading to true
     this.isLoading.set(true);
     // Call api
     return this._peopleService
-      .getPersons(
-        firstPage ? 1 : this._paginator().pageIndex + 1,
-        this._paginator().pageSize,
-        `${this._sort.active} ${this._sort.direction}`
-      )
+      .getPersons(new MskPagingRequest(this._paginator(), this._sort, this.filterForm.value))
       .pipe(
         catchError((response) => {
           // Show error

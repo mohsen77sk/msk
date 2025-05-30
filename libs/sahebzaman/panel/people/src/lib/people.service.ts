@@ -2,7 +2,13 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
-import { MskPagingResponse, MskLookupResponse, MskPageData, EmptyPageData } from '@msk/shared/data-access';
+import {
+  MskPagingResponse,
+  MskLookupResponse,
+  MskPageData,
+  EmptyPageData,
+  MskPagingRequest,
+} from '@msk/shared/data-access';
 import { DefaultPeopleSortDirection, DefaultPeopleSortId, Person } from './people.types';
 
 @Injectable({ providedIn: 'root' })
@@ -31,19 +37,17 @@ export class PeopleService {
   /**
    * Get persons
    *
-   * @param page
-   * @param pageSize
-   * @param sortBy
+   * @param params
    */
   getPersons(
-    page = 1,
-    pageSize = 10,
-    sortBy = `${DefaultPeopleSortId} ${DefaultPeopleSortDirection}`
+    params: MskPagingRequest = {
+      page: 1,
+      pageSize: 10,
+      sortBy: `${DefaultPeopleSortId} ${DefaultPeopleSortDirection}`,
+    }
   ): Observable<MskPageData<Person>> {
     return this._httpClient
-      .get<MskPagingResponse<Person>>(`${this._appConfig.apiEndpoint}/api/person/all`, {
-        params: { page, pageSize, sortBy },
-      })
+      .get<MskPagingResponse<Person>>(`${this._appConfig.apiEndpoint}/api/person/all`, { params })
       .pipe(
         map((response) => {
           return new MskPageData({

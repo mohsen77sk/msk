@@ -83,14 +83,12 @@
     <div class="text-secondary mb-2 font-bold">{{ t('settings') }}</div>
     <div class="msk-list-item -mx-6 cursor-pointer gap-2" matRipple (click)="updateStatus()" aria-hidden="true">
       <div class="msk-list-item-icon">
-        <mat-icon [ngClass]="{ '!text-error': data.item()?.isActive }">
+        <mat-icon [ngClass]="{ 'text-error': data.item()?.isActive }">
           {{ data.item()?.isActive ? 'cancel' : 'check_circle' }}
         </mat-icon>
       </div>
-      <div class="msk-list-item-content">
-        <span [ngClass]="{ '!text-error': data.item()?.isActive }">
-          {{ data.item()?.isActive ? t('people.deactivate') : t('people.activate') }}
-        </span>
+      <div class="msk-list-item-content" [ngClass]="{ 'text-error': data.item()?.isActive }">
+        {{ data.item()?.isActive ? t('people.deactivate') : t('people.activate') }}
       </div>
     </div>
   </div>

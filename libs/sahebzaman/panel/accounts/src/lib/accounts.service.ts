@@ -2,7 +2,13 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, forkJoin, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
-import { MskPagingResponse, MskLookupResponse, MskPageData, EmptyPageData } from '@msk/shared/data-access';
+import {
+  MskPagingResponse,
+  MskLookupResponse,
+  MskPageData,
+  EmptyPageData,
+  MskPagingRequest,
+} from '@msk/shared/data-access';
 import {
   DefaultAccountSortDirection,
   DefaultAccountSortId,
@@ -42,19 +48,17 @@ export class AccountService {
   /**
    * Get accounts
    *
-   * @param page
-   * @param pageSize
-   * @param sortBy
+   * @param params
    */
   getAccounts(
-    page = 1,
-    pageSize = 10,
-    sortBy = `${DefaultAccountSortId} ${DefaultAccountSortDirection}`
+    params: MskPagingRequest = {
+      page: 1,
+      pageSize: 10,
+      sortBy: `${DefaultAccountSortId} ${DefaultAccountSortDirection}`,
+    }
   ): Observable<MskPageData<Account>> {
     return this._httpClient
-      .get<MskPagingResponse<Account>>(`${this._appConfig.apiEndpoint}/api/account/all`, {
-        params: { page, pageSize, sortBy },
-      })
+      .get<MskPagingResponse<Account>>(`${this._appConfig.apiEndpoint}/api/account/all`, { params })
       .pipe(
         map((response) => {
           return new MskPageData({
