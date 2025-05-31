@@ -105,6 +105,25 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist/apps/docs/browser
 
+  deploy-sahebzaman:
+    name: Publish sahebzaman
+    runs-on: ubuntu-latest
+    needs: build
+    if: needs.build.outputs.sahebzaman_affected == 'true'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload files via FTP
+        uses: airvzxf/ftp-deployment-action@latest
+        with:
+          server: ${{ secrets.SAHEBZAMAN_FTP_SERVER }}
+          user: ${{ secrets.SAHEBZAMAN_FTP_USERNAME }}
+          password: ${{ secrets.SAHEBZAMAN_FTP_PASSWORD }}
+          local_dir: dist/apps/sahebzaman/browser
+          remote_dir: /httpdocs/
+          delete: true
+
   deploy-mirza:
     name: Publish mirza
     runs-on: ubuntu-latest
@@ -125,8 +144,8 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.MIRZA_DOCKER_USERNAME }}
+          password: ${{ secrets.MIRZA_DOCKER_PASSWORD }}
 
       - name: Build Docker image
         run: |
@@ -141,7 +160,7 @@ jobs:
       - name: Set up kubeconfig
         run: |
           mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          echo "${{ secrets.MIRZA_KUBECONFIG }}" > ~/.kube/config
           chmod 600 ~/.kube/config
 
       - name: Deploy to K3s
