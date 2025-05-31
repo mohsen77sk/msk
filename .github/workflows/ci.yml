@@ -112,7 +112,11 @@ jobs:
     if: needs.build.outputs.sahebzaman_affected == 'true'
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Try to download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
 
       - name: Upload files via FTP
         uses: airvzxf/ftp-deployment-action@latest
