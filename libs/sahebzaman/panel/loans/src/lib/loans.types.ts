@@ -14,7 +14,7 @@ export interface ICreateLoan {
   note?: string;
 }
 
-export interface IUpdateAccount {
+export interface IUpdateLoan {
   id: number;
   accountId: number;
   note?: string;
