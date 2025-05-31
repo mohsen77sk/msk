@@ -58,4 +58,13 @@ export class LoanService {
         tap((response) => this._loans.next(response))
       );
   }
+
+  /**
+   * Get lookup loan types
+   */
+  getLookupLoanTypes(): Observable<MskLookupResponse> {
+    return this._httpClient
+      .get<MskLookupResponse>(`${this._appConfig.apiEndpoint}/api/loanType/lookup`)
+      .pipe(map((response) => response));
+  }
 }
