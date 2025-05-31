@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiEndpoint: 'https://s-sahebzaman.ir',
+  apiEndpoint: 'https://api.s-sahebzaman.ir',
 };
