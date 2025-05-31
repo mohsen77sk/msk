@@ -112,21 +112,27 @@ jobs:
     if: needs.build.outputs.sahebzaman_affected == 'true'
 
     steps:
+      - name: Checkout repository to get web.config
+        uses: actions/checkout@v4
+
       - name: Try to download artifacts
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
 
+      - name: Copy web.config to build directory
+        run: cp ./tools/web.config dist/apps/sahebzaman/browser/
+
       - name: Upload files via FTP
-        uses: airvzxf/ftp-deployment-action@latest
+        uses: SamKirkland/FTP-Deploy-Action@v4
         with:
           server: ${{ secrets.SAHEBZAMAN_FTP_SERVER }}
-          user: ${{ secrets.SAHEBZAMAN_FTP_USERNAME }}
+          username: ${{ secrets.SAHEBZAMAN_FTP_USERNAME }}
           password: ${{ secrets.SAHEBZAMAN_FTP_PASSWORD }}
-          local_dir: dist/apps/sahebzaman/browser
-          remote_dir: /httpdocs/
-          delete: true
+          local-dir: dist/apps/sahebzaman/browser
+          server-dir: ./
+          dangerous-clean-slate: true
 
   deploy-mirza:
     name: Publish mirza
