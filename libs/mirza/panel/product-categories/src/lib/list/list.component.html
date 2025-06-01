@@ -1,0 +1,69 @@
+<div class="page-layout grid-scroll">
+  <!-- Header -->
+  <div class="header" *transloco="let t">
+    <form class="flex w-full items-center" [formGroup]="filterForm">
+      <div class="msk-mat-search-bar w-full">
+        <mat-icon>search</mat-icon>
+        <input formControlName="search" autocomplete="off" [placeholder]="t('categories.search')" />
+      </div>
+    </form>
+  </div>
+
+  <!-- Main -->
+  <div class="content">
+    <!-- List -->
+    <div class="content-grid" cdkScrollable>
+      <!-- Rows -->
+      @for (productCategory of (productCategories$ | async)?.items; track productCategory.id) {
+      <div class="content-grid-item tow-line" [routerLink]="['card', 'view', productCategory.id]" matRipple>
+        <!-- Avatar -->
+        <div class="content-grid-item-avatar">
+          <msk-avatar [name]="productCategory.name"></msk-avatar>
+        </div>
+        <!-- Content -->
+        <div class="content-grid-item-content">
+          <div class="truncate">{{ productCategory.name }}</div>
+        </div>
+        <!-- End -->
+        <div class="content-grid-item-end"></div>
+      </div>
+      } @empty {
+      <div
+        class="text-secondary text-title-medium flex flex-1 items-center justify-center p-8 text-center"
+        *transloco="let t"
+      >
+        {{ t('categories.empty-list') }}
+      </div>
+      }
+    </div>
+
+    <!-- Fab -->
+    <div class="content-fab-container">
+      <button
+        mat-fab
+        extended
+        [routerLink]="['card', 'new']"
+        [ngClass]="{ 'mat-mdc-extended-fab-collapses': isFabCollapses() }"
+        @zoomIn
+      >
+        <mat-icon>add</mat-icon>
+        <span *transloco="let t">{{ t('new') }}</span>
+      </button>
+    </div>
+
+    <mat-paginator
+      class="content-paginator"
+      [length]="(productCategories$ | async)?.total"
+      [pageIndex]="(productCategories$ | async)?.pageIndex"
+      [pageSize]="(productCategories$ | async)?.pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="true"
+      [disabled]="isLoading()"
+    ></mat-paginator>
+  </div>
+</div>
+
+<!-- Invisible router-outlet for card component -->
+<div class="pointer-events-none invisible absolute h-0 w-0 opacity-0">
+  <router-outlet></router-outlet>
+</div>
