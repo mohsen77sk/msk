@@ -67,4 +67,15 @@ export class LoanService {
       .get<MskLookupResponse>(`${this._appConfig.apiEndpoint}/api/loanType/lookup`)
       .pipe(map((response) => response));
   }
+
+  /**
+   * Get loan
+   *
+   * @param id
+   */
+  getLoan(id: number | string): Observable<Loan> {
+    return this._httpClient
+      .get<Loan>(`${this._appConfig.apiEndpoint}/api/loan/${id}`)
+      .pipe(map((response) => new Loan(response)));
+  }
 }
