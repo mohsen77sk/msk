@@ -130,7 +130,7 @@ jobs:
           server: ${{ secrets.SAHEBZAMAN_FTP_SERVER }}
           username: ${{ secrets.SAHEBZAMAN_FTP_USERNAME }}
           password: ${{ secrets.SAHEBZAMAN_FTP_PASSWORD }}
-          local-dir: dist/apps/sahebzaman/browser
+          local-dir: dist/apps/sahebzaman/browser/
           server-dir: ./
           dangerous-clean-slate: true
 
