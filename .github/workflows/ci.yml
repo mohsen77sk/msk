@@ -178,5 +178,5 @@ jobs:
           BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
           SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
           TAG=${BRANCH_NAME}-${SHORT_SHA}
-          kubectl set image deployment/angular-app angular-app=${{ secrets.DOCKER_USERNAME }}/mirza:$TAG
+          kubectl set image deployment/angular-app angular-app=${{ secrets.MIRZA_DOCKER_USERNAME }}/mirza:$TAG
           kubectl rollout status deployment/angular-app
