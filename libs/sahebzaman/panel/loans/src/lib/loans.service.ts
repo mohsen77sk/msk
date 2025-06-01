@@ -78,4 +78,34 @@ export class LoanService {
       .get<Loan>(`${this._appConfig.apiEndpoint}/api/loan/${id}`)
       .pipe(map((response) => new Loan(response)));
   }
+
+  /**
+   * Create loan
+   *
+   * @param loan
+   */
+  createLoan(loan: ICreateLoan): Observable<Loan> {
+    return this._httpClient
+      .post<Loan>(`${this._appConfig.apiEndpoint}/api/loan`, loan)
+      .pipe(map((response) => new Loan(response)));
+  }
+
+  /**
+   * Update loan
+   *
+   * @param loan
+   */
+  updateLoan(loan: IUpdateLoan): Observable<Loan> {
+    return this._httpClient.put<Loan>(`${this._appConfig.apiEndpoint}/api/loan`, loan).pipe(
+      map((response) => new Loan(response)),
+      // Update the loans
+      tap((newLoan) => {
+        if (this._loans.value) {
+          const index = this._loans.value.items.findIndex((x) => x.id === newLoan.id) ?? 0;
+          this._loans.value.items[index] = newLoan;
+          this._loans.next(this._loans.value);
+        }
+      })
+    );
+  }
 }
