@@ -125,7 +125,7 @@ jobs:
         run: cp ./tools/web.config dist/apps/sahebzaman/browser/
 
       - name: Upload files via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.SAHEBZAMAN_FTP_SERVER }}
           username: ${{ secrets.SAHEBZAMAN_FTP_USERNAME }}
