@@ -4,7 +4,7 @@ export const DefaultProductCategoriesSortId = 'name';
 export const DefaultProductCategoriesSortDirection: SortDirection = 'asc';
 
 export class ProductCategory {
-  id: string;
+  id: number;
   name: string;
   note?: string;
 
