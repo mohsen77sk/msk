@@ -48,7 +48,7 @@ export class MskDialogComponent implements OnInit, AfterViewInit {
   private _destroyRef = inject(DestroyRef);
   private _mskMediaWatcherService = inject(MskMediaWatcherService);
 
-  private _dialogContent = viewChild.required(MatDialogContent, { read: CdkScrollable });
+  dialogContent = viewChild.required(MatDialogContent, { read: CdkScrollable });
 
   title = input.required<string>();
   isLoading = input<boolean>(false);
@@ -98,7 +98,7 @@ export class MskDialogComponent implements OnInit, AfterViewInit {
    * After view init
    */
   ngAfterViewInit(): void {
-    this._dialogContent()
+    this.dialogContent()
       .elementScrolled()
       .pipe(
         takeUntilDestroyed(this._destroyRef),

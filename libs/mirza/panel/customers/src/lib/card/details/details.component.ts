@@ -1,6 +1,17 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  inject,
+  signal,
+  viewChild,
+  DestroyRef,
+  AfterViewInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
@@ -55,14 +66,18 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
     MskSpinnerDirective,
   ],
 })
-export class CustomersCardDetailsComponent implements OnInit {
+export class CustomersCardDetailsComponent implements OnInit, AfterViewInit {
   readonly data = inject<MskDialogData<Customer | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<CustomersCardDetailsComponent>);
+  private _destroyRef = inject(DestroyRef);
   private _formBuilder = inject(FormBuilder);
   private _customerService = inject(CustomersService);
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
+
+  private _dialogContent = viewChild.required(MskDialogComponent);
+  isShowNameHeader = signal(false);
 
   form!: FormGroup;
   formErrors: FormError = {};
@@ -86,7 +101,7 @@ export class CustomersCardDetailsComponent implements OnInit {
       id: [0, Validators.required],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
       gender: ['', Validators.required],
-      contactNumber: '',
+      contactNumber: ['', Validators.pattern(/^\d{8,11}$/)],
       address: '',
       note: '',
     });
@@ -94,6 +109,28 @@ export class CustomersCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     this.form.patchValue(this.data.item() || {});
+  }
+
+  /**
+   * After view init
+   */
+  ngAfterViewInit(): void {
+    // Get the scrolling
+    this._dialogContent()
+      .dialogContent()
+      .elementScrolled()
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        map((data) => (data.target as HTMLElement).scrollTop || 0),
+        tap((scrollTop) => {
+          const isShowNameHeader = scrollTop > 180;
+          // if changed value
+          if (this.isShowNameHeader() !== isShowNameHeader) {
+            this.isShowNameHeader.set(isShowNameHeader);
+          }
+        })
+      )
+      .subscribe();
   }
 
   // -----------------------------------------------------------------------------------------------------

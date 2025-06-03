@@ -3,7 +3,7 @@
     "new": "New category",
     "edit": "Edit category",
     "view": "{{name}}",
-    "about": "About {{name}}",
+    "specs": "specification",
     "name": "Name",
     "note": "Note"
   },
