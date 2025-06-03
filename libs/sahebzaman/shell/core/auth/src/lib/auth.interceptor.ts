@@ -38,7 +38,7 @@ export const authInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn):
       // Catch "401 Unauthorized" responses
       if (error instanceof HttpErrorResponse && error.status === 401) {
         // Sign out
-        authService.signOut();
+        authService.clientSignOut();
 
         // Reload the app
         location.reload();

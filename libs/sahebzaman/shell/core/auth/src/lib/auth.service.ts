@@ -65,14 +65,19 @@ export class AuthService {
     return this._httpClient.post<void>(`${this._appConfig.apiEndpoint}/auth/logout`, null).pipe(
       switchMap(() => of(true)),
       catchError(() => of(false)),
-      finalize(() => {
-        // Remove the access token from the local storage
-        localStorage.removeItem(AUTH_TOKEN);
-
-        // Set the authenticated flag to false
-        this._authenticated = false;
-      })
+      finalize(() => this.clientSignOut())
     );
+  }
+
+  /**
+   * Sign out in local
+   */
+  clientSignOut(): void {
+    // Remove the access token from the local storage
+    localStorage.removeItem(AUTH_TOKEN);
+
+    // Set the authenticated flag to false
+    this._authenticated = false;
   }
 
   /**
