@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { MskLayoutConfigService } from '@msk/shared/services/config';
 import { map, Observable, ReplaySubject, switchMap } from 'rxjs';
@@ -6,6 +6,9 @@ import { fromPairs } from 'lodash-es';
 
 @Injectable({ providedIn: 'root' })
 export class MskMediaWatcherService {
+  private _breakpointObserver = inject(BreakpointObserver);
+  private _layoutConfigService = inject(MskLayoutConfigService);
+
   private _onMediaChange: ReplaySubject<{ matchingAliases: string[]; matchingQueries: { [key: string]: string } }> =
     new ReplaySubject<{
       matchingAliases: string[];
@@ -15,7 +18,7 @@ export class MskMediaWatcherService {
   /**
    * Constructor
    */
-  constructor(private _breakpointObserver: BreakpointObserver, private _layoutConfigService: MskLayoutConfigService) {
+  constructor() {
     this._layoutConfigService.config$
       .pipe(
         map((config) =>

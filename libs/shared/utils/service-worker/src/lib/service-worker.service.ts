@@ -1,24 +1,27 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { SwUpdate, VersionEvent } from '@angular/service-worker';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MskServiceWorkerSnackBarComponent } from './service-worker-snack-bar/service-worker-snack-bar.component';
 
 @Injectable({ providedIn: 'root' })
 export class MskServiceWorkerService {
+  private _swUpdate = inject(SwUpdate);
+  private _matSnackBar = inject(MatSnackBar);
+
   /**
    * Constructor
    */
-  constructor(private _swUpdate: SwUpdate, private _matSnackBar: MatSnackBar) {
+  constructor() {
     // If the service worker is enabled
-    if (_swUpdate.isEnabled) {
+    if (this._swUpdate.isEnabled) {
       // Check for update
-      _swUpdate.checkForUpdate();
+      this._swUpdate.checkForUpdate();
 
       // Version is ready
-      _swUpdate.versionUpdates.subscribe((res: VersionEvent) => {
+      this._swUpdate.versionUpdates.subscribe((res: VersionEvent) => {
         if (res.type === 'VERSION_READY') {
           // Show message
-          _matSnackBar.openFromComponent(MskServiceWorkerSnackBarComponent, {
+          this._matSnackBar.openFromComponent(MskServiceWorkerSnackBarComponent, {
             duration: 10000,
           });
         }

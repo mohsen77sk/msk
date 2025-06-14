@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, inject, ViewEncapsulation } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,10 +20,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
   ],
 })
 export class MskServiceWorkerSnackBarComponent {
-  /**
-   * Constructor
-   */
-  constructor(private _swUpdate: SwUpdate) {}
+  private _swUpdate = inject(SwUpdate);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors

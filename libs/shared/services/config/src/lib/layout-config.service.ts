@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { merge } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MSK_LAYOUT_CONFIG } from './layout-config.constants';
@@ -6,14 +6,16 @@ import { LayoutConfig } from './layout-config.types';
 
 @Injectable({ providedIn: 'root' })
 export class MskLayoutConfigService {
+  private _defaultConfig: LayoutConfig = inject(MSK_LAYOUT_CONFIG);
+
   private _config: BehaviorSubject<LayoutConfig>;
 
   /**
    * Constructor
    */
-  constructor(@Inject(MSK_LAYOUT_CONFIG) config: LayoutConfig) {
+  constructor() {
     // Private
-    this._config = new BehaviorSubject(this._getFromStorage() ?? config);
+    this._config = new BehaviorSubject(this._getFromStorage() ?? this._defaultConfig);
   }
 
   // -----------------------------------------------------------------------------------------------------

@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Platform } from '@angular/cdk/platform';
 
 @Injectable({ providedIn: 'root' })
 export class MskPlatformService {
+  private _platform = inject(Platform);
+
   osName = 'os-unknown';
 
   /**
    * Constructor
    */
-  constructor(private _platform: Platform) {
+  constructor() {
     // If the platform is not a browser, return immediately
     if (!this._platform.isBrowser) {
       return;
