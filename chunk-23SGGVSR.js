@@ -1,0 +1,1 @@
+import"./chunk-2R6CW7ES.js";var t="Something went wrong!",a="Server Error 500. Our staff has been notified, thank you for your understanding.",e={title:t,description:a,"back-to-dashboard":"Back to Dashboard"};export{e as default,a as description,t as title};

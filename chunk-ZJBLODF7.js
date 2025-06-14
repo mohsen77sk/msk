@@ -1,0 +1,1 @@
+import"./chunk-2R6CW7ES.js";var a="Ooops... 404!",d="The page you requested could not be found",t={title:a,description:d,"back-to-dashboard":"Back to Dashboard"};export{t as default,d as description,a as title};
