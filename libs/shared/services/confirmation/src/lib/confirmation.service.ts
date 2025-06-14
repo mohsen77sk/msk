@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { inject, Injectable } from '@angular/core';
+
+import { inject, Injectable, DOCUMENT } from '@angular/core';
 import { Direction } from '@angular/cdk/bidi';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MskConfirmationConfig } from './confirmation.types';

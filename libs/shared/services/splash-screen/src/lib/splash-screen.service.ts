@@ -1,14 +1,16 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject, DOCUMENT } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, take } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class MskSplashScreenService {
+  private _document = inject(DOCUMENT);
+  private _router = inject(Router);
+
   /**
    * Constructor
    */
-  constructor(@Inject(DOCUMENT) private _document: Document, private _router: Router) {
+  constructor() {
     // Hide it on the first NavigationEnd event
     this._router.events
       .pipe(

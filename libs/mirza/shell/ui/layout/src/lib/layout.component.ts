@@ -1,6 +1,6 @@
-import { Component, DestroyRef, OnInit, Renderer2, ViewEncapsulation, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, Renderer2, ViewEncapsulation, inject, DOCUMENT } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DOCUMENT } from '@angular/common';
+
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BidiModule, Direction } from '@angular/cdk/bidi';
 import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';

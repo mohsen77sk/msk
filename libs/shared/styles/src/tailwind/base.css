@@ -69,7 +69,7 @@
     &::-moz-placeholder,
     &::-ms-input-placeholder,
     &::-webkit-input-placeholder {
-      color: var(--mdc-filled-text-field-input-text-placeholder-color);
+      color: var(--mat-form-field-filled-input-text-placeholder-color);
     }
 
     /* Autofill color fix */

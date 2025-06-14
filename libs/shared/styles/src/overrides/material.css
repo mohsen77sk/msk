@@ -59,7 +59,7 @@
   --mat-dialog-content-padding: 24px 24px;
   --mat-dialog-actions-padding: 24px 24px;
   --mat-dialog-with-actions-content-padding: 24px 24px 0;
-  --mdc-dialog-container-color: var(--mat-sys-surface-container);
+  --mat-dialog-container-color: var(--mat-sys-surface-container);
 
   .mat-mdc-dialog-icon {
     display: flex;
@@ -83,7 +83,7 @@
   --mat-dialog-headline-padding: 12px 16px;
   --mat-dialog-container-max-width: 100vw;
   --mat-dialog-container-min-width: 100vw;
-  --mdc-dialog-container-shape: 0;
+  --mat-dialog-container-shape: 0;
   height: 100%;
 
   .mat-mdc-dialog-title {

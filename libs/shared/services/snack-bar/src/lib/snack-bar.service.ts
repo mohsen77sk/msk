@@ -1,6 +1,6 @@
-import { DOCUMENT } from '@angular/common';
+
 import { Direction } from '@angular/cdk/bidi';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, DOCUMENT } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/material/snack-bar';
 import { MskSnackbarComponent } from './snack-bar/snack-bar.component';
 import { MskSnackBarConfig } from './snack-bar.types';
