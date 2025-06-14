@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.15]
+        node-version: [22.16]
 
     outputs:
       docs_affected: ${{ steps.check-affected.outputs.docs_affected }}
