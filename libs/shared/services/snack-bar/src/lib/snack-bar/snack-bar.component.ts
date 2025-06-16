@@ -8,6 +8,7 @@ import { MskSnackBarConfig } from '../snack-bar.types';
 @Component({
   selector: 'msk-snack-bar',
   templateUrl: './snack-bar.component.html',
+  styleUrl: './snack-bar.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgClass, MatIconModule, MatButtonModule, MatSnackBarModule],

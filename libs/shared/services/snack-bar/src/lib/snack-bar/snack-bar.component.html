@@ -25,12 +25,12 @@
     @if (data.title) {
     <div class="font-semibold">{{ data.title }}</div>
     }
-    <div [ngClass]="{ 'mt-1': data.title }" [innerText]="data.message"></div>
+    <div [ngClass]="{ 'mt-1': data.title && data.message }" [innerText]="data.message"></div>
   </div>
 
   @if (data.dismissible) {
   <div matSnackBarActions>
-    <button matIconButton matSnackBarAction (click)="sbRef.dismiss()">
+    <button matButton matSnackBarAction class="mat-snack-bar-dismiss" (click)="sbRef.dismiss()">
       <mat-icon class="text-inverse-on-surface">close</mat-icon>
     </button>
   </div>

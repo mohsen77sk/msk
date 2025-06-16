@@ -1,0 +1,8 @@
+.mat-snack-bar-dismiss {
+  padding: 0 !important;
+  min-width: 40px !important;
+
+  .mat-icon {
+    margin: 0 !important;
+  }
+}
