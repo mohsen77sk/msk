@@ -434,10 +434,10 @@
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
         <mat-tab label="Preview">
           <ng-template matTabContent>
-            <button class="mx-1" mat-flat-button (click)="show('alertBox1'); show('alertBox2')">
+            <button class="mx-1" matButton="filled" (click)="show('alertBox1'); show('alertBox2')">
               Show alert boxes
             </button>
-            <button class="mx-1" mat-flat-button (click)="dismiss('alertBox1'); dismiss('alertBox2')">
+            <button class="mx-1" matButton="filled" (click)="dismiss('alertBox1'); dismiss('alertBox2')">
               Dismiss alert boxes
             </button>
 
@@ -455,10 +455,10 @@
         <mat-tab label="HTML">
           <ng-template matTabContent>
             <textarea msk-highlight [lang]="'html'">
-              <button class="mx-1" mat-flat-button (click)="show('alertBox1'); show('alertBox2')">
+              <button class="mx-1" matButton="filled" (click)="show('alertBox1'); show('alertBox2')">
                 Show alert boxes
               </button>
-              <button class="mx-1" mat-flat-button (click)="dismiss('alertBox1'); dismiss('alertBox2')">
+              <button class="mx-1" matButton="filled" (click)="dismiss('alertBox1'); dismiss('alertBox2')">
                 Dismiss alert boxes
               </button>
 

@@ -1,5 +1,5 @@
 <!-- Button -->
-<button mat-icon-button *transloco="let t" [matTooltip]="t('layout.languages')" [matMenuTriggerFor]="languages">
+<button matIconButton *transloco="let t" [matTooltip]="t('layout.languages')" [matMenuTriggerFor]="languages">
   <ng-container *ngTemplateOutlet="flagImage; context: { $implicit: activeLang }"></ng-container>
 </button>
 <!-- menu -->
@@ -16,7 +16,7 @@
 
 <!-- Flag image template -->
 <ng-template let-lang #flagImage>
-  <span class="relative w-6 overflow-hidden rounded-extra-small">
+  <span class="rounded-extra-small relative w-6 overflow-hidden">
     <img class="h-auto w-full" [src]="'assets/images/flags/' + lang + '.svg'" [alt]="'Flag image for ' + lang" />
   </span>
 </ng-template>

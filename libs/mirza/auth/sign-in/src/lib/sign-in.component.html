@@ -56,7 +56,7 @@
           <div matSuffix>
             <button
               type="button"
-              mat-icon-button
+              matIconButton
               (click)="
                 passwordField.type === 'password' ? (passwordField.type = 'text') : (passwordField.type = 'password')
               "
@@ -68,7 +68,7 @@
             </button>
             <button
               type="button"
-              mat-icon-button
+              matIconButton
               (click)="passwordVirtualKeyboard.togglePanel()"
               [disabled]="passwordField.disabled"
             >
@@ -89,7 +89,7 @@
         <!-- Submit button -->
         <button
           class="mt-6 w-full"
-          mat-flat-button
+          matButton="filled"
           [disabled]="signInForm.disabled"
           [mskSpinner]="signInForm.disabled"
           (click)="signIn()"

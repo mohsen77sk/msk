@@ -13,13 +13,13 @@
   ></ng-container>
 
   <ng-template #trailing>
-    <button mat-icon-button (click)="editMode()">
+    <button matIconButton (click)="editMode()">
       <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
     </button>
   </ng-template>
 
   <ng-template #primaryAction>
-    <button mat-button [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+    <button matButton [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
       <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
     </button>
   </ng-template>

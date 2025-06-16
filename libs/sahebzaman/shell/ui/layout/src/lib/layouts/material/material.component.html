@@ -5,7 +5,7 @@
     <div class="relative flex flex-[0_0_auto] items-center gap-4">
       <!-- Navigation toggle button -->
       <div class="flex items-center gap-4" [ngClass]="{ 'md:w-[280px]': mainNavigation.opened() }">
-        <button mat-icon-button (click)="toggleMainNavigation()" aria-label="toggleNavigation">
+        <button matIconButton (click)="toggleMainNavigation()" aria-label="toggleNavigation">
           <mat-icon svgIcon="heroicons_outline:bars-3"></mat-icon>
         </button>
         <div class="hidden items-center" [ngClass]="{ 'md:flex': mainNavigation.opened() }">

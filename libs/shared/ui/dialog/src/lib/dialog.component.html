@@ -46,13 +46,13 @@
 } }
 
 <ng-template #closeIconButton>
-  <button mat-icon-button [ngClass]="{ 'me-1': isFullScreen() }" matDialogClose="cancelled">
+  <button matIconButton [ngClass]="{ 'me-1': isFullScreen() }" matDialogClose="cancelled">
     <mat-icon class="text-current">close</mat-icon>
   </button>
 </ng-template>
 
 <ng-template #closeActionButton>
-  <button mat-button matDialogClose="cancelled" *transloco="let t">
+  <button matButton matDialogClose="cancelled" *transloco="let t">
     {{ t('cancel') }}
   </button>
 </ng-template>

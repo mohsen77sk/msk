@@ -61,7 +61,7 @@
   </ng-container>
 
   <ng-template #primaryAction>
-    <button mat-button [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+    <button matButton [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
       <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
     </button>
   </ng-template>

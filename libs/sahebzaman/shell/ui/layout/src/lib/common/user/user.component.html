@@ -1,5 +1,5 @@
 <!-- Button -->
-<button mat-icon-button [matMenuTriggerFor]="userActions">
+<button matIconButton [matMenuTriggerFor]="userActions">
   <span class="relative h-7 w-7">
     @if (showAvatar && user.avatar) {
     <img class="relative h-full w-full rounded-full" [src]="user.avatar" alt="user-image" />
@@ -16,7 +16,7 @@
   >
     <div class="w-10"></div>
     <span>{{ user.username }}</span>
-    <button mat-icon-button>
+    <button matIconButton>
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -28,7 +28,7 @@
       <span class="text-title-medium">{{ user.name }}</span>
     </div>
     <div class="pb-6 pt-2" *transloco="let t">
-      <button mat-stroked-button>
+      <button matButton="outlined">
         <span>{{ t('layout.settings') }}</span>
       </button>
     </div>

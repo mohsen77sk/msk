@@ -85,8 +85,8 @@
         <mat-tab label="Preview">
           <ng-template matTabContent>
             <div class="mx-auto flex space-x-4">
-              <button mat-flat-button (click)="showLoadingBar()">Show loading bar</button>
-              <button mat-flat-button (click)="hideLoadingBar()">Hide loading bar</button>
+              <button matButton="filled" (click)="showLoadingBar()">Show loading bar</button>
+              <button matButton="filled" (click)="hideLoadingBar()">Hide loading bar</button>
             </div>
           </ng-template>
         </mat-tab>
@@ -94,8 +94,8 @@
           <ng-template matTabContent>
             <textarea msk-highlight [lang]="'html'">
               <div class="mx-auto flex space-x-4">
-                <button mat-flat-button (click)="showLoadingBar()">Show loading bar</button>
-                <button mat-flat-button (click)="hideLoadingBar()">Hide loading bar</button>
+                <button matButton="filled" (click)="showLoadingBar()">Show loading bar</button>
+                <button matButton="filled" (click)="hideLoadingBar()">Hide loading bar</button>
               </div>
             </textarea>
           </ng-template>

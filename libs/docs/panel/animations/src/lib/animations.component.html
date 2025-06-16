@@ -46,7 +46,7 @@
         <div class="title">Expand / Collapse</div>
         <div class="action">
           <button
-            mat-button
+            matButton
             (click)="
               animationStates.expandCollapse === 'expanded'
                 ? (animationStates.expandCollapse = 'collapsed')
@@ -56,7 +56,7 @@
             Toggle state
           </button>
           <button
-            mat-button
+            matButton
             (click)="
               visibilityStates.expandCollapse = !visibilityStates.expandCollapse;
               animationStates.expandCollapse === 'expanded'
@@ -122,8 +122,8 @@
       <div class="header">
         <div class="title">Shake</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('shake.shake', false, true, 150)">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('shake.shake')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('shake.shake', false, true, 150)">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('shake.shake')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -192,8 +192,8 @@
       <div class="header">
         <div class="title">Fade In</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('fadeIn.in', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('fadeIn.in')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('fadeIn.in', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('fadeIn.in')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -234,8 +234,8 @@
       <div class="header">
         <div class="title">Fade In Top</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('fadeIn.top', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('fadeIn.top')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('fadeIn.top', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('fadeIn.top')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -276,8 +276,8 @@
       <div class="header">
         <div class="title">Fade In Bottom</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('fadeIn.bottom', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('fadeIn.bottom')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('fadeIn.bottom', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('fadeIn.bottom')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -318,8 +318,8 @@
       <div class="header">
         <div class="title">Fade In Left</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('fadeIn.left', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('fadeIn.left')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('fadeIn.left', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('fadeIn.left')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -360,8 +360,8 @@
       <div class="header">
         <div class="title">Fade In Right</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('fadeIn.right', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('fadeIn.right')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('fadeIn.right', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('fadeIn.right')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -431,8 +431,8 @@
       <div class="header">
         <div class="title">Fade Out</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('fadeOut.out', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('fadeOut.out')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('fadeOut.out', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('fadeOut.out')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -473,8 +473,8 @@
       <div class="header">
         <div class="title">Fade In Top</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('fadeOut.top', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('fadeOut.top')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('fadeOut.top', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('fadeOut.top')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -515,8 +515,8 @@
       <div class="header">
         <div class="title">Fade In Bottom</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('fadeOut.bottom', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('fadeOut.bottom')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('fadeOut.bottom', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('fadeOut.bottom')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -557,8 +557,8 @@
       <div class="header">
         <div class="title">Fade In Left</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('fadeOut.left', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('fadeOut.left')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('fadeOut.left', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('fadeOut.left')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -599,8 +599,8 @@
       <div class="header">
         <div class="title">Fade In Right</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('fadeOut.right', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('fadeOut.right')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('fadeOut.right', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('fadeOut.right')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -669,8 +669,8 @@
       <div class="header">
         <div class="title">Slide In Top</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('slideIn.top', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('slideIn.top')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('slideIn.top', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('slideIn.top')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -711,8 +711,8 @@
       <div class="header">
         <div class="title">Slide In Bottom</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('slideIn.bottom', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('slideIn.bottom')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('slideIn.bottom', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('slideIn.bottom')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -753,8 +753,8 @@
       <div class="header">
         <div class="title">Slide In Left</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('slideIn.left', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('slideIn.left')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('slideIn.left', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('slideIn.left')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -795,8 +795,8 @@
       <div class="header">
         <div class="title">Slide In Right</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('slideIn.right', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('slideIn.right')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('slideIn.right', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('slideIn.right')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -865,8 +865,8 @@
       <div class="header">
         <div class="title">Slide Out Top</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('slideOut.top', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('slideOut.top')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('slideOut.top', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('slideOut.top')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -907,8 +907,8 @@
       <div class="header">
         <div class="title">Slide Out Bottom</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('slideOut.bottom', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('slideOut.bottom')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('slideOut.bottom', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('slideOut.bottom')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -949,8 +949,8 @@
       <div class="header">
         <div class="title">Slide Out Left</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('slideOut.left', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('slideOut.left')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('slideOut.left', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('slideOut.left')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -991,8 +991,8 @@
       <div class="header">
         <div class="title">Slide Out Right</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('slideOut.right', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('slideOut.right')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('slideOut.right', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('slideOut.right')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -1050,8 +1050,8 @@
       <div class="header">
         <div class="title">Zoom In</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('zoomIn.in', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('zoomIn.in')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('zoomIn.in', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('zoomIn.in')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">
@@ -1108,8 +1108,8 @@
       <div class="header">
         <div class="title">Zoom Out</div>
         <div class="action">
-          <button mat-button (click)="toggleAnimationState('zoomOut.out', 'void', '*')">Toggle state</button>
-          <button mat-button (click)="toggleVisibilityState('zoomOut.out')">Toggle *ngIf</button>
+          <button matButton (click)="toggleAnimationState('zoomOut.out', 'void', '*')">Toggle state</button>
+          <button matButton (click)="toggleVisibilityState('zoomOut.out')">Toggle *ngIf</button>
         </div>
       </div>
       <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0ms'">

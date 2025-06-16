@@ -14,14 +14,14 @@
 
   <ng-template #trailing>
     @if (data.item()?.isActive) {
-    <button mat-icon-button (click)="editMode()">
+    <button matIconButton (click)="editMode()">
       <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
     </button>
     }
   </ng-template>
 
   <ng-template #primaryAction>
-    <button mat-button [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+    <button matButton [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
       <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
     </button>
   </ng-template>
@@ -40,15 +40,15 @@
     </span>
   </div>
   <div class="grid grid-cols-3 gap-4 py-4" *transloco="let t">
-    <button mat-flat-button (click)="openCreateTransaction(AccountTransactionTypeEnum.Deposit)">
+    <button matButton="filled" (click)="openCreateTransaction(AccountTransactionTypeEnum.Deposit)">
       <mat-icon class="hidden sm:block">arrow_upward</mat-icon>
       {{ t('deposit') }}
     </button>
-    <button mat-stroked-button (click)="openCreateTransaction(AccountTransactionTypeEnum.Withdrawal)">
+    <button matButton="outlined" (click)="openCreateTransaction(AccountTransactionTypeEnum.Withdrawal)">
       <mat-icon class="hidden sm:block">arrow_downward</mat-icon>
       {{ t('withdraw') }}
     </button>
-    <button mat-stroked-button (click)="openCreateTransaction(AccountTransactionTypeEnum.Transfer)">
+    <button matButton="outlined" (click)="openCreateTransaction(AccountTransactionTypeEnum.Transfer)">
       <mat-icon class="hidden sm:block">swap_horiz</mat-icon>
       {{ t('transfer') }}
     </button>
