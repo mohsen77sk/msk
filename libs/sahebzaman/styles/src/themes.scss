@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+@use 'theme-color' as theme;
+
+:root {
+  color-scheme: light;
+
+  @include mat.theme(
+    (
+      color: (
+        primary: theme.$primary-palette,
+        tertiary: theme.$tertiary-palette,
+      ),
+      typography: var(--default-font-family),
+      density: 0,
+    )
+  );
+}
+
+.dark {
+  color-scheme: dark;
+}

@@ -1,0 +1,7 @@
+{
+  "name": "sahebzaman-styles",
+  "sourceRoot": "libs/sahebzaman/styles",
+  "tags": ["scope:sahebzaman"],
+  "projectType": "library",
+  "targets": {}
+}

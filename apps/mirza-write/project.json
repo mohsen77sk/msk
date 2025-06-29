@@ -37,7 +37,7 @@
           }
         ],
         "styles": [
-          "libs/shared/styles/src/themes.scss",
+          "libs/mirza/styles/src/themes.scss",
           "libs/shared/styles/src/module.css",
           "apps/mirza-write/src/styles.css"
         ],

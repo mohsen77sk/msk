@@ -1,0 +1,7 @@
+{
+  "name": "mirza-styles",
+  "sourceRoot": "libs/mirza/styles",
+  "tags": ["scope:mirza"],
+  "projectType": "library",
+  "targets": {}
+}

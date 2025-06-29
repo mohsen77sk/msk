@@ -1,0 +1,7 @@
+{
+  "name": "docs-styles",
+  "sourceRoot": "libs/docs/styles",
+  "tags": ["scope:docs"],
+  "projectType": "library",
+  "targets": {}
+}
