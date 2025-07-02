@@ -10,4 +10,12 @@
   .msk-mat-card-outlined {
     @apply shadow-level-0 rounded-medium bg-surface border-outline-variant relative border;
   }
+
+  .msk-mat-card-elevated,
+  .msk-mat-card-filled,
+  .msk-mat-card-outlined {
+    .msk-mat-card-subtitle {
+      @apply text-title-small text-secondary;
+    }
+  }
 }

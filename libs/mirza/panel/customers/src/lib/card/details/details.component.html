@@ -33,60 +33,66 @@
     </div>
   </div>
   <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="text-secondary mb-2 font-bold">
+    <div class="msk-mat-card-subtitle">
       {{ t('about', { name: data.item()?.name }) }}
     </div>
-    <!-- Gender -->
-    @if (data.item()?.gender) {
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>male</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span *transloco="let t; read: 'customers.genders'">{{ t(data.item()?.gender ?? '') }}</span>
-        <span>{{ t('gender') }}</span>
+    <div class="msk-list -mx-4">
+      <!-- Gender -->
+      @if (data.item()?.gender) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">male</mat-icon>
+        <div class="msk-list-item-content">
+          <span *transloco="let t; read: 'customers.genders'">{{ t(data.item()?.gender ?? '') }}</span>
+          <span>{{ t('gender') }}</span>
+        </div>
       </div>
-    </div>
-    }
-    <!-- Contact Number -->
-    @if (data.item()?.contactNumber) {
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>call</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.contactNumber || '-' }}</span>
-        <span>{{ t('contactNumber') }}</span>
+      }
+      <!-- Contact Number -->
+      @if (data.item()?.contactNumber) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">call</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.contactNumber || '-' }}</span>
+          <span>{{ t('contactNumber') }}</span>
+        </div>
       </div>
-    </div>
-    }
-    <!-- Address -->
-    @if (data.item()?.address) {
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>location_on</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.address || '-' }}</span>
-        <span>{{ t('address') }}</span>
+      }
+      <!-- Address -->
+      @if (data.item()?.address) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">location_on</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.address || '-' }}</span>
+          <span>{{ t('address') }}</span>
+        </div>
       </div>
+      }
     </div>
-    }
   </div>
   @if (data.item()?.note) {
   <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="text-secondary mb-2 font-bold">{{ t('note') }}</div>
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>sticky_note_2</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.note }}</span>
+    <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
+    <div class="msk-list -mx-4">
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.note }}</span>
+        </div>
       </div>
     </div>
   </div>
   }
   <div class="my-4 border-t"></div>
   <div class="mb-2" *transloco="let t">
-    <div class="text-secondary mb-2 font-bold">{{ t('settings') }}</div>
-    <div class="msk-list-item -mx-6 cursor-pointer gap-2" matRipple (click)="deleteCustomer()" aria-hidden="true">
-      <div class="msk-list-item-icon">
-        <mat-icon class="text-error">delete</mat-icon>
-      </div>
-      <div class="msk-list-item-content text-error">
-        {{ t('customers.delete') }}
+    <div class="text-secondary text-title-small">{{ t('settings') }}</div>
+    <div class="msk-list -mx-6">
+      <div class="msk-list-item cursor-pointer" matRipple (click)="deleteCustomer()" aria-hidden="true">
+        <div class="msk-list-item-icon">
+          <mat-icon class="text-error">delete</mat-icon>
+        </div>
+        <div class="msk-list-item-content text-error">
+          {{ t('customers.delete') }}
+        </div>
       </div>
     </div>
   </div>

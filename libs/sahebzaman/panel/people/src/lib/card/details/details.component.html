@@ -33,62 +33,68 @@
     </div>
   </div>
   <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="text-secondary mb-2 font-bold">
+    <div class="msk-mat-card-subtitle">
       {{ t('about', { name: data.item()?.fullName }) }}
     </div>
-    <!-- National Code -->
-    @if (data.item()?.nationalCode) {
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>badge</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.nationalCode || '-' }}</span>
-        <span>{{ t('nationalCode') }}</span>
+    <div class="msk-list -mx-4">
+      <!-- National Code -->
+      @if (data.item()?.nationalCode) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">badge</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.nationalCode || '-' }}</span>
+          <span>{{ t('nationalCode') }}</span>
+        </div>
       </div>
-    </div>
-    }
-    <!-- Birthday -->
-    @if (data.item()?.dateOfBirth) {
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>cake</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ (data.item()?.dateOfBirth | mskDateTime : 'longDate') || '-' }}</span>
-        <span>{{ t('birthday') }}</span>
+      }
+      <!-- Birthday -->
+      @if (data.item()?.dateOfBirth) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">cake</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ (data.item()?.dateOfBirth | mskDateTime : 'longDate') || '-' }}</span>
+          <span>{{ t('birthday') }}</span>
+        </div>
       </div>
-    </div>
-    }
-    <!-- Gender -->
-    @if (data.item()?.gender) {
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>male</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span *transloco="let t; read: 'people.genders'">{{ t(data.item()?.gender?.toString() ?? '') }}</span>
-        <span>{{ t('gender') }}</span>
+      }
+      <!-- Gender -->
+      @if (data.item()?.gender) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">male</mat-icon>
+        <div class="msk-list-item-content">
+          <span *transloco="let t; read: 'people.genders'">{{ t(data.item()?.gender?.toString() ?? '') }}</span>
+          <span>{{ t('gender') }}</span>
+        </div>
       </div>
+      }
     </div>
-    }
   </div>
   @if (data.item()?.note) {
   <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="text-secondary mb-2 font-bold">{{ t('note') }}</div>
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>sticky_note_2</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.note }}</span>
+    <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
+    <div class="msk-list -mx-4">
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.note }}</span>
+        </div>
       </div>
     </div>
   </div>
   }
   <div class="my-4 border-t"></div>
   <div class="mb-2" *transloco="let t">
-    <div class="text-secondary mb-2 font-bold">{{ t('settings') }}</div>
-    <div class="msk-list-item -mx-6 cursor-pointer gap-2" matRipple (click)="updateStatus()" aria-hidden="true">
-      <div class="msk-list-item-icon">
-        <mat-icon [ngClass]="{ 'text-error': data.item()?.isActive }">
-          {{ data.item()?.isActive ? 'cancel' : 'check_circle' }}
-        </mat-icon>
-      </div>
-      <div class="msk-list-item-content" [ngClass]="{ 'text-error': data.item()?.isActive }">
-        {{ data.item()?.isActive ? t('people.deactivate') : t('people.activate') }}
+    <div class="text-secondary text-title-small">{{ t('settings') }}</div>
+    <div class="msk-list -mx-6">
+      <div class="msk-list-item cursor-pointer" matRipple (click)="updateStatus()" aria-hidden="true">
+        <div class="msk-list-item-icon">
+          <mat-icon [ngClass]="{ 'text-error': data.item()?.isActive }">
+            {{ data.item()?.isActive ? 'cancel' : 'check_circle' }}
+          </mat-icon>
+        </div>
+        <div class="msk-list-item-content" [ngClass]="{ 'text-error': data.item()?.isActive }">
+          {{ data.item()?.isActive ? t('people.deactivate') : t('people.activate') }}
+        </div>
       </div>
     </div>
   </div>

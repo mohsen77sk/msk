@@ -55,62 +55,66 @@
   </div>
   }
   <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="text-secondary mb-2 font-bold">{{ t('owners') }}</div>
-    @for (person of data.item()?.persons; track person.id) {
-    <div class="msk-list-item -mx-4 cursor-pointer" matRipple>
-      <div class="msk-list-item-icon">
-        <msk-avatar [name]="person.name"></msk-avatar>
+    <div class="msk-mat-card-subtitle">{{ t('owners') }}</div>
+    <div class="msk-list -mx-4">
+      @for (person of data.item()?.persons; track person.id) {
+      <div class="msk-list-item cursor-pointer" matRipple>
+        <msk-avatar class="msk-list-item-icon" [name]="person.name"></msk-avatar>
+        <div class="msk-list-item-content">
+          <span>{{ person.name }}</span>
+          <span>#{{ person.code }}</span>
+        </div>
+        <div class="msk-list-item-icon">
+          <mat-icon>open_in_new</mat-icon>
+        </div>
       </div>
-      <div class="msk-list-item-content">
-        <span>{{ person.name }}</span>
-        <span>#{{ person.code }}</span>
-      </div>
-      <div class="msk-list-item-icon">
-        <mat-icon>open_in_new</mat-icon>
-      </div>
+      }
     </div>
-    }
   </div>
   <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="text-secondary mb-2 font-bold">{{ t('about') }}</div>
-    <!-- TypeName -->
-    @if (data.item()?.accountTypeName) {
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>credit_card_gear</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.accountTypeName }}</span>
-        <span>{{ t('accountType') }}</span>
+    <div class="msk-mat-card-subtitle">{{ t('about') }}</div>
+    <div class="msk-list -mx-4">
+      <!-- TypeName -->
+      @if (data.item()?.accountTypeName) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">credit_card_gear</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.accountTypeName }}</span>
+          <span>{{ t('accountType') }}</span>
+        </div>
       </div>
-    </div>
-    }
-    <!-- CreateDate -->
-    @if (data.item()?.createDate) {
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>calendar_add_on</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ (data.item()?.createDate | mskDateTime : 'longDate') || '-' }}</span>
-        <span>{{ t('createDate') }}</span>
+      }
+      <!-- CreateDate -->
+      @if (data.item()?.createDate) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">calendar_add_on</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ (data.item()?.createDate | mskDateTime : 'longDate') || '-' }}</span>
+          <span>{{ t('createDate') }}</span>
+        </div>
       </div>
-    </div>
-    }
-    <!-- CloseDate -->
-    @if (data.item()?.closeDate) {
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>event_busy</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ (data.item()?.closeDate | mskDateTime : 'longDate') || '-' }}</span>
-        <span>{{ t('closeDate') }}</span>
+      }
+      <!-- CloseDate -->
+      @if (data.item()?.closeDate) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">event_busy</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ (data.item()?.closeDate | mskDateTime : 'longDate') || '-' }}</span>
+          <span>{{ t('closeDate') }}</span>
+        </div>
       </div>
+      }
     </div>
-    }
   </div>
   @if (data.item()?.note) {
   <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="text-secondary mb-2 font-bold">{{ t('note') }}</div>
-    <div class="msk-list-item -mx-4">
-      <div class="msk-list-item-icon"><mat-icon>sticky_note_2</mat-icon></div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.note }}</span>
+    <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
+    <div class="msk-list -mx-4">
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.note }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -119,13 +123,15 @@
   @if (data.item()?.isActive) {
   <div class="my-4 border-t"></div>
   <div class="mb-2" *transloco="let t">
-    <div class="text-secondary mb-2 font-bold">{{ t('settings') }}</div>
-    <div class="msk-list-item -mx-6 cursor-pointer gap-2" matRipple (click)="updateStatus()" aria-hidden="true">
-      <div class="msk-list-item-icon">
-        <mat-icon class="text-error"> cancel </mat-icon>
-      </div>
-      <div class="msk-list-item-content text-error">
-        {{ t('accounts.deactivate') }}
+    <div class="text-secondary text-title-small">{{ t('settings') }}</div>
+    <div class="msk-list -mx-6">
+      <div class="msk-list-item cursor-pointer" matRipple (click)="updateStatus()" aria-hidden="true">
+        <div class="msk-list-item-icon">
+          <mat-icon class="text-error"> cancel </mat-icon>
+        </div>
+        <div class="msk-list-item-content text-error">
+          {{ t('accounts.deactivate') }}
+        </div>
       </div>
     </div>
   </div>
