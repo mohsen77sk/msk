@@ -3,12 +3,12 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, Routes } from '@an
 import { ProductCategoriesService } from './product-categories.service';
 import { ProductCategoriesComponent } from './product-categories.component';
 import { ProductCategoriesListComponent } from './list/list.component';
+import { ProductCategoriesCardComponent } from './card/card.component';
 
 import { scopeLoader } from '@msk/shared/utils/transloco';
 import { provideTranslocoScope } from '@jsverse/transloco';
 import { MskErrorResponse } from '@msk/shared/data-access';
 import { catchError, throwError } from 'rxjs';
-import { ProductCategoriesCardComponent } from './card/card.component';
 
 /**
  * Product category resolver

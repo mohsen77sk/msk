@@ -1,4 +1,18 @@
 {
+  "details": {
+    "new": "New product",
+    "edit": "Edit product",
+    "view": "{{name}}",
+    "specs": "specification",
+    "name": "Name",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "cost": "Cost",
+    "sell-price": "Sell price",
+    "note": "Note"
+  },
   "search": "Search products",
-  "empty-list": "There are no products!"
+  "empty-list": "There are no products!",
+  "delete": "Delete product",
+  "delete-message": "Are you sure you want to delete <b>{{name}}</b>?"
 }

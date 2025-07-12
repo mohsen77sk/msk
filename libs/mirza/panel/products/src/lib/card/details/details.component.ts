@@ -1,4 +1,4 @@
-import { NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,13 +10,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
+import { MskCurrencyMaskDirective } from '@msk/shared/directives/currency-mask';
+import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
+import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
+
 import {
   MskHandleFormErrors,
   MskValidateFormFields,
@@ -24,17 +28,18 @@ import {
   FormError,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
-import { ProductCategory } from '../../product-categories.types';
-import { ProductCategoriesService } from '../../product-categories.service';
 import { catchError, EMPTY, map, tap } from 'rxjs';
+import { ProductsService } from '../../products.service';
+import { Product } from '../../products.types';
 
 @Component({
-  selector: 'mz-product-categories-details',
+  selector: 'mz-product-details',
   templateUrl: './details.component.html',
   animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    AsyncPipe,
     NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
@@ -47,20 +52,24 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
     MatFormFieldModule,
     MatDatepickerModule,
     MatDialogModule,
+    TranslocoPipe,
     TranslocoDirective,
     MskAlertComponent,
     MskDialogComponent,
     MskSpinnerDirective,
+    MskCurrencyMaskDirective,
+    MskCurrencySymbolDirective,
+    MskSelectSearchDirective,
   ],
 })
-export class ProductCategoriesCardDetailsComponent implements OnInit {
-  readonly data = inject<MskDialogData<ProductCategory | undefined>>(MAT_DIALOG_DATA);
-  readonly dialogRef = inject(MatDialogRef<ProductCategoriesCardDetailsComponent>);
+export class ProductCardDetailsComponent implements OnInit {
+  readonly data = inject<MskDialogData<Product | undefined>>(MAT_DIALOG_DATA);
+  readonly dialogRef = inject(MatDialogRef<ProductCardDetailsComponent>);
   private _formBuilder = inject(FormBuilder);
+  private _productsService = inject(ProductsService);
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
-  private _productCategoriesService = inject(ProductCategoriesService);
 
   form!: FormGroup;
   formErrors: FormError = {};
@@ -69,6 +78,8 @@ export class ProductCategoriesCardDetailsComponent implements OnInit {
     show: false,
     message: '',
   });
+
+  unitList: { id: string; name: string }[] = [];
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -82,6 +93,10 @@ export class ProductCategoriesCardDetailsComponent implements OnInit {
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
+      unit: ['', Validators.required],
+      quantity: [0, [Validators.required, Validators.min(1)]],
+      cost: 0,
+      sellPrice: 0,
       note: '',
     });
     // Handling errors
@@ -102,13 +117,13 @@ export class ProductCategoriesCardDetailsComponent implements OnInit {
   }
 
   /**
-   * delete the product category
+   * delete the product
    */
-  deleteProductCategory(): void {
+  deleteProduct(): void {
     // Open the confirmation dialog
     const confirmation = this._mskConfirmationService.open({
-      title: this._translocoService.translate('categories.delete'),
-      message: this._translocoService.translate('categories.delete-message', {
+      title: this._translocoService.translate('products.delete'),
+      message: this._translocoService.translate('products.delete-message', {
         name: this.data.item()?.name,
       }),
       actions: {
@@ -121,8 +136,8 @@ export class ProductCategoriesCardDetailsComponent implements OnInit {
       // If don't confirm, return
       if (result !== 'confirmed') return;
 
-      this._productCategoriesService
-        .deleteProductCategory(this.data.item() as ProductCategory)
+      this._productsService
+        .deleteProduct(this.data.item() as Product)
         .pipe(
           map((response) => this.dialogRef.close(response)),
           catchError((response) => {
@@ -156,8 +171,8 @@ export class ProductCategoriesCardDetailsComponent implements OnInit {
 
     const result =
       this.data.action() === 'edit'
-        ? this._productCategoriesService.updateProductCategory(this.form.value)
-        : this._productCategoriesService.createProductCategory(this.form.value);
+        ? this._productsService.updateProduct(this.form.value)
+        : this._productsService.createProduct(this.form.value);
 
     result
       .pipe(
