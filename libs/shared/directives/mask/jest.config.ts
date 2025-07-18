@@ -1,8 +1,8 @@
 export default {
-  displayName: 'shared-directives-currency-mask',
+  displayName: 'shared-directives-mask',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/shared/directives/currency-mask',
+  coverageDirectory: '../../../../coverage/libs/shared/directives/mask',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

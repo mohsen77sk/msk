@@ -15,9 +15,9 @@ import { MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
-import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
-import { MskCurrencyMaskDirective } from '@msk/shared/directives/currency-mask';
+import { MskMaskDirective } from '@msk/shared/directives/mask';
+import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 
 import {
@@ -54,8 +54,8 @@ import { Product, ProductUnit } from '../../products.types';
     TranslocoDirective,
     MskAlertComponent,
     MskDialogComponent,
+    MskMaskDirective,
     MskSpinnerDirective,
-    MskCurrencyMaskDirective,
     MskCurrencySymbolDirective,
   ],
 })

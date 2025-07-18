@@ -13,9 +13,9 @@ import { mskAnimations } from '@msk/shared/animations';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
+import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
-import { MskCurrencyMaskDirective } from '@msk/shared/directives/currency-mask';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import {
   FormError,
@@ -49,10 +49,10 @@ import { catchError, EMPTY, Observable, tap } from 'rxjs';
     TranslocoDirective,
     MskAlertComponent,
     MskDialogComponent,
+    MskMaskDirective,
     MskSpinnerDirective,
-    MskCurrencyMaskDirective,
-    MskCurrencySymbolDirective,
     MskSelectSearchDirective,
+    MskCurrencySymbolDirective,
   ],
 })
 export class AccountsCreateTransactionComponent implements OnInit {

@@ -5,17 +5,19 @@ import {
   forwardRef,
   HostListener,
   inject,
+  input,
   LOCALE_ID,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MskMaskType } from './mask.types';
 
 @Directive({
   standalone: true,
-  selector: 'input[mskCurrencyMask], textarea[mskCurrencyMask]',
-  exportAs: 'mskCurrencyMask',
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => MskCurrencyMaskDirective), multi: true }],
+  selector: 'input[mskMask], textarea[mskMask]',
+  exportAs: 'mskMask',
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => MskMaskDirective), multi: true }],
 })
-export class MskCurrencyMaskDirective implements ControlValueAccessor {
+export class MskMaskDirective implements ControlValueAccessor {
   private _elementRef = inject(ElementRef);
   private _localeId = inject(LOCALE_ID);
   private _currencyCode = inject(DEFAULT_CURRENCY_CODE);
@@ -23,12 +25,15 @@ export class MskCurrencyMaskDirective implements ControlValueAccessor {
   private onChange!: (value: number | null) => void;
   private onTouched!: () => void;
 
+  mskMask = input.required<MskMaskType>();
+
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
-  @HostListener('input', ['$event.target.value'])
-  onInput(value: string) {
+  @HostListener('input', ['$event'])
+  onInput(event: Event) {
+    const value = (event.target as HTMLInputElement | null)?.value ?? '';
     const numeric = this._parse(value);
     this.onChange(numeric);
     this._elementRef.nativeElement.value = this._format(numeric);
@@ -70,16 +75,16 @@ export class MskCurrencyMaskDirective implements ControlValueAccessor {
 
   private _format(value: number | null): string {
     if (value === null || isNaN(value)) return '';
-    const currencyOpts = new Intl.NumberFormat(this._localeId, {
-      style: 'currency',
+    const formatOpts = new Intl.NumberFormat(this._localeId, {
+      style: this.mskMask(),
       currency: this._currencyCode,
     }).resolvedOptions();
 
     return new Intl.NumberFormat(this._localeId, {
       style: 'decimal',
       numberingSystem: 'latn',
-      minimumFractionDigits: currencyOpts.minimumFractionDigits,
-      maximumFractionDigits: currencyOpts.maximumFractionDigits,
+      minimumFractionDigits: formatOpts.minimumFractionDigits,
+      maximumFractionDigits: formatOpts.maximumFractionDigits,
     }).format(value);
   }
 

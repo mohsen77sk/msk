@@ -1,7 +1,7 @@
 {
-  "name": "shared-directives-currency-mask",
+  "name": "shared-directives-mask",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/directives/currency-mask/src",
+  "sourceRoot": "libs/shared/directives/mask/src",
   "prefix": "msk",
   "projectType": "library",
   "tags": ["scope:shared", "type:ui"],
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/shared/directives/currency-mask/jest.config.ts"
+        "jestConfig": "libs/shared/directives/mask/jest.config.ts"
       }
     },
     "lint": {

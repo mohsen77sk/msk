@@ -17,11 +17,11 @@ import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
-import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
-import { MskCurrencyMaskDirective } from '@msk/shared/directives/currency-mask';
-import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
+import { MskMaskDirective } from '@msk/shared/directives/mask';
+import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
+import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import {
   MskHandleFormErrors,
@@ -69,10 +69,10 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
     MskAlertComponent,
     MskAvatarComponent,
     MskDialogComponent,
+    MskMaskDirective,
     MskSpinnerDirective,
-    MskCurrencyMaskDirective,
-    MskCurrencySymbolDirective,
     MskSelectSearchDirective,
+    MskCurrencySymbolDirective,
     MskDateTimePipe,
   ],
 })
