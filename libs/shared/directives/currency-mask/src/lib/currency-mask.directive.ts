@@ -1,6 +1,13 @@
-import { Directive, ElementRef, forwardRef, HostListener, inject, LOCALE_ID } from '@angular/core';
+import {
+  DEFAULT_CURRENCY_CODE,
+  Directive,
+  ElementRef,
+  forwardRef,
+  HostListener,
+  inject,
+  LOCALE_ID,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { formatCurrency } from '@angular/common';
 
 @Directive({
   standalone: true,
@@ -11,43 +18,38 @@ import { formatCurrency } from '@angular/common';
 export class MskCurrencyMaskDirective implements ControlValueAccessor {
   private _elementRef = inject(ElementRef);
   private _localeId = inject(LOCALE_ID);
+  private _currencyCode = inject(DEFAULT_CURRENCY_CODE);
 
-  private onChange!: (value: unknown) => void;
+  private onChange!: (value: number | null) => void;
   private onTouched!: () => void;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
-  @HostListener('input', ['$event']) onInput(event: InputEvent) {
-    // Remove all non-numeric characters except for decimal point and minus sign
-    const value = this._elementRef.nativeElement.value.replace(/[^\d.-]/g, '');
-
-    if (this.onChange) {
-      const numberValue = parseFloat(value);
-      this.onChange(!isNaN(numberValue) ? numberValue : '');
-    }
-    this._formatInputValue();
+  @HostListener('input', ['$event.target.value'])
+  onInput(value: string) {
+    const numeric = this._parse(value);
+    this.onChange(numeric);
+    this._elementRef.nativeElement.value = this._format(numeric);
+    this._setCaretPosition();
   }
 
-  @HostListener('blur', ['$event']) onBlur(event: FocusEvent) {
-    if (this.onTouched) {
-      this.onTouched();
-    }
-    this._formatInputValue();
+  @HostListener('blur')
+  onBlur() {
+    this.onTouched();
+    // ensure full formatting on blur
+    const val = this._parse(this._elementRef.nativeElement.value);
+    this._elementRef.nativeElement.value = this._format(val);
   }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
 
-  writeValue(value: any): void {
-    if (value) {
-      const formattedValue = formatCurrency(value, this._localeId, '', '', '1.0-2');
-      this._elementRef.nativeElement.value = formattedValue;
-    } else {
-      this._elementRef.nativeElement.value = '';
-    }
+  writeValue(value: number | null): void {
+    const formatted = this._format(value);
+    this._elementRef.nativeElement.value = formatted;
   }
 
   registerOnChange(fn: typeof this.onChange): void {
@@ -66,18 +68,36 @@ export class MskCurrencyMaskDirective implements ControlValueAccessor {
   // @ Private methods
   // -----------------------------------------------------------------------------------------------------
 
-  private _formatInputValue() {
-    // Remove all non-numeric characters except for decimal point and minus sign
-    const value = this._elementRef.nativeElement.value.replace(/[^\d.-]/g, '');
+  private _format(value: number | null): string {
+    if (value === null || isNaN(value)) return '';
+    const currencyOpts = new Intl.NumberFormat(this._localeId, {
+      style: 'currency',
+      currency: this._currencyCode,
+    }).resolvedOptions();
 
-    if (value) {
-      const numberValue = parseFloat(value);
-      if (!isNaN(numberValue)) {
-        const formattedValue = formatCurrency(numberValue, this._localeId, '', '', '1.0-2');
-        this._elementRef.nativeElement.value = formattedValue;
-      }
-    } else {
-      this._elementRef.nativeElement.value = '';
-    }
+    return new Intl.NumberFormat(this._localeId, {
+      style: 'decimal',
+      numberingSystem: 'latn',
+      minimumFractionDigits: currencyOpts.minimumFractionDigits,
+      maximumFractionDigits: currencyOpts.maximumFractionDigits,
+    }).format(value);
+  }
+
+  private _parse(value: string): number | null {
+    if (!value) return null;
+    // Remove everything except digits and decimal separators
+    const example = new Intl.NumberFormat(this._localeId);
+    const parts = example.format(12345.6).match(/[\D]/g) || [];
+    // Identify decimal separator (last non-digit char)
+    const decSep = parts[parts.length - 1];
+    const normalized = value.replace(new RegExp(`[^0-9${decSep}]`, 'g'), '').replace(decSep, '.');
+    const num = parseFloat(normalized);
+    return isNaN(num) ? null : num;
+  }
+
+  private _setCaretPosition() {
+    // reset caret to end (simplest approach)
+    const len = this._elementRef.nativeElement.value.length;
+    this._elementRef.nativeElement.setSelectionRange(len, len);
   }
 }
