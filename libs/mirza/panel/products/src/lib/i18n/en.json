@@ -11,6 +11,11 @@
     "sell-price": "Sell price",
     "note": "Note"
   },
+  "units": {
+    "piece": "Piece",
+    "gram": "Gram",
+    "kg": "Kilogram"
+  },
   "search": "Search products",
   "empty-list": "There are no products!",
   "delete": "Delete product",

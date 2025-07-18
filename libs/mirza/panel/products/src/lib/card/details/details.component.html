@@ -39,12 +39,34 @@
       </div>
       <!-- Quantity -->
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">production_quantity_limits</mat-icon>
+        <mat-icon class="msk-list-item-icon">pin</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ data.item()?.quantity || '-' }} {{ data.item()?.unit }}</span>
+          <span *transloco="let t; read: 'products.units'">
+            {{ data.item()?.quantity || '-' }} {{ t(data.item()?.unit ?? '') }}
+          </span>
           <span>{{ t('quantity') }}</span>
         </div>
       </div>
+      <!-- Cost -->
+      @if (data.item()?.cost) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">paid</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.cost | number }} <small mskCurrencySymbol></small></span>
+          <span>{{ t('cost') }}</span>
+        </div>
+      </div>
+      }
+      <!-- SellPrice -->
+      @if (data.item()?.sellPrice) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">sell</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.sellPrice | number }} <small mskCurrencySymbol></small></span>
+          <span>{{ t('sell-price') }}</span>
+        </div>
+      </div>
+      }
     </div>
   </div>
   @if (data.item()?.note) {
@@ -102,17 +124,9 @@
 
       <mat-form-field>
         <mat-label>{{ t('unit') }}</mat-label>
-        <mat-select
-          formControlName="unit"
-          multiple
-          mskSelectSearch
-          [searchList]="unitList"
-          [searchItems]="'name'"
-          [searchPlaceholder]="'search' | transloco"
-          #searchUnits="mskSelectSearch"
-        >
-          @for (item of searchUnits.filteredList | async; track item) {
-          <mat-option [value]="item.id">{{ item.name }}</mat-option>
+        <mat-select formControlName="unit">
+          @for (item of unitList; track item) {
+          <mat-option [value]="item" *transloco="let t; read: 'products.units'">{{ t(item) }}</mat-option>
           }
         </mat-select>
         <mat-error>{{ formErrors['unit'] }}</mat-error>

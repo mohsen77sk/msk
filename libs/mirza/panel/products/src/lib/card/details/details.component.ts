@@ -1,4 +1,4 @@
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
@@ -19,7 +19,6 @@ import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskCurrencyMaskDirective } from '@msk/shared/directives/currency-mask';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
-import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
 
 import {
   MskHandleFormErrors,
@@ -30,7 +29,7 @@ import {
 import { mskAnimations } from '@msk/shared/animations';
 import { catchError, EMPTY, map, tap } from 'rxjs';
 import { ProductsService } from '../../products.service';
-import { Product } from '../../products.types';
+import { Product, ProductUnit } from '../../products.types';
 
 @Component({
   selector: 'mz-product-details',
@@ -39,7 +38,7 @@ import { Product } from '../../products.types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    AsyncPipe,
+    DecimalPipe,
     NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
@@ -52,14 +51,12 @@ import { Product } from '../../products.types';
     MatFormFieldModule,
     MatDatepickerModule,
     MatDialogModule,
-    TranslocoPipe,
     TranslocoDirective,
     MskAlertComponent,
     MskDialogComponent,
     MskSpinnerDirective,
     MskCurrencyMaskDirective,
     MskCurrencySymbolDirective,
-    MskSelectSearchDirective,
   ],
 })
 export class ProductCardDetailsComponent implements OnInit {
@@ -73,13 +70,12 @@ export class ProductCardDetailsComponent implements OnInit {
 
   form!: FormGroup;
   formErrors: FormError = {};
+  unitList: ProductUnit[] = Object.values(ProductUnit);
 
   alert = signal({
     show: false,
     message: '',
   });
-
-  unitList: { id: string; name: string }[] = [];
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks

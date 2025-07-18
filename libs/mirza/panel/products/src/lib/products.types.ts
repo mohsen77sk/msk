@@ -4,10 +4,16 @@ import { ProductCategory } from '@msk/mirza/panel/product-categories';
 export const DefaultProductsSortId = 'name';
 export const DefaultProductsSortDirection: SortDirection = 'asc';
 
+export enum ProductUnit {
+  PIECE = 'piece',
+  GRAM = 'gram',
+  KG = 'kg',
+}
+
 export class Product {
   id: number;
   name: string;
-  unit: string;
+  unit: ProductUnit;
   quantity?: number;
   cost?: number;
   sellPrice?: number;
