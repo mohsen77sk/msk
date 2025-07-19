@@ -48,11 +48,11 @@
       </div>
       }
       <!-- Birthday -->
-      @if (data.item()?.dateOfBirth) {
+      @if (data.item()?.birthday) {
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">cake</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ (data.item()?.dateOfBirth | mskDateTime : 'longDate') || '-' }}</span>
+          <span>{{ (data.item()?.birthday | mskDateTime : 'longDate') || '-' }}</span>
           <span>{{ t('birthday') }}</span>
         </div>
       </div>
@@ -136,10 +136,10 @@
       <!-- Birthday -->
       <mat-form-field>
         <mat-label>{{ t('birthday') }}</mat-label>
-        <input matInput formControlName="dateOfBirth" [matDatepicker]="picker" />
+        <input matInput formControlName="birthday" [matDatepicker]="picker" />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-error>{{ formErrors['dateOfBirth'] }}</mat-error>
+        <mat-error>{{ formErrors['birthday'] }}</mat-error>
       </mat-form-field>
     </div>
 

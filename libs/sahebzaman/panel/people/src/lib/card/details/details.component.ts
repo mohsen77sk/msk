@@ -89,7 +89,7 @@ export class PeopleCardDetailsComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
       nationalCode: '',
-      dateOfBirth: null,
+      birthday: null,
       gender: ['', Validators.required],
       note: '',
     });
