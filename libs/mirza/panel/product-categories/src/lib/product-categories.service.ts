@@ -8,6 +8,8 @@ import {
   EmptyPageData,
   MskPagingRequest,
   convertToMirzaPagingRequest,
+  MskLookupResponse,
+  MskLookupItem,
 } from '@msk/shared/data-access';
 import {
   ProductCategory,
@@ -65,6 +67,21 @@ export class ProductCategoriesService {
         }),
         tap((response) => this._productCategories.next(response))
       );
+  }
+
+  /**
+   * Get lookup product categories
+   */
+  getLookupProductCategories(): Observable<MskLookupResponse> {
+    return this._httpClient
+      .get<MskPageData<ProductCategory>>(`${this._appConfig.apiEndpoint}/category`, {
+        params: convertToMirzaPagingRequest({
+          page: 1,
+          pageSize: 50,
+          sortBy: `${DefaultProductCategoriesSortId} ${DefaultProductCategoriesSortDirection}`,
+        }),
+      })
+      .pipe(map((x) => x.items.map((x) => ({ id: x.id, name: x.name } as MskLookupItem))));
   }
 
   /**

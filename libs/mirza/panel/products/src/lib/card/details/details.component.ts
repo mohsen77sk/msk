@@ -1,4 +1,4 @@
-import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,14 +10,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
+import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { MskDialogData, MskHttpErrorResponse, MskLookupItem } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
+import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 
 import {
@@ -27,9 +28,10 @@ import {
   FormError,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
-import { catchError, EMPTY, map, tap } from 'rxjs';
+import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 import { ProductsService } from '../../products.service';
 import { Product, ProductUnit } from '../../products.types';
+import { ProductCategoriesService } from '@msk/mirza/panel/product-categories';
 
 @Component({
   selector: 'mz-product-details',
@@ -38,6 +40,7 @@ import { Product, ProductUnit } from '../../products.types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    AsyncPipe,
     DecimalPipe,
     NgTemplateOutlet,
     FormsModule,
@@ -51,11 +54,13 @@ import { Product, ProductUnit } from '../../products.types';
     MatFormFieldModule,
     MatDatepickerModule,
     MatDialogModule,
+    TranslocoPipe,
     TranslocoDirective,
     MskAlertComponent,
     MskDialogComponent,
     MskMaskDirective,
     MskSpinnerDirective,
+    MskSelectSearchDirective,
     MskCurrencySymbolDirective,
   ],
 })
@@ -67,10 +72,12 @@ export class ProductCardDetailsComponent implements OnInit {
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
+  private _productCategoriesService = inject(ProductCategoriesService);
 
   form!: FormGroup;
   formErrors: FormError = {};
   unitList: ProductUnit[] = Object.values(ProductUnit);
+  categoryList$: Observable<MskLookupItem[]> = this._productCategoriesService.getLookupProductCategories();
 
   alert = signal({
     show: false,
@@ -89,6 +96,7 @@ export class ProductCardDetailsComponent implements OnInit {
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
+      categoryId: [0, Validators.required],
       unit: ['', Validators.required],
       quantity: [0, [Validators.required, Validators.min(1)]],
       cost: 0,

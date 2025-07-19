@@ -37,6 +37,14 @@
           <span>{{ t('name') }}</span>
         </div>
       </div>
+      <!-- Category -->
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">category</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.category?.name || '-' }}</span>
+          <span>{{ t('category') }}</span>
+        </div>
+      </div>
       <!-- Quantity -->
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">pin</mat-icon>
@@ -107,12 +115,33 @@
     </msk-alert>
     }
 
-    <!-- Name -->
-    <mat-form-field>
-      <mat-label>{{ t('name') }}</mat-label>
-      <input matInput formControlName="name" maxlength="128" autocomplete="off" />
-      <mat-error>{{ formErrors['name'] }}</mat-error>
-    </mat-form-field>
+    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+      <!-- Name -->
+      <mat-form-field>
+        <mat-label>{{ t('name') }}</mat-label>
+        <input matInput formControlName="name" maxlength="128" autocomplete="off" />
+        <mat-error>{{ formErrors['name'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Category -->
+      <mat-form-field>
+        <mat-label>{{ t('category') }}</mat-label>
+        @let categoryList = categoryList$ | async;
+        <mat-select
+          formControlName="categoryId"
+          mskSelectSearch
+          [searchList]="categoryList"
+          [searchItems]="'name'"
+          [searchPlaceholder]="'search' | transloco"
+          #searchCategories="mskSelectSearch"
+        >
+          @for (item of searchCategories.filteredList | async; track item) {
+          <mat-option [value]="item.id">{{ item.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error>{{ formErrors['categoryId'] }}</mat-error>
+      </mat-form-field>
+    </div>
 
     <!-- Quantity -->
     <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">

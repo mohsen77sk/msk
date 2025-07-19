@@ -5,6 +5,7 @@
     "view": "{{name}}",
     "specs": "specification",
     "name": "Name",
+    "category": "Category",
     "quantity": "Quantity",
     "unit": "Unit",
     "cost": "Cost",
