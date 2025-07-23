@@ -40,6 +40,20 @@
         "type": "basic",
         "icon": "package",
         "link": "/panel/products"
+      },
+      {
+        "id": "panel.purchases",
+        "title": "Purchases",
+        "type": "basic",
+        "icon": "shopping_bag",
+        "link": "/panel/purchases"
+      },
+      {
+        "id": "panel.sales",
+        "title": "Sales",
+        "type": "basic",
+        "icon": "sell",
+        "link": "/panel/sales"
       }
     ]
   }

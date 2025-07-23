@@ -1,0 +1,7 @@
+{
+  "details": {},
+  "search": "Search sale invoice",
+  "empty-list": "There are no sale invoice!",
+  "delete": "Delete sale invoice",
+  "delete-message": "Are you sure you want to delete <b>{{name}}</b>?"
+}

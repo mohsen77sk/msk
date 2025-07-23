@@ -40,6 +40,20 @@
         "type": "basic",
         "icon": "package",
         "link": "/panel/products"
+      },
+      {
+        "id": "panel.purchases",
+        "title": "خریدها",
+        "type": "basic",
+        "icon": "shopping_bag",
+        "link": "/panel/purchases"
+      },
+      {
+        "id": "panel.sales",
+        "title": "فروش‌ها",
+        "type": "basic",
+        "icon": "sell",
+        "link": "/panel/sales"
       }
     ]
   }
