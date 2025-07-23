@@ -31,3 +31,15 @@ export class Product {
     this.note = input.note;
   }
 }
+
+export class ProductItem {
+  productId: number;
+  quantity: number;
+  total: number;
+
+  constructor(input: ProductItem) {
+    this.productId = input.productId;
+    this.quantity = input.quantity;
+    this.total = input.total;
+  }
+}
