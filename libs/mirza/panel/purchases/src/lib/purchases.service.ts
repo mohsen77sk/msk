@@ -9,15 +9,15 @@ import {
   MskPagingRequest,
   convertToMirzaPagingRequest,
 } from '@msk/shared/data-access';
-import { SaleInvoice, DefaultSalesSortId, DefaultSalesSortDirection } from './sales.types';
+import { PurchaseInvoice, DefaultPurchasesSortId, DefaultPurchasesSortDirection } from './purchases.types';
 
 @Injectable({ providedIn: 'root' })
-export class SalesService {
+export class PurchasesService {
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
 
   // Private
-  private _invoices: BehaviorSubject<MskPageData<SaleInvoice>> = new BehaviorSubject<MskPageData<SaleInvoice>>(
+  private _invoices: BehaviorSubject<MskPageData<PurchaseInvoice>> = new BehaviorSubject<MskPageData<PurchaseInvoice>>(
     EmptyPageData
   );
 
@@ -26,9 +26,9 @@ export class SalesService {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for sale invoices
+   * Getter for purchase invoices
    */
-  get saleInvoices$(): Observable<MskPageData<SaleInvoice>> {
+  get purchaseInvoices$(): Observable<MskPageData<PurchaseInvoice>> {
     return this._invoices.asObservable();
   }
 
@@ -37,26 +37,26 @@ export class SalesService {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Get sale invoices
+   * Get purchase invoices
    *
    * @param params
    */
-  getSaleInvoices(
+  getPurchaseInvoices(
     params: MskPagingRequest = {
       page: 1,
       pageSize: 10,
-      sortBy: `${DefaultSalesSortId} ${DefaultSalesSortDirection}`,
+      sortBy: `${DefaultPurchasesSortId} ${DefaultPurchasesSortDirection}`,
     }
-  ): Observable<MskPageData<SaleInvoice>> {
+  ): Observable<MskPageData<PurchaseInvoice>> {
     return this._httpClient
-      .get<MskPagingResponse<SaleInvoice>>(`${this._appConfig.apiEndpoint}/sale`, {
+      .get<MskPagingResponse<PurchaseInvoice>>(`${this._appConfig.apiEndpoint}/purchase`, {
         params: convertToMirzaPagingRequest(params),
       })
       .pipe(
         map((response) => {
           return new MskPageData({
             ...response,
-            items: response.items.map((item) => new SaleInvoice(item)),
+            items: response.items.map((item) => new PurchaseInvoice(item)),
           });
         }),
         tap((response) => this._invoices.next(response))
@@ -64,53 +64,55 @@ export class SalesService {
   }
 
   /**
-   * Get sale invoice
+   * Get purchase invoice
    *
    * @param id
    */
-  getSaleInvoice(id: number | string): Observable<SaleInvoice> {
+  getPurchaseInvoice(id: number | string): Observable<PurchaseInvoice> {
     return this._httpClient
-      .get<SaleInvoice>(`${this._appConfig.apiEndpoint}/sale/${id}`)
-      .pipe(map((response) => new SaleInvoice(response)));
+      .get<PurchaseInvoice>(`${this._appConfig.apiEndpoint}/purchase/${id}`)
+      .pipe(map((response) => new PurchaseInvoice(response)));
   }
 
   /**
-   * Create sale invoice
+   * Create purchase invoice
    *
    * @param invoice
    */
-  createSaleInvoice(invoice: SaleInvoice): Observable<SaleInvoice> {
+  createPurchaseInvoice(invoice: PurchaseInvoice): Observable<PurchaseInvoice> {
     return this._httpClient
-      .post<SaleInvoice>(`${this._appConfig.apiEndpoint}/sale`, invoice)
-      .pipe(map((response) => new SaleInvoice(response)));
+      .post<PurchaseInvoice>(`${this._appConfig.apiEndpoint}/purchase`, invoice)
+      .pipe(map((response) => new PurchaseInvoice(response)));
   }
 
   /**
-   * Update sale invoice
+   * Update purchase invoice
    *
    * @param invoice
    */
-  updateSaleInvoice(invoice: SaleInvoice): Observable<SaleInvoice> {
-    return this._httpClient.patch<SaleInvoice>(`${this._appConfig.apiEndpoint}/sale/${invoice.id}`, invoice).pipe(
-      map((response) => new SaleInvoice(response)),
-      // update the invoices
-      tap((newInvoice) => {
-        if (this._invoices.value) {
-          const index = this._invoices.value.items.findIndex((x) => x.id === newInvoice.id) ?? 0;
-          this._invoices.value.items[index] = newInvoice;
-          this._invoices.next(this._invoices.value);
-        }
-      })
-    );
+  updatePurchaseInvoice(invoice: PurchaseInvoice): Observable<PurchaseInvoice> {
+    return this._httpClient
+      .patch<PurchaseInvoice>(`${this._appConfig.apiEndpoint}/purchase/${invoice.id}`, invoice)
+      .pipe(
+        map((response) => new PurchaseInvoice(response)),
+        // update the invoices
+        tap((newInvoice) => {
+          if (this._invoices.value) {
+            const index = this._invoices.value.items.findIndex((x) => x.id === newInvoice.id) ?? 0;
+            this._invoices.value.items[index] = newInvoice;
+            this._invoices.next(this._invoices.value);
+          }
+        })
+      );
   }
 
   /**
-   * Delete sale invoice
+   * Delete purchase invoice
    *
    * @param invoice
    */
-  deleteSaleInvoice(invoice: SaleInvoice): Observable<boolean> {
-    return this._httpClient.delete<boolean>(`${this._appConfig.apiEndpoint}/sale/${invoice.id}`).pipe(
+  deletePurchaseInvoice(invoice: PurchaseInvoice): Observable<boolean> {
+    return this._httpClient.delete<boolean>(`${this._appConfig.apiEndpoint}/purchase/${invoice.id}`).pipe(
       map((response) => response),
       // remove the invoices
       tap(() => {
