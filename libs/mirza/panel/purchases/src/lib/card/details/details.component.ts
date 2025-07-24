@@ -1,6 +1,6 @@
 import { AsyncPipe, DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
@@ -20,6 +20,8 @@ import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
+import { PaymentType } from '@msk/mirza/shell/core/payment-type';
+import { VendorsService } from '@msk/mirza/panel/vendors';
 
 import {
   MskHandleFormErrors,
@@ -31,7 +33,6 @@ import { mskAnimations } from '@msk/shared/animations';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 import { PurchasesService } from '../../purchases.service';
 import { PurchaseInvoice } from '../../purchases.types';
-import { VendorsService } from '@msk/mirza/panel/vendors';
 
 @Component({
   selector: 'mz-purchases-details',
@@ -76,12 +77,28 @@ export class PurchasesCardDetailsComponent implements OnInit {
 
   form!: FormGroup;
   formErrors: FormError = {};
+  paymentTypeList: PaymentType[] = Object.values(PaymentType);
+  productList$: Observable<MskLookupItem[]> = this._vendorsService.getLookupVendors();
   vendorList$: Observable<MskLookupItem[]> = this._vendorsService.getLookupVendors();
 
   alert = signal({
     show: false,
     message: '',
   });
+
+  /**
+   * Get the purchase items form array
+   */
+  get purchaseItems(): FormArray {
+    return this.form.get('purchaseItems') as FormArray;
+  }
+
+  /**
+   * Get the payment types form array
+   */
+  get paymentTypes(): FormArray {
+    return this.form.get('paymentTypes') as FormArray;
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -95,7 +112,9 @@ export class PurchasesCardDetailsComponent implements OnInit {
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
       vendorId: [0, Validators.required],
-      saleDate: [new Date(new Date().setHours(0, 0, 0, 0)), Validators.required],
+      date: [new Date(new Date().setHours(0, 0, 0, 0)), Validators.required],
+      purchaseItems: this._formBuilder.array([], Validators.required),
+      paymentTypes: this._formBuilder.array([], Validators.required),
       discount: ['', [Validators.required, Validators.min(0)]],
       total: ['', [Validators.required, Validators.min(0)]],
       note: '',
@@ -118,7 +137,46 @@ export class PurchasesCardDetailsComponent implements OnInit {
   }
 
   /**
-   * delete the sale invoice
+   * Add a purchase item row in form
+   */
+  addPurchaseItem(): void {
+    const group = this._formBuilder.group({
+      productId: [0, Validators.required],
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      total: [0, [Validators.required, Validators.min(0)]],
+    });
+    this.purchaseItems.push(group);
+  }
+
+  /**
+   * Remove a purchase item row in form
+   * @param index index of the purchase item to remove
+   */
+  removePurchaseItem(index: number): void {
+    this.purchaseItems.removeAt(index);
+  }
+
+  /**
+   * Add a payment type row in form
+   */
+  addPaymentType(): void {
+    const group = this._formBuilder.group({
+      type: ['', Validators.required],
+      value: [0, [Validators.required, Validators.min(0)]],
+    });
+    this.paymentTypes.push(group);
+  }
+
+  /**
+   * Remove a payment type row in form
+   * @param index index of the payment type to remove
+   */
+  removePaymentType(index: number): void {
+    this.paymentTypes.removeAt(index);
+  }
+
+  /**
+   * delete the purchase invoice
    */
   deleteInvoice(): void {
     // Open the confirmation dialog

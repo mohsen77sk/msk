@@ -100,10 +100,10 @@
       <!-- Sale date -->
       <mat-form-field>
         <mat-label>{{ t('date') }}</mat-label>
-        <input matInput formControlName="saleDate" [matDatepicker]="picker" />
+        <input matInput formControlName="date" [matDatepicker]="picker" />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-error>{{ formErrors['saleDate'] }}</mat-error>
+        <mat-error>{{ formErrors['date'] }}</mat-error>
       </mat-form-field>
     </div>
 

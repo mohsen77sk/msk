@@ -9,6 +9,14 @@
     "total": "Total",
     "note": "Note"
   },
+  "paymentTypes": {
+    "cash": "Cash",
+    "bankTransfer": "Bank transfer",
+    "pose": "POS",
+    "checks": "Checks",
+    "gift": "Gift",
+    "notPaid": "Not paid"
+  },
   "search": "Search purchase invoice",
   "empty-list": "There are no purchase invoices!",
   "delete": "Delete purchase invoice",

@@ -107,6 +107,87 @@
       </mat-form-field>
     </div>
 
+    <!-- Products -->
+    <div formArrayName="saleItems">
+      <div class="text-secondary text-title-small">{{ t('products') }}</div>
+      <div class="mb-4 mt-2 border-t"></div>
+      @for (product of saleItems.controls; track i; let i = $index) {
+      <div class="flex flex-row gap-2">
+        <div class="mb-4 flex flex-1 flex-col gap-2 sm:flex-row sm:gap-x-4 [&>*]:flex-1" [formGroupName]="i">
+          <!-- Product -->
+          <mat-form-field subscriptSizing="dynamic" class="sm:max-w-60">
+            <mat-label>{{ t('product') }}</mat-label>
+            @let productList = productList$ | async;
+            <mat-select
+              formControlName="productId"
+              mskSelectSearch
+              [searchList]="productList"
+              [searchItems]="'name'"
+              [searchPlaceholder]="'search' | transloco"
+              #searchProducts="mskSelectSearch"
+            >
+              @for (item of searchProducts.filteredList | async; track item) {
+              <mat-option [value]="item.id">{{ item.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <!-- Quantity -->
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-label>{{ t('quantity') }}</mat-label>
+            <input matInput formControlName="quantity" mskMask="decimal" autocomplete="off" />
+            <span matTextSuffix>
+              <small>{{ product.get('total')?.value | number }} <small mskCurrencySymbol></small></small>
+            </span>
+          </mat-form-field>
+        </div>
+        @if( i !== 0 ) {
+        <button type="button" class="mt-2 grow-0" matIconButton (click)="removeSaleItem(i)">
+          <mat-icon class="text-error">do_not_disturb_on</mat-icon>
+        </button>
+        }
+      </div>
+      }
+      <button type="button" class="mb-4 w-full" matButton="tonal" (click)="addSaleItem()">
+        <mat-icon>add</mat-icon>
+        {{ t('addProduct') }}
+      </button>
+    </div>
+
+    <!-- Payment Types -->
+    <div formArrayName="paymentTypes">
+      <div class="text-secondary text-title-small">{{ t('paymentTypes') }}</div>
+      <div class="mb-4 mt-2 border-t"></div>
+      @for (paymentType of paymentTypes.controls; track i; let i = $index) {
+      <div class="flex flex-row gap-2">
+        <div class="mb-4 flex flex-1 flex-col gap-2 sm:flex-row sm:gap-x-4 [&>*]:flex-1" [formGroupName]="i">
+          <!-- paymentType -->
+          <mat-form-field subscriptSizing="dynamic" class="sm:max-w-60">
+            <mat-label>{{ t('paymentType') }}</mat-label>
+            <mat-select formControlName="type">
+              @for (item of paymentTypeList; track item) {
+              <mat-option [value]="item" *transloco="let t; read: 'sales.paymentTypes'">{{ t(item) }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <!-- Value -->
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-label>{{ t('paymentTypeValue') }}</mat-label>
+            <input matInput formControlName="value" mskMask="decimal" autocomplete="off" />
+          </mat-form-field>
+        </div>
+        @if( i !== 0 ) {
+        <button type="button" class="mt-2 grow-0" matIconButton (click)="removePaymentType(i)">
+          <mat-icon class="text-error">do_not_disturb_on</mat-icon>
+        </button>
+        }
+      </div>
+      }
+      <button type="button" class="mb-4 w-full" matButton="tonal" (click)="addPaymentType()">
+        <mat-icon>add</mat-icon>
+        {{ t('addPaymentType') }}
+      </button>
+    </div>
+
     <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
       <!-- Discount -->
       <mat-form-field>
@@ -124,6 +205,9 @@
         <mat-error>{{ formErrors['total'] }}</mat-error>
       </mat-form-field>
     </div>
+
+    <div class="text-secondary text-title-small">{{ t('other') }}</div>
+    <div class="mb-4 mt-2 border-t"></div>
 
     <!-- Note -->
     <mat-form-field>

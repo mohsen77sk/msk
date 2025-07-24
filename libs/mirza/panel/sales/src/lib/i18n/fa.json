@@ -5,9 +5,27 @@
     "view": "فاکتور فروش {{number}}",
     "customer": "مشتری",
     "date": "تاریخ",
+    "paymentType": "نوع پرداخت",
+    "paymentTypeValue": "مقدار",
     "discount": "تخفیف",
     "total": "مجموع",
-    "note": "توضیحات"
+    "note": "توضیحات",
+    "products": "محصولات",
+    "product": "محصول",
+    "quantity": "تعداد",
+    "totalPrice": "مجموع قیمت",
+    "addProduct": "افزودن محصول",
+    "paymentTypes": "پرداخت",
+    "addPaymentType": "افزودن نوع پرداخت",
+    "other": "بیشتر"
+  },
+  "paymentTypes": {
+    "cash": "نقد",
+    "bankTransfer": "انتقال بانکی",
+    "pose": "دستگاه POS",
+    "checks": "چک",
+    "gift": "هدیه",
+    "notPaid": "پرداخت نشده"
   },
   "search": "جستجوی فاکتور فروش",
   "empty-list": "هیچ فاکتوری فروشی وجود ندارد!",

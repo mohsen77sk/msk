@@ -5,9 +5,27 @@
     "view": "Sale invoice {{number}}",
     "customer": "Customer",
     "date": "Date",
+    "paymentType": "Payment type",
+    "paymentTypeValue": "Value",
     "discount": "Discount",
     "total": "Total",
-    "note": "Note"
+    "note": "Note",
+    "products": "Products",
+    "product": "Product",
+    "quantity": "Quantity",
+    "totalPrice": "Total price",
+    "addProduct": "Add product",
+    "paymentTypes": "Payments",
+    "addPaymentType": "Add payment type",
+    "other": "Other"
+  },
+  "paymentTypes": {
+    "cash": "Cash",
+    "bankTransfer": "Bank transfer",
+    "pose": "POS",
+    "checks": "Checks",
+    "gift": "Gift",
+    "notPaid": "Not paid"
   },
   "search": "Search sale invoice",
   "empty-list": "There are no sale invoices!",

@@ -1,6 +1,6 @@
 import { AsyncPipe, DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
@@ -20,6 +20,9 @@ import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
+import { PaymentType } from '@msk/mirza/shell/core/payment-type';
+import { CustomersService } from '@msk/mirza/panel/customers';
+import { ProductsService } from '@msk/mirza/panel/products';
 
 import {
   MskHandleFormErrors,
@@ -31,7 +34,6 @@ import { mskAnimations } from '@msk/shared/animations';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 import { SalesService } from '../../sales.service';
 import { SaleInvoice } from '../../sales.types';
-import { CustomersService } from '@msk/mirza/panel/customers';
 
 @Component({
   selector: 'mz-sales-details',
@@ -69,6 +71,7 @@ export class SalesCardDetailsComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<SalesCardDetailsComponent>);
   private _formBuilder = inject(FormBuilder);
   private _salesService = inject(SalesService);
+  private _productsService = inject(ProductsService);
   private _customersService = inject(CustomersService);
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
@@ -76,12 +79,28 @@ export class SalesCardDetailsComponent implements OnInit {
 
   form!: FormGroup;
   formErrors: FormError = {};
+  paymentTypeList: PaymentType[] = Object.values(PaymentType);
+  productList$: Observable<MskLookupItem[]> = this._customersService.getLookupCustomers();
   customerList$: Observable<MskLookupItem[]> = this._customersService.getLookupCustomers();
 
   alert = signal({
     show: false,
     message: '',
   });
+
+  /**
+   * Get the sale items form array
+   */
+  get saleItems(): FormArray {
+    return this.form.get('saleItems') as FormArray;
+  }
+
+  /**
+   * Get the payment types form array
+   */
+  get paymentTypes(): FormArray {
+    return this.form.get('paymentTypes') as FormArray;
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -96,10 +115,14 @@ export class SalesCardDetailsComponent implements OnInit {
       id: [0, Validators.required],
       customerId: [0, Validators.required],
       saleDate: [new Date(new Date().setHours(0, 0, 0, 0)), Validators.required],
+      saleItems: this._formBuilder.array([], Validators.required),
+      paymentTypes: this._formBuilder.array([], Validators.required),
       discount: ['', [Validators.required, Validators.min(0)]],
       total: ['', [Validators.required, Validators.min(0)]],
       note: '',
     });
+    this.addPaymentType();
+    this.addSaleItem();
     // Handling errors
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
@@ -115,6 +138,45 @@ export class SalesCardDetailsComponent implements OnInit {
    */
   editMode(): void {
     this.data.action.set('edit');
+  }
+
+  /**
+   * Add a sale item row in form
+   */
+  addSaleItem(): void {
+    const group = this._formBuilder.group({
+      productId: [0, Validators.required],
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      total: [0, [Validators.required, Validators.min(0)]],
+    });
+    this.saleItems.push(group);
+  }
+
+  /**
+   * Remove a sale item row in form
+   * @param index index of the sale item to remove
+   */
+  removeSaleItem(index: number): void {
+    this.saleItems.removeAt(index);
+  }
+
+  /**
+   * Add a payment type row in form
+   */
+  addPaymentType(): void {
+    const group = this._formBuilder.group({
+      type: ['', Validators.required],
+      value: [0, [Validators.required, Validators.min(0)]],
+    });
+    this.paymentTypes.push(group);
+  }
+
+  /**
+   * Remove a payment type row in form
+   * @param index index of the payment type to remove
+   */
+  removePaymentType(index: number): void {
+    this.paymentTypes.removeAt(index);
   }
 
   /**
