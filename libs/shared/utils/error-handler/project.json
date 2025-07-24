@@ -3,8 +3,8 @@
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/utils/error-handler/src",
   "prefix": "msk",
-  "tags": ["scope:shared", "type:util"],
   "projectType": "library",
+  "tags": ["scope:shared", "type:util"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",

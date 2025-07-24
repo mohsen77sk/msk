@@ -3,8 +3,8 @@
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/ui/loading-bar/src",
   "prefix": "msk",
-  "tags": ["scope:shared", "type:ui"],
   "projectType": "library",
+  "tags": ["scope:shared", "type:ui"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
