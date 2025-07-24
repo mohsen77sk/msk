@@ -1,7 +1,16 @@
 {
-  "details": {},
+  "details": {
+    "new": "New purchase invoice",
+    "edit": "Edit purchase invoice",
+    "view": "Purchase invoice {{number}}",
+    "vendor": "Vendor",
+    "date": "Date",
+    "discount": "Discount",
+    "total": "Total",
+    "note": "Note"
+  },
   "search": "Search purchase invoice",
-  "empty-list": "There are no purchase invoice!",
+  "empty-list": "There are no purchase invoices!",
   "delete": "Delete purchase invoice",
-  "delete-message": "Are you sure you want to delete <b>{{name}}</b>?"
+  "delete-message": "Are you sure you want to delete invoice <b>{{number}}</b>?"
 }

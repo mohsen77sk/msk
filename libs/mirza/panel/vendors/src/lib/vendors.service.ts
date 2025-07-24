@@ -8,6 +8,8 @@ import {
   EmptyPageData,
   MskPagingRequest,
   convertToMirzaPagingRequest,
+  MskLookupResponse,
+  MskLookupItem,
 } from '@msk/shared/data-access';
 import { DefaultVendorsSortDirection, DefaultVendorsSortId, Vendor } from './vendors.types';
 
@@ -59,6 +61,21 @@ export class VendorsService {
         }),
         tap((response) => this._vendors.next(response))
       );
+  }
+
+  /**
+   * Get lookup vendors
+   */
+  getLookupVendors(): Observable<MskLookupResponse> {
+    return this._httpClient
+      .get<MskPageData<Vendor>>(`${this._appConfig.apiEndpoint}/vendor`, {
+        params: convertToMirzaPagingRequest({
+          page: 1,
+          pageSize: 50,
+          sortBy: `${DefaultVendorsSortId} ${DefaultVendorsSortDirection}`,
+        }),
+      })
+      .pipe(map((x) => x.items.map((x) => ({ id: x.id, name: x.name } as MskLookupItem))));
   }
 
   /**

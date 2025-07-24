@@ -1,0 +1,134 @@
+<msk-dialog
+  *transloco="let t; read: 'purchases.details'"
+  [title]="t(data.action(), { name: data.item()?.number })"
+  [hasAction]="data.action() !== 'view'"
+  [primaryAction]="primaryAction"
+  [trailing]="trailing"
+>
+  <!-- Content -->
+  <ng-container
+    [ngTemplateOutlet]="data.action() === 'view' ? viewTemplate : formTemplate"
+    [ngTemplateOutletContext]="{ t: t }"
+    msk-dialog-content
+  ></ng-container>
+
+  <ng-template #trailing>
+    <button matIconButton (click)="editMode()">
+      <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+    </button>
+  </ng-template>
+
+  <ng-template #primaryAction>
+    <button matButton [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+      <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
+    </button>
+  </ng-template>
+</msk-dialog>
+
+<ng-template #viewTemplate let-t="t">
+  <div class="msk-mat-card-filled mb-2 p-4">
+    <div class="msk-mat-card-subtitle">{{ t('specs') }}</div>
+    <div class="msk-list -mx-4">
+      <!-- Number -->
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">label</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.number || '-' }}</span>
+          <span>{{ t('number') }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  @if (data.item()?.note) {
+  <div class="msk-mat-card-filled mb-2 p-4">
+    <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
+    <div class="msk-list -mx-4">
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.note }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+  <div class="my-4 border-t"></div>
+  <div class="mb-2" *transloco="let t">
+    <div class="text-secondary text-title-small">{{ t('settings') }}</div>
+    <div class="msk-list -mx-6">
+      <div class="msk-list-item cursor-pointer" matRipple (click)="deleteInvoice()" aria-hidden="true">
+        <div class="msk-list-item-icon">
+          <mat-icon class="text-error">delete</mat-icon>
+        </div>
+        <div class="msk-list-item-content text-error">
+          {{ t('purchases.delete') }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #formTemplate let-t="t">
+  <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
+    <!-- Alert -->
+    @if(alert().show) {
+    <msk-alert class="mb-4" appearance="outline" type="error" @shake>
+      {{ alert().message }}
+    </msk-alert>
+    }
+
+    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+      <!-- Vendor -->
+      <mat-form-field>
+        <mat-label>{{ t('vendor') }}</mat-label>
+        @let vendorList = vendorList$ | async;
+        <mat-select
+          formControlName="vendorId"
+          mskSelectSearch
+          [searchList]="vendorList"
+          [searchItems]="'name'"
+          [searchPlaceholder]="'search' | transloco"
+          #searchVendors="mskSelectSearch"
+        >
+          @for (item of searchVendors.filteredList | async; track item) {
+          <mat-option [value]="item.id">{{ item.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error>{{ formErrors['vendorId'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Sale date -->
+      <mat-form-field>
+        <mat-label>{{ t('date') }}</mat-label>
+        <input matInput formControlName="saleDate" [matDatepicker]="picker" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>{{ formErrors['saleDate'] }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+      <!-- Discount -->
+      <mat-form-field>
+        <mat-label>{{ t('discount') }}</mat-label>
+        <input matInput formControlName="discount" mskMask="currency" autocomplete="off" />
+        <span matTextSuffix mskCurrencySymbol></span>
+        <mat-error>{{ formErrors['discount'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Total -->
+      <mat-form-field>
+        <mat-label>{{ t('total') }}</mat-label>
+        <input matInput formControlName="total" mskMask="currency" autocomplete="off" />
+        <span matTextSuffix mskCurrencySymbol></span>
+        <mat-error>{{ formErrors['total'] }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Note -->
+    <mat-form-field>
+      <textarea matInput formControlName="note" [placeholder]="t('note')" [rows]="2"></textarea>
+      <mat-error>{{ formErrors['note'] }}</mat-error>
+    </mat-form-field>
+  </form>
+</ng-template>

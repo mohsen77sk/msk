@@ -23,7 +23,7 @@ export interface MskErrorResponseItem {
 }
 
 export interface MskLookupItem {
-  id: number;
+  id: number | string;
   code: string;
   name: string;
 }

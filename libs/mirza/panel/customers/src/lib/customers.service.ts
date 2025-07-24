@@ -8,6 +8,8 @@ import {
   EmptyPageData,
   MskPagingRequest,
   convertToMirzaPagingRequest,
+  MskLookupItem,
+  MskLookupResponse,
 } from '@msk/shared/data-access';
 import { Customer, DefaultCustomersSortDirection, DefaultCustomersSortId } from './customers.types';
 
@@ -61,6 +63,21 @@ export class CustomersService {
         }),
         tap((response) => this._customers.next(response))
       );
+  }
+
+  /**
+   * Get lookup customers
+   */
+  getLookupCustomers(): Observable<MskLookupResponse> {
+    return this._httpClient
+      .get<MskPageData<Customer>>(`${this._appConfig.apiEndpoint}/customer`, {
+        params: convertToMirzaPagingRequest({
+          page: 1,
+          pageSize: 50,
+          sortBy: `${DefaultCustomersSortId} ${DefaultCustomersSortDirection}`,
+        }),
+      })
+      .pipe(map((x) => x.items.map((x) => ({ id: x.id, name: x.name } as MskLookupItem))));
   }
 
   /**

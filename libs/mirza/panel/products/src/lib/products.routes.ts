@@ -17,10 +17,10 @@ import { catchError, throwError } from 'rxjs';
  * @param state
  */
 const productResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-  const productCategoriesService = inject(ProductsService);
+  const productsService = inject(ProductsService);
   const router = inject(Router);
 
-  return productCategoriesService.getProduct(route.paramMap.get('id') ?? 0).pipe(
+  return productsService.getProduct(route.paramMap.get('id') ?? 0).pipe(
     // Error here means the requested contact is not available
     catchError((error: MskErrorResponse) => {
       // Log the error
@@ -50,7 +50,7 @@ export const routes: Routes = [
         path: '',
         component: ProductsListComponent,
         resolve: {
-          productCategories: () => inject(ProductsService).getProducts(),
+          products: () => inject(ProductsService).getProducts(),
         },
         children: [
           {
