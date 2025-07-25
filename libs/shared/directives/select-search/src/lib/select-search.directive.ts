@@ -69,6 +69,7 @@ export class MskSelectSearchDirective {
     const input = this._renderer.createElement('input');
     this._renderer.setAttribute(input, 'placeholder', this.searchPlaceholder());
     this._renderer.addClass(input, 'mdc-text-field__input');
+    this._renderer.addClass(input, 'placeholder:opacity-50');
     // Get the search keyword and filter the list
     this._renderer.listen(input, 'input', () => {
       const search = input.value ? input.value.toLowerCase() : '';
