@@ -31,10 +31,11 @@ export class PurchaseInvoice {
 }
 
 export interface ICreatePurchaseInvoice {
+  id: number;
   vendorId: number;
   date: string;
   paymentTypes: PaymentTypeDetail[];
-  saleItems: ProductItem[];
+  purchaseItems: ProductItem[];
   discount: number;
   total: number;
   note?: string;

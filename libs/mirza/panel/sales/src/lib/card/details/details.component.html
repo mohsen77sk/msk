@@ -81,20 +81,25 @@
       <!-- Customer -->
       <mat-form-field>
         <mat-label>{{ t('customer') }}</mat-label>
-        @let customerList = customerList$ | async;
-        <mat-select
-          formControlName="customerId"
-          mskSelectSearch
-          [searchList]="customerList"
-          [searchItems]="'name'"
-          [searchPlaceholder]="'search' | transloco"
-          #searchCustomers="mskSelectSearch"
-        >
-          @for (item of searchCustomers.filteredList | async; track item) {
-          <mat-option [value]="item.id">{{ item.name }}</mat-option>
-          }
-        </mat-select>
-        <mat-error>{{ formErrors['customerId'] }}</mat-error>
+        <input type="text" matInput formControlName="customer" [matAutocomplete]="auto" />
+        @if (form.get('customer')?.value) {
+        <button type="button" matIconButton matSuffix (click)="form.get('customer')?.reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        }
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="customerDisplayFn">
+          <cdk-virtual-scroll-viewport
+            itemSize="48"
+            minBufferPx="240"
+            maxBufferPx="480"
+            [style.height.px]="(auto?.options?.length || 0) > 5 ? 240 : (auto?.options?.length || 0) * 48"
+          >
+            <mat-option *cdkVirtualFor="let customer of customerDS" [value]="customer">
+              {{ customer?.name || ('loading' | transloco) }}
+            </mat-option>
+          </cdk-virtual-scroll-viewport>
+        </mat-autocomplete>
+        <mat-error>{{ formErrors['customer'] }}</mat-error>
       </mat-form-field>
 
       <!-- Sale date -->
@@ -117,16 +122,8 @@
           <!-- Product -->
           <mat-form-field subscriptSizing="dynamic" class="sm:max-w-60">
             <mat-label>{{ t('product') }}</mat-label>
-            @let productList = productList$ | async;
-            <mat-select
-              formControlName="productId"
-              mskSelectSearch
-              [searchList]="productList"
-              [searchItems]="'name'"
-              [searchPlaceholder]="'search' | transloco"
-              #searchProducts="mskSelectSearch"
-            >
-              @for (item of searchProducts.filteredList | async; track item) {
+            <mat-select formControlName="productId" mskSelectSearch>
+              @for (item of productList$ | async; track item) {
               <mat-option [value]="item.id">{{ item.name }}</mat-option>
               }
             </mat-select>

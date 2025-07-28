@@ -68,16 +68,24 @@ export class CustomersService {
   /**
    * Get lookup customers
    */
-  getLookupCustomers(): Observable<MskLookupResponse> {
+  getLookupCustomers(page = 1, pageSize = 10, search = ''): Observable<MskPageData<Customer>> {
     return this._httpClient
-      .get<MskPageData<Customer>>(`${this._appConfig.apiEndpoint}/customer`, {
+      .get<MskPagingResponse<Customer>>(`${this._appConfig.apiEndpoint}/customer`, {
         params: convertToMirzaPagingRequest({
-          page: 1,
-          pageSize: 50,
+          page,
+          pageSize,
           sortBy: `${DefaultCustomersSortId} ${DefaultCustomersSortDirection}`,
+          search,
         }),
       })
-      .pipe(map((x) => x.items.map((x) => ({ id: x.id, name: x.name } as MskLookupItem))));
+      .pipe(
+        map((response) => {
+          return new MskPageData({
+            ...response,
+            items: response.items.map((item) => new Customer(item)),
+          });
+        })
+      );
   }
 
   /**

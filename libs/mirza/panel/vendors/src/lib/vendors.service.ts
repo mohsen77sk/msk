@@ -66,16 +66,24 @@ export class VendorsService {
   /**
    * Get lookup vendors
    */
-  getLookupVendors(): Observable<MskLookupResponse> {
+  getLookupVendors(page = 1, pageSize = 10, search = ''): Observable<MskPageData<Vendor>> {
     return this._httpClient
-      .get<MskPageData<Vendor>>(`${this._appConfig.apiEndpoint}/vendor`, {
+      .get<MskPagingResponse<Vendor>>(`${this._appConfig.apiEndpoint}/vendor`, {
         params: convertToMirzaPagingRequest({
-          page: 1,
-          pageSize: 50,
+          page,
+          pageSize,
           sortBy: `${DefaultVendorsSortId} ${DefaultVendorsSortDirection}`,
+          search,
         }),
       })
-      .pipe(map((x) => x.items.map((x) => ({ id: x.id, name: x.name } as MskLookupItem))));
+      .pipe(
+        map((response) => {
+          return new MskPageData({
+            ...response,
+            items: response.items.map((item) => new Vendor(item)),
+          });
+        })
+      );
   }
 
   /**

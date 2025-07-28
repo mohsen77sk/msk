@@ -81,20 +81,25 @@
       <!-- Vendor -->
       <mat-form-field>
         <mat-label>{{ t('vendor') }}</mat-label>
-        @let vendorList = vendorList$ | async;
-        <mat-select
-          formControlName="vendorId"
-          mskSelectSearch
-          [searchList]="vendorList"
-          [searchItems]="'name'"
-          [searchPlaceholder]="'search' | transloco"
-          #searchVendors="mskSelectSearch"
-        >
-          @for (item of searchVendors.filteredList | async; track item) {
-          <mat-option [value]="item.id">{{ item.name }}</mat-option>
-          }
-        </mat-select>
-        <mat-error>{{ formErrors['vendorId'] }}</mat-error>
+        <input type="text" matInput formControlName="vendor" [matAutocomplete]="auto" />
+        @if (form.get('vendor')?.value) {
+        <button type="button" matIconButton matSuffix (click)="form.get('vendor')?.reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        }
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="vendorDisplayFn">
+          <cdk-virtual-scroll-viewport
+            itemSize="48"
+            minBufferPx="240"
+            maxBufferPx="480"
+            [style.height.px]="(auto?.options?.length || 0) > 5 ? 240 : (auto?.options?.length || 0) * 48"
+          >
+            <mat-option *cdkVirtualFor="let vendor of vendorDS" [value]="vendor">
+              {{ vendor?.name || ('loading' | transloco) }}
+            </mat-option>
+          </cdk-virtual-scroll-viewport>
+        </mat-autocomplete>
+        <mat-error>{{ formErrors['vendor'] }}</mat-error>
       </mat-form-field>
 
       <!-- Sale date -->

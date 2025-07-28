@@ -1,6 +1,7 @@
 import { AsyncPipe, DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
@@ -9,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MskDialogData, MskHttpErrorResponse, MskLookupItem } from '@msk/shared/data-access';
@@ -18,10 +20,9 @@ import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
-import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { PaymentType } from '@msk/mirza/shell/core/payment-type';
-import { VendorsService } from '@msk/mirza/panel/vendors';
+import { Vendor, VendorDataSource, VendorsService } from '@msk/mirza/panel/vendors';
 
 import {
   MskHandleFormErrors,
@@ -30,9 +31,9 @@ import {
   FormError,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
-import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
+import { catchError, EMPTY, map, Observable, of, tap } from 'rxjs';
 import { PurchasesService } from '../../purchases.service';
-import { PurchaseInvoice } from '../../purchases.types';
+import { ICreatePurchaseInvoice, PurchaseInvoice } from '../../purchases.types';
 
 @Component({
   selector: 'mz-purchases-details',
@@ -46,22 +47,23 @@ import { PurchaseInvoice } from '../../purchases.types';
     NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
+    ScrollingModule,
     MatIconModule,
     MatInputModule,
     MatRippleModule,
     MatButtonModule,
     MatSelectModule,
+    MatDialogModule,
     MatTooltipModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    MatDialogModule,
+    MatAutocompleteModule,
     TranslocoPipe,
     TranslocoDirective,
     MskAlertComponent,
     MskDialogComponent,
     MskMaskDirective,
     MskSpinnerDirective,
-    MskSelectSearchDirective,
     MskCurrencySymbolDirective,
   ],
 })
@@ -78,8 +80,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
   form!: FormGroup;
   formErrors: FormError = {};
   paymentTypeList: PaymentType[] = Object.values(PaymentType);
-  productList$: Observable<MskLookupItem[]> = this._vendorsService.getLookupVendors();
-  vendorList$: Observable<MskLookupItem[]> = this._vendorsService.getLookupVendors();
+  productList$: Observable<MskLookupItem[]> = of([]);
+  vendorDS!: VendorDataSource;
 
   alert = signal({
     show: false,
@@ -111,7 +113,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Create the form
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
-      vendorId: [0, Validators.required],
+      vendor: [null, Validators.required],
       date: [new Date(new Date().setHours(0, 0, 0, 0)), Validators.required],
       purchaseItems: this._formBuilder.array([], Validators.required),
       paymentTypes: this._formBuilder.array([], Validators.required),
@@ -123,6 +125,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     this.form.patchValue(this.data.item() || {});
+    // Set vendor collection
+    this.vendorDS = new VendorDataSource(this._vendorsService, this.form.get('vendor')?.valueChanges);
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -134,6 +138,14 @@ export class PurchasesCardDetailsComponent implements OnInit {
    */
   editMode(): void {
     this.data.action.set('edit');
+  }
+
+  /**
+   * Get the customer name
+   * @param value vendor
+   */
+  vendorDisplayFn(value: Vendor): string {
+    return value?.name;
   }
 
   /**
@@ -228,10 +240,21 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Reset the alert
     this.alert.set({ show: false, message: '' });
 
+    const model: ICreatePurchaseInvoice = {
+      id: this.form.get('id')?.value,
+      vendorId: this.form.get('vendor')?.value?.id,
+      date: this.form.get('date')?.value,
+      paymentTypes: this.form.get('paymentTypes')?.value,
+      purchaseItems: this.form.get('purchaseItems')?.value,
+      discount: this.form.get('discount')?.value,
+      total: this.form.get('total')?.value,
+      note: this.form.get('note')?.value,
+    };
+
     const result =
       this.data.action() === 'edit'
-        ? this._purchasesService.updatePurchaseInvoice(this.form.value)
-        : this._purchasesService.createPurchaseInvoice(this.form.value);
+        ? this._purchasesService.updatePurchaseInvoice(model)
+        : this._purchasesService.createPurchaseInvoice(model);
 
     result
       .pipe(

@@ -9,7 +9,12 @@ import {
   MskPagingRequest,
   convertToMirzaPagingRequest,
 } from '@msk/shared/data-access';
-import { PurchaseInvoice, DefaultPurchasesSortId, DefaultPurchasesSortDirection } from './purchases.types';
+import {
+  PurchaseInvoice,
+  DefaultPurchasesSortId,
+  DefaultPurchasesSortDirection,
+  ICreatePurchaseInvoice,
+} from './purchases.types';
 
 @Injectable({ providedIn: 'root' })
 export class PurchasesService {
@@ -79,7 +84,7 @@ export class PurchasesService {
    *
    * @param invoice
    */
-  createPurchaseInvoice(invoice: PurchaseInvoice): Observable<PurchaseInvoice> {
+  createPurchaseInvoice(invoice: ICreatePurchaseInvoice): Observable<PurchaseInvoice> {
     return this._httpClient
       .post<PurchaseInvoice>(`${this._appConfig.apiEndpoint}/purchase`, invoice)
       .pipe(map((response) => new PurchaseInvoice(response)));
@@ -90,7 +95,7 @@ export class PurchasesService {
    *
    * @param invoice
    */
-  updatePurchaseInvoice(invoice: PurchaseInvoice): Observable<PurchaseInvoice> {
+  updatePurchaseInvoice(invoice: ICreatePurchaseInvoice): Observable<PurchaseInvoice> {
     return this._httpClient
       .patch<PurchaseInvoice>(`${this._appConfig.apiEndpoint}/purchase/${invoice.id}`, invoice)
       .pipe(

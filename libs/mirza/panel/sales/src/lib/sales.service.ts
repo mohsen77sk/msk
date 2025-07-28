@@ -9,7 +9,7 @@ import {
   MskPagingRequest,
   convertToMirzaPagingRequest,
 } from '@msk/shared/data-access';
-import { SaleInvoice, DefaultSalesSortId, DefaultSalesSortDirection } from './sales.types';
+import { SaleInvoice, DefaultSalesSortId, DefaultSalesSortDirection, ICreateSaleInvoice } from './sales.types';
 
 @Injectable({ providedIn: 'root' })
 export class SalesService {
@@ -79,7 +79,7 @@ export class SalesService {
    *
    * @param invoice
    */
-  createSaleInvoice(invoice: SaleInvoice): Observable<SaleInvoice> {
+  createSaleInvoice(invoice: ICreateSaleInvoice): Observable<SaleInvoice> {
     return this._httpClient
       .post<SaleInvoice>(`${this._appConfig.apiEndpoint}/sale`, invoice)
       .pipe(map((response) => new SaleInvoice(response)));
@@ -90,7 +90,7 @@ export class SalesService {
    *
    * @param invoice
    */
-  updateSaleInvoice(invoice: SaleInvoice): Observable<SaleInvoice> {
+  updateSaleInvoice(invoice: ICreateSaleInvoice): Observable<SaleInvoice> {
     return this._httpClient.patch<SaleInvoice>(`${this._appConfig.apiEndpoint}/sale/${invoice.id}`, invoice).pipe(
       map((response) => new SaleInvoice(response)),
       // update the invoices
