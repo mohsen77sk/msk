@@ -130,7 +130,7 @@ export class SalesCardDetailsComponent implements OnInit {
     // Patch value form
     this.form.patchValue(this.data.item() || {});
     // Set customer collection
-    this.customerDS = new CustomerDataSource(this._customersService, this.form.get('customerId')?.valueChanges);
+    this.customerDS = new CustomerDataSource(this._customersService, this.form.get('customer')?.valueChanges);
   }
 
   // -----------------------------------------------------------------------------------------------------

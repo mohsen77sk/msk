@@ -91,7 +91,7 @@
           <cdk-virtual-scroll-viewport
             itemSize="48"
             minBufferPx="240"
-            maxBufferPx="480"
+            maxBufferPx="240"
             [style.height.px]="(auto?.options?.length || 0) > 5 ? 240 : (auto?.options?.length || 0) * 48"
           >
             <mat-option *cdkVirtualFor="let vendor of vendorDS" [value]="vendor">
