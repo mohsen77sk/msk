@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { MskDialogData, MskHttpErrorResponse, MskLookupItem } from '@msk/shared/data-access';
+import { MskDataSource, MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
@@ -22,7 +22,7 @@ import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { PaymentType } from '@msk/mirza/shell/core/payment-type';
-import { Vendor, VendorDataSource, VendorsService } from '@msk/mirza/panel/vendors';
+import { Vendor, VendorsService } from '@msk/mirza/panel/vendors';
 
 import {
   MskHandleFormErrors,
@@ -34,6 +34,7 @@ import { mskAnimations } from '@msk/shared/animations';
 import { catchError, EMPTY, map, Observable, of, tap } from 'rxjs';
 import { PurchasesService } from '../../purchases.service';
 import { ICreatePurchaseInvoice, PurchaseInvoice } from '../../purchases.types';
+import { Product, ProductsService } from '@msk/mirza/panel/products';
 
 @Component({
   selector: 'mz-purchases-details',
@@ -72,6 +73,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<PurchasesCardDetailsComponent>);
   private _formBuilder = inject(FormBuilder);
   private _vendorsService = inject(VendorsService);
+  private _productsService = inject(ProductsService);
   private _purchasesService = inject(PurchasesService);
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
@@ -80,8 +82,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
   form!: FormGroup;
   formErrors: FormError = {};
   paymentTypeList: PaymentType[] = Object.values(PaymentType);
-  productList$: Observable<MskLookupItem[]> = of([]);
-  vendorDS!: VendorDataSource;
+  productDSList: MskDataSource<Product>[] = [];
+  vendorDS!: MskDataSource<Vendor>;
 
   alert = signal({
     show: false,
@@ -126,7 +128,10 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Patch value form
     this.form.patchValue(this.data.item() || {});
     // Set vendor collection
-    this.vendorDS = new VendorDataSource(this._vendorsService, this.form.get('vendor')?.valueChanges);
+    this.vendorDS = new MskDataSource<Vendor>(
+      (page, pageSize, search) => this._vendorsService.getLookupVendors(page, pageSize, search),
+      this.form.get('vendor')?.valueChanges
+    );
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -149,6 +154,14 @@ export class PurchasesCardDetailsComponent implements OnInit {
   }
 
   /**
+   * Get the product name
+   * @param value product
+   */
+  productDisplayFn(value: Product): string {
+    return value?.name;
+  }
+
+  /**
    * Add a purchase item row in form
    */
   addPurchaseItem(): void {
@@ -158,6 +171,14 @@ export class PurchasesCardDetailsComponent implements OnInit {
       total: [0, [Validators.required, Validators.min(0)]],
     });
     this.purchaseItems.push(group);
+
+    // Create a new DataSource for this row
+    this.productDSList.push(
+      new MskDataSource<Product>(
+        (page, pageSize, search) => this._productsService.getLookupProducts(page, pageSize, search),
+        group.get('productId')?.valueChanges
+      )
+    );
   }
 
   /**
@@ -166,6 +187,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
    */
   removePurchaseItem(index: number): void {
     this.purchaseItems.removeAt(index);
+    this.productDSList.splice(index, 1);
   }
 
   /**

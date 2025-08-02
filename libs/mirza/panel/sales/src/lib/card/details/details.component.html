@@ -81,18 +81,20 @@
       <!-- Customer -->
       <mat-form-field>
         <mat-label>{{ t('customer') }}</mat-label>
-        <input type="text" matInput formControlName="customer" [matAutocomplete]="auto" />
+        <input type="text" matInput formControlName="customer" [matAutocomplete]="autoCustomer" />
         @if (form.get('customer')?.value) {
         <button type="button" matIconButton matSuffix (click)="form.get('customer')?.reset()">
           <mat-icon>close</mat-icon>
         </button>
         }
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="customerDisplayFn">
+        <mat-autocomplete #autoCustomer="matAutocomplete" [displayWith]="customerDisplayFn">
           <cdk-virtual-scroll-viewport
             itemSize="48"
             minBufferPx="240"
             maxBufferPx="480"
-            [style.height.px]="(auto?.options?.length || 0) > 5 ? 240 : (auto?.options?.length || 0) * 48"
+            [style.height.px]="
+              (autoCustomer?.options?.length || 0) > 5 ? 240 : (autoCustomer?.options?.length || 0) * 48
+            "
           >
             <mat-option *cdkVirtualFor="let customer of customerDS" [value]="customer">
               {{ customer?.name || ('loading' | transloco) }}
@@ -122,11 +124,26 @@
           <!-- Product -->
           <mat-form-field subscriptSizing="dynamic" class="sm:max-w-60">
             <mat-label>{{ t('product') }}</mat-label>
-            <mat-select formControlName="productId" mskSelectSearch>
-              @for (item of productList$ | async; track item) {
-              <mat-option [value]="item.id">{{ item.name }}</mat-option>
-              }
-            </mat-select>
+            <input type="text" matInput formControlName="productId" [matAutocomplete]="autoProduct" />
+            @if (product.get('productId')?.value) {
+            <button type="button" matIconButton matSuffix (click)="product.get('productId')?.reset()">
+              <mat-icon>close</mat-icon>
+            </button>
+            }
+            <mat-autocomplete #autoProduct="matAutocomplete" [displayWith]="productDisplayFn">
+              <cdk-virtual-scroll-viewport
+                itemSize="48"
+                minBufferPx="240"
+                maxBufferPx="480"
+                [style.height.px]="
+                  (autoProduct?.options?.length || 0) > 5 ? 240 : (autoProduct?.options?.length || 0) * 48
+                "
+              >
+                <mat-option *cdkVirtualFor="let product of productDSList[i]" [value]="product">
+                  {{ product?.name || ('loading' | transloco) }}
+                </mat-option>
+              </cdk-virtual-scroll-viewport>
+            </mat-autocomplete>
           </mat-form-field>
           <!-- Quantity -->
           <mat-form-field subscriptSizing="dynamic">

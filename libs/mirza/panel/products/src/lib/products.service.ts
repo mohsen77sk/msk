@@ -62,6 +62,29 @@ export class ProductsService {
   }
 
   /**
+   * Get lookup products
+   */
+  getLookupProducts(page = 1, pageSize = 10, search = ''): Observable<MskPageData<Product>> {
+    return this._httpClient
+      .get<MskPagingResponse<Product>>(`${this._appConfig.apiEndpoint}/product`, {
+        params: convertToMirzaPagingRequest({
+          page,
+          pageSize,
+          sortBy: `${DefaultProductsSortId} ${DefaultProductsSortDirection}`,
+          search,
+        }),
+      })
+      .pipe(
+        map((response) => {
+          return new MskPageData({
+            ...response,
+            items: response.items.map((item) => new Product(item)),
+          });
+        })
+      );
+  }
+
+  /**
    * Get product
    *
    * @param id

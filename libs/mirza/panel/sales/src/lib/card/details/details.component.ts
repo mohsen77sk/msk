@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { MskDialogData, MskHttpErrorResponse, MskLookupItem } from '@msk/shared/data-access';
+import { MskDataSource, MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
@@ -22,8 +22,8 @@ import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { PaymentType } from '@msk/mirza/shell/core/payment-type';
-import { Customer, CustomerDataSource, CustomersService } from '@msk/mirza/panel/customers';
-import { ProductsService } from '@msk/mirza/panel/products';
+import { Customer, CustomersService } from '@msk/mirza/panel/customers';
+import { Product, ProductsService } from '@msk/mirza/panel/products';
 
 import {
   MskHandleFormErrors,
@@ -82,8 +82,8 @@ export class SalesCardDetailsComponent implements OnInit {
   form!: FormGroup;
   formErrors: FormError = {};
   paymentTypeList: PaymentType[] = Object.values(PaymentType);
-  productList$: Observable<MskLookupItem[]> = of([]);
-  customerDS!: CustomerDataSource;
+  productDSList: MskDataSource<Product>[] = [];
+  customerDS!: MskDataSource<Customer>;
 
   alert = signal({
     show: false,
@@ -130,7 +130,10 @@ export class SalesCardDetailsComponent implements OnInit {
     // Patch value form
     this.form.patchValue(this.data.item() || {});
     // Set customer collection
-    this.customerDS = new CustomerDataSource(this._customersService, this.form.get('customer')?.valueChanges);
+    this.customerDS = new MskDataSource<Customer>(
+      (page, pageSize, search) => this._customersService.getLookupCustomers(page, pageSize, search),
+      this.form.get('customer')?.valueChanges
+    );
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -153,6 +156,14 @@ export class SalesCardDetailsComponent implements OnInit {
   }
 
   /**
+   * Get the product name
+   * @param value product
+   */
+  productDisplayFn(value: Product): string {
+    return value?.name;
+  }
+
+  /**
    * Add a sale item row in form
    */
   addSaleItem(): void {
@@ -162,6 +173,14 @@ export class SalesCardDetailsComponent implements OnInit {
       total: [0, [Validators.required, Validators.min(0)]],
     });
     this.saleItems.push(group);
+
+    // Create a new DataSource for this row
+    this.productDSList.push(
+      new MskDataSource<Product>(
+        (page, pageSize, search) => this._productsService.getLookupProducts(page, pageSize, search),
+        group.get('productId')?.valueChanges
+      )
+    );
   }
 
   /**
@@ -170,6 +189,7 @@ export class SalesCardDetailsComponent implements OnInit {
    */
   removeSaleItem(index: number): void {
     this.saleItems.removeAt(index);
+    this.productDSList.splice(index, 1);
   }
 
   /**

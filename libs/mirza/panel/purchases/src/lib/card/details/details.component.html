@@ -81,18 +81,18 @@
       <!-- Vendor -->
       <mat-form-field>
         <mat-label>{{ t('vendor') }}</mat-label>
-        <input type="text" matInput formControlName="vendor" [matAutocomplete]="auto" />
+        <input type="text" matInput formControlName="vendor" [matAutocomplete]="autoVendor" />
         @if (form.get('vendor')?.value) {
         <button type="button" matIconButton matSuffix (click)="form.get('vendor')?.reset()">
           <mat-icon>close</mat-icon>
         </button>
         }
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="vendorDisplayFn">
+        <mat-autocomplete #autoVendor="matAutocomplete" [displayWith]="vendorDisplayFn">
           <cdk-virtual-scroll-viewport
             itemSize="48"
             minBufferPx="240"
             maxBufferPx="240"
-            [style.height.px]="(auto?.options?.length || 0) > 5 ? 240 : (auto?.options?.length || 0) * 48"
+            [style.height.px]="(autoVendor?.options?.length || 0) > 5 ? 240 : (autoVendor?.options?.length || 0) * 48"
           >
             <mat-option *cdkVirtualFor="let vendor of vendorDS" [value]="vendor">
               {{ vendor?.name || ('loading' | transloco) }}

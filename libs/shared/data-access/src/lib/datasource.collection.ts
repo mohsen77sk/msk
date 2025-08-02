@@ -1,4 +1,5 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { MskPageData } from './pagination.types';
 import {
   BehaviorSubject,
   debounceTime,
@@ -11,33 +12,23 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { VendorsService } from './vendors.service';
-import { Vendor } from './vendors.types';
 
-export class VendorDataSource extends DataSource<Vendor | undefined> {
+export type FetchPageFn<T> = (page: number, pageSize: number, search: string) => Observable<MskPageData<T>>;
+
+export class MskDataSource<T> extends DataSource<T | undefined> {
   private _total = 1;
   private _pageSize = 10;
   private _currentSearch = '';
-  private _cachedData = Array.from<Vendor | undefined>({ length: this._total });
+  private _cachedData = Array.from<T>({ length: this._total });
   private _fetchedPages = new Set<number>();
-  private readonly _dataStream = new BehaviorSubject<(Vendor | undefined)[]>(this._cachedData);
+  private readonly _dataStream = new BehaviorSubject<T[]>(this._cachedData);
   private readonly _subscription = new Subscription();
 
-  /**
-   * This class is a data source for the vendor collection.
-   *
-   * @param api
-   * @param search
-   */
-  constructor(public api: VendorsService, public search?: Observable<unknown>) {
+  constructor(private fetchPage: FetchPageFn<T>, public search?: Observable<unknown>) {
     super();
   }
 
-  /**
-   * Connect the data source to the collection viewer.
-   * This method is called by the collection viewer to get the data to display.
-   */
-  connect(collectionViewer: CollectionViewer): Observable<(Vendor | undefined)[]> {
+  connect(collectionViewer: CollectionViewer): Observable<(T | undefined)[]> {
     this._subscription.add(
       collectionViewer.viewChange
         .pipe(
@@ -63,7 +54,7 @@ export class VendorDataSource extends DataSource<Vendor | undefined> {
           map((value) => {
             this._currentSearch = value ?? '';
             this._fetchedPages.clear();
-            this._cachedData = Array.from<Vendor | undefined>({ length: this._total });
+            this._cachedData = Array.from<T>({ length: this._total });
             this._dataStream.next(this._cachedData);
           }),
           switchMap(() => this._fetchPage(0))
@@ -73,38 +64,28 @@ export class VendorDataSource extends DataSource<Vendor | undefined> {
     return this._dataStream;
   }
 
-  /**
-   * Disconnect the data source.
-   * This method is called by the collection viewer when it no longer needs the data source.
-   */
   disconnect(): void {
     this._subscription.unsubscribe();
   }
 
-  /**
-   * Get the page number for a given index.
-   */
   private _getPageForIndex(index: number): number {
     return Math.floor(index / this._pageSize);
   }
 
-  /**
-   * Fetch data
-   */
   private _fetchPage(pageIndex: number): Observable<unknown> {
     if (this._fetchedPages.has(pageIndex)) {
       return EMPTY;
     }
     this._fetchedPages.add(pageIndex);
 
-    return this.api.getLookupVendors(pageIndex + 1, this._pageSize, this._currentSearch).pipe(
+    return this.fetchPage(pageIndex + 1, this._pageSize, this._currentSearch).pipe(
       tap((pageData) => {
         if (this._total !== pageData.total) {
           this._total = pageData.total;
-          this._cachedData = Array.from<Vendor | undefined>({ length: this._total });
+          this._cachedData = Array.from<T>({ length: this._total });
         }
-        this._cachedData.splice(pageIndex * this._pageSize, this._pageSize, ...pageData.items);
-        this._dataStream.next(this._cachedData);
+        this._cachedData.splice(pageIndex * this._pageSize, this._pageSize, ...(pageData.items as T[]));
+        return this._dataStream.next(this._cachedData);
       })
     );
   }
