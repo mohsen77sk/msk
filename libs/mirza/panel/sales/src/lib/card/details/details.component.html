@@ -124,9 +124,9 @@
           <!-- Product -->
           <mat-form-field subscriptSizing="dynamic" class="sm:max-w-60">
             <mat-label>{{ t('product') }}</mat-label>
-            <input type="text" matInput formControlName="productId" [matAutocomplete]="autoProduct" />
-            @if (product.get('productId')?.value) {
-            <button type="button" matIconButton matSuffix (click)="product.get('productId')?.reset()">
+            <input type="text" matInput formControlName="product" [matAutocomplete]="autoProduct" />
+            @if (product.get('product')?.value) {
+            <button type="button" matIconButton matSuffix (click)="product.get('product')?.reset()">
               <mat-icon>close</mat-icon>
             </button>
             }
@@ -177,7 +177,7 @@
           <!-- paymentType -->
           <mat-form-field subscriptSizing="dynamic" class="sm:max-w-60">
             <mat-label>{{ t('paymentType') }}</mat-label>
-            <mat-select formControlName="type">
+            <mat-select formControlName="paymentType">
               @for (item of paymentTypeList; track item) {
               <mat-option [value]="item" *transloco="let t; read: 'sales.paymentTypes'">{{ t(item) }}</mat-option>
               }
@@ -187,6 +187,7 @@
           <mat-form-field subscriptSizing="dynamic">
             <mat-label>{{ t('paymentTypeValue') }}</mat-label>
             <input matInput formControlName="value" mskMask="decimal" autocomplete="off" />
+            <span matTextSuffix mskCurrencySymbol></span>
           </mat-form-field>
         </div>
         @if( i !== 0 ) {

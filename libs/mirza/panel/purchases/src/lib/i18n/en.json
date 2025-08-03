@@ -3,11 +3,21 @@
     "new": "New purchase invoice",
     "edit": "Edit purchase invoice",
     "view": "Purchase invoice {{number}}",
+    "specs": "specification",
     "vendor": "Vendor",
     "date": "Date",
+    "paymentType": "Payment type",
+    "paymentTypeValue": "Value",
     "discount": "Discount",
     "total": "Total",
-    "note": "Note"
+    "note": "Note",
+    "products": "Products",
+    "product": "Product",
+    "quantity": "Quantity",
+    "totalPrice": "Total price",
+    "addProduct": "Add product",
+    "paymentTypes": "Payments",
+    "addPaymentType": "Add payment type"
   },
   "paymentTypes": {
     "cash": "Cash",

@@ -1,6 +1,22 @@
-import { AsyncPipe, DecimalPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  inject,
+  signal,
+  DestroyRef,
+} from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -31,10 +47,11 @@ import {
   FormError,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
-import { catchError, EMPTY, map, Observable, of, tap } from 'rxjs';
+import { catchError, combineLatest, EMPTY, map, tap } from 'rxjs';
 import { PurchasesService } from '../../purchases.service';
 import { ICreatePurchaseInvoice, PurchaseInvoice } from '../../purchases.types';
 import { Product, ProductsService } from '@msk/mirza/panel/products';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'mz-purchases-details',
@@ -43,7 +60,6 @@ import { Product, ProductsService } from '@msk/mirza/panel/products';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    AsyncPipe,
     DecimalPipe,
     NgTemplateOutlet,
     FormsModule,
@@ -71,6 +87,7 @@ import { Product, ProductsService } from '@msk/mirza/panel/products';
 export class PurchasesCardDetailsComponent implements OnInit {
   readonly data = inject<MskDialogData<PurchaseInvoice | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<PurchasesCardDetailsComponent>);
+  private _destroyRef = inject(DestroyRef);
   private _formBuilder = inject(FormBuilder);
   private _vendorsService = inject(VendorsService);
   private _productsService = inject(ProductsService);
@@ -123,6 +140,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
       total: ['', [Validators.required, Validators.min(0)]],
       note: '',
     });
+    this.addPaymentType();
+    this.addPurchaseItem();
     // Handling errors
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
@@ -166,17 +185,30 @@ export class PurchasesCardDetailsComponent implements OnInit {
    */
   addPurchaseItem(): void {
     const group = this._formBuilder.group({
-      productId: [0, Validators.required],
+      product: [null, Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
       total: [0, [Validators.required, Validators.min(0)]],
-    });
+    }) as FormGroup<{
+      product: FormControl<Product | null>;
+      quantity: FormControl<number>;
+      total: FormControl<number>;
+    }>;
     this.purchaseItems.push(group);
+
+    combineLatest([group.controls.product.valueChanges, group.controls.quantity.valueChanges])
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        map(([product, quantity]) => {
+          group.controls.total.setValue((product?.sellPrice ?? 0) * quantity);
+        })
+      )
+      .subscribe();
 
     // Create a new DataSource for this row
     this.productDSList.push(
       new MskDataSource<Product>(
         (page, pageSize, search) => this._productsService.getLookupProducts(page, pageSize, search),
-        group.get('productId')?.valueChanges
+        group.controls.product.valueChanges
       )
     );
   }
@@ -195,9 +227,12 @@ export class PurchasesCardDetailsComponent implements OnInit {
    */
   addPaymentType(): void {
     const group = this._formBuilder.group({
-      type: ['', Validators.required],
+      paymentType: ['', Validators.required],
       value: [0, [Validators.required, Validators.min(0)]],
-    });
+    }) as FormGroup<{
+      paymentType: FormControl<string>;
+      value: FormControl<number>;
+    }>;
     this.paymentTypes.push(group);
   }
 
@@ -217,7 +252,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     const confirmation = this._mskConfirmationService.open({
       title: this._translocoService.translate('purchases.delete'),
       message: this._translocoService.translate('purchases.delete-message', {
-        name: this.data.item()?.number,
+        number: this.data.item()?.number,
       }),
       actions: {
         confirm: { label: this._translocoService.translate('delete') },
@@ -267,7 +302,10 @@ export class PurchasesCardDetailsComponent implements OnInit {
       vendorId: this.form.get('vendor')?.value?.id,
       date: this.form.get('date')?.value,
       paymentTypes: this.form.get('paymentTypes')?.value,
-      purchaseItems: this.form.get('purchaseItems')?.value,
+      purchaseItems: this.form.get('purchaseItems')?.value.map((x: any) => ({
+        productId: x.product.id,
+        ...x,
+      })),
       discount: this.form.get('discount')?.value,
       total: this.form.get('total')?.value,
       note: this.form.get('note')?.value,

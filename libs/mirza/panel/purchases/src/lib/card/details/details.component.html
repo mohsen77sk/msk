@@ -112,6 +112,95 @@
       </mat-form-field>
     </div>
 
+    <!-- Products -->
+    <div formArrayName="purchaseItems">
+      <div class="text-secondary text-title-small">{{ t('products') }}</div>
+      <div class="mb-4 mt-2 border-t"></div>
+      @for (product of purchaseItems.controls; track i; let i = $index) {
+      <div class="flex flex-row gap-2">
+        <div class="mb-4 flex flex-1 flex-col gap-2 sm:flex-row sm:gap-x-4 [&>*]:flex-1" [formGroupName]="i">
+          <!-- Product -->
+          <mat-form-field subscriptSizing="dynamic" class="sm:max-w-60">
+            <mat-label>{{ t('product') }}</mat-label>
+            <input type="text" matInput formControlName="product" [matAutocomplete]="autoProduct" />
+            @if (product.get('product')?.value) {
+            <button type="button" matIconButton matSuffix (click)="product.get('product')?.reset()">
+              <mat-icon>close</mat-icon>
+            </button>
+            }
+            <mat-autocomplete #autoProduct="matAutocomplete" [displayWith]="productDisplayFn">
+              <cdk-virtual-scroll-viewport
+                itemSize="48"
+                minBufferPx="240"
+                maxBufferPx="480"
+                [style.height.px]="
+                  (autoProduct?.options?.length || 0) > 5 ? 240 : (autoProduct?.options?.length || 0) * 48
+                "
+              >
+                <mat-option *cdkVirtualFor="let product of productDSList[i]" [value]="product">
+                  {{ product?.name || ('loading' | transloco) }}
+                </mat-option>
+              </cdk-virtual-scroll-viewport>
+            </mat-autocomplete>
+          </mat-form-field>
+          <!-- Quantity -->
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-label>{{ t('quantity') }}</mat-label>
+            <input matInput formControlName="quantity" mskMask="decimal" autocomplete="off" />
+            <span matTextSuffix>
+              <small>{{ product.get('total')?.value | number }} <small mskCurrencySymbol></small></small>
+            </span>
+          </mat-form-field>
+        </div>
+        @if( i !== 0 ) {
+        <button type="button" class="mt-2 grow-0" matIconButton (click)="removePurchaseItem(i)">
+          <mat-icon class="text-error">do_not_disturb_on</mat-icon>
+        </button>
+        }
+      </div>
+      }
+      <button type="button" class="mb-4 w-full" matButton="tonal" (click)="addPurchaseItem()">
+        <mat-icon>add</mat-icon>
+        {{ t('addProduct') }}
+      </button>
+    </div>
+
+    <!-- Payment Types -->
+    <div formArrayName="paymentTypes">
+      <div class="text-secondary text-title-small">{{ t('paymentTypes') }}</div>
+      <div class="mb-4 mt-2 border-t"></div>
+      @for (paymentType of paymentTypes.controls; track i; let i = $index) {
+      <div class="flex flex-row gap-2">
+        <div class="mb-4 flex flex-1 flex-col gap-2 sm:flex-row sm:gap-x-4 [&>*]:flex-1" [formGroupName]="i">
+          <!-- paymentType -->
+          <mat-form-field subscriptSizing="dynamic" class="sm:max-w-60">
+            <mat-label>{{ t('paymentType') }}</mat-label>
+            <mat-select formControlName="paymentType">
+              @for (item of paymentTypeList; track item) {
+              <mat-option [value]="item" *transloco="let t; read: 'purchases.paymentTypes'">{{ t(item) }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <!-- Value -->
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-label>{{ t('paymentTypeValue') }}</mat-label>
+            <input matInput formControlName="value" mskMask="decimal" autocomplete="off" />
+            <span matTextSuffix mskCurrencySymbol></span>
+          </mat-form-field>
+        </div>
+        @if( i !== 0 ) {
+        <button type="button" class="mt-2 grow-0" matIconButton (click)="removePaymentType(i)">
+          <mat-icon class="text-error">do_not_disturb_on</mat-icon>
+        </button>
+        }
+      </div>
+      }
+      <button type="button" class="mb-4 w-full" matButton="tonal" (click)="addPaymentType()">
+        <mat-icon>add</mat-icon>
+        {{ t('addPaymentType') }}
+      </button>
+    </div>
+
     <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
       <!-- Discount -->
       <mat-form-field>

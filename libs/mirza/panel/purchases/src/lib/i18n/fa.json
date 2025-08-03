@@ -3,11 +3,22 @@
     "new": "فاکتور خرید جدید",
     "edit": "ویرایش فاکتور خرید",
     "view": "فاکتور خرید {{number}}",
+    "specs": "مشخصات",
     "vendor": "تامین کننده",
     "date": "تاریخ",
+    "paymentType": "نوع پرداخت",
+    "paymentTypeValue": "مقدار",
     "discount": "تخفیف",
     "total": "مجموع",
-    "note": "توضیحات"
+    "note": "توضیحات",
+    "products": "محصولات",
+    "product": "محصول",
+    "quantity": "تعداد",
+    "totalPrice": "مجموع قیمت",
+    "addProduct": "افزودن محصول",
+    "paymentTypes": "پرداخت",
+    "addPaymentType": "افزودن نوع پرداخت",
+    "other": "بیشتر"
   },
   "paymentTypes": {
     "cash": "نقد",

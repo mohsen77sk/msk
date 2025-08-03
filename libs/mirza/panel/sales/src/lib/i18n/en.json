@@ -3,6 +3,7 @@
     "new": "New sale invoice",
     "edit": "Edit sale invoice",
     "view": "Sale invoice {{number}}",
+    "specs": "specification",
     "customer": "Customer",
     "date": "Date",
     "paymentType": "Payment type",
