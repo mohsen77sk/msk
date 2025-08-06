@@ -21,9 +21,9 @@
     "other": "بیشتر"
   },
   "paymentTypes": {
-    "cash": "نقد",
-    "bankTransfer": "انتقال بانکی",
     "pose": "دستگاه POS",
+    "cash": "پول نقد",
+    "bankTransfer": "انتقال بانکی",
     "checks": "چک",
     "gift": "هدیه",
     "notPaid": "پرداخت نشده"

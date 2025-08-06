@@ -1,6 +1,7 @@
-import { AsyncPipe, DecimalPipe, NgTemplateOutlet } from '@angular/common';
+import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
@@ -9,16 +10,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { MskDialogData, MskHttpErrorResponse, MskLookupItem } from '@msk/shared/data-access';
+import { MskDataSource, MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
-import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 
 import {
@@ -28,10 +29,10 @@ import {
   FormError,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
-import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
+import { catchError, EMPTY, map, tap } from 'rxjs';
 import { ProductsService } from '../../products.service';
-import { Product, ProductUnit } from '../../products.types';
-import { ProductCategoriesService } from '@msk/mirza/panel/product-categories';
+import { ICreateProduct, Product, ProductUnit } from '../../products.types';
+import { ProductCategoriesService, ProductCategory } from '@msk/mirza/panel/product-categories';
 
 @Component({
   selector: 'mz-product-details',
@@ -40,11 +41,11 @@ import { ProductCategoriesService } from '@msk/mirza/panel/product-categories';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    AsyncPipe,
     DecimalPipe,
     NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
+    ScrollingModule,
     MatIconModule,
     MatInputModule,
     MatRippleModule,
@@ -53,6 +54,7 @@ import { ProductCategoriesService } from '@msk/mirza/panel/product-categories';
     MatTooltipModule,
     MatFormFieldModule,
     MatDatepickerModule,
+    MatAutocompleteModule,
     MatDialogModule,
     TranslocoPipe,
     TranslocoDirective,
@@ -60,7 +62,6 @@ import { ProductCategoriesService } from '@msk/mirza/panel/product-categories';
     MskDialogComponent,
     MskMaskDirective,
     MskSpinnerDirective,
-    MskSelectSearchDirective,
     MskCurrencySymbolDirective,
   ],
 })
@@ -77,7 +78,7 @@ export class ProductCardDetailsComponent implements OnInit {
   form!: FormGroup;
   formErrors: FormError = {};
   unitList: ProductUnit[] = Object.values(ProductUnit);
-  categoryList$: Observable<MskLookupItem[]> = this._productCategoriesService.getLookupProductCategories();
+  categoryDS!: MskDataSource<ProductCategory>;
 
   alert = signal({
     show: false,
@@ -96,7 +97,7 @@ export class ProductCardDetailsComponent implements OnInit {
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
-      categoryId: [0, Validators.required],
+      category: [0, Validators.required],
       unit: ['', Validators.required],
       quantity: [0, [Validators.required, Validators.min(1)]],
       cost: 0,
@@ -107,6 +108,11 @@ export class ProductCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     this.form.patchValue(this.data.item() || {});
+    // Set category collection
+    this.categoryDS = new MskDataSource<ProductCategory>(
+      (page, pageSize, search) => this._productCategoriesService.getLookupProductCategories(page, pageSize, search),
+      this.form.get('category')?.valueChanges
+    );
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -118,6 +124,14 @@ export class ProductCardDetailsComponent implements OnInit {
    */
   editMode(): void {
     this.data.action.set('edit');
+  }
+
+  /**
+   * Get the category name
+   * @param value category
+   */
+  categoryDisplayFn(value: ProductCategory): string {
+    return value?.name;
   }
 
   /**
@@ -173,10 +187,21 @@ export class ProductCardDetailsComponent implements OnInit {
     // Reset the alert
     this.alert.set({ show: false, message: '' });
 
+    const model: ICreateProduct = {
+      id: this.form.get('id')?.value,
+      name: this.form.get('name')?.value,
+      categoryId: this.form.get('category')?.value?.id,
+      unit: this.form.get('unit')?.value,
+      quantity: this.form.get('quantity')?.value,
+      cost: this.form.get('cost')?.value,
+      sellPrice: this.form.get('sellPrice')?.value,
+      note: this.form.get('note')?.value,
+    };
+
     const result =
       this.data.action() === 'edit'
-        ? this._productsService.updateProduct(this.form.value)
-        : this._productsService.createProduct(this.form.value);
+        ? this._productsService.updateProduct(model)
+        : this._productsService.createProduct(model);
 
     result
       .pipe(

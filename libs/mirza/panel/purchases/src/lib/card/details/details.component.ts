@@ -47,7 +47,7 @@ import {
   FormError,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
-import { catchError, combineLatest, EMPTY, map, tap } from 'rxjs';
+import { catchError, combineLatest, EMPTY, map, startWith, tap } from 'rxjs';
 import { PurchasesService } from '../../purchases.service';
 import { ICreatePurchaseInvoice, PurchaseInvoice } from '../../purchases.types';
 import { Product, ProductsService } from '@msk/mirza/panel/products';
@@ -195,11 +195,14 @@ export class PurchasesCardDetailsComponent implements OnInit {
     }>;
     this.purchaseItems.push(group);
 
-    combineLatest([group.controls.product.valueChanges, group.controls.quantity.valueChanges])
+    combineLatest([
+      group.controls.product.valueChanges.pipe(startWith(group.controls.product.value)),
+      group.controls.quantity.valueChanges.pipe(startWith(group.controls.quantity.value)),
+    ])
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         map(([product, quantity]) => {
-          group.controls.total.setValue((product?.sellPrice ?? 0) * quantity);
+          group.controls.total.setValue((product?.sellPrice ?? 0) * (quantity ?? 0));
         })
       )
       .subscribe();
@@ -227,7 +230,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
    */
   addPaymentType(): void {
     const group = this._formBuilder.group({
-      paymentType: ['', Validators.required],
+      paymentType: [PaymentType.POSE, Validators.required],
       value: [0, [Validators.required, Validators.min(0)]],
     }) as FormGroup<{
       paymentType: FormControl<string>;

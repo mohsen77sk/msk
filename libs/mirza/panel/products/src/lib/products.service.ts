@@ -9,7 +9,7 @@ import {
   MskPagingRequest,
   convertToMirzaPagingRequest,
 } from '@msk/shared/data-access';
-import { Product, DefaultProductsSortDirection, DefaultProductsSortId } from './products.types';
+import { Product, DefaultProductsSortDirection, DefaultProductsSortId, ICreateProduct } from './products.types';
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
@@ -100,7 +100,7 @@ export class ProductsService {
    *
    * @param product
    */
-  createProduct(product: Product): Observable<Product> {
+  createProduct(product: ICreateProduct): Observable<Product> {
     return this._httpClient
       .post<Product>(`${this._appConfig.apiEndpoint}/product`, product)
       .pipe(map((response) => new Product(response)));
@@ -111,7 +111,7 @@ export class ProductsService {
    *
    * @param product
    */
-  updateProduct(product: Product): Observable<Product> {
+  updateProduct(product: ICreateProduct): Observable<Product> {
     return this._httpClient.patch<Product>(`${this._appConfig.apiEndpoint}/product/${product.id}`, product).pipe(
       map((response) => new Product(response)),
       // Update the products

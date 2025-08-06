@@ -21,9 +21,9 @@
     "other": "Other"
   },
   "paymentTypes": {
+    "pose": "POS",
     "cash": "Cash",
     "bankTransfer": "Bank transfer",
-    "pose": "POS",
     "checks": "Checks",
     "gift": "Gift",
     "notPaid": "Not paid"

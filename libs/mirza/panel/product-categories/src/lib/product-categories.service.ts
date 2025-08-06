@@ -72,16 +72,24 @@ export class ProductCategoriesService {
   /**
    * Get lookup product categories
    */
-  getLookupProductCategories(): Observable<MskLookupResponse> {
+  getLookupProductCategories(page = 1, pageSize = 10, search = ''): Observable<MskPageData<ProductCategory>> {
     return this._httpClient
-      .get<MskPageData<ProductCategory>>(`${this._appConfig.apiEndpoint}/category`, {
+      .get<MskPagingResponse<ProductCategory>>(`${this._appConfig.apiEndpoint}/category`, {
         params: convertToMirzaPagingRequest({
-          page: 1,
-          pageSize: 50,
+          page,
+          pageSize,
           sortBy: `${DefaultProductCategoriesSortId} ${DefaultProductCategoriesSortDirection}`,
+          search,
         }),
       })
-      .pipe(map((x) => x.items.map((x) => ({ id: x.id, name: x.name } as MskLookupItem))));
+      .pipe(
+        map((response) => {
+          return new MskPageData({
+            ...response,
+            items: response.items.map((item) => new ProductCategory(item)),
+          });
+        })
+      );
   }
 
   /**

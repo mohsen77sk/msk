@@ -1,7 +1,7 @@
 export enum PaymentType {
+  POSE = 'pose',
   CASH = 'cash',
   BANK_TRANSFER = 'bankTransfer',
-  POSE = 'pose',
   CHECKS = 'checks',
   GIFT = 'gift',
   NOT_PAID = 'notPaid',

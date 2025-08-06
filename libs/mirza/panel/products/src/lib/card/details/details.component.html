@@ -126,20 +126,27 @@
       <!-- Category -->
       <mat-form-field>
         <mat-label>{{ t('category') }}</mat-label>
-        @let categoryList = categoryList$ | async;
-        <mat-select
-          formControlName="categoryId"
-          mskSelectSearch
-          [searchList]="categoryList"
-          [searchItems]="'name'"
-          [searchPlaceholder]="'search' | transloco"
-          #searchCategories="mskSelectSearch"
-        >
-          @for (item of searchCategories.filteredList | async; track item) {
-          <mat-option [value]="item.id">{{ item.name }}</mat-option>
-          }
-        </mat-select>
-        <mat-error>{{ formErrors['categoryId'] }}</mat-error>
+        <input type="text" matInput formControlName="category" [matAutocomplete]="autoCategory" />
+        @if (form.get('category')?.value) {
+        <button type="button" matIconButton matSuffix (click)="form.get('category')?.reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+        }
+        <mat-autocomplete #autoCategory="matAutocomplete" [displayWith]="categoryDisplayFn">
+          <cdk-virtual-scroll-viewport
+            itemSize="48"
+            minBufferPx="240"
+            maxBufferPx="480"
+            [style.height.px]="
+              (autoCategory?.options?.length || 0) > 5 ? 240 : (autoCategory?.options?.length || 0) * 48
+            "
+          >
+            <mat-option *cdkVirtualFor="let category of categoryDS" [value]="category">
+              {{ category?.name || ('loading' | transloco) }}
+            </mat-option>
+          </cdk-virtual-scroll-viewport>
+        </mat-autocomplete>
+        <mat-error>{{ formErrors['category'] }}</mat-error>
       </mat-form-field>
     </div>
 

@@ -32,6 +32,17 @@ export class Product {
   }
 }
 
+export interface ICreateProduct {
+  id: number;
+  name: string;
+  categoryId: number;
+  unit: string;
+  quantity: number;
+  cost: number;
+  sellPrice: number;
+  note: string;
+}
+
 export class ProductItem {
   productId: number;
   quantity: number;
