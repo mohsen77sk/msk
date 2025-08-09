@@ -1,9 +1,9 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # compiled output
 dist
 tmp
-/out-tsc
+out-tsc
 
 # dependencies
 node_modules
@@ -23,7 +23,6 @@ node_modules
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-!.vscode/tailwind.json
 
 # misc
 /.sass-cache
@@ -41,7 +40,7 @@ Thumbs.db
 
 .nx/cache
 .nx/workspace-data
-.angular
-
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
+
+.angular
