@@ -97,11 +97,11 @@ export class ProductCardDetailsComponent implements OnInit {
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
-      category: [0, Validators.required],
-      unit: ['', Validators.required],
-      quantity: [0, [Validators.required, Validators.min(1)]],
-      cost: 0,
-      sellPrice: 0,
+      category: null,
+      quantity: null,
+      unit: [ProductUnit.PIECE, Validators.required],
+      cost: [0, Validators.required],
+      sellPrice: [0, Validators.required],
       note: '',
     });
     // Handling errors

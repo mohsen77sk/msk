@@ -4,6 +4,7 @@
     "edit": "Edit sale invoice",
     "view": "Sale invoice {{number}}",
     "specs": "specification",
+    "number": "Number",
     "customer": "Customer",
     "date": "Date",
     "paymentType": "Payment type",

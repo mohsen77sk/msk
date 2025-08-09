@@ -136,8 +136,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
       date: [new Date(new Date().setHours(0, 0, 0, 0)), Validators.required],
       purchaseItems: this._formBuilder.array([], Validators.required),
       paymentTypes: this._formBuilder.array([], Validators.required),
-      discount: ['', [Validators.required, Validators.min(0)]],
-      total: ['', [Validators.required, Validators.min(0)]],
+      discount: [0, [Validators.required, Validators.min(0)]],
+      total: [0, [Validators.required, Validators.min(0)]],
       note: '',
     });
     this.addPaymentType();

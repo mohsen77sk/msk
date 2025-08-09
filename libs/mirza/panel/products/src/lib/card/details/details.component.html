@@ -38,6 +38,7 @@
         </div>
       </div>
       <!-- Category -->
+      @if (data.item()?.category) {
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">category</mat-icon>
         <div class="msk-list-item-content">
@@ -45,7 +46,9 @@
           <span>{{ t('category') }}</span>
         </div>
       </div>
+      }
       <!-- Quantity -->
+      @if (data.item()?.quantity) {
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">pin</mat-icon>
         <div class="msk-list-item-content">
@@ -55,6 +58,7 @@
           <span>{{ t('quantity') }}</span>
         </div>
       </div>
+      }
       <!-- Cost -->
       @if (data.item()?.cost) {
       <div class="msk-list-item">
@@ -154,7 +158,7 @@
     <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
       <mat-form-field>
         <mat-label>{{ t('quantity') }}</mat-label>
-        <input matInput formControlName="quantity" mskMask="decimal" autocomplete="off" />
+        <input matInput type="number" formControlName="quantity" autocomplete="off" />
         <mat-error>{{ formErrors['quantity'] }}</mat-error>
       </mat-form-field>
 

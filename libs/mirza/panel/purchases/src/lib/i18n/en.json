@@ -4,6 +4,7 @@
     "edit": "Edit purchase invoice",
     "view": "Purchase invoice {{number}}",
     "specs": "specification",
+    "number": "Number",
     "vendor": "Vendor",
     "date": "Date",
     "paymentType": "Payment type",

@@ -83,7 +83,13 @@
         <mat-label>{{ t('customer') }}</mat-label>
         <input type="text" matInput formControlName="customer" [matAutocomplete]="autoCustomer" />
         @if (form.get('customer')?.value) {
-        <button type="button" matIconButton matSuffix (click)="form.get('customer')?.reset()">
+        <button
+          type="button"
+          matIconButton
+          matSuffix
+          [disabled]="form.disabled"
+          (click)="form.get('customer')?.reset()"
+        >
           <mat-icon>close</mat-icon>
         </button>
         }
@@ -126,7 +132,13 @@
             <mat-label>{{ t('product') }}</mat-label>
             <input type="text" matInput formControlName="product" [matAutocomplete]="autoProduct" />
             @if (product.get('product')?.value) {
-            <button type="button" matIconButton matSuffix (click)="product.get('product')?.reset()">
+            <button
+              type="button"
+              matIconButton
+              matSuffix
+              [disabled]="form.disabled"
+              (click)="product.get('product')?.reset()"
+            >
               <mat-icon>close</mat-icon>
             </button>
             }
@@ -155,13 +167,13 @@
           </mat-form-field>
         </div>
         @if( i !== 0 ) {
-        <button type="button" class="mt-2 grow-0" matIconButton (click)="removeSaleItem(i)">
+        <button type="button" class="mt-2 grow-0" matIconButton [disabled]="form.disabled" (click)="removeSaleItem(i)">
           <mat-icon class="text-error">do_not_disturb_on</mat-icon>
         </button>
         }
       </div>
       }
-      <button type="button" class="mb-4 w-full" matButton="tonal" (click)="addSaleItem()">
+      <button type="button" class="mb-4 w-full" matButton="tonal" [disabled]="form.disabled" (click)="addSaleItem()">
         <mat-icon>add</mat-icon>
         {{ t('addProduct') }}
       </button>
@@ -191,13 +203,19 @@
           </mat-form-field>
         </div>
         @if( i !== 0 ) {
-        <button type="button" class="mt-2 grow-0" matIconButton (click)="removePaymentType(i)">
+        <button
+          type="button"
+          class="mt-2 grow-0"
+          matIconButton
+          [disabled]="form.disabled"
+          (click)="removePaymentType(i)"
+        >
           <mat-icon class="text-error">do_not_disturb_on</mat-icon>
         </button>
         }
       </div>
       }
-      <button type="button" class="mb-4 w-full" matButton="tonal" (click)="addPaymentType()">
+      <button type="button" class="mb-4 w-full" matButton="tonal" [disabled]="form.disabled" (click)="addPaymentType()">
         <mat-icon>add</mat-icon>
         {{ t('addPaymentType') }}
       </button>
