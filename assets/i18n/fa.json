@@ -18,6 +18,8 @@
   "cancel": "لغو",
   "other": "دیگر",
   "settings": "تنظیمات",
+  "loading": "در حال بارگذاری...",
+  "not-found": "موردی یافت نشد",
   "sz-app-name": "صاحب الزمان",
   "mz-app-name": "میرزا بنویس",
   "layout": {
