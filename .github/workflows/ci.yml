@@ -80,6 +80,11 @@ jobs:
             echo "sahebzaman_affected=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Rebuild docs with base href
+        if: steps.check-affected.outputs.docs_affected == 'true'
+        run: |
+          npx nx build docs --base-href=/msk/ --skip-nx-cache
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
