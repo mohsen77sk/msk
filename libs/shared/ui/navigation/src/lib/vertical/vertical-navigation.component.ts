@@ -210,11 +210,9 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
 
   /**
    * On mouseenter
-   *
-   * @private
    */
   @HostListener('mouseenter')
-  private _onMouseenter(): void {
+  onMouseenter(): void {
     // Enable the animations
     this._enableAnimations();
 
@@ -224,11 +222,9 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
 
   /**
    * On mouseleave
-   *
-   * @private
    */
   @HostListener('mouseleave')
-  private _onMouseleave(): void {
+  onMouseleave(): void {
     // Enable the animations
     this._enableAnimations();
 

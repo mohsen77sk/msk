@@ -51,7 +51,7 @@ export class MskSelectSearchDirective {
    * On openedChange
    */
   @HostListener('openedChange', ['$event'])
-  onOpenedChange(isOpened: boolean): void {
+  onOpenedChange(isOpened: Event): void {
     if (!this.showSearch) {
       return;
     }
