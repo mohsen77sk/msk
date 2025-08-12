@@ -1,0 +1,13 @@
+<h2 matDialogTitle *transloco="let t">{{ t('layout.select-theme') }}</h2>
+<div matDialogContent *transloco="let t">
+  <mat-radio-group
+    class="flex flex-col"
+    [ngModel]="layoutScheme"
+    (change)="setActiveSchema($event)"
+    aria-label="Select an schema option"
+  >
+    <mat-radio-button value="dark">{{ t('layout.dark') }}</mat-radio-button>
+    <mat-radio-button value="light">{{ t('layout.light') }}</mat-radio-button>
+    <mat-radio-button value="auto">{{ t('layout.default') }}</mat-radio-button>
+  </mat-radio-group>
+</div>
