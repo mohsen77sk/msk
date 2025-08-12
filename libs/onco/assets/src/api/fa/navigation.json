@@ -1,0 +1,18 @@
+[
+  {
+    "id": "panel",
+    "title": "اصلی",
+    "tooltip": "اصلی",
+    "type": "group",
+    "icon": "home",
+    "children": [
+      {
+        "id": "panel.dashboard",
+        "title": "داشبورد",
+        "type": "basic",
+        "icon": "dashboard",
+        "link": "/panel/dashboard"
+      }
+    ]
+  }
+]

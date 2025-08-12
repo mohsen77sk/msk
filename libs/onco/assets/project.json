@@ -1,0 +1,7 @@
+{
+  "name": "onco-assets",
+  "sourceRoot": "libs/onco/assets",
+  "tags": ["scope:onco"],
+  "projectType": "library",
+  "targets": {}
+}

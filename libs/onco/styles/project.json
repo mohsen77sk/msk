@@ -1,0 +1,7 @@
+{
+  "name": "onco-styles",
+  "sourceRoot": "libs/onco/styles",
+  "tags": ["scope:onco"],
+  "projectType": "library",
+  "targets": {}
+}
