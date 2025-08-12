@@ -24,7 +24,7 @@ import { provideMskMatIntl } from '@msk/shared/utils/material-intl';
 import { provideMskServiceWorker } from '@msk/shared/utils/service-worker';
 import { provideMskTransloco } from '@msk/shared/utils/transloco';
 import { provideMskLoading } from '@msk/shared/utils/loading';
-// import { provideAuth } from '@msk/onco/shell/core/auth';
+import { provideAuth } from '@msk/onco/shell/core/auth';
 
 import { routes } from './shell.routes';
 
@@ -95,7 +95,7 @@ export const provideShell = (config: LayoutConfig): Array<Provider | Environment
     ),
 
     // Provide Auth
-    // provideAuth(),
+    provideAuth(),
 
     // Material Date Adapter
     provideDateFnsAdapter(),

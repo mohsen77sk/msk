@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-// import { AuthGuard, NoAuthGuard } from '@msk/onco/shell/core/auth';
+import { AuthGuard, NoAuthGuard } from '@msk/onco/shell/core/auth';
 import { LayoutComponent } from '@msk/onco/shell/ui/layout';
 import { initialDataResolver } from './shell.resolvers';
 
@@ -22,8 +22,8 @@ export const routes: Route[] = [
   // Auth routes for guests
   {
     path: '',
-    // canActivate: [NoAuthGuard],
-    // canActivateChild: [NoAuthGuard],
+    canActivate: [NoAuthGuard],
+    canActivateChild: [NoAuthGuard],
     component: LayoutComponent,
     data: {
       layoutType: 'empty',
@@ -39,8 +39,8 @@ export const routes: Route[] = [
   // Auth routes for authenticated users
   {
     path: '',
-    // canActivate: [AuthGuard],
-    // canActivateChild: [AuthGuard],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: LayoutComponent,
     data: {
       layoutType: 'empty',
@@ -56,8 +56,8 @@ export const routes: Route[] = [
   // Admin routes
   {
     path: '',
-    // canActivate: [AuthGuard],
-    // canActivateChild: [AuthGuard],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: LayoutComponent,
     resolve: {
       initial: initialDataResolver,

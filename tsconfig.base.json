@@ -46,6 +46,7 @@
       "@msk/mirza/shell/core/user": ["libs/mirza/shell/core/user/src/index.ts"],
       "@msk/mirza/shell/feature": ["libs/mirza/shell/feature/src/index.ts"],
       "@msk/mirza/shell/ui/layout": ["libs/mirza/shell/ui/layout/src/index.ts"],
+      "@msk/onco/shell/core/auth": ["libs/onco/shell/core/auth/src/index.ts"],
       "@msk/onco/shell/core/navigation": ["libs/onco/shell/core/navigation/src/index.ts"],
       "@msk/onco/shell/core/user": ["libs/onco/shell/core/user/src/index.ts"],
       "@msk/onco/shell/feature": ["libs/onco/shell/feature/src/index.ts"],
