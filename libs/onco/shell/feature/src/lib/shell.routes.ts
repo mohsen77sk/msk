@@ -67,10 +67,10 @@ export const routes: Route[] = [
       {
         path: 'panel',
         children: [
-          // {
-          //   path: 'dashboard',
-          //   loadChildren: () => import('@msk/onco/panel/dashboard').then((r) => r.routes),
-          // },
+          {
+            path: 'dashboard',
+            loadChildren: () => import('@msk/onco/panel/dashboard').then((r) => r.routes),
+          },
         ],
       },
     ],

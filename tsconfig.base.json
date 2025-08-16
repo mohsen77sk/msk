@@ -48,6 +48,7 @@
       "@msk/mirza/shell/ui/layout": ["libs/mirza/shell/ui/layout/src/index.ts"],
       "@msk/onco/auth/sign-in": ["libs/onco/auth/sign-in/src/index.ts"],
       "@msk/onco/auth/sign-out": ["libs/onco/auth/sign-out/src/index.ts"],
+      "@msk/onco/panel/dashboard": ["libs/onco/panel/dashboard/src/index.ts"],
       "@msk/onco/shell/core/auth": ["libs/onco/shell/core/auth/src/index.ts"],
       "@msk/onco/shell/core/navigation": ["libs/onco/shell/core/navigation/src/index.ts"],
       "@msk/onco/shell/core/user": ["libs/onco/shell/core/user/src/index.ts"],
