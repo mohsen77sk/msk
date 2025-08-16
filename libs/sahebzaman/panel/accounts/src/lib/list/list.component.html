@@ -15,32 +15,32 @@
     <div class="content-grid" cdkScrollable>
       <!-- Rows -->
       @for (account of (accounts$ | async)?.items; track account.id) {
-      <div class="content-grid-item tow-line" [routerLink]="['card', 'view', account.id]" matRipple>
-        <!-- Avatar -->
-        <div class="content-grid-item-avatar">
-          <msk-avatar [name]="account.persons[0].name"></msk-avatar>
-        </div>
-        <!-- Content -->
-        <div class="content-grid-item-content">
-          <div class="truncate">
-            {{ account.fullName }}
+        <div class="content-grid-item tow-line" [routerLink]="['card', 'view', account.id]" matRipple>
+          <!-- Avatar -->
+          <div class="content-grid-item-avatar">
+            <msk-avatar [name]="account.persons[0].name"></msk-avatar>
           </div>
-          <div class="flex items-center gap-2 truncate">
-            <span>#{{ account.code }}</span>
+          <!-- Content -->
+          <div class="content-grid-item-content">
+            <div class="truncate">
+              {{ account.fullName }}
+            </div>
+            <div class="flex items-center gap-2 truncate">
+              <span>#{{ account.code }}</span>
+            </div>
+          </div>
+          <!-- End -->
+          <div class="content-grid-item-end">
+            <sz-accounts-status [value]="account.isActive"></sz-accounts-status>
           </div>
         </div>
-        <!-- End -->
-        <div class="content-grid-item-end">
-          <sz-accounts-status [value]="account.isActive"></sz-accounts-status>
-        </div>
-      </div>
       } @empty {
-      <div
-        class="text-secondary text-title-medium flex flex-1 items-center justify-center p-8 text-center"
-        *transloco="let t"
-      >
-        {{ t('accounts.empty-list') }}
-      </div>
+        <div
+          class="text-secondary text-title-medium flex flex-1 items-center justify-center p-8 text-center"
+          *transloco="let t"
+        >
+          {{ t('accounts.empty-list') }}
+        </div>
       }
     </div>
 

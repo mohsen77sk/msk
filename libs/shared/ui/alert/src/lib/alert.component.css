@@ -450,7 +450,7 @@ msk-alert {
     /* Basic */
     &.msk-alert-type-basic {
       .msk-alert-container {
-        @apply bg-gray-100 ring-1 ring-inset ring-gray-400;
+        @apply bg-gray-100 ring-1 ring-gray-400 ring-inset;
 
         .msk-alert-icon {
           @apply text-gray-600;
@@ -491,7 +491,7 @@ msk-alert {
     /* Info */
     &.msk-alert-type-info {
       .msk-alert-container {
-        @apply bg-blue-50 ring-1 ring-inset ring-blue-400;
+        @apply bg-blue-50 ring-1 ring-blue-400 ring-inset;
 
         .msk-alert-icon {
           @apply text-blue-600;
@@ -532,7 +532,7 @@ msk-alert {
     /* Success */
     &.msk-alert-type-success {
       .msk-alert-container {
-        @apply bg-green-50 ring-1 ring-inset ring-green-400;
+        @apply bg-green-50 ring-1 ring-green-400 ring-inset;
 
         .msk-alert-icon {
           @apply text-green-600;
@@ -573,7 +573,7 @@ msk-alert {
     /* Warning */
     &.msk-alert-type-warning {
       .msk-alert-container {
-        @apply bg-amber-50 ring-1 ring-inset ring-amber-400;
+        @apply bg-amber-50 ring-1 ring-amber-400 ring-inset;
 
         .msk-alert-icon {
           @apply text-amber-600;
@@ -614,7 +614,7 @@ msk-alert {
     /* Error */
     &.msk-alert-type-error {
       .msk-alert-container {
-        @apply bg-red-50 ring-1 ring-inset ring-red-400;
+        @apply bg-red-50 ring-1 ring-red-400 ring-inset;
 
         .msk-alert-icon {
           @apply text-red-600;

@@ -46,7 +46,7 @@ export class VendorsService {
       page: 1,
       pageSize: 10,
       sortBy: `${DefaultVendorsSortId} ${DefaultVendorsSortDirection}`,
-    }
+    },
   ): Observable<MskPageData<Vendor>> {
     return this._httpClient
       .get<MskPagingResponse<Vendor>>(`${this._appConfig.apiEndpoint}/vendor`, {
@@ -59,7 +59,7 @@ export class VendorsService {
             items: response.items.map((item) => new Vendor(item)),
           });
         }),
-        tap((response) => this._vendors.next(response))
+        tap((response) => this._vendors.next(response)),
       );
   }
 
@@ -82,7 +82,7 @@ export class VendorsService {
             ...response,
             items: response.items.map((item) => new Vendor(item)),
           });
-        })
+        }),
       );
   }
 
@@ -123,7 +123,7 @@ export class VendorsService {
           this._vendors.value.items[index] = newVendor;
           this._vendors.next(this._vendors.value);
         }
-      })
+      }),
     );
   }
 
@@ -144,7 +144,7 @@ export class VendorsService {
             this._vendors.next(this._vendors.value);
           }
         }
-      })
+      }),
     );
   }
 }

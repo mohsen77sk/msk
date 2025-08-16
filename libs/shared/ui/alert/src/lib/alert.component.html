@@ -1,49 +1,55 @@
 @if (!dismissible() || (dismissible() && !hasDismissed())) {
-<div class="msk-alert-container" [@fadeIn]="!hasDismissed()" [@fadeOut]="!hasDismissed()">
-  <!-- Border -->
-  @if (appearance() === 'border') {
-  <div class="msk-alert-border"></div>
-  }
+  <div class="msk-alert-container" [@fadeIn]="!hasDismissed()" [@fadeOut]="!hasDismissed()">
+    <!-- Border -->
+    @if (appearance() === 'border') {
+      <div class="msk-alert-border"></div>
+    }
 
-  <!-- Icon -->
-  @if (showIcon()) {
-  <div class="msk-alert-icon">
-    <!-- Custom icon -->
-    <div class="msk-alert-custom-icon">
-      <ng-content select="[mskAlertIcon]"></ng-content>
+    <!-- Icon -->
+    @if (showIcon()) {
+      <div class="msk-alert-icon">
+        <!-- Custom icon -->
+        <div class="msk-alert-custom-icon">
+          <ng-content select="[mskAlertIcon]"></ng-content>
+        </div>
+
+        <!-- Default icons -->
+        <div class="msk-alert-default-icon">
+          @switch (type()) {
+            @case ('basic') {
+              <mat-icon svgIcon="heroicons_solid:check-circle"></mat-icon>
+            }
+            @case ('info') {
+              <mat-icon svgIcon="heroicons_solid:information-circle"></mat-icon>
+            }
+            @case ('success') {
+              <mat-icon svgIcon="heroicons_solid:check-circle"></mat-icon>
+            }
+            @case ('warning') {
+              <mat-icon svgIcon="heroicons_solid:exclamation-triangle"></mat-icon>
+            }
+            @case ('error') {
+              <mat-icon svgIcon="heroicons_solid:x-circle"></mat-icon>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Content -->
+    <div class="msk-alert-content">
+      <div class="msk-alert-title">
+        <ng-content select="[mskAlertTitle]"></ng-content>
+      </div>
+
+      <div class="msk-alert-message">
+        <ng-content></ng-content>
+      </div>
     </div>
 
-    <!-- Default icons -->
-    <div class="msk-alert-default-icon">
-      @switch (type()) { @case ('basic') {
-      <mat-icon svgIcon="heroicons_solid:check-circle"></mat-icon>
-      } @case ('info') {
-      <mat-icon svgIcon="heroicons_solid:information-circle"></mat-icon>
-      } @case ('success') {
-      <mat-icon svgIcon="heroicons_solid:check-circle"></mat-icon>
-      } @case ('warning') {
-      <mat-icon svgIcon="heroicons_solid:exclamation-triangle"></mat-icon>
-      } @case ('error') {
-      <mat-icon svgIcon="heroicons_solid:x-circle"></mat-icon>
-      } }
-    </div>
+    <!-- Dismiss button -->
+    <button class="msk-alert-dismiss-button" matIconButton (click)="dismiss()">
+      <mat-icon [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
+    </button>
   </div>
-  }
-
-  <!-- Content -->
-  <div class="msk-alert-content">
-    <div class="msk-alert-title">
-      <ng-content select="[mskAlertTitle]"></ng-content>
-    </div>
-
-    <div class="msk-alert-message">
-      <ng-content></ng-content>
-    </div>
-  </div>
-
-  <!-- Dismiss button -->
-  <button class="msk-alert-dismiss-button" matIconButton (click)="dismiss()">
-    <mat-icon [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
-  </button>
-</div>
 }

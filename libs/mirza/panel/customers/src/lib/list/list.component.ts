@@ -112,7 +112,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     merge(this._sort.sortChange, this.filterValueChange)
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        tap(() => (this._paginator().pageIndex = 0))
+        tap(() => (this._paginator().pageIndex = 0)),
       )
       .subscribe();
 
@@ -120,7 +120,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     merge(this._sort.sortChange, this._paginator().page, this.filterValueChange)
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        switchMap(() => this.getCustomers())
+        switchMap(() => this.getCustomers()),
       )
       .subscribe();
 
@@ -138,7 +138,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
           }
           // Update lastOffsetScroll
           this.lastOffsetScroll = scrollTop;
-        })
+        }),
       )
       .subscribe();
   }
@@ -165,7 +165,7 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
         finalize(() => {
           // Set isLoading to false
           this.isLoading.set(false);
-        })
+        }),
       );
   }
 }

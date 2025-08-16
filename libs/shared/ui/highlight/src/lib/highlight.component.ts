@@ -126,7 +126,7 @@ export class MskHighlightComponent implements AfterViewInit {
     // Highlight and sanitize the code just in case
     this.highlightedCode = this._domSanitizer.sanitize(
       SecurityContext.HTML,
-      this._mskHighlightService.highlight(this.code() || '', this.lang())
+      this._mskHighlightService.highlight(this.code() || '', this.lang()),
     );
 
     // Return if the highlighted code is null

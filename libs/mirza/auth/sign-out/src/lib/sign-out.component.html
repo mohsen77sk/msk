@@ -1,6 +1,6 @@
 <div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t">
   <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
-    <div class="max-w-80 mx-auto w-full sm:mx-0 sm:w-80">
+    <div class="mx-auto w-full max-w-80 sm:mx-0 sm:w-80">
       <!-- Logo -->
       <div class="mx-auto w-12">
         <img src="assets/images/logo/logo.svg" alt="logo" />
@@ -14,9 +14,13 @@
       <!-- Content -->
       <div class="mt-1 flex justify-center font-medium">
         <!-- Redirect countdown -->
-        @if (countdown() > 0) { {{ t('signOut.redirecting-in-seconds', { seconds: countdown() }) }} }
+        @if (countdown() > 0) {
+          {{ t('signOut.redirecting-in-seconds', { seconds: countdown() }) }}
+        }
         <!-- Redirect message -->
-        @else { {{ t('signOut.you-are-now-being-redirected') }} }
+        @else {
+          {{ t('signOut.you-are-now-being-redirected') }}
+        }
       </div>
 
       <!-- Form footer -->

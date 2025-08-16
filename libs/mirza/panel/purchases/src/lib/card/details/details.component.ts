@@ -149,7 +149,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Set vendor collection
     this.vendorDS = new MskDataSource<Vendor>(
       (page, pageSize, search) => this._vendorsService.getLookupVendors(page, pageSize, search),
-      this.form.get('vendor')?.valueChanges
+      this.form.get('vendor')?.valueChanges,
     );
   }
 
@@ -203,7 +203,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
         takeUntilDestroyed(this._destroyRef),
         map(([product, quantity]) => {
           group.controls.total.setValue((product?.sellPrice ?? 0) * (quantity ?? 0));
-        })
+        }),
       )
       .subscribe();
 
@@ -211,8 +211,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
     this.productDSList.push(
       new MskDataSource<Product>(
         (page, pageSize, search) => this._productsService.getLookupProducts(page, pageSize, search),
-        group.controls.product.valueChanges
-      )
+        group.controls.product.valueChanges,
+      ),
     );
   }
 
@@ -276,7 +276,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
             this._mskSnackbarService.error(response.error.message);
             // Return
             return EMPTY;
-          })
+          }),
         )
         .subscribe();
     });
@@ -333,7 +333,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
           }
           // Return
           return EMPTY;
-        })
+        }),
       )
       .subscribe();
   }

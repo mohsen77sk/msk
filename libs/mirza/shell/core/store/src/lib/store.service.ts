@@ -54,7 +54,7 @@ export class StoreService {
       map((response) => response.items.map((row) => new Store(row))),
       tap((stores) => {
         this._stores.next(stores);
-      })
+      }),
     );
   }
 }

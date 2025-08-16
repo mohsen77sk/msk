@@ -31,7 +31,7 @@ const personResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapsho
       router.navigateByUrl(parentUrl);
       // Throw an error
       return throwError(() => new Error(error.message));
-    })
+    }),
   );
 };
 

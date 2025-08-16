@@ -23,7 +23,7 @@ export class PurchasesService {
 
   // Private
   private _invoices: BehaviorSubject<MskPageData<PurchaseInvoice>> = new BehaviorSubject<MskPageData<PurchaseInvoice>>(
-    EmptyPageData
+    EmptyPageData,
   );
 
   // -----------------------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ export class PurchasesService {
       page: 1,
       pageSize: 10,
       sortBy: `${DefaultPurchasesSortId} ${DefaultPurchasesSortDirection}`,
-    }
+    },
   ): Observable<MskPageData<PurchaseInvoice>> {
     return this._httpClient
       .get<MskPagingResponse<PurchaseInvoice>>(`${this._appConfig.apiEndpoint}/purchase`, {
@@ -64,7 +64,7 @@ export class PurchasesService {
             items: response.items.map((item) => new PurchaseInvoice(item)),
           });
         }),
-        tap((response) => this._invoices.next(response))
+        tap((response) => this._invoices.next(response)),
       );
   }
 
@@ -107,7 +107,7 @@ export class PurchasesService {
             this._invoices.value.items[index] = newInvoice;
             this._invoices.next(this._invoices.value);
           }
-        })
+        }),
       );
   }
 
@@ -128,7 +128,7 @@ export class PurchasesService {
             this._invoices.next(this._invoices.value);
           }
         }
-      })
+      }),
     );
   }
 }

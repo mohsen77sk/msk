@@ -39,7 +39,7 @@ export class SignOutComponent implements OnInit {
         finalize(() => this._router.navigate(['sign-in'])),
         takeWhile(() => this.countdown() > 0),
         takeUntilDestroyed(this._destroyRef),
-        tap(() => this.countdown.set(this.countdown() - 1))
+        tap(() => this.countdown.set(this.countdown() - 1)),
       )
       .subscribe();
   }

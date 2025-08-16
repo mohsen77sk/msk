@@ -55,7 +55,7 @@ export class AccountService {
       page: 1,
       pageSize: 10,
       sortBy: `${DefaultAccountSortId} ${DefaultAccountSortDirection}`,
-    }
+    },
   ): Observable<MskPageData<Account>> {
     return this._httpClient
       .get<MskPagingResponse<Account>>(`${this._appConfig.apiEndpoint}/api/account/all`, { params })
@@ -66,7 +66,7 @@ export class AccountService {
             items: response.items.map((item) => new Account(item)),
           });
         }),
-        tap((response) => this._accounts.next(response))
+        tap((response) => this._accounts.next(response)),
       );
   }
 
@@ -117,7 +117,7 @@ export class AccountService {
    */
   getAccountWithBalance(id: number | string): Observable<Account> {
     return forkJoin([this.getAccount(id), this.getBalanceAccount(id)]).pipe(
-      map((value) => new Account({ ...value[0], ...value[1] } as Account))
+      map((value) => new Account({ ...value[0], ...value[1] } as Account)),
     );
   }
 
@@ -147,7 +147,7 @@ export class AccountService {
           this._accounts.value.items[index] = newAccount;
           this._accounts.next(this._accounts.value);
         }
-      })
+      }),
     );
   }
 
@@ -166,7 +166,7 @@ export class AccountService {
           this._accounts.value.items[index] = newAccount;
           this._accounts.next(this._accounts.value);
         }
-      })
+      }),
     );
   }
 

@@ -84,7 +84,7 @@ export class MskAlertComponent implements OnInit {
     this._mskAlertService.onDismiss
       .pipe(
         filter((name) => this.name() === name),
-        takeUntilDestroyed(this._destroyRef)
+        takeUntilDestroyed(this._destroyRef),
       )
       .subscribe(() => this.dismiss());
 
@@ -92,7 +92,7 @@ export class MskAlertComponent implements OnInit {
     this._mskAlertService.onShow
       .pipe(
         filter((name) => this.name() === name),
-        takeUntilDestroyed(this._destroyRef)
+        takeUntilDestroyed(this._destroyRef),
       )
       .subscribe(() => this.show());
   }

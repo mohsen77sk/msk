@@ -140,7 +140,7 @@ export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
     this._router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        takeUntilDestroyed(this._destroyRef)
+        takeUntilDestroyed(this._destroyRef),
       )
       .subscribe((event: NavigationEnd) => {
         // If the item has a children that has a matching url with the current url, expand...

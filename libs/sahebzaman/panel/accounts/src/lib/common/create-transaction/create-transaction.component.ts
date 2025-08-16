@@ -133,7 +133,7 @@ export class AccountsCreateTransactionComponent implements OnInit {
           }
           // Return
           return EMPTY;
-        })
+        }),
       )
       .subscribe();
   }

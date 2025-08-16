@@ -54,7 +54,7 @@ export class AuthService {
 
         // Return a new observable with the response
         return of(response);
-      })
+      }),
     );
   }
 
@@ -65,7 +65,7 @@ export class AuthService {
     return this._httpClient.post<void>(`${this._appConfig.apiEndpoint}/auth/logout`, null).pipe(
       switchMap(() => of(true)),
       catchError(() => of(false)),
-      finalize(() => this.clientSignOut())
+      finalize(() => this.clientSignOut()),
     );
   }
 

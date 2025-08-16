@@ -31,7 +31,7 @@ const productResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapsh
       router.navigateByUrl(parentUrl);
       // Throw an error
       return throwError(() => new Error(error.message));
-    })
+    }),
   );
 };
 

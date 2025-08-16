@@ -30,7 +30,7 @@ export class DocsNavigationService {
     return this._httpClient.get<Navigation>('assets/api/navigation.json').pipe(
       tap((navigation) => {
         this._navigation.next(navigation);
-      })
+      }),
     );
   }
 }

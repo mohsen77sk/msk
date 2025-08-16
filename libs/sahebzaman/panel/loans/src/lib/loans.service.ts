@@ -44,7 +44,7 @@ export class LoanService {
       page: 1,
       pageSize: 10,
       sortBy: `${DefaultLoanSortId} ${DefaultLoanSortDirection}`,
-    }
+    },
   ): Observable<MskPageData<Loan>> {
     return this._httpClient
       .get<MskPagingResponse<Loan>>(`${this._appConfig.apiEndpoint}/api/loan/all`, { params })
@@ -55,7 +55,7 @@ export class LoanService {
             items: response.items.map((item) => new Loan(item)),
           });
         }),
-        tap((response) => this._loans.next(response))
+        tap((response) => this._loans.next(response)),
       );
   }
 
@@ -105,7 +105,7 @@ export class LoanService {
           this._loans.value.items[index] = newLoan;
           this._loans.next(this._loans.value);
         }
-      })
+      }),
     );
   }
 }

@@ -3,7 +3,7 @@
     @apply flex min-w-0 flex-auto flex-col;
 
     > .header {
-      @apply bg-surface min-h-16 flex items-center justify-between px-4 sm:px-6;
+      @apply bg-surface flex min-h-16 items-center justify-between px-4 sm:px-6;
 
       > label {
         @apply text-title-large;
@@ -55,7 +55,7 @@
               @apply flex flex-1 flex-col overflow-hidden;
 
               > div:nth-child(1) {
-                @apply font-medium leading-6;
+                @apply leading-6 font-medium;
               }
 
               > div:nth-child(2) {
@@ -70,7 +70,7 @@
         }
 
         > .content-fab-container {
-          @apply bottom-18 absolute end-4 z-20 flex flex-col items-end gap-4;
+          @apply absolute end-4 bottom-18 z-20 flex flex-col items-end gap-4;
         }
 
         > .content-paginator.mat-mdc-paginator {

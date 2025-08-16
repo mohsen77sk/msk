@@ -5,7 +5,7 @@ import { finalize, Observable, take } from 'rxjs';
 
 export const mskLoadingInterceptor = (
   req: HttpRequest<unknown>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> => {
   const mskLoadingBarService = inject(MskLoadingBarService);
   let handleRequestsAutomatically = false;
@@ -26,6 +26,6 @@ export const mskLoadingInterceptor = (
     finalize(() => {
       // Set the status to false if there are any errors or the request is completed
       mskLoadingBarService.setLoadingStatus(false, req.url);
-    })
+    }),
   );
 };

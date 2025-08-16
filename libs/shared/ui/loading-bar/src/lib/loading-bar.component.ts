@@ -43,21 +43,21 @@ export class MskLoadingBarComponent implements OnInit {
     this._mskLoadingBarService.mode$
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        map((value) => (this.mode = value))
+        map((value) => (this.mode = value)),
       )
       .subscribe();
 
     this._mskLoadingBarService.progress$
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        map((value) => (this.progress = value))
+        map((value) => (this.progress = value)),
       )
       .subscribe();
 
     this._mskLoadingBarService.show$
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        map((value) => (this.show = value))
+        map((value) => (this.show = value)),
       )
       .subscribe();
   }

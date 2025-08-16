@@ -41,7 +41,7 @@ export class DocsPageTitleComponent implements AfterViewInit {
     this._router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        takeUntilDestroyed(this._destroyRef)
+        takeUntilDestroyed(this._destroyRef),
       )
       .subscribe(() => this.getCurrentTitle());
   }

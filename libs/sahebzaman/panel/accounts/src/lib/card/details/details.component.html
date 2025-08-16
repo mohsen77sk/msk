@@ -14,9 +14,9 @@
 
   <ng-template #trailing>
     @if (data.item()?.isActive) {
-    <button matIconButton (click)="editMode()">
-      <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
-    </button>
+      <button matIconButton (click)="editMode()">
+        <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+      </button>
     }
   </ng-template>
 
@@ -29,45 +29,45 @@
 
 <ng-template #viewTemplate let-t="t">
   @if (data.item()?.isActive) {
-  <div class="flex flex-col gap-4 p-4">
-    <span class="text-on-surface-variant text-label-medium">{{ t('credit') }}</span>
-    <span class="text-on-surface text-title-large h-8">
-      @if (isLoadingBalance()) {
-      <mat-spinner diameter="24"></mat-spinner>
-      } @else {
-      {{ data.item()?.balance | number }} <small mskCurrencySymbol></small>
-      }
-    </span>
-  </div>
-  <div class="grid grid-cols-3 gap-4 py-4" *transloco="let t">
-    <button matButton="filled" (click)="openCreateTransaction(AccountTransactionTypeEnum.Deposit)">
-      <mat-icon class="hidden sm:block">arrow_upward</mat-icon>
-      {{ t('deposit') }}
-    </button>
-    <button matButton="outlined" (click)="openCreateTransaction(AccountTransactionTypeEnum.Withdrawal)">
-      <mat-icon class="hidden sm:block">arrow_downward</mat-icon>
-      {{ t('withdraw') }}
-    </button>
-    <button matButton="outlined" (click)="openCreateTransaction(AccountTransactionTypeEnum.Transfer)">
-      <mat-icon class="hidden sm:block">swap_horiz</mat-icon>
-      {{ t('transfer') }}
-    </button>
-  </div>
+    <div class="flex flex-col gap-4 p-4">
+      <span class="text-on-surface-variant text-label-medium">{{ t('credit') }}</span>
+      <span class="text-on-surface text-title-large h-8">
+        @if (isLoadingBalance()) {
+          <mat-spinner diameter="24"></mat-spinner>
+        } @else {
+          {{ data.item()?.balance | number }} <small mskCurrencySymbol></small>
+        }
+      </span>
+    </div>
+    <div class="grid grid-cols-3 gap-4 py-4" *transloco="let t">
+      <button matButton="filled" (click)="openCreateTransaction(AccountTransactionTypeEnum.Deposit)">
+        <mat-icon class="hidden sm:block">arrow_upward</mat-icon>
+        {{ t('deposit') }}
+      </button>
+      <button matButton="outlined" (click)="openCreateTransaction(AccountTransactionTypeEnum.Withdrawal)">
+        <mat-icon class="hidden sm:block">arrow_downward</mat-icon>
+        {{ t('withdraw') }}
+      </button>
+      <button matButton="outlined" (click)="openCreateTransaction(AccountTransactionTypeEnum.Transfer)">
+        <mat-icon class="hidden sm:block">swap_horiz</mat-icon>
+        {{ t('transfer') }}
+      </button>
+    </div>
   }
   <div class="msk-mat-card-filled mb-2 p-4">
     <div class="msk-mat-card-subtitle">{{ t('owners') }}</div>
     <div class="msk-list -mx-4">
       @for (person of data.item()?.persons; track person.id) {
-      <div class="msk-list-item cursor-pointer" matRipple>
-        <msk-avatar class="msk-list-item-icon" [name]="person.name"></msk-avatar>
-        <div class="msk-list-item-content">
-          <span>{{ person.name }}</span>
-          <span>#{{ person.code }}</span>
+        <div class="msk-list-item cursor-pointer" matRipple>
+          <msk-avatar class="msk-list-item-icon" [name]="person.name"></msk-avatar>
+          <div class="msk-list-item-content">
+            <span>{{ person.name }}</span>
+            <span>#{{ person.code }}</span>
+          </div>
+          <div class="msk-list-item-icon">
+            <mat-icon>open_in_new</mat-icon>
+          </div>
         </div>
-        <div class="msk-list-item-icon">
-          <mat-icon>open_in_new</mat-icon>
-        </div>
-      </div>
       }
     </div>
   </div>
@@ -76,116 +76,116 @@
     <div class="msk-list -mx-4">
       <!-- TypeName -->
       @if (data.item()?.accountTypeName) {
-      <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">credit_card_gear</mat-icon>
-        <div class="msk-list-item-content">
-          <span>{{ data.item()?.accountTypeName }}</span>
-          <span>{{ t('accountType') }}</span>
+        <div class="msk-list-item">
+          <mat-icon class="msk-list-item-icon">credit_card_gear</mat-icon>
+          <div class="msk-list-item-content">
+            <span>{{ data.item()?.accountTypeName }}</span>
+            <span>{{ t('accountType') }}</span>
+          </div>
         </div>
-      </div>
       }
       <!-- CreateDate -->
       @if (data.item()?.createDate) {
-      <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">calendar_add_on</mat-icon>
-        <div class="msk-list-item-content">
-          <span>{{ (data.item()?.createDate | mskDateTime : 'longDate') || '-' }}</span>
-          <span>{{ t('createDate') }}</span>
+        <div class="msk-list-item">
+          <mat-icon class="msk-list-item-icon">calendar_add_on</mat-icon>
+          <div class="msk-list-item-content">
+            <span>{{ (data.item()?.createDate | mskDateTime: 'longDate') || '-' }}</span>
+            <span>{{ t('createDate') }}</span>
+          </div>
         </div>
-      </div>
       }
       <!-- CloseDate -->
       @if (data.item()?.closeDate) {
-      <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">event_busy</mat-icon>
-        <div class="msk-list-item-content">
-          <span>{{ (data.item()?.closeDate | mskDateTime : 'longDate') || '-' }}</span>
-          <span>{{ t('closeDate') }}</span>
+        <div class="msk-list-item">
+          <mat-icon class="msk-list-item-icon">event_busy</mat-icon>
+          <div class="msk-list-item-content">
+            <span>{{ (data.item()?.closeDate | mskDateTime: 'longDate') || '-' }}</span>
+            <span>{{ t('closeDate') }}</span>
+          </div>
         </div>
-      </div>
       }
     </div>
   </div>
   @if (data.item()?.note) {
-  <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
-    <div class="msk-list -mx-4">
-      <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
-        <div class="msk-list-item-content">
-          <span>{{ data.item()?.note }}</span>
+    <div class="msk-mat-card-filled mb-2 p-4">
+      <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
+      <div class="msk-list -mx-4">
+        <div class="msk-list-item">
+          <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+          <div class="msk-list-item-content">
+            <span>{{ data.item()?.note }}</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   }
   <!-- Settings -->
   @if (data.item()?.isActive) {
-  <div class="my-4 border-t"></div>
-  <div class="mb-2" *transloco="let t">
-    <div class="text-secondary text-title-small">{{ t('settings') }}</div>
-    <div class="msk-list -mx-6">
-      <div class="msk-list-item cursor-pointer" matRipple (click)="updateStatus()" aria-hidden="true">
-        <div class="msk-list-item-icon">
-          <mat-icon class="text-error"> cancel </mat-icon>
-        </div>
-        <div class="msk-list-item-content text-error">
-          {{ t('accounts.deactivate') }}
+    <div class="my-4 border-t"></div>
+    <div class="mb-2" *transloco="let t">
+      <div class="text-secondary text-title-small">{{ t('settings') }}</div>
+      <div class="msk-list -mx-6">
+        <div class="msk-list-item cursor-pointer" matRipple (click)="updateStatus()" aria-hidden="true">
+          <div class="msk-list-item-icon">
+            <mat-icon class="text-error"> cancel </mat-icon>
+          </div>
+          <div class="msk-list-item-content text-error">
+            {{ t('accounts.deactivate') }}
+          </div>
         </div>
       </div>
     </div>
-  </div>
   }
 </ng-template>
 
 <ng-template #formTemplate let-t="t">
   <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
     <!-- Info alert for edit -->
-    @if (data.action() === "edit") {
-    <msk-alert class="mb-4" appearance="outline" type="info" dismissible *transloco="let t; read: 'accounts'">
-      <span mskAlertTitle>{{ t('info-edit-title') }}</span>
-      {{ t('info-edit-description') }}
-    </msk-alert>
+    @if (data.action() === 'edit') {
+      <msk-alert class="mb-4" appearance="outline" type="info" dismissible *transloco="let t; read: 'accounts'">
+        <span mskAlertTitle>{{ t('info-edit-title') }}</span>
+        {{ t('info-edit-description') }}
+      </msk-alert>
     }
 
     <!-- Alert -->
-    @if(alert().show) {
-    <msk-alert class="mb-4" appearance="outline" type="error" @shake>
-      {{ alert().message }}
-    </msk-alert>
+    @if (alert().show) {
+      <msk-alert class="mb-4" appearance="outline" type="error" @shake>
+        {{ alert().message }}
+      </msk-alert>
     }
 
     <!-- AccountType and CreateDate -->
-    @if (data.action() === "new") {
-    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
-      <!-- AccountType -->
-      <mat-form-field>
-        <mat-label>{{ t('accountType') }}</mat-label>
-        @let accountTypeList = accountTypeList$ | async;
-        <mat-select
-          formControlName="accountTypeId"
-          mskSelectSearch
-          [searchList]="accountTypeList"
-          [searchItems]="'name'"
-          [searchPlaceholder]="'search' | transloco"
-          #searchAccountTypes="mskSelectSearch"
-        >
-          @for (item of searchAccountTypes.filteredList | async; track item) {
-          <mat-option [value]="item.id">{{ item.name }}</mat-option>
-          }
-        </mat-select>
-        <mat-error>{{ formErrors['accountTypeId'] }}</mat-error>
-      </mat-form-field>
+    @if (data.action() === 'new') {
+      <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+        <!-- AccountType -->
+        <mat-form-field>
+          <mat-label>{{ t('accountType') }}</mat-label>
+          @let accountTypeList = accountTypeList$ | async;
+          <mat-select
+            formControlName="accountTypeId"
+            mskSelectSearch
+            [searchList]="accountTypeList"
+            [searchItems]="'name'"
+            [searchPlaceholder]="'search' | transloco"
+            #searchAccountTypes="mskSelectSearch"
+          >
+            @for (item of searchAccountTypes.filteredList | async; track item) {
+              <mat-option [value]="item.id">{{ item.name }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>{{ formErrors['accountTypeId'] }}</mat-error>
+        </mat-form-field>
 
-      <!-- CreateDate -->
-      <mat-form-field>
-        <mat-label>{{ t('createDate') }}</mat-label>
-        <input matInput formControlName="createDate" [matDatepicker]="picker" />
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error>{{ formErrors['createDate'] }}</mat-error>
-      </mat-form-field>
-    </div>
+        <!-- CreateDate -->
+        <mat-form-field>
+          <mat-label>{{ t('createDate') }}</mat-label>
+          <input matInput formControlName="createDate" [matDatepicker]="picker" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>{{ formErrors['createDate'] }}</mat-error>
+        </mat-form-field>
+      </div>
     }
 
     <!-- Owners -->
@@ -203,20 +203,20 @@
       >
         <mat-select-trigger>{{ personIdTitles(personList) }}</mat-select-trigger>
         @for (item of searchPersons.filteredList | async; track item) {
-        <mat-option [value]="item.id">{{ item.name }}</mat-option>
+          <mat-option [value]="item.id">{{ item.name }}</mat-option>
         }
       </mat-select>
       <mat-error>{{ formErrors['personId'] }}</mat-error>
     </mat-form-field>
 
     <!-- InitCredit -->
-    @if (data.action() === "new") {
-    <mat-form-field>
-      <mat-label>{{ t('initCredit') }}</mat-label>
-      <input matInput formControlName="initCredit" mskMask="currency" autocomplete="off" />
-      <span matTextSuffix mskCurrencySymbol></span>
-      <mat-error>{{ formErrors['initCredit'] }}</mat-error>
-    </mat-form-field>
+    @if (data.action() === 'new') {
+      <mat-form-field>
+        <mat-label>{{ t('initCredit') }}</mat-label>
+        <input matInput formControlName="initCredit" mskMask="currency" autocomplete="off" />
+        <span matTextSuffix mskCurrencySymbol></span>
+        <mat-error>{{ formErrors['initCredit'] }}</mat-error>
+      </mat-form-field>
     }
 
     <!-- Note -->

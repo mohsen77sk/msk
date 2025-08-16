@@ -10,7 +10,7 @@ const zoomIn = trigger('zoomIn', [
     style({
       opacity: 0,
       transform: 'scale(0.5)',
-    })
+    }),
   ),
 
   state(
@@ -18,7 +18,7 @@ const zoomIn = trigger('zoomIn', [
     style({
       opacity: 1,
       transform: 'scale(1)',
-    })
+    }),
   ),
 
   // Prevent the transition if the state is false
@@ -41,7 +41,7 @@ const zoomOut = trigger('zoomOut', [
     style({
       opacity: 1,
       transform: 'scale(1)',
-    })
+    }),
   ),
 
   state(
@@ -49,7 +49,7 @@ const zoomOut = trigger('zoomOut', [
     style({
       opacity: 0,
       transform: 'scale(0.5)',
-    })
+    }),
   ),
 
   // Prevent the transition if the state is false

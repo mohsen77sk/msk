@@ -16,7 +16,7 @@ export class MskSplashScreenService {
       .pipe(
         filter((event) => event instanceof NavigationEnd),
         map(() => this.hide()),
-        take(1)
+        take(1),
       )
       .subscribe();
   }

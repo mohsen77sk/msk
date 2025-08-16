@@ -149,7 +149,7 @@ export class PeopleCardDetailsComponent implements OnInit {
             this._mskSnackbarService.error(response.error.message);
             // Return
             return EMPTY;
-          })
+          }),
         )
         .subscribe();
     });
@@ -192,7 +192,7 @@ export class PeopleCardDetailsComponent implements OnInit {
           }
           // Return
           return EMPTY;
-        })
+        }),
       )
       .subscribe();
   }

@@ -2,9 +2,9 @@
 <button matIconButton [matMenuTriggerFor]="userActions">
   <span class="relative h-7 w-7">
     @if (showAvatar && user.avatar) {
-    <img class="relative h-full w-full rounded-full" [src]="user.avatar" alt="user-image" />
+      <img class="relative h-full w-full rounded-full" [src]="user.avatar" alt="user-image" />
     } @else {
-    <mat-icon svgIcon="heroicons_outline:user-circle"> </mat-icon>
+      <mat-icon svgIcon="heroicons_outline:user-circle"> </mat-icon>
     }
   </span>
 </button>
@@ -27,7 +27,7 @@
     <div class="my-2">
       <span class="text-title-medium">{{ user.name }}</span>
     </div>
-    <div class="pb-6 pt-2" *transloco="let t">
+    <div class="pt-2 pb-6" *transloco="let t">
       <button matButton="outlined">
         <span>{{ t('layout.settings') }}</span>
       </button>
@@ -38,13 +38,17 @@
           <mat-icon class="mat-icon-rtl-mirror">dark_mode</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.themes') }}</span>
         </div>
-        @switch (layoutScheme) { @case ('auto') {
-        <span class="text-label-medium font-light">{{ t('layout.default') }}</span>
-        } @case ('dark') {
-        <span class="text-label-medium font-light">{{ t('layout.dark') }}</span>
-        } @case ('light') {
-        <span class="text-label-medium font-light">{{ t('layout.light') }}</span>
-        } }
+        @switch (layoutScheme) {
+          @case ('auto') {
+            <span class="text-label-medium font-light">{{ t('layout.default') }}</span>
+          }
+          @case ('dark') {
+            <span class="text-label-medium font-light">{{ t('layout.dark') }}</span>
+          }
+          @case ('light') {
+            <span class="text-label-medium font-light">{{ t('layout.light') }}</span>
+          }
+        }
       </div>
       <div class="mz-user-panel-profile-item" (click)="openLayoutLanguageDialog()" aria-hidden="true">
         <div>

@@ -9,14 +9,14 @@ const slideInTop = trigger('slideInTop', [
     'void',
     style({
       transform: 'translate3d(0, -100%, 0)',
-    })
+    }),
   ),
 
   state(
     '*',
     style({
       transform: 'translate3d(0, 0, 0)',
-    })
+    }),
   ),
 
   // Prevent the transition if the state is false
@@ -38,14 +38,14 @@ const slideInBottom = trigger('slideInBottom', [
     'void',
     style({
       transform: 'translate3d(0, 100%, 0)',
-    })
+    }),
   ),
 
   state(
     '*',
     style({
       transform: 'translate3d(0, 0, 0)',
-    })
+    }),
   ),
 
   // Prevent the transition if the state is false
@@ -67,14 +67,14 @@ const slideInLeft = trigger('slideInLeft', [
     'void',
     style({
       transform: 'translate3d(-100%, 0, 0)',
-    })
+    }),
   ),
 
   state(
     '*',
     style({
       transform: 'translate3d(0, 0, 0)',
-    })
+    }),
   ),
 
   // Prevent the transition if the state is false
@@ -96,14 +96,14 @@ const slideInRight = trigger('slideInRight', [
     'void',
     style({
       transform: 'translate3d(100%, 0, 0)',
-    })
+    }),
   ),
 
   state(
     '*',
     style({
       transform: 'translate3d(0, 0, 0)',
-    })
+    }),
   ),
 
   // Prevent the transition if the state is false
@@ -125,14 +125,14 @@ const slideOutTop = trigger('slideOutTop', [
     '*',
     style({
       transform: 'translate3d(0, 0, 0)',
-    })
+    }),
   ),
 
   state(
     'void',
     style({
       transform: 'translate3d(0, -100%, 0)',
-    })
+    }),
   ),
 
   // Prevent the transition if the state is false
@@ -154,14 +154,14 @@ const slideOutBottom = trigger('slideOutBottom', [
     '*',
     style({
       transform: 'translate3d(0, 0, 0)',
-    })
+    }),
   ),
 
   state(
     'void',
     style({
       transform: 'translate3d(0, 100%, 0)',
-    })
+    }),
   ),
 
   // Prevent the transition if the state is false
@@ -183,14 +183,14 @@ const slideOutLeft = trigger('slideOutLeft', [
     '*',
     style({
       transform: 'translate3d(0, 0, 0)',
-    })
+    }),
   ),
 
   state(
     'void',
     style({
       transform: 'translate3d(-100%, 0, 0)',
-    })
+    }),
   ),
 
   // Prevent the transition if the state is false
@@ -212,14 +212,14 @@ const slideOutRight = trigger('slideOutRight', [
     '*',
     style({
       transform: 'translate3d(0, 0, 0)',
-    })
+    }),
   ),
 
   state(
     'void',
     style({
       transform: 'translate3d(100%, 0, 0)',
-    })
+    }),
   ),
 
   // Prevent the transition if the state is false

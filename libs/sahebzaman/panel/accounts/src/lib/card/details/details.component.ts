@@ -156,7 +156,7 @@ export class AccountsCardDetailsComponent implements OnInit {
         isActive ? 'accounts.deactivate-message' : 'accounts.activate-message',
         {
           name: this.data.item()?.fullName,
-        }
+        },
       ),
       actions: {
         confirm: { label: this._translocoService.translate(isActive ? 'close' : 'open') },
@@ -186,7 +186,7 @@ export class AccountsCardDetailsComponent implements OnInit {
             this._mskSnackbarService.error(response.error.message);
             // Return
             return EMPTY;
-          })
+          }),
         )
         .subscribe();
     });
@@ -234,7 +234,7 @@ export class AccountsCardDetailsComponent implements OnInit {
                 this.isLoadingBalance.set(false);
                 // Return
                 return EMPTY;
-              })
+              }),
             )
             .subscribe();
         }
@@ -282,7 +282,7 @@ export class AccountsCardDetailsComponent implements OnInit {
           }
           // Return
           return EMPTY;
-        })
+        }),
       )
       .subscribe();
   }

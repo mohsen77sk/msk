@@ -91,7 +91,7 @@ export class MskSelectSearchDirective {
           } else {
             return true;
           }
-        })
+        }),
       );
       // Active first item
       setTimeout(() => this._matSelect._keyManager.setFirstItemActive(), 0);

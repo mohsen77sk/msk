@@ -133,7 +133,7 @@ export class MskNavigationService {
   getItemParent(
     id: string,
     navigation: MskNavigationItem[],
-    parent: MskNavigationItem[] | MskNavigationItem
+    parent: MskNavigationItem[] | MskNavigationItem,
   ): MskNavigationItem[] | MskNavigationItem | null {
     for (const item of navigation) {
       if (item.id === id) {

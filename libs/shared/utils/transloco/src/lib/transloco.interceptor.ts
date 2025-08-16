@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
  */
 export const translocoInterceptor = (
   req: HttpRequest<unknown>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> => {
   const translocoService = inject(TranslocoService);
 

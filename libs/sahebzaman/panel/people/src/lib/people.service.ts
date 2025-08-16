@@ -44,7 +44,7 @@ export class PeopleService {
       page: 1,
       pageSize: 10,
       sortBy: `${DefaultPeopleSortId} ${DefaultPeopleSortDirection}`,
-    }
+    },
   ): Observable<MskPageData<Person>> {
     return this._httpClient
       .get<MskPagingResponse<Person>>(`${this._appConfig.apiEndpoint}/api/person/all`, { params })
@@ -55,7 +55,7 @@ export class PeopleService {
             items: response.items.map((item) => new Person(item)),
           });
         }),
-        tap((response) => this._persons.next(response))
+        tap((response) => this._persons.next(response)),
       );
   }
 
@@ -105,7 +105,7 @@ export class PeopleService {
           this._persons.value.items[index] = newPerson;
           this._persons.next(this._persons.value);
         }
-      })
+      }),
     );
   }
 
@@ -124,7 +124,7 @@ export class PeopleService {
           this._persons.value.items[index] = newPerson;
           this._persons.next(this._persons.value);
         }
-      })
+      }),
     );
   }
 }

@@ -24,7 +24,10 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
   private readonly _dataStream = new BehaviorSubject<T[]>(this._cachedData);
   private readonly _subscription = new Subscription();
 
-  constructor(private fetchPage: FetchPageFn<T>, public search?: Observable<unknown>) {
+  constructor(
+    private fetchPage: FetchPageFn<T>,
+    public search?: Observable<unknown>,
+  ) {
     super();
   }
 
@@ -42,9 +45,9 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
             return pagesToFetch;
           }),
           mergeMap((pages) => pages.map((page) => this._fetchPage(page))),
-          mergeMap((requests) => requests)
+          mergeMap((requests) => requests),
         )
-        .subscribe()
+        .subscribe(),
     );
     this._subscription.add(
       this.search
@@ -57,9 +60,9 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
             this._cachedData = Array.from<T>({ length: this._total });
             this._dataStream.next(this._cachedData);
           }),
-          switchMap(() => this._fetchPage(0))
+          switchMap(() => this._fetchPage(0)),
         )
-        .subscribe()
+        .subscribe(),
     );
     return this._dataStream;
   }
@@ -86,7 +89,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
         }
         this._cachedData.splice(pageIndex * this._pageSize, this._pageSize, ...(pageData.items as T[]));
         return this._dataStream.next(this._cachedData);
-      })
+      }),
     );
   }
 }

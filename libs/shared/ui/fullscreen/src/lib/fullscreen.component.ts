@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, TemplateRef, ViewEncapsulation, inject, input, DOCUMENT } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  TemplateRef,
+  ViewEncapsulation,
+  inject,
+  input,
+  DOCUMENT,
+} from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';

@@ -33,7 +33,7 @@ export class UserService {
       map((res) => new User(res.data)),
       tap((user) => {
         this._user.next(user);
-      })
+      }),
     );
   }
 }

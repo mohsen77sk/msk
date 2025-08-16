@@ -31,7 +31,7 @@ export class MskPaginatorIntl extends MatPaginatorIntl {
   override getRangeLabel: (page: number, pageSize: number, length: number) => string = (
     page: number,
     pageSize: number,
-    length: number
+    length: number,
   ) => {
     if (length == 0 || pageSize == 0) {
       return this._translocoService.translate('paginator.range-page-label-1', {

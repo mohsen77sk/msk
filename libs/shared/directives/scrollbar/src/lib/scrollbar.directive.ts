@@ -143,7 +143,7 @@ export class MskScrollbarDirective implements OnInit, OnDestroy {
       this._elementRef.nativeElement[prefix + 'Left'],
       this._elementRef.nativeElement[prefix + 'Top'],
       this._elementRef.nativeElement[prefix + 'Width'],
-      this._elementRef.nativeElement[prefix + 'Height']
+      this._elementRef.nativeElement[prefix + 'Height'],
     );
   }
 
@@ -160,7 +160,7 @@ export class MskScrollbarDirective implements OnInit, OnDestroy {
     } else {
       scrollbarPosition = new ScrollbarPosition(
         this._elementRef.nativeElement.scrollLeft,
-        this._elementRef.nativeElement.scrollTop
+        this._elementRef.nativeElement.scrollTop,
       );
     }
 

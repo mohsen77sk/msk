@@ -2,50 +2,50 @@
 <div class="msk-vertical-navigation-item-wrapper" [ngClass]="item().classes?.wrapper!">
   <!-- Item with an internal link -->
   @if (item().link && !item().externalLink && !item().disabled) {
-  <a
-    class="msk-vertical-navigation-item"
-    [ngClass]="{ 'msk-vertical-navigation-item-active-forced': item().active }"
-    [routerLink]="[item().link]"
-    [fragment]="item().fragment ?? undefined"
-    [preserveFragment]="item().preserveFragment ?? false"
-    [queryParams]="item().queryParams ?? null"
-    [queryParamsHandling]="item().queryParamsHandling ?? null"
-    [routerLinkActive]="'msk-vertical-navigation-item-active'"
-    [routerLinkActiveOptions]="isActiveMatchOptions"
-    [matTooltip]="item().tooltip || ''"
-  >
-    <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
-  </a>
+    <a
+      class="msk-vertical-navigation-item"
+      [ngClass]="{ 'msk-vertical-navigation-item-active-forced': item().active }"
+      [routerLink]="[item().link]"
+      [fragment]="item().fragment ?? undefined"
+      [preserveFragment]="item().preserveFragment ?? false"
+      [queryParams]="item().queryParams ?? null"
+      [queryParamsHandling]="item().queryParamsHandling ?? null"
+      [routerLinkActive]="'msk-vertical-navigation-item-active'"
+      [routerLinkActiveOptions]="isActiveMatchOptions"
+      [matTooltip]="item().tooltip || ''"
+    >
+      <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
+    </a>
   }
 
   <!-- Item with an external link -->
   @if (item().link && item().externalLink && !item().disabled) {
-  <a
-    class="msk-vertical-navigation-item"
-    [href]="item().link"
-    [target]="item().target || '_self'"
-    [matTooltip]="item().tooltip || ''"
-  >
-    <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
-  </a>
+    <a
+      class="msk-vertical-navigation-item"
+      [href]="item().link"
+      [target]="item().target || '_self'"
+      [matTooltip]="item().tooltip || ''"
+    >
+      <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
+    </a>
   }
 
   <!-- Item with a no link -->
   @if (!item().link && !item().disabled) {
-  <div
-    class="msk-vertical-navigation-item"
-    [ngClass]="{ 'msk-vertical-navigation-item-active-forced': item().active }"
-    [matTooltip]="item().tooltip || ''"
-  >
-    <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
-  </div>
+    <div
+      class="msk-vertical-navigation-item"
+      [ngClass]="{ 'msk-vertical-navigation-item-active-forced': item().active }"
+      [matTooltip]="item().tooltip || ''"
+    >
+      <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
+    </div>
   }
 
   <!-- Item is disabled -->
   @if (item().disabled) {
-  <div class="msk-vertical-navigation-item msk-vertical-navigation-item-disabled" [matTooltip]="item().tooltip || ''">
-    <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
-  </div>
+    <div class="msk-vertical-navigation-item msk-vertical-navigation-item-disabled" [matTooltip]="item().tooltip || ''">
+      <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
+    </div>
   }
 </div>
 
@@ -53,7 +53,7 @@
 <ng-template #itemTemplate>
   <!-- Icon -->
   @if (item().icon) {
-  <mat-icon class="msk-vertical-navigation-item-icon" [ngClass]="item().classes?.icon!">{{ item().icon }}</mat-icon>
+    <mat-icon class="msk-vertical-navigation-item-icon" [ngClass]="item().classes?.icon!">{{ item().icon }}</mat-icon>
   }
 
   <!-- Title -->
@@ -67,10 +67,10 @@
 
   <!-- Badge -->
   @if (item().badge) {
-  <div class="msk-vertical-navigation-item-badge">
-    <div class="msk-vertical-navigation-item-badge-content" [ngClass]="item().badge?.classes!">
-      {{ item().badge?.title }}
+    <div class="msk-vertical-navigation-item-badge">
+      <div class="msk-vertical-navigation-item-badge-content" [ngClass]="item().badge?.classes!">
+        {{ item().badge?.title }}
+      </div>
     </div>
-  </div>
   }
 </ng-template>

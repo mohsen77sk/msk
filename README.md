@@ -57,6 +57,7 @@ npx nx serve onco          # http://localhost:5400
 ```
 
 Notes:
+
 - Default configuration is "development" (with source maps and no optimization).
 - Use `--configuration=production` to serve a production build via the static file server target (see below) or build first and serve statically.
 
@@ -158,7 +159,6 @@ npx nx affected --target=build --base=master
 ```
 
 ---
-
 
 ## License
 

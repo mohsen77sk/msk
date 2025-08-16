@@ -251,7 +251,11 @@ msk-vertical-navigation {
         .msk-vertical-navigation-item-icon {
           margin-inline-end: 16px;
           color: var(--mat-sys-on-surface-variant);
-          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
           transition: font-variation-settings 0.2s cubic-bezier(0.2, 0, 0, 1);
         }
 
@@ -302,7 +306,11 @@ msk-vertical-navigation {
 
             .msk-vertical-navigation-item-icon {
               color: var(--mat-sys-on-secondary-container);
-              font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+              font-variation-settings:
+                'FILL' 1,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
             }
 
             .msk-vertical-navigation-item-title {
@@ -361,7 +369,9 @@ msk-vertical-navigation {
           height: 20px;
           line-height: 20px;
           margin-inline-start: auto;
-          transition: transform 300ms cubic-bezier(0.25, 0.8, 0.25, 1), color 375ms cubic-bezier(0.25, 0.8, 0.25, 1);
+          transition:
+            transform 300ms cubic-bezier(0.25, 0.8, 0.25, 1),
+            color 375ms cubic-bezier(0.25, 0.8, 0.25, 1);
         }
       }
     }

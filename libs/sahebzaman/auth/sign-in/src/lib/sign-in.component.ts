@@ -142,7 +142,7 @@ export class SignInComponent implements OnInit {
 
           // Throw error
           throw response;
-        })
+        }),
       )
       .subscribe();
   }

@@ -20,7 +20,7 @@ export class CustomersService {
 
   // Private
   private _customers: BehaviorSubject<MskPageData<Customer>> = new BehaviorSubject<MskPageData<Customer>>(
-    EmptyPageData
+    EmptyPageData,
   );
 
   // -----------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ export class CustomersService {
       page: 1,
       pageSize: 10,
       sortBy: `${DefaultCustomersSortId} ${DefaultCustomersSortDirection}`,
-    }
+    },
   ): Observable<MskPageData<Customer>> {
     return this._httpClient
       .get<MskPagingResponse<Customer>>(`${this._appConfig.apiEndpoint}/customer`, {
@@ -61,7 +61,7 @@ export class CustomersService {
             items: response.items.map((item) => new Customer(item)),
           });
         }),
-        tap((response) => this._customers.next(response))
+        tap((response) => this._customers.next(response)),
       );
   }
 
@@ -84,7 +84,7 @@ export class CustomersService {
             ...response,
             items: response.items.map((item) => new Customer(item)),
           });
-        })
+        }),
       );
   }
 
@@ -125,7 +125,7 @@ export class CustomersService {
           this._customers.value.items[index] = newCustomer;
           this._customers.next(this._customers.value);
         }
-      })
+      }),
     );
   }
 
@@ -146,7 +146,7 @@ export class CustomersService {
             this._customers.next(this._customers.value);
           }
         }
-      })
+      }),
     );
   }
 }

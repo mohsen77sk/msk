@@ -39,48 +39,48 @@
     <div class="msk-list -mx-4">
       <!-- Gender -->
       @if (data.item()?.gender) {
-      <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">male</mat-icon>
-        <div class="msk-list-item-content">
-          <span *transloco="let t; read: 'vendors.genders'">{{ t(data.item()?.gender ?? '') }}</span>
-          <span>{{ t('gender') }}</span>
+        <div class="msk-list-item">
+          <mat-icon class="msk-list-item-icon">male</mat-icon>
+          <div class="msk-list-item-content">
+            <span *transloco="let t; read: 'vendors.genders'">{{ t(data.item()?.gender ?? '') }}</span>
+            <span>{{ t('gender') }}</span>
+          </div>
         </div>
-      </div>
       }
       <!-- Contact Number -->
       @if (data.item()?.contactNumber) {
-      <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">call</mat-icon>
-        <div class="msk-list-item-content">
-          <span>{{ data.item()?.contactNumber || '-' }}</span>
-          <span>{{ t('contactNumber') }}</span>
+        <div class="msk-list-item">
+          <mat-icon class="msk-list-item-icon">call</mat-icon>
+          <div class="msk-list-item-content">
+            <span>{{ data.item()?.contactNumber || '-' }}</span>
+            <span>{{ t('contactNumber') }}</span>
+          </div>
         </div>
-      </div>
       }
       <!-- Address -->
       @if (data.item()?.address) {
-      <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">location_on</mat-icon>
-        <div class="msk-list-item-content">
-          <span>{{ data.item()?.address || '-' }}</span>
-          <span>{{ t('address') }}</span>
+        <div class="msk-list-item">
+          <mat-icon class="msk-list-item-icon">location_on</mat-icon>
+          <div class="msk-list-item-content">
+            <span>{{ data.item()?.address || '-' }}</span>
+            <span>{{ t('address') }}</span>
+          </div>
         </div>
-      </div>
       }
     </div>
   </div>
   @if (data.item()?.note) {
-  <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
-    <div class="msk-list -mx-4">
-      <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
-        <div class="msk-list-item-content">
-          <span>{{ data.item()?.note }}</span>
+    <div class="msk-mat-card-filled mb-2 p-4">
+      <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
+      <div class="msk-list -mx-4">
+        <div class="msk-list-item">
+          <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+          <div class="msk-list-item-content">
+            <span>{{ data.item()?.note }}</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   }
   <div class="my-4 border-t"></div>
   <div class="mb-2" *transloco="let t">
@@ -101,10 +101,10 @@
 <ng-template #formTemplate let-t="t">
   <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
     <!-- Alert -->
-    @if(alert().show) {
-    <msk-alert class="mb-4" appearance="outline" type="error" @shake>
-      {{ alert().message }}
-    </msk-alert>
+    @if (alert().show) {
+      <msk-alert class="mb-4" appearance="outline" type="error" @shake>
+        {{ alert().message }}
+      </msk-alert>
     }
 
     <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
@@ -120,7 +120,7 @@
         <mat-label>{{ t('gender') }}</mat-label>
         <mat-select formControlName="gender" *transloco="let t">
           @for (item of genderKeys; track item) {
-          <mat-option [value]="item">{{ t('vendors.genders.' + item) }}</mat-option>
+            <mat-option [value]="item">{{ t('vendors.genders.' + item) }}</mat-option>
           }
         </mat-select>
         <mat-error>{{ formErrors['gender'] }}</mat-error>

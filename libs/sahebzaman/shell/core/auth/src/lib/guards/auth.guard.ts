@@ -22,6 +22,6 @@ export const AuthGuard: CanActivateFn | CanActivateChildFn = (route, state) => {
 
         // Allow the access
         return of(true);
-      })
+      }),
     );
 };

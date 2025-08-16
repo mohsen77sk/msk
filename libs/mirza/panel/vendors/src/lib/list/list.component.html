@@ -15,28 +15,28 @@
     <div class="content-grid" cdkScrollable>
       <!-- Rows -->
       @for (vendor of (vendors$ | async)?.items; track vendor.id) {
-      <div class="content-grid-item tow-line" [routerLink]="['card', 'view', vendor.id]" matRipple>
-        <!-- Avatar -->
-        <div class="content-grid-item-avatar">
-          <msk-avatar [name]="vendor.name"></msk-avatar>
-        </div>
-        <!-- Content -->
-        <div class="content-grid-item-content">
-          <div class="truncate">{{ vendor.name }}</div>
-          <div class="truncate">
-            <span>{{ vendor.contactNumber }}</span>
+        <div class="content-grid-item tow-line" [routerLink]="['card', 'view', vendor.id]" matRipple>
+          <!-- Avatar -->
+          <div class="content-grid-item-avatar">
+            <msk-avatar [name]="vendor.name"></msk-avatar>
           </div>
+          <!-- Content -->
+          <div class="content-grid-item-content">
+            <div class="truncate">{{ vendor.name }}</div>
+            <div class="truncate">
+              <span>{{ vendor.contactNumber }}</span>
+            </div>
+          </div>
+          <!-- End -->
+          <div class="content-grid-item-end"></div>
         </div>
-        <!-- End -->
-        <div class="content-grid-item-end"></div>
-      </div>
       } @empty {
-      <div
-        class="text-secondary text-title-medium flex flex-1 items-center justify-center p-8 text-center"
-        *transloco="let t"
-      >
-        {{ t('vendors.empty-list') }}
-      </div>
+        <div
+          class="text-secondary text-title-medium flex flex-1 items-center justify-center p-8 text-center"
+          *transloco="let t"
+        >
+          {{ t('vendors.empty-list') }}
+        </div>
       }
     </div>
 

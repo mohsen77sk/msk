@@ -1,7 +1,7 @@
 <!-- Wrapper -->
 <div class="bg-surface-container flex w-full min-w-0 flex-auto flex-col">
   <!-- Header -->
-  <div class="z-49 relative flex h-16 w-full flex-[0_0_auto] items-center justify-between px-4 print:hidden md:px-6">
+  <div class="relative z-49 flex h-16 w-full flex-[0_0_auto] items-center justify-between px-4 md:px-6 print:hidden">
     <div class="relative flex flex-[0_0_auto] items-center gap-4">
       <!-- Navigation toggle button -->
       <div class="flex items-center gap-4" [ngClass]="{ 'md:w-[280px]': mainNavigation.opened() }">
@@ -42,10 +42,10 @@
       <!-- Navigation header hook -->
       <ng-container mskVerticalNavigationHeader>
         @if (isScreenSmall) {
-        <div class="relative flex h-16 w-full flex-[0_0_auto] items-center border-b px-7 py-4">
-          <img class="me-2 w-6" src="assets/images/logo/logo.svg" alt="logo" />
-          <span class="text-title-medium leading-6" *transloco="let t">{{ t('oc-app-name') }}</span>
-        </div>
+          <div class="relative flex h-16 w-full flex-[0_0_auto] items-center border-b px-7 py-4">
+            <img class="me-2 w-6" src="assets/images/logo/logo.svg" alt="logo" />
+            <span class="text-title-medium leading-6" *transloco="let t">{{ t('oc-app-name') }}</span>
+          </div>
         }
       </ng-container>
     </msk-vertical-navigation>

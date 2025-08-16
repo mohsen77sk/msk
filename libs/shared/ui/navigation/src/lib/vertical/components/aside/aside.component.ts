@@ -77,7 +77,7 @@ export class MskVerticalNavigationAsideItemComponent implements OnInit {
     this._router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        takeUntilDestroyed(this._destroyRef)
+        takeUntilDestroyed(this._destroyRef),
       )
       .subscribe((event: NavigationEnd) => {
         // Mark if active

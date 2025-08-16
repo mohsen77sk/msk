@@ -31,7 +31,7 @@ const customerResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnaps
       router.navigateByUrl(parentUrl);
       // Throw an error
       return throwError(() => new Error(error.message));
-    })
+    }),
   );
 };
 

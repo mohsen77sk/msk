@@ -8,31 +8,31 @@
   <ng-container msk-dialog-content>
     <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
       <!-- Alert -->
-      @if(alert().show) {
-      <msk-alert class="mb-4" appearance="outline" type="error" @shake>
-        {{ alert().message }}
-      </msk-alert>
+      @if (alert().show) {
+        <msk-alert class="mb-4" appearance="outline" type="error" @shake>
+          {{ alert().message }}
+        </msk-alert>
       }
 
       <!-- Destination -->
       @if (data.item().transactionType === AccountTransactionTypeEnum.Transfer) {
-      <mat-form-field>
-        <mat-label>{{ t('destination') }}</mat-label>
-        @let accountList = accountList$ | async;
-        <mat-select
-          formControlName="destinationAccountId"
-          mskSelectSearch
-          [searchList]="accountList"
-          [searchItems]="'name'"
-          [searchPlaceholder]="'search' | transloco"
-          #searchAccounts="mskSelectSearch"
-        >
-          @for (item of searchAccounts.filteredList | async; track item) {
-          <mat-option [value]="item.id">{{ item.name }}</mat-option>
-          }
-        </mat-select>
-        <mat-error>{{ formErrors['destinationAccountId'] }}</mat-error>
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ t('destination') }}</mat-label>
+          @let accountList = accountList$ | async;
+          <mat-select
+            formControlName="destinationAccountId"
+            mskSelectSearch
+            [searchList]="accountList"
+            [searchItems]="'name'"
+            [searchPlaceholder]="'search' | transloco"
+            #searchAccounts="mskSelectSearch"
+          >
+            @for (item of searchAccounts.filteredList | async; track item) {
+              <mat-option [value]="item.id">{{ item.name }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>{{ formErrors['destinationAccountId'] }}</mat-error>
+        </mat-form-field>
       }
 
       <!-- Date -->

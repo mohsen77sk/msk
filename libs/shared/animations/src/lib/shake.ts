@@ -58,14 +58,14 @@ const shake = trigger('shake', [
             transform: 'translate3d(0, 0, 0)',
             offset: 1,
           }),
-        ])
+        ]),
       ),
     ],
     {
       params: {
         timings: '0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955)',
       },
-    }
+    },
   ),
 ]);
 

@@ -88,7 +88,7 @@ export class AuthUtils {
     return decodeURIComponent(
       Array.prototype.map
         .call(this._b64decode(str), (c: string) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
+        .join(''),
     );
   }
 
@@ -136,7 +136,7 @@ export class AuthUtils {
 
     if (parts.length !== 3) {
       throw new Error(
-        "The inspected token doesn't appear to be a JWT. Check to make sure it has three parts and see https://jwt.io for more."
+        "The inspected token doesn't appear to be a JWT. Check to make sure it has three parts and see https://jwt.io for more.",
       );
     }
 

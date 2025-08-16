@@ -128,7 +128,7 @@ export class CustomersCardDetailsComponent implements OnInit, AfterViewInit {
           if (this.isShowNameHeader() !== isShowNameHeader) {
             this.isShowNameHeader.set(isShowNameHeader);
           }
-        })
+        }),
       )
       .subscribe();
   }
@@ -173,7 +173,7 @@ export class CustomersCardDetailsComponent implements OnInit, AfterViewInit {
             this._mskSnackbarService.error(response.error.message);
             // Return
             return EMPTY;
-          })
+          }),
         )
         .subscribe();
     });
@@ -216,7 +216,7 @@ export class CustomersCardDetailsComponent implements OnInit, AfterViewInit {
           }
           // Return
           return EMPTY;
-        })
+        }),
       )
       .subscribe();
   }

@@ -22,7 +22,7 @@ export class MskMediaWatcherService {
     this._layoutConfigService.config$
       .pipe(
         map((config) =>
-          fromPairs(Object.entries(config.screens).map(([alias, screen]) => [alias, `(min-width: ${screen})`]))
+          fromPairs(Object.entries(config.screens).map(([alias, screen]) => [alias, `(min-width: ${screen})`])),
         ),
         switchMap((screens) =>
           this._breakpointObserver.observe(Object.values(screens)).pipe(
@@ -49,9 +49,9 @@ export class MskMediaWatcherService {
                 matchingAliases,
                 matchingQueries,
               });
-            })
-          )
-        )
+            }),
+          ),
+        ),
       )
       .subscribe();
   }

@@ -122,7 +122,7 @@ export class DocsAnimationsComponent implements OnInit {
     animation: string,
     firstState: string | boolean,
     secondState: string | boolean,
-    timeout = 500
+    timeout = 500,
   ): void {
     // Split the animation
     const animationPath = animation.split('.');

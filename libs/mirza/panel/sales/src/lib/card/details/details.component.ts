@@ -149,7 +149,7 @@ export class SalesCardDetailsComponent implements OnInit {
     // Set customer collection
     this.customerDS = new MskDataSource<Customer>(
       (page, pageSize, search) => this._customersService.getLookupCustomers(page, pageSize, search),
-      this.form.get('customer')?.valueChanges
+      this.form.get('customer')?.valueChanges,
     );
   }
 
@@ -203,7 +203,7 @@ export class SalesCardDetailsComponent implements OnInit {
         takeUntilDestroyed(this._destroyRef),
         map(([product, quantity]) => {
           group.controls.total.setValue((product?.sellPrice ?? 0) * (quantity ?? 0));
-        })
+        }),
       )
       .subscribe();
 
@@ -211,8 +211,8 @@ export class SalesCardDetailsComponent implements OnInit {
     this.productDSList.push(
       new MskDataSource<Product>(
         (page, pageSize, search) => this._productsService.getLookupProducts(page, pageSize, search),
-        group.controls.product.valueChanges
-      )
+        group.controls.product.valueChanges,
+      ),
     );
   }
 
@@ -276,7 +276,7 @@ export class SalesCardDetailsComponent implements OnInit {
             this._mskSnackbarService.error(response.error.message);
             // Return
             return EMPTY;
-          })
+          }),
         )
         .subscribe();
     });
@@ -333,7 +333,7 @@ export class SalesCardDetailsComponent implements OnInit {
           }
           // Return
           return EMPTY;
-        })
+        }),
       )
       .subscribe();
   }

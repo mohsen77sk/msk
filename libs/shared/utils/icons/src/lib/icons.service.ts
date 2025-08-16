@@ -17,11 +17,11 @@ export class MskIconsService {
     // Register icon sets
     matIconRegistry.addSvgIconSetInNamespace(
       'heroicons_outline',
-      domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/heroicons-outline.svg')
+      domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/heroicons-outline.svg'),
     );
     matIconRegistry.addSvgIconSetInNamespace(
       'heroicons_solid',
-      domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/heroicons-solid.svg')
+      domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/heroicons-solid.svg'),
     );
   }
 }

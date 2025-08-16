@@ -115,7 +115,7 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
     merge(this._sort.sortChange, this.filterValueChange)
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        tap(() => (this._paginator().pageIndex = 0))
+        tap(() => (this._paginator().pageIndex = 0)),
       )
       .subscribe();
 
@@ -123,7 +123,7 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
     merge(this._sort.sortChange, this._paginator().page, this.filterValueChange)
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        switchMap(() => this.getPersons())
+        switchMap(() => this.getPersons()),
       )
       .subscribe();
 
@@ -141,7 +141,7 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
           }
           // Update lastOffsetScroll
           this.lastOffsetScroll = scrollTop;
-        })
+        }),
       )
       .subscribe();
   }
@@ -168,7 +168,7 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
         finalize(() => {
           // Set isLoading to false
           this.isLoading.set(false);
-        })
+        }),
       );
   }
 }

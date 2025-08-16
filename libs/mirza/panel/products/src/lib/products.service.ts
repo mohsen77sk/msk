@@ -44,7 +44,7 @@ export class ProductsService {
       page: 1,
       pageSize: 10,
       sortBy: `${DefaultProductsSortId} ${DefaultProductsSortDirection}`,
-    }
+    },
   ): Observable<MskPageData<Product>> {
     return this._httpClient
       .get<MskPagingResponse<Product>>(`${this._appConfig.apiEndpoint}/product`, {
@@ -57,7 +57,7 @@ export class ProductsService {
             items: response.items.map((item) => new Product(item)),
           });
         }),
-        tap((response) => this._products.next(response))
+        tap((response) => this._products.next(response)),
       );
   }
 
@@ -80,7 +80,7 @@ export class ProductsService {
             ...response,
             items: response.items.map((item) => new Product(item)),
           });
-        })
+        }),
       );
   }
 
@@ -121,7 +121,7 @@ export class ProductsService {
           this._products.value.items[index] = newProduct;
           this._products.next(this._products.value);
         }
-      })
+      }),
     );
   }
 
@@ -142,7 +142,7 @@ export class ProductsService {
             this._products.next(this._products.value);
           }
         }
-      })
+      }),
     );
   }
 }

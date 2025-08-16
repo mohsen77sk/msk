@@ -91,7 +91,7 @@ export const provideShell = (config: LayoutConfig): Array<Provider | Environment
     provideRouter(
       routes,
       withPreloading(PreloadAllModules),
-      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
+      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }),
     ),
 
     // Provide Auth

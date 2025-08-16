@@ -51,6 +51,6 @@ export const authInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn):
       }
 
       return throwError(() => error);
-    })
+    }),
   );
 };

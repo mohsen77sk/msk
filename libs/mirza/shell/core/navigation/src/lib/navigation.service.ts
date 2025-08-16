@@ -33,7 +33,7 @@ export class NavigationService {
     return this._httpClient.get<Navigation>(`assets/api/${lang_id}/navigation.json`).pipe(
       tap((navigation) => {
         this._navigation.next(navigation);
-      })
+      }),
     );
   }
 }

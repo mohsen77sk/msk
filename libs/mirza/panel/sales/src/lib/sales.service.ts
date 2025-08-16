@@ -18,7 +18,7 @@ export class SalesService {
 
   // Private
   private _invoices: BehaviorSubject<MskPageData<SaleInvoice>> = new BehaviorSubject<MskPageData<SaleInvoice>>(
-    EmptyPageData
+    EmptyPageData,
   );
 
   // -----------------------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ export class SalesService {
       page: 1,
       pageSize: 10,
       sortBy: `${DefaultSalesSortId} ${DefaultSalesSortDirection}`,
-    }
+    },
   ): Observable<MskPageData<SaleInvoice>> {
     return this._httpClient
       .get<MskPagingResponse<SaleInvoice>>(`${this._appConfig.apiEndpoint}/sale`, {
@@ -59,7 +59,7 @@ export class SalesService {
             items: response.items.map((item) => new SaleInvoice(item)),
           });
         }),
-        tap((response) => this._invoices.next(response))
+        tap((response) => this._invoices.next(response)),
       );
   }
 
@@ -100,7 +100,7 @@ export class SalesService {
           this._invoices.value.items[index] = newInvoice;
           this._invoices.next(this._invoices.value);
         }
-      })
+      }),
     );
   }
 
@@ -121,7 +121,7 @@ export class SalesService {
             this._invoices.next(this._invoices.value);
           }
         }
-      })
+      }),
     );
   }
 }

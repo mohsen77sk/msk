@@ -89,7 +89,7 @@ export const provideDocsShell = (config: LayoutConfig): Array<Provider | Environ
     provideRouter(
       docsRoutes,
       withPreloading(PreloadAllModules),
-      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
+      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }),
     ),
 
     // Material Date Adapter

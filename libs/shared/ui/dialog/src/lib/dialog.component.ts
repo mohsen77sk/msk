@@ -103,7 +103,7 @@ export class MskDialogComponent implements OnInit, AfterViewInit {
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         map((data) => (data.target as HTMLElement).scrollTop || 0),
-        filter((scrollTop) => this.isScrolled() != scrollTop > 10)
+        filter((scrollTop) => this.isScrolled() != scrollTop > 10),
       )
       .subscribe((scrollTop) => {
         // Set the scrolled state

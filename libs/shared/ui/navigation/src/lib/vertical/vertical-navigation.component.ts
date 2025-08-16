@@ -134,7 +134,7 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
         setTimeout(() => {
           this._enableAnimations();
         }, 500);
-      })
+      }),
     );
 
     this._handleAsideOverlayClick = (): void => {
@@ -247,7 +247,7 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
     this._router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        takeUntilDestroyed(this._destroyRef)
+        takeUntilDestroyed(this._destroyRef),
       )
       .subscribe(() => {
         // If the mode is 'over' and the navigation is opened...
@@ -279,7 +279,7 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
       if (!this._navigationContent().nativeElement.classList.contains('ps')) {
         // Find the active item
         const activeItem = this._navigationContent().nativeElement.querySelector(
-          '.msk-vertical-navigation-item-active'
+          '.msk-vertical-navigation-item-active',
         );
 
         // If the active item exists, scroll it into view

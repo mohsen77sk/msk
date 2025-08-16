@@ -1,13 +1,13 @@
 <!-- Icon -->
 @if (data.icon?.show) {
-<div class="mat-mdc-dialog-icon">
-  <mat-icon>{{ data.icon?.name }}</mat-icon>
-</div>
+  <div class="mat-mdc-dialog-icon">
+    <mat-icon>{{ data.icon?.name }}</mat-icon>
+  </div>
 }
 
 <!-- Title -->
 @if (data.title) {
-<h2 [ngClass]="{ 'text-center': data.icon?.show }" mat-dialog-title>{{ data.title }}</h2>
+  <h2 [ngClass]="{ 'text-center': data.icon?.show }" mat-dialog-title>{{ data.title }}</h2>
 }
 
 <!-- Message -->
@@ -15,19 +15,19 @@
 
 <!-- Actions -->
 @if (data.actions?.confirm?.show || data.actions?.cancel?.show) {
-<mat-dialog-actions>
-  <!-- Cancel -->
-  @if (data.actions?.cancel?.show) {
-  <button matButton matDialogClose="cancelled">
-    {{ data.actions?.cancel?.label }}
-  </button>
-  }
+  <mat-dialog-actions>
+    <!-- Cancel -->
+    @if (data.actions?.cancel?.show) {
+      <button matButton matDialogClose="cancelled">
+        {{ data.actions?.cancel?.label }}
+      </button>
+    }
 
-  <!-- Confirm -->
-  @if (data.actions?.confirm?.show) {
-  <button matButton matDialogClose="confirmed">
-    {{ data.actions?.confirm?.label }}
-  </button>
-  }
-</mat-dialog-actions>
+    <!-- Confirm -->
+    @if (data.actions?.confirm?.show) {
+      <button matButton matDialogClose="confirmed">
+        {{ data.actions?.confirm?.label }}
+      </button>
+    }
+  </mat-dialog-actions>
 }

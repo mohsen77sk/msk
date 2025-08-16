@@ -130,7 +130,7 @@ export class ProductCategoriesCardDetailsComponent implements OnInit {
             this._mskSnackbarService.error(response.error.message);
             // Return
             return EMPTY;
-          })
+          }),
         )
         .subscribe();
     });
@@ -173,7 +173,7 @@ export class ProductCategoriesCardDetailsComponent implements OnInit {
           }
           // Return
           return EMPTY;
-        })
+        }),
       )
       .subscribe();
   }

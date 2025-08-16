@@ -111,7 +111,7 @@ export class ProductCardDetailsComponent implements OnInit {
     // Set category collection
     this.categoryDS = new MskDataSource<ProductCategory>(
       (page, pageSize, search) => this._productCategoriesService.getLookupProductCategories(page, pageSize, search),
-      this.form.get('category')?.valueChanges
+      this.form.get('category')?.valueChanges,
     );
   }
 
@@ -163,7 +163,7 @@ export class ProductCardDetailsComponent implements OnInit {
             this._mskSnackbarService.error(response.error.message);
             // Return
             return EMPTY;
-          })
+          }),
         )
         .subscribe();
     });
@@ -217,7 +217,7 @@ export class ProductCardDetailsComponent implements OnInit {
           }
           // Return
           return EMPTY;
-        })
+        }),
       )
       .subscribe();
   }

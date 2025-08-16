@@ -15,25 +15,25 @@
     <div class="content-grid" cdkScrollable>
       <!-- Rows -->
       @for (invoice of (invoices$ | async)?.items; track invoice.id) {
-      <div class="content-grid-item tow-line" [routerLink]="['card', 'view', invoice.id]" matRipple>
-        <!-- Avatar -->
-        <div class="content-grid-item-avatar">
-          <msk-avatar [name]="invoice.number"></msk-avatar>
+        <div class="content-grid-item tow-line" [routerLink]="['card', 'view', invoice.id]" matRipple>
+          <!-- Avatar -->
+          <div class="content-grid-item-avatar">
+            <msk-avatar [name]="invoice.number"></msk-avatar>
+          </div>
+          <!-- Content -->
+          <div class="content-grid-item-content">
+            <div class="truncate">{{ invoice.number }}</div>
+          </div>
+          <!-- End -->
+          <div class="content-grid-item-end"></div>
         </div>
-        <!-- Content -->
-        <div class="content-grid-item-content">
-          <div class="truncate">{{ invoice.number }}</div>
-        </div>
-        <!-- End -->
-        <div class="content-grid-item-end"></div>
-      </div>
       } @empty {
-      <div
-        class="text-secondary text-title-medium flex flex-1 items-center justify-center p-8 text-center"
-        *transloco="let t"
-      >
-        {{ t('purchases.empty-list') }}
-      </div>
+        <div
+          class="text-secondary text-title-medium flex flex-1 items-center justify-center p-8 text-center"
+          *transloco="let t"
+        >
+          {{ t('purchases.empty-list') }}
+        </div>
       }
     </div>
 

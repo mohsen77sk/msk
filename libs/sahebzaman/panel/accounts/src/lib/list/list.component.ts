@@ -115,7 +115,7 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
     merge(this._sort.sortChange, this.filterValueChange)
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        tap(() => (this._paginator().pageIndex = 0))
+        tap(() => (this._paginator().pageIndex = 0)),
       )
       .subscribe();
 
@@ -123,7 +123,7 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
     merge(this._sort.sortChange, this._paginator().page, this.filterValueChange)
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        switchMap(() => this.getAccounts())
+        switchMap(() => this.getAccounts()),
       )
       .subscribe();
 
@@ -141,7 +141,7 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
           }
           // Update lastOffsetScroll
           this.lastOffsetScroll = scrollTop;
-        })
+        }),
       )
       .subscribe();
   }
@@ -167,7 +167,7 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
         }),
         finalize(() => {
           this.isLoading.set(false);
-        })
+        }),
       );
   }
 }

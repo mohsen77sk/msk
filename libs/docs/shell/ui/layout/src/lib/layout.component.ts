@@ -73,7 +73,7 @@ export class DocsLayoutComponent implements OnInit {
           // Update the layout scheme and layout theme
           this._updateLayoutScheme();
           this._updateLayoutTheme();
-        })
+        }),
       )
       .subscribe();
 
@@ -88,7 +88,7 @@ export class DocsLayoutComponent implements OnInit {
           // Update the direction and layout type
           this._updateLayoutDirection();
           this._updateLayoutType();
-        })
+        }),
       )
       .subscribe();
 
@@ -100,7 +100,7 @@ export class DocsLayoutComponent implements OnInit {
         map(() => {
           // Update the layout type
           this._updateLayoutType();
-        })
+        }),
       )
       .subscribe();
 

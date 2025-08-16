@@ -31,7 +31,7 @@ const productCategoryResolver = (route: ActivatedRouteSnapshot, state: RouterSta
       router.navigateByUrl(parentUrl);
       // Throw an error
       return throwError(() => new Error(error.message));
-    })
+    }),
   );
 };
 

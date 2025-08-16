@@ -1,6 +1,6 @@
 <div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t">
   <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
-    <div class="max-w-80 mx-auto w-full sm:mx-0 sm:w-80">
+    <div class="mx-auto w-full max-w-80 sm:mx-0 sm:w-80">
       <!-- Logo -->
       <div class="w-12">
         <img src="assets/images/logo/logo.svg" alt="logo" />
@@ -21,15 +21,15 @@
 
       <!-- Alert -->
       @if (showAlert()) {
-      <msk-alert
-        class="mt-8"
-        [appearance]="'outline'"
-        [showIcon]="false"
-        [type]="alert().type"
-        [@shake]="alert().type === 'error'"
-      >
-        {{ alert().message }}
-      </msk-alert>
+        <msk-alert
+          class="mt-8"
+          [appearance]="'outline'"
+          [showIcon]="false"
+          [type]="alert().type"
+          [@shake]="alert().type === 'error'"
+        >
+          {{ alert().message }}
+        </msk-alert>
       }
 
       <!-- Sign in form -->

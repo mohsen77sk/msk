@@ -53,7 +53,7 @@ export class MskVerticalNavigationBasicItemComponent implements OnInit {
     // "isActiveMatchOptions" or the equivalent form of
     // item's "exactMatch" option
     this.isActiveMatchOptions =
-      this.item().isActiveMatchOptions ?? this.item().exactMatch
+      (this.item().isActiveMatchOptions ?? this.item().exactMatch)
         ? this._mskUtilsService.exactMatchOptions
         : this._mskUtilsService.subsetMatchOptions;
 

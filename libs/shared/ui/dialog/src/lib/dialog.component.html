@@ -1,49 +1,52 @@
 @if (isLoading()) {
-<div class="h-30 flex items-center justify-center">
-  <mat-spinner mode="indeterminate" diameter="40"></mat-spinner>
-</div>
+  <div class="flex h-30 items-center justify-center">
+    <mat-spinner mode="indeterminate" diameter="40"></mat-spinner>
+  </div>
 } @else {
-<!-- Header -->
-<div
-  class="z-10 flex items-center justify-between"
-  [class.cursor-move]="hasDrag() && !isFullScreen()"
-  [class.shadow-level-2]="isScrolled()"
-  cdkDrag
-  cdkDragHandle
-  cdkDragRootElement=".cdk-overlay-pane"
-  [cdkDragFreeDragPosition]="dragPosition"
-  [cdkDragDisabled]="!hasDrag() || isFullScreen()"
-  mat-dialog-title
->
-  <div class="flex items-center truncate">
-    @if (isFullScreen()) {
-    <ng-container [ngTemplateOutlet]="closeIconButton"></ng-container>
-    }
-    <span [ngClass]="{ 'mt-1': isFullScreen }"> {{ title() }} </span>
+  <!-- Header -->
+  <div
+    class="z-10 flex items-center justify-between"
+    [class.cursor-move]="hasDrag() && !isFullScreen()"
+    [class.shadow-level-2]="isScrolled()"
+    cdkDrag
+    cdkDragHandle
+    cdkDragRootElement=".cdk-overlay-pane"
+    [cdkDragFreeDragPosition]="dragPosition"
+    [cdkDragDisabled]="!hasDrag() || isFullScreen()"
+    mat-dialog-title
+  >
+    <div class="flex items-center truncate">
+      @if (isFullScreen()) {
+        <ng-container [ngTemplateOutlet]="closeIconButton"></ng-container>
+      }
+      <span [ngClass]="{ 'mt-1': isFullScreen }"> {{ title() }} </span>
+    </div>
+    <div class="flex items-center">
+      @if (!hasAction()) {
+        <ng-container [ngTemplateOutlet]="trailing() || null"></ng-container>
+      }
+      @if (!isFullScreen()) {
+        <ng-container [ngTemplateOutlet]="closeIconButton"></ng-container>
+      }
+      @if (hasAction() && isFullScreen()) {
+        <ng-container [ngTemplateOutlet]="primaryAction() || null"></ng-container>
+      }
+    </div>
   </div>
-  <div class="flex items-center">
-    @if(!hasAction()) {
-    <ng-container [ngTemplateOutlet]="trailing() || null"></ng-container>
-    } @if (!isFullScreen()) {
-    <ng-container [ngTemplateOutlet]="closeIconButton"></ng-container>
-    } @if(hasAction() && isFullScreen()) {
-    <ng-container [ngTemplateOutlet]="primaryAction() || null"></ng-container>
-    }
-  </div>
-</div>
 
-<!-- Content -->
-<mat-dialog-content>
-  <ng-content select="[msk-dialog-content]"></ng-content>
-</mat-dialog-content>
+  <!-- Content -->
+  <mat-dialog-content>
+    <ng-content select="[msk-dialog-content]"></ng-content>
+  </mat-dialog-content>
 
-<!-- Actions -->
-@if (hasAction() && !isFullScreen()) {
-<mat-dialog-actions align="end">
-  <ng-container [ngTemplateOutlet]="closeActionButton"></ng-container>
-  <ng-container [ngTemplateOutlet]="primaryAction() || null"></ng-container>
-</mat-dialog-actions>
-} }
+  <!-- Actions -->
+  @if (hasAction() && !isFullScreen()) {
+    <mat-dialog-actions align="end">
+      <ng-container [ngTemplateOutlet]="closeActionButton"></ng-container>
+      <ng-container [ngTemplateOutlet]="primaryAction() || null"></ng-container>
+    </mat-dialog-actions>
+  }
+}
 
 <ng-template #closeIconButton>
   <button matIconButton [ngClass]="{ 'me-1': isFullScreen() }" matDialogClose="cancelled">

@@ -25,7 +25,7 @@ export class MskScrollResetDirective implements OnInit {
     this._router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        takeUntilDestroyed(this._destroyRef)
+        takeUntilDestroyed(this._destroyRef),
       )
       .subscribe(() => {
         // Reset the element's scroll position to the top
