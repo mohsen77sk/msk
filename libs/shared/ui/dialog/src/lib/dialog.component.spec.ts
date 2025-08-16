@@ -14,12 +14,13 @@ describe('MskDialogComponent', () => {
       imports: [MskTranslocoTestingModule(), MatDialogModule, MskDialogComponent],
       providers: [
         provideAnimationsAsync(),
-        { provide: MatDialogRef, useValue: {} },
+        { provide: MatDialogRef, useValue: { addPanelClass: jest.fn(), removePanelClass: jest.fn() } },
         { provide: MSK_LAYOUT_CONFIG, useValue: {} },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MskDialogComponent);
+    fixture.componentRef.setInput('title', 'Test Title');
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
