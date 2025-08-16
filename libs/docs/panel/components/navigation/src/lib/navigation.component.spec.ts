@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { DocNavigationComponent } from './navigation.component';
 
 describe('DocNavigationComponent', () => {
@@ -8,6 +9,7 @@ describe('DocNavigationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DocNavigationComponent],
+      providers: [provideAnimationsAsync()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DocNavigationComponent);
