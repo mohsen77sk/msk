@@ -29,10 +29,10 @@ export const routes: Route[] = [
       layoutType: 'empty',
     },
     children: [
-      // {
-      //   path: 'sign-in',
-      //   loadChildren: () => import('@msk/onco/auth/sign-in').then((r) => r.routes),
-      // },
+      {
+        path: 'sign-in',
+        loadChildren: () => import('@msk/onco/auth/sign-in').then((r) => r.routes),
+      },
     ],
   },
 
@@ -46,10 +46,10 @@ export const routes: Route[] = [
       layoutType: 'empty',
     },
     children: [
-      // {
-      //   path: 'sign-out',
-      //   loadChildren: () => import('@msk/onco/auth/sign-out').then((r) => r.routes),
-      // },
+      {
+        path: 'sign-out',
+        loadChildren: () => import('@msk/onco/auth/sign-out').then((r) => r.routes),
+      },
     ],
   },
 
