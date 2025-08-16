@@ -46,6 +46,19 @@
         │    └── panel (dir)
         │         ├── dashboard (angular:lib)
         │         └── ...
+        ├── onco (dir)
+        │    ├── assets (dir)
+        │    ├── shell (dir)
+        │    │    ├── core (dir)
+        │    │    ├── feature (angular:lib) - for configure any forRoot modules
+        │    │    └── ui (dir)
+        │    │        └── layout (angular:lib)
+        │    ├── auth (dir)
+        │    │    ├── sign-in (angular:lib)
+        │    │    └── sign-out (angular:lib)
+        │    └── panel (dir)
+        │         ├── dashboard (angular:lib)
+        │         └── ...
         ├── sahebzaman (dir)
         │    ├── assets (dir)
         │    ├── shell (dir)
