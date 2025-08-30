@@ -12,7 +12,7 @@
   <!-- Main -->
   <div class="content">
     <!-- List -->
-    <div class="content-grid" cdkScrollable>
+    <div class="content-grid" #gridContent>
       <!-- Rows -->
       @for (productCategory of (productCategories$ | async)?.items; track productCategory.id) {
         <div class="content-grid-item tow-line" [routerLink]="['card', 'view', productCategory.id]" matRipple>
@@ -39,13 +39,7 @@
 
     <!-- Fab -->
     <div class="content-fab-container">
-      <button
-        matFab
-        extended
-        [routerLink]="['card', 'new']"
-        [ngClass]="{ 'mat-mdc-extended-fab-collapses': isFabCollapses() }"
-        @zoomIn
-      >
+      <button matFab extended [routerLink]="['card', 'new']" [mskFabExtendedCollapse]="gridContent" @zoomIn>
         <mat-icon>add</mat-icon>
         <span *transloco="let t">{{ t('new') }}</span>
       </button>

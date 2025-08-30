@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -12,7 +12,6 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -26,7 +25,8 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageData, MskPageSizeOptions, MskPagingRequest } from '@msk/shared/data-access';
-import { EMPTY, Observable, catchError, debounceTime, finalize, map, merge, switchMap, tap } from 'rxjs';
+import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
+import { EMPTY, Observable, catchError, debounceTime, finalize, merge, switchMap, tap } from 'rxjs';
 import { Customer, DefaultCustomersSortDirection, DefaultCustomersSortId } from '../customers.types';
 import { CustomersService } from '../customers.service';
 
@@ -38,12 +38,10 @@ import { CustomersService } from '../customers.service';
   animations: mskAnimations,
   imports: [
     AsyncPipe,
-    NgClass,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
     RouterOutlet,
-    CdkScrollable,
     MatIconModule,
     MatMenuModule,
     MatInputModule,
@@ -54,19 +52,17 @@ import { CustomersService } from '../customers.service';
     MatPaginatorModule,
     TranslocoDirective,
     MskAvatarComponent,
+    MskFabExtendedCollapseDirective,
   ],
 })
 export class CustomersListComponent implements OnInit, AfterViewInit {
   private _destroyRef = inject(DestroyRef);
   private _customersService = inject(CustomersService);
 
-  private _gridContent = viewChild.required(CdkScrollable);
   private _paginator = viewChild.required(MatPaginator);
   private _sort = new MatSort();
 
   isLoading = signal(false);
-  isFabCollapses = signal(false);
-  lastOffsetScroll = 0;
   pageSizeOptions = MskPageSizeOptions;
   customers$!: Observable<MskPageData<Customer>>;
   filterForm: FormGroup = new FormGroup({
@@ -121,24 +117,6 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         switchMap(() => this.getCustomers()),
-      )
-      .subscribe();
-
-    // Get the scrolling
-    this._gridContent()
-      .elementScrolled()
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        map((data) => (data.target as HTMLElement).scrollTop || 0),
-        tap((scrollTop) => {
-          const isFabCollapses = scrollTop > 10 ? this.lastOffsetScroll < scrollTop : false;
-          // If the FAB collapses state has changed...
-          if (this.isFabCollapses() !== isFabCollapses) {
-            this.isFabCollapses.set(isFabCollapses);
-          }
-          // Update lastOffsetScroll
-          this.lastOffsetScroll = scrollTop;
-        }),
       )
       .subscribe();
   }
