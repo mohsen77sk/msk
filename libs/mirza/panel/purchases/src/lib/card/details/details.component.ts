@@ -30,6 +30,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MskDataSource, MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
+import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
@@ -77,6 +78,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatAutocompleteModule,
     TranslocoPipe,
     TranslocoDirective,
+    MskDateTimePipe,
     MskAlertComponent,
     MskDialogComponent,
     MskMaskDirective,
@@ -132,7 +134,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Create the form
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
-      vendor: [null, Validators.required],
+      vendor: null,
       date: [new Date(new Date().setHours(0, 0, 0, 0)), Validators.required],
       purchaseItems: this._formBuilder.array([], Validators.required),
       paymentTypes: this._formBuilder.array([], Validators.required),
@@ -145,7 +147,17 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Handling errors
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
-    this.form.patchValue(this.data.item() || {});
+    if (this.data.item()) {
+      this.data.item()?.paymentTypes.forEach((value, index) => {
+        if (index === 0) return;
+        this.addPaymentType();
+      });
+      this.data.item()?.purchaseItems.forEach((value, index) => {
+        if (index === 0) return;
+        this.addPurchaseItem();
+      });
+      this.form.patchValue(this.data.item() || {});
+    }
     // Set vendor collection
     this.vendorDS = new MskDataSource<Vendor>(
       (page, pageSize, search) => this._vendorsService.getLookupVendors(page, pageSize, search),
@@ -302,7 +314,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
 
     const model: ICreatePurchaseInvoice = {
       id: this.form.get('id')?.value,
-      vendorId: this.form.get('vendor')?.value?.id,
+      vendorId: this.form.get('vendor')?.value?.id ?? 0,
       date: this.form.get('date')?.value,
       paymentTypes: this.form.get('paymentTypes')?.value,
       purchaseItems: this.form.get('purchaseItems')?.value.map((x: any) => ({

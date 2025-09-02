@@ -37,6 +37,14 @@
           <span>{{ t('number') }}</span>
         </div>
       </div>
+      <!-- Date -->
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">event</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ (data.item()?.date | mskDateTime) || '-' }}</span>
+          <span>{{ t('date') }}</span>
+        </div>
+      </div>
     </div>
   </div>
   @if (data.item()?.note) {
@@ -126,7 +134,7 @@
         <div class="flex flex-row gap-2">
           <div class="mb-4 flex flex-1 flex-col gap-2 sm:flex-row sm:gap-x-4 [&>*]:flex-1" [formGroupName]="i">
             <!-- Product -->
-            <mat-form-field subscriptSizing="dynamic" class="sm:max-w-60">
+            <mat-form-field class="sm:max-w-64">
               <mat-label>{{ t('product') }}</mat-label>
               <input type="text" matInput formControlName="product" [matAutocomplete]="autoProduct" />
               @if (product.get('product')?.value) {
@@ -156,12 +164,12 @@
               </mat-autocomplete>
             </mat-form-field>
             <!-- Quantity -->
-            <mat-form-field subscriptSizing="dynamic">
+            <mat-form-field>
               <mat-label>{{ t('quantity') }}</mat-label>
               <input matInput formControlName="quantity" mskMask="decimal" autocomplete="off" />
-              <span matTextSuffix>
-                <small>{{ product.get('total')?.value | number }} <small mskCurrencySymbol></small></small>
-              </span>
+              <mat-hint align="end">
+                {{ product.get('total')?.value | number }} <small mskCurrencySymbol></small>
+              </mat-hint>
             </mat-form-field>
           </div>
           @if (i !== 0) {
@@ -197,7 +205,7 @@
         <div class="flex flex-row gap-2">
           <div class="mb-4 flex flex-1 flex-col gap-2 sm:flex-row sm:gap-x-4 [&>*]:flex-1" [formGroupName]="i">
             <!-- paymentType -->
-            <mat-form-field subscriptSizing="dynamic" class="sm:max-w-60">
+            <mat-form-field subscriptSizing="dynamic" class="sm:max-w-64">
               <mat-label>{{ t('paymentType') }}</mat-label>
               <mat-select formControlName="paymentType">
                 @for (item of paymentTypeList; track item) {
@@ -233,7 +241,7 @@
       </button>
     </div>
 
-    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+    <div class="mt-2 flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
       <!-- Discount -->
       <mat-form-field>
         <mat-label>{{ t('discount') }}</mat-label>

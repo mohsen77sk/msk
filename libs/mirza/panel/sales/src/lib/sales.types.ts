@@ -1,4 +1,5 @@
 import { SortDirection } from '@angular/material/sort';
+import { Customer } from '@msk/mirza/panel/customers';
 import { ProductItem } from '@msk/mirza/panel/products';
 import { PaymentTypeDetail } from '@msk/mirza/shell/core/payment-type';
 import { User } from '@msk/mirza/shell/core/user';
@@ -15,6 +16,7 @@ export class SaleInvoice {
   discount: number;
   total: number;
   user?: User;
+  customer?: Customer;
   note?: string;
 
   constructor(input: SaleInvoice) {
@@ -26,6 +28,7 @@ export class SaleInvoice {
     this.discount = input.discount;
     this.total = input.total;
     this.user = input.user ? new User(input.user) : undefined;
+    this.customer = input.customer ? new Customer(input.customer) : undefined;
     this.note = input.note;
   }
 }

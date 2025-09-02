@@ -44,11 +44,13 @@ export interface ICreateProduct {
 }
 
 export class ProductItem {
+  product?: Product;
   productId: number;
   quantity: number;
   total: number;
 
   constructor(input: ProductItem) {
+    this.product = input.product ? new Product(input.product) : undefined;
     this.productId = input.productId;
     this.quantity = input.quantity;
     this.total = input.total;
