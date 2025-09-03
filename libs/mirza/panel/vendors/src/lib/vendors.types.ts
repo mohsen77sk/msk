@@ -5,7 +5,7 @@ export const DefaultVendorsSortId = 'name';
 export const DefaultVendorsSortDirection: SortDirection = 'asc';
 
 export class Vendor {
-  id: string;
+  id: number;
   name: string;
   gender: GenderEnum;
   contactNumber?: string;

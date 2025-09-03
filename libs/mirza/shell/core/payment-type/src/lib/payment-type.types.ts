@@ -8,11 +8,11 @@ export enum PaymentType {
 }
 
 export class PaymentTypeDetail {
-  type: PaymentType;
+  paymentType: PaymentType;
   value: number;
 
   constructor(input: Partial<PaymentTypeDetail>) {
-    this.type = input.type || PaymentType.NOT_PAID;
+    this.paymentType = input.paymentType || PaymentType.NOT_PAID;
     this.value = input.value || 0;
   }
 }

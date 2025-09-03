@@ -10,7 +10,7 @@ export enum GenderEnum {
 }
 
 export class Customer {
-  id: string;
+  id: number;
   name: string;
   gender: GenderEnum;
   contactNumber?: string;
