@@ -1,3 +1,4 @@
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import {
   Component,
@@ -8,15 +9,7 @@ import {
   signal,
   DestroyRef,
 } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -51,8 +44,7 @@ import {
 import { mskAnimations } from '@msk/shared/animations';
 import { catchError, combineLatest, EMPTY, map, startWith, tap } from 'rxjs';
 import { SalesService } from '../../sales.service';
-import { ICreateSaleInvoice, SaleInvoice } from '../../sales.types';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleInvoice } from '../../sales.types';
 
 @Component({
   selector: 'mz-sales-details',
@@ -98,7 +90,7 @@ export class SalesCardDetailsComponent implements OnInit {
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
 
-  form!: FormGroup;
+  form!: FormGroup<ISalesForm>;
   formErrors: FormError = {};
   paymentTypeList: PaymentType[] = Object.values(PaymentType);
   productDSList: MskDataSource<Product>[] = [];
@@ -112,15 +104,15 @@ export class SalesCardDetailsComponent implements OnInit {
   /**
    * Get the sale items form array
    */
-  get saleItems(): FormArray {
-    return this.form.get('saleItems') as FormArray;
+  get saleItems(): FormArray<FormGroup<ISaleItemForm>> {
+    return this.form.controls.saleItems;
   }
 
   /**
    * Get the payment types form array
    */
-  get paymentTypes(): FormArray {
-    return this.form.get('paymentTypes') as FormArray;
+  get paymentTypes(): FormArray<FormGroup<IPaymentTypeForm>> {
+    return this.form.controls.paymentTypes;
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -132,15 +124,15 @@ export class SalesCardDetailsComponent implements OnInit {
    */
   ngOnInit(): void {
     // Create the form
-    this.form = this._formBuilder.group({
-      id: [0, Validators.required],
-      customer: null,
-      saleDate: [new Date(new Date().setHours(0, 0, 0, 0)), Validators.required],
-      saleItems: this._formBuilder.array([], Validators.required),
-      paymentTypes: this._formBuilder.array([], Validators.required),
-      discount: [0, [Validators.required, Validators.min(0)]],
-      total: [0, [Validators.required, Validators.min(0)]],
-      note: '',
+    this.form = this._formBuilder.group<ISalesForm>({
+      id: this._formBuilder.control(0, Validators.required),
+      customer: this._formBuilder.control(null),
+      saleDate: this._formBuilder.control(new Date(new Date().setHours(0, 0, 0, 0)), Validators.required),
+      saleItems: this._formBuilder.array<FormGroup>([], Validators.required),
+      paymentTypes: this._formBuilder.array<FormGroup>([], Validators.required),
+      discount: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      total: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      note: this._formBuilder.control(''),
     });
     this.addPaymentType();
     this.addSaleItem();
@@ -148,20 +140,14 @@ export class SalesCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     if (this.data.item()) {
-      this.data.item()?.paymentTypes.forEach((value, index) => {
-        if (index === 0) return;
-        this.addPaymentType();
-      });
-      this.data.item()?.saleItems.forEach((value, index) => {
-        if (index === 0) return;
-        this.addSaleItem();
-      });
+      this.data.item()?.paymentTypes.forEach((v, i) => i !== 0 && this.addPaymentType());
+      this.data.item()?.saleItems.forEach((v, i) => i !== 0 && this.addSaleItem());
       this.form.patchValue(this.data.item() || {});
     }
     // Set customer collection
     this.customerDS = new MskDataSource<Customer>(
       (page, pageSize, search) => this._customersService.getLookupCustomers(page, pageSize, search),
-      this.form.get('customer')?.valueChanges,
+      this.form.controls.customer.valueChanges,
     );
   }
 
@@ -196,15 +182,11 @@ export class SalesCardDetailsComponent implements OnInit {
    * Add a sale item row in form
    */
   addSaleItem(): void {
-    const group = this._formBuilder.group({
-      product: [null, Validators.required],
-      quantity: [1, [Validators.required, Validators.min(1)]],
-      total: [0, [Validators.required, Validators.min(0)]],
-    }) as FormGroup<{
-      product: FormControl<Product | null>;
-      quantity: FormControl<number>;
-      total: FormControl<number>;
-    }>;
+    const group = this._formBuilder.group<ISaleItemForm>({
+      product: this._formBuilder.control<Product | null>(null, Validators.required),
+      quantity: this._formBuilder.control(1, [Validators.required, Validators.min(1)]),
+      total: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+    });
     this.saleItems.push(group);
 
     combineLatest([
@@ -241,13 +223,10 @@ export class SalesCardDetailsComponent implements OnInit {
    * Add a payment type row in form
    */
   addPaymentType(): void {
-    const group = this._formBuilder.group({
-      paymentType: [PaymentType.POSE, Validators.required],
-      value: [0, [Validators.required, Validators.min(0)]],
-    }) as FormGroup<{
-      paymentType: FormControl<string>;
-      value: FormControl<number>;
-    }>;
+    const group = this._formBuilder.group<IPaymentTypeForm>({
+      paymentType: this._formBuilder.control(PaymentType.POSE, Validators.required),
+      value: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+    });
     this.paymentTypes.push(group);
   }
 
@@ -313,17 +292,21 @@ export class SalesCardDetailsComponent implements OnInit {
     this.alert.set({ show: false, message: '' });
 
     const model: ICreateSaleInvoice = {
-      id: this.form.get('id')?.value,
-      customerId: this.form.get('customer')?.value?.id ?? 0,
-      saleDate: this.form.get('saleDate')?.value,
-      paymentTypes: this.form.get('paymentTypes')?.value,
-      saleItems: this.form.get('saleItems')?.value.map((x: any) => ({
-        productId: x.product.id,
-        ...x,
+      id: this.form.controls.id.value ?? 0,
+      customerId: this.form.controls.customer.value?.id ?? 0,
+      saleDate: this.form.controls.saleDate.value?.toISOString() ?? new Date().toISOString(),
+      paymentTypes: this.form.controls.paymentTypes.controls.map((x) => ({
+        paymentType: x.controls.paymentType.value as PaymentType,
+        value: x.controls.value.value ?? 0,
       })),
-      discount: this.form.get('discount')?.value,
-      total: this.form.get('total')?.value,
-      note: this.form.get('note')?.value,
+      saleItems: this.form.controls.saleItems.controls.map((x) => ({
+        productId: x.controls.product.value?.id ?? 0,
+        quantity: x.controls.quantity.value ?? 0,
+        total: x.controls.total.value ?? 0,
+      })),
+      discount: this.form.controls.discount.value ?? 0,
+      total: this.form.controls.total.value ?? 0,
+      note: this.form.controls.note.value ?? '',
     };
 
     const result =

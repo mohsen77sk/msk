@@ -1,6 +1,7 @@
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SortDirection } from '@angular/material/sort';
 import { Vendor } from '@msk/mirza/panel/vendors';
-import { ProductItem } from '@msk/mirza/panel/products';
+import { Product, ProductItem } from '@msk/mirza/panel/products';
 import { PaymentTypeDetail } from '@msk/mirza/shell/core/payment-type';
 import { User } from '@msk/mirza/shell/core/user';
 
@@ -42,4 +43,24 @@ export interface ICreatePurchaseInvoice {
   discount: number;
   total: number;
   note?: string;
+}
+
+export interface IPurchaseForm {
+  id: FormControl<number | null>;
+  vendor: FormControl<Vendor | null>;
+  date: FormControl<Date | null>;
+  paymentTypes: FormArray<FormGroup<IPaymentTypeForm>>;
+  purchaseItems: FormArray<FormGroup<IPurchaseItemForm>>;
+  discount: FormControl<number | null>;
+  total: FormControl<number | null>;
+  note: FormControl<string | null>;
+}
+export interface IPaymentTypeForm {
+  paymentType: FormControl<string | null>;
+  value: FormControl<number | null>;
+}
+export interface IPurchaseItemForm {
+  product: FormControl<Product | null>;
+  quantity: FormControl<number | null>;
+  total: FormControl<number | null>;
 }

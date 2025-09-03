@@ -1,3 +1,4 @@
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import {
   Component,
@@ -8,15 +9,7 @@ import {
   signal,
   DestroyRef,
 } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -50,9 +43,14 @@ import {
 import { mskAnimations } from '@msk/shared/animations';
 import { catchError, combineLatest, EMPTY, map, startWith, tap } from 'rxjs';
 import { PurchasesService } from '../../purchases.service';
-import { ICreatePurchaseInvoice, PurchaseInvoice } from '../../purchases.types';
+import {
+  ICreatePurchaseInvoice,
+  IPaymentTypeForm,
+  IPurchaseForm,
+  IPurchaseItemForm,
+  PurchaseInvoice,
+} from '../../purchases.types';
 import { Product, ProductsService } from '@msk/mirza/panel/products';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'mz-purchases-details',
@@ -98,7 +96,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
 
-  form!: FormGroup;
+  form!: FormGroup<IPurchaseForm>;
   formErrors: FormError = {};
   paymentTypeList: PaymentType[] = Object.values(PaymentType);
   productDSList: MskDataSource<Product>[] = [];
@@ -112,15 +110,15 @@ export class PurchasesCardDetailsComponent implements OnInit {
   /**
    * Get the purchase items form array
    */
-  get purchaseItems(): FormArray {
-    return this.form.get('purchaseItems') as FormArray;
+  get purchaseItems(): FormArray<FormGroup<IPurchaseItemForm>> {
+    return this.form.controls.purchaseItems;
   }
 
   /**
    * Get the payment types form array
    */
-  get paymentTypes(): FormArray {
-    return this.form.get('paymentTypes') as FormArray;
+  get paymentTypes(): FormArray<FormGroup<IPaymentTypeForm>> {
+    return this.form.controls.paymentTypes;
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -132,15 +130,15 @@ export class PurchasesCardDetailsComponent implements OnInit {
    */
   ngOnInit(): void {
     // Create the form
-    this.form = this._formBuilder.group({
-      id: [0, Validators.required],
-      vendor: null,
-      date: [new Date(new Date().setHours(0, 0, 0, 0)), Validators.required],
-      purchaseItems: this._formBuilder.array([], Validators.required),
-      paymentTypes: this._formBuilder.array([], Validators.required),
-      discount: [0, [Validators.required, Validators.min(0)]],
-      total: [0, [Validators.required, Validators.min(0)]],
-      note: '',
+    this.form = this._formBuilder.group<IPurchaseForm>({
+      id: this._formBuilder.control(0, Validators.required),
+      vendor: this._formBuilder.control(null),
+      date: this._formBuilder.control(new Date(new Date().setHours(0, 0, 0, 0)), Validators.required),
+      purchaseItems: this._formBuilder.array<FormGroup>([], Validators.required),
+      paymentTypes: this._formBuilder.array<FormGroup>([], Validators.required),
+      discount: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      total: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      note: this._formBuilder.control(''),
     });
     this.addPaymentType();
     this.addPurchaseItem();
@@ -148,20 +146,14 @@ export class PurchasesCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     if (this.data.item()) {
-      this.data.item()?.paymentTypes.forEach((value, index) => {
-        if (index === 0) return;
-        this.addPaymentType();
-      });
-      this.data.item()?.purchaseItems.forEach((value, index) => {
-        if (index === 0) return;
-        this.addPurchaseItem();
-      });
+      this.data.item()?.paymentTypes.forEach((v, i) => i !== 0 && this.addPaymentType());
+      this.data.item()?.purchaseItems.forEach((v, i) => i !== 0 && this.addPurchaseItem());
       this.form.patchValue(this.data.item() || {});
     }
     // Set vendor collection
     this.vendorDS = new MskDataSource<Vendor>(
       (page, pageSize, search) => this._vendorsService.getLookupVendors(page, pageSize, search),
-      this.form.get('vendor')?.valueChanges,
+      this.form.controls.vendor.valueChanges,
     );
   }
 
@@ -196,15 +188,11 @@ export class PurchasesCardDetailsComponent implements OnInit {
    * Add a purchase item row in form
    */
   addPurchaseItem(): void {
-    const group = this._formBuilder.group({
-      product: [null, Validators.required],
-      quantity: [1, [Validators.required, Validators.min(1)]],
-      total: [0, [Validators.required, Validators.min(0)]],
-    }) as FormGroup<{
-      product: FormControl<Product | null>;
-      quantity: FormControl<number>;
-      total: FormControl<number>;
-    }>;
+    const group = this._formBuilder.group<IPurchaseItemForm>({
+      product: this._formBuilder.control<Product | null>(null, Validators.required),
+      quantity: this._formBuilder.control(1, [Validators.required, Validators.min(1)]),
+      total: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+    });
     this.purchaseItems.push(group);
 
     combineLatest([
@@ -241,13 +229,10 @@ export class PurchasesCardDetailsComponent implements OnInit {
    * Add a payment type row in form
    */
   addPaymentType(): void {
-    const group = this._formBuilder.group({
-      paymentType: [PaymentType.POSE, Validators.required],
-      value: [0, [Validators.required, Validators.min(0)]],
-    }) as FormGroup<{
-      paymentType: FormControl<string>;
-      value: FormControl<number>;
-    }>;
+    const group = this._formBuilder.group<IPaymentTypeForm>({
+      paymentType: this._formBuilder.control(PaymentType.POSE, Validators.required),
+      value: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+    });
     this.paymentTypes.push(group);
   }
 
@@ -313,17 +298,21 @@ export class PurchasesCardDetailsComponent implements OnInit {
     this.alert.set({ show: false, message: '' });
 
     const model: ICreatePurchaseInvoice = {
-      id: this.form.get('id')?.value,
-      vendorId: this.form.get('vendor')?.value?.id ?? 0,
-      date: this.form.get('date')?.value,
-      paymentTypes: this.form.get('paymentTypes')?.value,
-      purchaseItems: this.form.get('purchaseItems')?.value.map((x: any) => ({
-        productId: x.product.id,
-        ...x,
+      id: this.form.controls.id.value ?? 0,
+      vendorId: this.form.controls.vendor.value?.id ?? 0,
+      date: this.form.controls.date.value?.toISOString() ?? new Date().toISOString(),
+      paymentTypes: this.form.controls.paymentTypes.controls.map((x) => ({
+        paymentType: x.controls.paymentType.value as PaymentType,
+        value: x.controls.value.value ?? 0,
       })),
-      discount: this.form.get('discount')?.value,
-      total: this.form.get('total')?.value,
-      note: this.form.get('note')?.value,
+      purchaseItems: this.form.controls.purchaseItems.controls.map((x) => ({
+        productId: x.controls.product.value?.id ?? 0,
+        quantity: x.controls.quantity.value ?? 0,
+        total: x.controls.total.value ?? 0,
+      })),
+      discount: this.form.controls.discount.value ?? 0,
+      total: this.form.controls.total.value ?? 0,
+      note: this.form.controls.note.value ?? '',
     };
 
     const result =
