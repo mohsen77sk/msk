@@ -247,7 +247,7 @@
       <!-- Total -->
       <mat-form-field>
         <mat-label>{{ t('total') }}</mat-label>
-        <input matInput formControlName="total" mskMask="currency" autocomplete="off" />
+        <input matInput formControlName="total" mskMask="currency" autocomplete="off" readonly />
         <span matTextSuffix mskCurrencySymbol></span>
         <mat-error>{{ formErrors['total'] }}</mat-error>
       </mat-form-field>

@@ -149,6 +149,17 @@ export class SalesCardDetailsComponent implements OnInit {
       (page, pageSize, search) => this._customersService.getLookupCustomers(page, pageSize, search),
       this.form.controls.customer.valueChanges,
     );
+
+    // Subscribe to form changes to update total dynamically
+    combineLatest([
+      this.form.controls.saleItems.valueChanges.pipe(startWith(this.form.controls.saleItems.value)),
+      this.form.controls.discount.valueChanges.pipe(startWith(this.form.controls.discount.value)),
+    ])
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(() => {
+        const total = this._computedTotal();
+        this.form.controls.total.setValue(total, { emitEvent: false });
+      });
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -331,5 +342,24 @@ export class SalesCardDetailsComponent implements OnInit {
         }),
       )
       .subscribe();
+  }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Private methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Computed total calculation: sum of all saleItems.total - discount
+   */
+  _computedTotal(): number {
+    if (!this.form) return 0;
+
+    const saleItemsTotal = this.saleItems.controls.reduce((sum, item) => {
+      return sum + (item.controls.total.value || 0);
+    }, 0);
+
+    const discount = this.form.controls.discount.value || 0;
+
+    return Math.max(0, saleItemsTotal - discount);
   }
 }
