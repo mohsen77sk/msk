@@ -36,7 +36,7 @@ export class PurchaseInvoice {
 
 export interface ICreatePurchaseInvoice {
   id: number;
-  vendorId: number;
+  vendorId: number | null;
   date: string;
   paymentTypes: PaymentTypeDetail[];
   purchaseItems: ProductItem[];

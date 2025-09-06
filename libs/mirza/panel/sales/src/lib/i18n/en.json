@@ -10,7 +10,7 @@
     "paymentType": "Payment type",
     "paymentTypeValue": "Value",
     "discount": "Discount",
-    "total": "Total",
+    "total": "Final amount",
     "note": "Note",
     "products": "Products",
     "product": "Product",
@@ -28,6 +28,9 @@
     "checks": "Checks",
     "gift": "Gift",
     "notPaid": "Not paid"
+  },
+  "errors": {
+    "paymentTypesValueMustEqualByTotal": "The total amount paid does not equal the final amount."
   },
   "search": "Search sale invoice",
   "empty-list": "There are no sale invoices!",

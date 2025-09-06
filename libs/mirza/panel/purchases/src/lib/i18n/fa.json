@@ -10,7 +10,7 @@
     "paymentType": "نوع پرداخت",
     "paymentTypeValue": "مقدار",
     "discount": "تخفیف",
-    "total": "مجموع",
+    "total": "مبلغ نهایی",
     "note": "توضیحات",
     "products": "محصولات",
     "product": "محصول",
@@ -28,6 +28,9 @@
     "checks": "چک",
     "gift": "هدیه",
     "notPaid": "پرداخت نشده"
+  },
+  "errors": {
+    "paymentTypesValueMustEqualByTotal": "مجموع مقادیر پرداختی با مبلغ نهایی برابر نیست."
   },
   "search": "جستجوی فاکتور خرید",
   "empty-list": "هیچ فاکتوری خریدی وجود ندارد!",

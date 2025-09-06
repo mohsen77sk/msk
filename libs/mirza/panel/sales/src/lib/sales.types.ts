@@ -36,7 +36,7 @@ export class SaleInvoice {
 
 export interface ICreateSaleInvoice {
   id: number;
-  customerId: number;
+  customerId: number | null;
   saleDate: string;
   paymentTypes: PaymentTypeDetail[];
   saleItems: ProductItem[];

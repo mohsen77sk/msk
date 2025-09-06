@@ -165,6 +165,13 @@ export class PurchasesCardDetailsComponent implements OnInit {
       .subscribe(() => {
         const total = this._computedTotal();
         this.form.controls.total.setValue(total, { emitEvent: false });
+        // Update first payment type if not changed by user
+        if (
+          this.form.controls.paymentTypes.at(0).controls.value.pristine &&
+          this.form.controls.paymentTypes.length === 1
+        ) {
+          this.form.controls.paymentTypes.at(0).controls.value.setValue(total, { emitEvent: false });
+        }
       });
   }
 
@@ -302,6 +309,15 @@ export class PurchasesCardDetailsComponent implements OnInit {
       return;
     }
 
+    // Check logical validations
+    if (!this._isPaymentTypesValueEqualByTotal()) {
+      this.alert.set({
+        show: true,
+        message: this._translocoService.translate('sales.errors.paymentTypesValueMustEqualByTotal'),
+      });
+      return;
+    }
+
     // Disable the form
     this.form.disable();
 
@@ -310,7 +326,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
 
     const model: ICreatePurchaseInvoice = {
       id: this.form.controls.id.value ?? 0,
-      vendorId: this.form.controls.vendor.value?.id ?? 0,
+      vendorId: this.form.controls.vendor.value?.id ?? null,
       date: this.form.controls.date.value?.toISOString() ?? new Date().toISOString(),
       paymentTypes: this.form.controls.paymentTypes.controls.map((x) => ({
         paymentType: x.controls.paymentType.value as PaymentType,
@@ -367,5 +383,20 @@ export class PurchasesCardDetailsComponent implements OnInit {
     const discount = this.form.controls.discount.value || 0;
 
     return Math.max(0, purchaseItemsTotal - discount);
+  }
+
+  /**
+   * Check paymentTypesValue is equal by total value in form
+   */
+  _isPaymentTypesValueEqualByTotal(): boolean {
+    if (!this.form) return false;
+
+    const paymentTypesTotal = this.paymentTypes.controls.reduce((sum, item) => {
+      return sum + (item.controls.value.value || 0);
+    }, 0);
+
+    const total = this.form.controls.total.value || 0;
+
+    return paymentTypesTotal === total;
   }
 }
