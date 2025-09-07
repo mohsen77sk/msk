@@ -77,10 +77,10 @@
           @apply border-t;
 
           .mat-mdc-paginator-container {
-            @apply sm:justify-between sm:px-4;
+            @apply sm:!justify-between sm:!px-4;
 
             .mat-mdc-paginator-page-size {
-              @apply hidden sm:flex;
+              @apply !hidden sm:!flex;
             }
           }
         }
