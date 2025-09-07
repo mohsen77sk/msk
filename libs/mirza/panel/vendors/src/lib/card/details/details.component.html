@@ -26,66 +26,61 @@
 </msk-dialog>
 
 <ng-template #viewTemplate let-t="t">
-  <div class="mb-2 flex flex-col items-center gap-5 p-4">
+  <div class="flex flex-col items-center gap-5 p-4">
     <msk-avatar [name]="data.item()?.name ?? ''" size="big"></msk-avatar>
     <div class="text-headline-small text-on-surface">
       {{ data.item()?.name }}
     </div>
   </div>
-  <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="msk-mat-card-subtitle">
+  <div class="msk-group-list">
+    <div class="msk-list-item subtitle">
       {{ t('about', { name: data.item()?.name }) }}
     </div>
-    <div class="msk-list -mx-4">
-      <!-- Gender -->
-      @if (data.item()?.gender) {
-        <div class="msk-list-item">
-          <mat-icon class="msk-list-item-icon">male</mat-icon>
-          <div class="msk-list-item-content">
-            <span *transloco="let t; read: 'vendors.genders'">{{ t(data.item()?.gender ?? '') }}</span>
-            <span>{{ t('gender') }}</span>
-          </div>
+    <!-- Gender -->
+    @if (data.item()?.gender) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">male</mat-icon>
+        <div class="msk-list-item-content">
+          <span *transloco="let t; read: 'vendors.genders'">{{ t(data.item()?.gender ?? '') }}</span>
+          <span>{{ t('gender') }}</span>
         </div>
-      }
-      <!-- Contact Number -->
-      @if (data.item()?.contactNumber) {
-        <div class="msk-list-item">
-          <mat-icon class="msk-list-item-icon">call</mat-icon>
-          <div class="msk-list-item-content">
-            <span>{{ data.item()?.contactNumber || '-' }}</span>
-            <span>{{ t('contactNumber') }}</span>
-          </div>
+      </div>
+    }
+    <!-- Contact Number -->
+    @if (data.item()?.contactNumber) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">call</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.contactNumber || '-' }}</span>
+          <span>{{ t('contactNumber') }}</span>
         </div>
-      }
-      <!-- Address -->
-      @if (data.item()?.address) {
-        <div class="msk-list-item">
-          <mat-icon class="msk-list-item-icon">location_on</mat-icon>
-          <div class="msk-list-item-content">
-            <span>{{ data.item()?.address || '-' }}</span>
-            <span>{{ t('address') }}</span>
-          </div>
+      </div>
+    }
+    <!-- Address -->
+    @if (data.item()?.address) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">location_on</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.address || '-' }}</span>
+          <span>{{ t('address') }}</span>
         </div>
-      }
-    </div>
+      </div>
+    }
   </div>
   @if (data.item()?.note) {
-    <div class="msk-mat-card-filled mb-2 p-4">
-      <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
-      <div class="msk-list -mx-4">
-        <div class="msk-list-item">
-          <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
-          <div class="msk-list-item-content">
-            <span>{{ data.item()?.note }}</span>
-          </div>
+    <div class="msk-group-list">
+      <div class="msk-list-item subtitle">{{ t('note') }}</div>
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.note }}</span>
         </div>
       </div>
     </div>
   }
-  <div class="my-4 border-t"></div>
-  <div class="mb-2" *transloco="let t">
-    <div class="text-secondary text-title-small">{{ t('settings') }}</div>
-    <div class="msk-list -mx-6">
+  <div class="mt-6" *transloco="let t">
+    <div class="text-title-small">{{ t('settings') }}</div>
+    <div class="msk-group-list elevated">
       <div class="msk-list-item cursor-pointer" matRipple (click)="deleteVendor()" aria-hidden="true">
         <div class="msk-list-item-icon">
           <mat-icon class="text-error">delete</mat-icon>

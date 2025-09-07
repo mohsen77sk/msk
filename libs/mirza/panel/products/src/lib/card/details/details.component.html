@@ -26,78 +26,73 @@
 </msk-dialog>
 
 <ng-template #viewTemplate let-t="t">
-  <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="msk-mat-card-subtitle">{{ t('specs') }}</div>
-    <div class="msk-list -mx-4">
-      <!-- Name -->
+  <div class="msk-group-list">
+    <div class="msk-list-item subtitle">{{ t('specs') }}</div>
+    <!-- Name -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">label</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.name || '-' }}</span>
+        <span>{{ t('name') }}</span>
+      </div>
+    </div>
+    <!-- Category -->
+    @if (data.item()?.category) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">label</mat-icon>
+        <mat-icon class="msk-list-item-icon">category</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ data.item()?.name || '-' }}</span>
-          <span>{{ t('name') }}</span>
+          <span>{{ data.item()?.category?.name || '-' }}</span>
+          <span>{{ t('category') }}</span>
         </div>
       </div>
-      <!-- Category -->
-      @if (data.item()?.category) {
-        <div class="msk-list-item">
-          <mat-icon class="msk-list-item-icon">category</mat-icon>
-          <div class="msk-list-item-content">
-            <span>{{ data.item()?.category?.name || '-' }}</span>
-            <span>{{ t('category') }}</span>
-          </div>
+    }
+    <!-- Quantity -->
+    @if (data.item()?.quantity) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">pin</mat-icon>
+        <div class="msk-list-item-content">
+          <span *transloco="let t; read: 'products.units'">
+            {{ (data.item()?.quantity | number) || '-' }} {{ t(data.item()?.unit ?? '') }}
+          </span>
+          <span>{{ t('quantity') }}</span>
         </div>
-      }
-      <!-- Quantity -->
-      @if (data.item()?.quantity) {
-        <div class="msk-list-item">
-          <mat-icon class="msk-list-item-icon">pin</mat-icon>
-          <div class="msk-list-item-content">
-            <span *transloco="let t; read: 'products.units'">
-              {{ (data.item()?.quantity | number) || '-' }} {{ t(data.item()?.unit ?? '') }}
-            </span>
-            <span>{{ t('quantity') }}</span>
-          </div>
+      </div>
+    }
+    <!-- Cost -->
+    @if (data.item()?.cost) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">paid</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.cost | number }} <small mskCurrencySymbol></small></span>
+          <span>{{ t('cost') }}</span>
         </div>
-      }
-      <!-- Cost -->
-      @if (data.item()?.cost) {
-        <div class="msk-list-item">
-          <mat-icon class="msk-list-item-icon">paid</mat-icon>
-          <div class="msk-list-item-content">
-            <span>{{ data.item()?.cost | number }} <small mskCurrencySymbol></small></span>
-            <span>{{ t('cost') }}</span>
-          </div>
+      </div>
+    }
+    <!-- SellPrice -->
+    @if (data.item()?.sellPrice) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">sell</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.sellPrice | number }} <small mskCurrencySymbol></small></span>
+          <span>{{ t('sell-price') }}</span>
         </div>
-      }
-      <!-- SellPrice -->
-      @if (data.item()?.sellPrice) {
-        <div class="msk-list-item">
-          <mat-icon class="msk-list-item-icon">sell</mat-icon>
-          <div class="msk-list-item-content">
-            <span>{{ data.item()?.sellPrice | number }} <small mskCurrencySymbol></small></span>
-            <span>{{ t('sell-price') }}</span>
-          </div>
-        </div>
-      }
-    </div>
+      </div>
+    }
   </div>
   @if (data.item()?.note) {
-    <div class="msk-mat-card-filled mb-2 p-4">
-      <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
-      <div class="msk-list -mx-4">
-        <div class="msk-list-item">
-          <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
-          <div class="msk-list-item-content">
-            <span>{{ data.item()?.note }}</span>
-          </div>
+    <div class="msk-group-list">
+      <div class="msk-list-item subtitle">{{ t('note') }}</div>
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.note }}</span>
         </div>
       </div>
     </div>
   }
-  <div class="my-4 border-t"></div>
-  <div class="mb-2" *transloco="let t">
-    <div class="text-secondary text-title-small">{{ t('settings') }}</div>
-    <div class="msk-list -mx-6">
+  <div class="mt-6" *transloco="let t">
+    <div class="text-title-small">{{ t('settings') }}</div>
+    <div class="msk-group-list elevated">
       <div class="msk-list-item cursor-pointer" matRipple (click)="deleteProduct()" aria-hidden="true">
         <div class="msk-list-item-icon">
           <mat-icon class="text-error">delete</mat-icon>

@@ -2,11 +2,36 @@
   .msk-list {
     @apply pt-2;
   }
+
+  .msk-group-list {
+    @apply grid gap-0.5 pt-4;
+
+    .msk-list-item {
+      @apply bg-surface-bright rounded-extra-small;
+      &.subtitle {
+        @apply bg-surface-container-highest text-title-small;
+      }
+    }
+
+    .msk-list-item:first-child {
+      @apply rounded-t-large;
+    }
+
+    .msk-list-item:last-child {
+      @apply rounded-b-large;
+    }
+    &.elevated {
+      .msk-list-item {
+        @apply bg-surface-container-low;
+      }
+    }
+  }
+
   .msk-list-item {
-    @apply flex gap-4 px-4 py-2;
+    @apply flex gap-4 px-4 py-3;
 
     .msk-list-item-icon {
-      @apply text-on-surface-variant flex size-10 items-center justify-center;
+      @apply text-on-surface-variant flex size-10 items-center justify-center self-center;
     }
 
     .msk-list-item-content {

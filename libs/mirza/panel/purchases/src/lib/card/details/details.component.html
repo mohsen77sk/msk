@@ -26,44 +26,39 @@
 </msk-dialog>
 
 <ng-template #viewTemplate let-t="t">
-  <div class="msk-mat-card-filled mb-2 p-4">
-    <div class="msk-mat-card-subtitle">{{ t('specs') }}</div>
-    <div class="msk-list -mx-4">
-      <!-- Number -->
-      <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">label</mat-icon>
-        <div class="msk-list-item-content">
-          <span>{{ data.item()?.number || '-' }}</span>
-          <span>{{ t('number') }}</span>
-        </div>
+  <div class="msk-group-list">
+    <div class="msk-list-item subtitle">{{ t('specs') }}</div>
+    <!-- Number -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">label</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.number || '-' }}</span>
+        <span>{{ t('number') }}</span>
       </div>
-      <!-- Date -->
-      <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">event</mat-icon>
-        <div class="msk-list-item-content">
-          <span>{{ (data.item()?.date | mskDateTime) || '-' }}</span>
-          <span>{{ t('date') }}</span>
-        </div>
+    </div>
+    <!-- Date -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">event</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ (data.item()?.date | mskDateTime) || '-' }}</span>
+        <span>{{ t('date') }}</span>
       </div>
     </div>
   </div>
   @if (data.item()?.note) {
-    <div class="msk-mat-card-filled mb-2 p-4">
-      <div class="msk-mat-card-subtitle">{{ t('note') }}</div>
-      <div class="msk-list -mx-4">
-        <div class="msk-list-item">
-          <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
-          <div class="msk-list-item-content">
-            <span>{{ data.item()?.note }}</span>
-          </div>
+    <div class="msk-group-list">
+      <div class="msk-list-item subtitle">{{ t('note') }}</div>
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.note }}</span>
         </div>
       </div>
     </div>
   }
-  <div class="my-4 border-t"></div>
-  <div class="mb-2" *transloco="let t">
-    <div class="text-secondary text-title-small">{{ t('settings') }}</div>
-    <div class="msk-list -mx-6">
+  <div class="mt-6" *transloco="let t">
+    <div class="text-title-small">{{ t('settings') }}</div>
+    <div class="msk-group-list elevated">
       <div class="msk-list-item cursor-pointer" matRipple (click)="deleteInvoice()" aria-hidden="true">
         <div class="msk-list-item-icon">
           <mat-icon class="text-error">delete</mat-icon>
