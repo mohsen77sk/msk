@@ -1,5 +1,5 @@
 <msk-dialog
-  *transloco="let t; read: 'accounts.details'"
+  *transloco="let t; prefix: 'accounts.details'"
   [title]="t(data.action(), { code: data.item()?.code })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
@@ -135,7 +135,7 @@
   <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
     <!-- Info alert for edit -->
     @if (data.action() === 'edit') {
-      <msk-alert class="mb-4" appearance="outline" type="info" dismissible *transloco="let t; read: 'accounts'">
+      <msk-alert class="mb-4" appearance="outline" type="info" dismissible *transloco="let t; prefix: 'accounts'">
         <span mskAlertTitle>{{ t('info-edit-title') }}</span>
         {{ t('info-edit-description') }}
       </msk-alert>

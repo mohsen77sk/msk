@@ -1,5 +1,5 @@
 <msk-dialog
-  *transloco="let t; read: 'categories.details'"
+  *transloco="let t; prefix: 'categories.details'"
   [title]="t(data.action(), { name: data.item()?.name })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"

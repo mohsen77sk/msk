@@ -1,5 +1,5 @@
 <msk-dialog
-  *transloco="let t; read: 'vendors.details'"
+  *transloco="let t; prefix: 'vendors.details'"
   [title]="data.action() !== 'view' || isShowNameHeader() ? t(data.action(), { name: data.item()?.name }) : ''"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
@@ -41,7 +41,7 @@
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">male</mat-icon>
         <div class="msk-list-item-content">
-          <span *transloco="let t; read: 'vendors.genders'">{{ t(data.item()?.gender ?? '') }}</span>
+          <span *transloco="let t; prefix: 'vendors.genders'">{{ t(data.item()?.gender ?? '') }}</span>
           <span>{{ t('gender') }}</span>
         </div>
       </div>

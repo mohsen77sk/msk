@@ -1,5 +1,5 @@
 <msk-dialog
-  *transloco="let t; read: 'purchases.details'"
+  *transloco="let t; prefix: 'purchases.details'"
   [title]="t(data.action(), { name: data.item()?.number })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
@@ -68,7 +68,7 @@
         <div class="msk-list-item-content">
           <span>{{ item.product?.name }}</span>
           <span class="dot-separated">
-            <div *transloco="let t; read: 'products.units'">
+            <div *transloco="let t; prefix: 'products.units'">
               {{ item.quantity }} <small>{{ t(item.product?.unit ?? '') }}</small>
             </div>
             <div>{{ item.total | number }} <small mskCurrencySymbol></small></div>
@@ -83,7 +83,7 @@
       <div class="msk-list-item">
         <div class="msk-list-item-content">
           <span>{{ item.value | number }} <small mskCurrencySymbol></small></span>
-          <span *transloco="let t; read: 'sales.paymentTypes'">{{ t(item.paymentType) }}</span>
+          <span *transloco="let t; prefix: 'sales.paymentTypes'">{{ t(item.paymentType) }}</span>
         </div>
       </div>
     }
@@ -247,7 +247,7 @@
               <mat-label>{{ t('paymentType') }}</mat-label>
               <mat-select formControlName="paymentType">
                 @for (item of paymentTypeList; track item) {
-                  <mat-option [value]="item" *transloco="let t; read: 'purchases.paymentTypes'">{{
+                  <mat-option [value]="item" *transloco="let t; prefix: 'purchases.paymentTypes'">{{
                     t(item)
                   }}</mat-option>
                 }

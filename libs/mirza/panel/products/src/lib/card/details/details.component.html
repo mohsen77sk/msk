@@ -1,5 +1,5 @@
 <msk-dialog
-  *transloco="let t; read: 'products.details'"
+  *transloco="let t; prefix: 'products.details'"
   [title]="t(data.action(), { name: data.item()?.name })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
@@ -51,7 +51,7 @@
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">pin</mat-icon>
         <div class="msk-list-item-content">
-          <span *transloco="let t; read: 'products.units'">
+          <span *transloco="let t; prefix: 'products.units'">
             {{ (data.item()?.quantity | number) || '-' }} {{ t(data.item()?.unit ?? '') }}
           </span>
           <span>{{ t('quantity') }}</span>
@@ -161,7 +161,7 @@
         <mat-label>{{ t('unit') }}</mat-label>
         <mat-select formControlName="unit">
           @for (item of unitList; track item) {
-            <mat-option [value]="item" *transloco="let t; read: 'products.units'">{{ t(item) }}</mat-option>
+            <mat-option [value]="item" *transloco="let t; prefix: 'products.units'">{{ t(item) }}</mat-option>
           }
         </mat-select>
         <mat-error>{{ formErrors['unit'] }}</mat-error>
