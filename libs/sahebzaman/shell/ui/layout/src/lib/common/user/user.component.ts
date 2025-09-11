@@ -1,14 +1,14 @@
 import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
-  Input,
   OnInit,
   ViewEncapsulation,
   booleanAttribute,
   inject,
+  input,
+  signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -23,6 +23,7 @@ import { availableLangs } from '@msk/shared/utils/transloco';
 import { UserService, User } from '@msk/sahebzaman/shell/core/user';
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'sz-user',
@@ -47,13 +48,12 @@ export class UserComponent implements OnInit {
   private _userService = inject(UserService);
   private _translocoService = inject(TranslocoService);
   private _layoutConfigService = inject(MskLayoutConfigService);
-  private _changeDetectorRef = inject(ChangeDetectorRef);
 
-  @Input({ transform: booleanAttribute }) showAvatar = true;
-  user!: User;
+  showAvatar = input(true, { transform: booleanAttribute });
 
-  activeLang!: string;
-  layoutScheme!: LayoutScheme;
+  user = signal<User | null>(null);
+  activeLang = signal<string>('');
+  layoutScheme = signal<LayoutScheme>('auto');
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -64,28 +64,28 @@ export class UserComponent implements OnInit {
    */
   ngOnInit(): void {
     // Subscribe to user changes
-    this._userService.user$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((user) => {
-      // Get the current user
-      this.user = user;
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
-    });
+    this._userService.user$
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap((user) => this.user.set(user)),
+      )
+      .subscribe();
 
     // Subscribe to config changes
-    this._layoutConfigService.config$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((config) => {
-      // Get the config
-      this.layoutScheme = config.scheme;
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
-    });
+    this._layoutConfigService.config$
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap((config) => this.layoutScheme.set(config.scheme)),
+      )
+      .subscribe();
 
     // Subscribe to language changes
-    this._translocoService.langChanges$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((activeLang) => {
-      // Get the active lang
-      this.activeLang = availableLangs.find((x) => x.id === activeLang)?.label ?? '';
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
-    });
+    this._translocoService.langChanges$
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap((activeLang) => this.activeLang.set(availableLangs.find((x) => x.id === activeLang)?.label ?? '')),
+      )
+      .subscribe();
   }
 
   // -----------------------------------------------------------------------------------------------------
