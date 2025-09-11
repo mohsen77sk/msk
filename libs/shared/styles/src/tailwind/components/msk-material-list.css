@@ -48,4 +48,14 @@
       @apply text-on-surface-variant text-body-medium;
     }
   }
+
+  .dot-separated {
+    @apply flex items-center;
+
+    > *:not(:last-child)::after {
+      content: '•';
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+    }
+  }
 }

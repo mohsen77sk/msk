@@ -44,6 +44,49 @@
         <span>{{ t('date') }}</span>
       </div>
     </div>
+    <!-- Discount -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">percent_discount</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.discount | number }} <small mskCurrencySymbol></small></span>
+        <span>{{ t('discount') }}</span>
+      </div>
+    </div>
+    <!-- Total -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">payments</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.total | number }} <small mskCurrencySymbol></small></span>
+        <span>{{ t('total') }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="msk-group-list">
+    <div class="msk-list-item subtitle">{{ t('products') }}</div>
+    @for (item of data.item()?.purchaseItems; track $index) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-content">
+          <span>{{ item.product?.name }}</span>
+          <span class="dot-separated">
+            <div *transloco="let t; read: 'products.units'">
+              {{ item.quantity }} <small>{{ t(item.product?.unit ?? '') }}</small>
+            </div>
+            <div>{{ item.total | number }} <small mskCurrencySymbol></small></div>
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="msk-group-list">
+    <div class="msk-list-item subtitle">{{ t('paymentTypes') }}</div>
+    @for (item of data.item()?.paymentTypes; track $index) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-content">
+          <span>{{ item.value | number }} <small mskCurrencySymbol></small></span>
+          <span *transloco="let t; read: 'sales.paymentTypes'">{{ t(item.paymentType) }}</span>
+        </div>
+      </div>
+    }
   </div>
   @if (data.item()?.note) {
     <div class="msk-group-list">
@@ -253,6 +296,9 @@
         <mat-error>{{ formErrors['total'] }}</mat-error>
       </mat-form-field>
     </div>
+
+    <div class="text-secondary text-title-small">{{ t('other') }}</div>
+    <div class="mt-2 mb-4 border-t"></div>
 
     <!-- Note -->
     <mat-form-field>
