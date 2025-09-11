@@ -6,7 +6,7 @@ import { PaymentTypeDetail } from '@msk/mirza/shell/core/payment-type';
 import { User } from '@msk/mirza/shell/core/user';
 
 export const DefaultSalesSortId = 'number';
-export const DefaultSalesSortDirection: SortDirection = 'asc';
+export const DefaultSalesSortDirection: SortDirection = 'desc';
 
 export class SaleInvoice {
   id: number;
