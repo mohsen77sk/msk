@@ -40,7 +40,7 @@
     <div class="msk-list-item">
       <mat-icon class="msk-list-item-icon">event</mat-icon>
       <div class="msk-list-item-content">
-        <span>{{ (data.item()?.saleDate | mskDateTime) || '-' }}</span>
+        <span>{{ (data.item()?.saleDate | mskDateTime: 'longDate') || '-' }}</span>
         <span>{{ t('date') }}</span>
       </div>
     </div>
