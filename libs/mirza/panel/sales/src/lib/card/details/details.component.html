@@ -163,7 +163,7 @@
             <!-- Quantity -->
             <mat-form-field>
               <mat-label>{{ t('quantity') }}</mat-label>
-              <input matInput formControlName="quantity" mskMask="decimal" autocomplete="off" />
+              <input matInput type="number" formControlName="quantity" autocomplete="off" />
               <mat-hint align="end">
                 {{ product.get('total')?.value | number }} <small mskCurrencySymbol></small>
               </mat-hint>

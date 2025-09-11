@@ -225,6 +225,13 @@ export class PurchasesCardDetailsComponent implements OnInit {
       )
       .subscribe();
 
+    group.controls.product.valueChanges
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap(() => group.controls.quantity.setValue(1)),
+      )
+      .subscribe();
+
     // Create a new DataSource for this row
     this.productDSList.push(
       new MskDataSource<Product>(
