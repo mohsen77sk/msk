@@ -44,8 +44,12 @@ export const routes: Routes = [
         scope: 'sales',
         loader: scopeLoader((lang: string, root: string) => import(`./${root}/${lang}.json`)),
       }),
+      provideTranslocoScope({
+        scope: 'products',
+        loader: scopeLoader((lang: string, root: string) => import(`./../../../products/src/lib/i18n/${lang}.json`)),
+      }),
     ],
-    children: [
+    loadChildren: () => [
       {
         path: '',
         component: SalesListComponent,
