@@ -92,9 +92,12 @@ export class MskHighlightComponent implements AfterViewInit {
     this.isCopied.set(true);
     this._clipboard.copy(this.code() || '');
 
-    setTimeout(() => {
-      this.isCopied.set(false);
-    }, 1000);
+    // Use requestAnimationFrame for better performance in zoneless
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        this.isCopied.set(false);
+      }, 1000);
+    });
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -139,8 +142,5 @@ export class MskHighlightComponent implements AfterViewInit {
       highlightedCode: this.highlightedCode,
       lang: this.lang,
     });
-
-    // Detect the changes
-    this._viewRef.detectChanges();
   }
 }

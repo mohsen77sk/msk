@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   ElementRef,
@@ -61,7 +60,6 @@ import {
 export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   private _destroyRef = inject(DestroyRef);
   private _animationBuilder = inject(AnimationBuilder);
-  private _changeDetectorRef = inject(ChangeDetectorRef);
   private _elementRef = inject(ElementRef);
   private _renderer2 = inject(Renderer2);
   private _router = inject(Router);
@@ -131,9 +129,11 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
         // Enable the animations after a delay
         // The delay must be bigger than the current transition-duration
         // to make sure nothing will be animated while the mode changing
-        setTimeout(() => {
-          this._enableAnimations();
-        }, 500);
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            this._enableAnimations();
+          }, 500);
+        });
       }),
     );
 
@@ -268,7 +268,7 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
    * After view init
    */
   ngAfterViewInit(): void {
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       // Return if 'navigation content' element does not exist
       if (!this._navigationContent()) {
         return;
@@ -323,9 +323,6 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
    * Refresh the component to apply the changes
    */
   refresh(): void {
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
-
     // Execute the observable
     this.onRefreshed.next(true);
   }
@@ -387,9 +384,6 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
 
     // Show the aside overlay
     this._showAsideOverlay();
-
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
   }
 
   /**
@@ -401,9 +395,6 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
 
     // Hide the aside overlay
     this._hideAsideOverlay();
-
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
   }
 
   /**

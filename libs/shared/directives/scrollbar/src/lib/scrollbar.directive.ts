@@ -50,12 +50,12 @@ export class MskScrollbarDirective implements OnInit, OnDestroy {
       }
 
       // Destroy and re-init the PerfectScrollbar to update its options
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         this._destroy();
-      });
-
-      setTimeout(() => {
-        this._init();
+        
+        requestAnimationFrame(() => {
+          this._init();
+        });
       });
     });
   }

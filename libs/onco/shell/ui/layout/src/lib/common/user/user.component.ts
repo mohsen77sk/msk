@@ -1,7 +1,6 @@
 import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   Input,
@@ -9,6 +8,7 @@ import {
   ViewEncapsulation,
   booleanAttribute,
   inject,
+  signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -47,13 +47,11 @@ export class UserComponent implements OnInit {
   private _userService = inject(UserService);
   private _translocoService = inject(TranslocoService);
   private _layoutConfigService = inject(MskLayoutConfigService);
-  private _changeDetectorRef = inject(ChangeDetectorRef);
 
   @Input({ transform: booleanAttribute }) showAvatar = true;
-  user!: User;
-
-  activeLang!: string;
-  layoutScheme!: LayoutScheme;
+  user = signal<User | null>(null);
+  activeLang = signal<string>('');
+  layoutScheme = signal<LayoutScheme>('auto');
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -65,26 +63,20 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     // Subscribe to user changes
     this._userService.user$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((user) => {
-      // Get the current user
-      this.user = user;
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
+      // Update the user signal
+      this.user.set(user);
     });
 
     // Subscribe to config changes
     this._layoutConfigService.config$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((config) => {
-      // Get the config
-      this.layoutScheme = config.scheme;
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
+      // Update the layout scheme signal
+      this.layoutScheme.set(config.scheme);
     });
 
     // Subscribe to language changes
     this._translocoService.langChanges$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((activeLang) => {
-      // Get the active lang
-      this.activeLang = availableLangs.find((x) => x.id === activeLang)?.label ?? '';
-      // Mark for check
-      this._changeDetectorRef.markForCheck();
+      // Update the active lang signal
+      this.activeLang.set(availableLangs.find((x) => x.id === activeLang)?.label ?? '');
     });
   }
 
