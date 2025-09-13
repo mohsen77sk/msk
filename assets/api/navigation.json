@@ -122,6 +122,20 @@
             "link": "docs/pages/maintenance"
           }
         ]
+      },
+      {
+        "id": "docs.page-layouts",
+        "title": "Page layouts",
+        "type": "collapsable",
+        "icon": "full_coverage",
+        "children": [
+          {
+            "id": "docs.page-layouts.overview",
+            "title": "Overview",
+            "type": "basic",
+            "link": "docs/page-layouts/overview"
+          }
+        ]
       }
     ]
   }
