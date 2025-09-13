@@ -86,6 +86,11 @@ export const docsRoutes: Route[] = [
             path: 'pages/maintenance',
             loadChildren: () => import('@msk/shared/pages/errors/maintenance').then((r) => r.routes),
           },
+          // Page layouts
+          {
+            path: 'page-layouts',
+            loadChildren: () => import('@msk/docs/panel/page-layouts').then((r) => r.routes),
+          },
         ],
       },
     ],

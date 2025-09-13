@@ -1,0 +1,21 @@
+{
+  "name": "docs-panel-page-layouts",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/docs/panel/page-layouts/src",
+  "prefix": "doc",
+  "projectType": "library",
+  "tags": ["scope:docs", "type:feature"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/docs/panel/page-layouts/jest.config.ts",
+        "tsConfig": "libs/docs/panel/page-layouts/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -22,6 +22,7 @@
       "@msk/docs/panel/components/highlight": ["libs/docs/panel/components/highlight/src/index.ts"],
       "@msk/docs/panel/components/loading-bar": ["libs/docs/panel/components/loading-bar/src/index.ts"],
       "@msk/docs/panel/components/navigation": ["libs/docs/panel/components/navigation/src/index.ts"],
+      "@msk/docs/panel/page-layouts": ["libs/docs/panel/page-layouts/src/index.ts"],
       "@msk/docs/panel/services/confirmation": ["libs/docs/panel/services/confirmation/src/index.ts"],
       "@msk/docs/panel/services/media-watcher": ["libs/docs/panel/services/media-watcher/src/index.ts"],
       "@msk/docs/panel/services/snack-bar": ["libs/docs/panel/services/snack-bar/src/index.ts"],
