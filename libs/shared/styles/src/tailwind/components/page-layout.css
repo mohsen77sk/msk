@@ -3,7 +3,7 @@
     @apply flex min-w-0 flex-auto flex-col;
 
     > .header {
-      @apply bg-surface flex min-h-16 items-center justify-between px-4 sm:px-6;
+      @apply flex min-h-16 items-center justify-between px-4 md:px-6;
 
       > label {
         @apply text-title-large;
@@ -11,7 +11,7 @@
     }
 
     > .content {
-      @apply bg-surface flex flex-auto flex-col px-4 sm:px-6;
+      @apply flex flex-auto flex-col px-4 md:px-6;
     }
 
     &.page-scroll {
@@ -77,10 +77,10 @@
           @apply border-t;
 
           .mat-mdc-paginator-container {
-            @apply sm:!justify-between sm:!px-4;
+            @apply md:!justify-between;
 
             .mat-mdc-paginator-page-size {
-              @apply !hidden sm:!flex;
+              @apply !hidden md:!flex;
             }
           }
         }
