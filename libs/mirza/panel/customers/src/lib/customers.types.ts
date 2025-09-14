@@ -1,7 +1,6 @@
-import { SortDirection } from '@angular/material/sort';
+import { MskSortable } from '@msk/shared/data-access';
 
-export const DefaultCustomersSortId = 'name';
-export const DefaultCustomersSortDirection: SortDirection = 'asc';
+export const DefaultCustomersSortData: MskSortable = { active: 'name', direction: 'asc' };
 
 export enum GenderEnum {
   male = 'male',

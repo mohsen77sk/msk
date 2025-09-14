@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { MskDataSource, MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
+import { MskDataSource, MskDialogData, MskHttpErrorResponse, MskSort } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
@@ -32,7 +32,11 @@ import { mskAnimations } from '@msk/shared/animations';
 import { catchError, EMPTY, map, tap } from 'rxjs';
 import { ProductsService } from '../../products.service';
 import { ICreateProduct, Product, ProductUnit } from '../../products.types';
-import { ProductCategoriesService, ProductCategory } from '@msk/mirza/panel/product-categories';
+import {
+  ProductCategoriesService,
+  ProductCategory,
+  DefaultProductCategorySortData,
+} from '@msk/mirza/panel/product-categories';
 
 @Component({
   selector: 'mz-product-details',
@@ -110,7 +114,8 @@ export class ProductCardDetailsComponent implements OnInit {
     this.form.patchValue(this.data.item() || {});
     // Set category collection
     this.categoryDS = new MskDataSource<ProductCategory>(
-      (page, pageSize, search) => this._productCategoriesService.getLookupProductCategories(page, pageSize, search),
+      (params) => this._productCategoriesService.getLookupProductCategories(params),
+      new MskSort(DefaultProductCategorySortData).sortChange,
       this.form.get('category')?.valueChanges,
     );
   }

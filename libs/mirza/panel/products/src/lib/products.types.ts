@@ -1,8 +1,7 @@
-import { SortDirection } from '@angular/material/sort';
+import { MskSortable } from '@msk/shared/data-access';
 import { ProductCategory } from '@msk/mirza/panel/product-categories';
 
-export const DefaultProductsSortId = 'name';
-export const DefaultProductsSortDirection: SortDirection = 'asc';
+export const DefaultProductsSortData: MskSortable = { active: 'name', direction: 'asc' };
 
 export enum ProductUnit {
   PIECE = 'piece',

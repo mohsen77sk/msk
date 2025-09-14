@@ -1,8 +1,6 @@
-import { SortDirection } from '@angular/material/sort';
+import { MskSortable } from '@msk/shared/data-access';
 
-export const DefaultProductCategoriesSortId = 'name';
-export const DefaultProductCategoriesSortDirection: SortDirection = 'asc';
-
+export const DefaultProductCategorySortData: MskSortable = { active: 'name', direction: 'asc' };
 export class ProductCategory {
   id: number;
   name: string;

@@ -9,12 +9,7 @@ import {
   MskPagingRequest,
   convertToMirzaPagingRequest,
 } from '@msk/shared/data-access';
-import {
-  PurchaseInvoice,
-  DefaultPurchasesSortId,
-  DefaultPurchasesSortDirection,
-  ICreatePurchaseInvoice,
-} from './purchases.types';
+import { PurchaseInvoice, DefaultPurchasesSortData, ICreatePurchaseInvoice } from './purchases.types';
 
 @Injectable({ providedIn: 'root' })
 export class PurchasesService {
@@ -50,7 +45,7 @@ export class PurchasesService {
     params: MskPagingRequest = {
       page: 1,
       pageSize: 10,
-      sortBy: `${DefaultPurchasesSortId} ${DefaultPurchasesSortDirection}`,
+      sortBy: `${DefaultPurchasesSortData.active} ${DefaultPurchasesSortData.direction}`,
     },
   ): Observable<MskPageData<PurchaseInvoice>> {
     return this._httpClient

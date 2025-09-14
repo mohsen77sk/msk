@@ -8,10 +8,8 @@ import {
   EmptyPageData,
   MskPagingRequest,
   convertToMirzaPagingRequest,
-  MskLookupResponse,
-  MskLookupItem,
 } from '@msk/shared/data-access';
-import { DefaultVendorsSortDirection, DefaultVendorsSortId, Vendor } from './vendors.types';
+import { DefaultVendorsSortData, Vendor } from './vendors.types';
 
 @Injectable({ providedIn: 'root' })
 export class VendorsService {
@@ -45,7 +43,7 @@ export class VendorsService {
     params: MskPagingRequest = {
       page: 1,
       pageSize: 10,
-      sortBy: `${DefaultVendorsSortId} ${DefaultVendorsSortDirection}`,
+      sortBy: `${DefaultVendorsSortData.active} ${DefaultVendorsSortData.direction}`,
     },
   ): Observable<MskPageData<Vendor>> {
     return this._httpClient
@@ -66,15 +64,16 @@ export class VendorsService {
   /**
    * Get lookup vendors
    */
-  getLookupVendors(page = 1, pageSize = 10, search = ''): Observable<MskPageData<Vendor>> {
+  getLookupVendors(
+    params: MskPagingRequest = {
+      page: 1,
+      pageSize: 10,
+      sortBy: `${DefaultVendorsSortData.active} ${DefaultVendorsSortData.direction}`,
+    },
+  ): Observable<MskPageData<Vendor>> {
     return this._httpClient
       .get<MskPagingResponse<Vendor>>(`${this._appConfig.apiEndpoint}/vendor`, {
-        params: convertToMirzaPagingRequest({
-          page,
-          pageSize,
-          sortBy: `${DefaultVendorsSortId} ${DefaultVendorsSortDirection}`,
-          search,
-        }),
+        params: convertToMirzaPagingRequest(params),
       })
       .pipe(
         map((response) => {

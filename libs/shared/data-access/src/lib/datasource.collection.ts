@@ -12,12 +12,15 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+import { MskPagingRequest } from './request.types';
+import { MskSort } from './sort.types';
 
-export type FetchPageFn<T> = (page: number, pageSize: number, search: string) => Observable<MskPageData<T>>;
+export type FetchPageFn<T> = (params: MskPagingRequest) => Observable<MskPageData<T>>;
 
 export class MskDataSource<T> extends DataSource<T | undefined> {
   private _total = 1;
   private _pageSize = 10;
+  private _currentSort = '';
   private _currentSearch = '';
   private _cachedData = Array.from<T>({ length: this._total });
   private _fetchedPages = new Set<number>();
@@ -26,6 +29,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
 
   constructor(
     private fetchPage: FetchPageFn<T>,
+    public sortBy?: Observable<MskSort>,
     public search?: Observable<unknown>,
   ) {
     super();
@@ -46,6 +50,19 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
           }),
           mergeMap((pages) => pages.map((page) => this._fetchPage(page))),
           mergeMap((requests) => requests),
+        )
+        .subscribe(),
+    );
+    this._subscription.add(
+      this.sortBy
+        ?.pipe(
+          map((value) => {
+            this._currentSort = value.toString();
+            this._fetchedPages.clear();
+            this._cachedData = Array.from<T>({ length: this._total });
+            this._dataStream.next(this._cachedData);
+          }),
+          switchMap(() => this._fetchPage(0)),
         )
         .subscribe(),
     );
@@ -81,7 +98,13 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
     }
     this._fetchedPages.add(pageIndex);
 
-    return this.fetchPage(pageIndex + 1, this._pageSize, this._currentSearch).pipe(
+    // pageIndex + 1, this._pageSize, this._currentSearch
+    return this.fetchPage({
+      page: pageIndex + 1,
+      pageSize: this._pageSize,
+      sortBy: this._currentSort,
+      search: this._currentSearch,
+    }).pipe(
       tap((pageData) => {
         if (this._total !== pageData.total) {
           this._total = pageData.total;

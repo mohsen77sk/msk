@@ -22,7 +22,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { MskDataSource, MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
+import { MskDataSource, MskDialogData, MskHttpErrorResponse, MskSort } from '@msk/shared/data-access';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
@@ -32,8 +32,8 @@ import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { PaymentType } from '@msk/mirza/shell/core/payment-type';
-import { Customer, CustomersService } from '@msk/mirza/panel/customers';
-import { Product, ProductsService } from '@msk/mirza/panel/products';
+import { Customer, CustomersService, DefaultCustomersSortData } from '@msk/mirza/panel/customers';
+import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/panel/products';
 
 import {
   MskHandleFormErrors,
@@ -146,7 +146,8 @@ export class SalesCardDetailsComponent implements OnInit {
     }
     // Set customer collection
     this.customerDS = new MskDataSource<Customer>(
-      (page, pageSize, search) => this._customersService.getLookupCustomers(page, pageSize, search),
+      (params) => this._customersService.getLookupCustomers(params),
+      new MskSort(DefaultCustomersSortData).sortChange,
       this.form.controls.customer.valueChanges,
     );
 
@@ -229,7 +230,8 @@ export class SalesCardDetailsComponent implements OnInit {
     // Create a new DataSource for this row
     this.productDSList.push(
       new MskDataSource<Product>(
-        (page, pageSize, search) => this._productsService.getLookupProducts(page, pageSize, search),
+        (params) => this._productsService.getLookupProducts(params),
+        new MskSort(DefaultProductsSortData).sortChange,
         group.controls.product.valueChanges,
       ),
     );

@@ -8,10 +8,8 @@ import {
   EmptyPageData,
   MskPagingRequest,
   convertToMirzaPagingRequest,
-  MskLookupItem,
-  MskLookupResponse,
 } from '@msk/shared/data-access';
-import { Customer, DefaultCustomersSortDirection, DefaultCustomersSortId } from './customers.types';
+import { Customer, DefaultCustomersSortData } from './customers.types';
 
 @Injectable({ providedIn: 'root' })
 export class CustomersService {
@@ -47,7 +45,7 @@ export class CustomersService {
     params: MskPagingRequest = {
       page: 1,
       pageSize: 10,
-      sortBy: `${DefaultCustomersSortId} ${DefaultCustomersSortDirection}`,
+      sortBy: `${DefaultCustomersSortData.active} ${DefaultCustomersSortData.direction}`,
     },
   ): Observable<MskPageData<Customer>> {
     return this._httpClient
@@ -68,15 +66,16 @@ export class CustomersService {
   /**
    * Get lookup customers
    */
-  getLookupCustomers(page = 1, pageSize = 10, search = ''): Observable<MskPageData<Customer>> {
+  getLookupCustomers(
+    params: MskPagingRequest = {
+      page: 1,
+      pageSize: 10,
+      sortBy: `${DefaultCustomersSortData.active} ${DefaultCustomersSortData.direction}`,
+    },
+  ): Observable<MskPageData<Customer>> {
     return this._httpClient
       .get<MskPagingResponse<Customer>>(`${this._appConfig.apiEndpoint}/customer`, {
-        params: convertToMirzaPagingRequest({
-          page,
-          pageSize,
-          sortBy: `${DefaultCustomersSortId} ${DefaultCustomersSortDirection}`,
-          search,
-        }),
+        params: convertToMirzaPagingRequest(params),
       })
       .pipe(
         map((response) => {

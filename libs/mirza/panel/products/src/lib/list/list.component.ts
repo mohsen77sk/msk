@@ -26,8 +26,8 @@ import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageData, MskPageSizeOptions, MskPagingRequest } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
-import { EMPTY, Observable, catchError, debounceTime, finalize, map, merge, switchMap, tap } from 'rxjs';
-import { Product, DefaultProductsSortId, DefaultProductsSortDirection } from '../products.types';
+import { EMPTY, Observable, catchError, debounceTime, finalize, merge, switchMap, tap } from 'rxjs';
+import { Product, DefaultProductsSortData } from '../products.types';
 import { ProductsService } from '../products.service';
 
 @Component({
@@ -98,8 +98,8 @@ export class ProductsListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Set the initial sort
     this._sort.sort({
-      id: DefaultProductsSortId,
-      start: DefaultProductsSortDirection,
+      id: DefaultProductsSortData.active,
+      start: DefaultProductsSortData.direction as any,
       disableClear: true,
     });
 

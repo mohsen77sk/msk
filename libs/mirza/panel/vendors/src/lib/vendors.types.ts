@@ -1,8 +1,7 @@
-import { SortDirection } from '@angular/material/sort';
+import { MskSortable } from '@msk/shared/data-access';
 import { GenderEnum } from '@msk/mirza/panel/customers';
 
-export const DefaultVendorsSortId = 'name';
-export const DefaultVendorsSortDirection: SortDirection = 'asc';
+export const DefaultVendorsSortData: MskSortable = { active: 'name', direction: 'asc' };
 
 export class Vendor {
   id: number;

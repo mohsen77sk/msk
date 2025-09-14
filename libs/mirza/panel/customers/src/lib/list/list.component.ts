@@ -27,7 +27,7 @@ import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageData, MskPageSizeOptions, MskPagingRequest } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { EMPTY, Observable, catchError, debounceTime, finalize, merge, switchMap, tap } from 'rxjs';
-import { Customer, DefaultCustomersSortDirection, DefaultCustomersSortId } from '../customers.types';
+import { Customer, DefaultCustomersSortData } from '../customers.types';
 import { CustomersService } from '../customers.service';
 
 @Component({
@@ -98,8 +98,8 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Set the initial sort
     this._sort.sort({
-      id: DefaultCustomersSortId,
-      start: DefaultCustomersSortDirection,
+      id: DefaultCustomersSortData.active,
+      start: DefaultCustomersSortData.direction as any,
       disableClear: true,
     });
 

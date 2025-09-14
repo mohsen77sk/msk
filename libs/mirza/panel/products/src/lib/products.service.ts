@@ -9,7 +9,7 @@ import {
   MskPagingRequest,
   convertToMirzaPagingRequest,
 } from '@msk/shared/data-access';
-import { Product, DefaultProductsSortDirection, DefaultProductsSortId, ICreateProduct } from './products.types';
+import { Product, DefaultProductsSortData, ICreateProduct } from './products.types';
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
@@ -43,7 +43,7 @@ export class ProductsService {
     params: MskPagingRequest = {
       page: 1,
       pageSize: 10,
-      sortBy: `${DefaultProductsSortId} ${DefaultProductsSortDirection}`,
+      sortBy: `${DefaultProductsSortData.active} ${DefaultProductsSortData.direction}`,
     },
   ): Observable<MskPageData<Product>> {
     return this._httpClient
@@ -64,15 +64,16 @@ export class ProductsService {
   /**
    * Get lookup products
    */
-  getLookupProducts(page = 1, pageSize = 10, search = ''): Observable<MskPageData<Product>> {
+  getLookupProducts(
+    params: MskPagingRequest = {
+      page: 1,
+      pageSize: 10,
+      sortBy: `${DefaultProductsSortData.active} ${DefaultProductsSortData.direction}`,
+    },
+  ): Observable<MskPageData<Product>> {
     return this._httpClient
       .get<MskPagingResponse<Product>>(`${this._appConfig.apiEndpoint}/product`, {
-        params: convertToMirzaPagingRequest({
-          page,
-          pageSize,
-          sortBy: `${DefaultProductsSortId} ${DefaultProductsSortDirection}`,
-          search,
-        }),
+        params: convertToMirzaPagingRequest(params),
       })
       .pipe(
         map((response) => {

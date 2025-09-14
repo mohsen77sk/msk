@@ -22,7 +22,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
-import { MskDataSource, MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
+import { MskDataSource, MskDialogData, MskHttpErrorResponse, MskSort } from '@msk/shared/data-access';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
@@ -32,7 +32,7 @@ import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { PaymentType } from '@msk/mirza/shell/core/payment-type';
-import { Vendor, VendorsService } from '@msk/mirza/panel/vendors';
+import { DefaultVendorsSortData, Vendor, VendorsService } from '@msk/mirza/panel/vendors';
 
 import {
   MskHandleFormErrors,
@@ -50,7 +50,7 @@ import {
   IPurchaseItemForm,
   PurchaseInvoice,
 } from '../../purchases.types';
-import { Product, ProductsService } from '@msk/mirza/panel/products';
+import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/panel/products';
 
 @Component({
   selector: 'mz-purchases-details',
@@ -152,7 +152,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
     }
     // Set vendor collection
     this.vendorDS = new MskDataSource<Vendor>(
-      (page, pageSize, search) => this._vendorsService.getLookupVendors(page, pageSize, search),
+      (params) => this._vendorsService.getLookupVendors(params),
+      new MskSort(DefaultVendorsSortData).sortChange,
       this.form.controls.vendor.valueChanges,
     );
 
@@ -235,7 +236,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Create a new DataSource for this row
     this.productDSList.push(
       new MskDataSource<Product>(
-        (page, pageSize, search) => this._productsService.getLookupProducts(page, pageSize, search),
+        (params) => this._productsService.getLookupProducts(params),
+        new MskSort(DefaultProductsSortData).sortChange,
         group.controls.product.valueChanges,
       ),
     );

@@ -27,7 +27,7 @@ import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { MskPageData, MskPageSizeOptions, MskPagingRequest } from '@msk/shared/data-access';
 import { EMPTY, Observable, catchError, debounceTime, finalize, merge, switchMap, tap } from 'rxjs';
-import { PurchaseInvoice, DefaultPurchasesSortId, DefaultPurchasesSortDirection } from '../purchases.types';
+import { PurchaseInvoice, DefaultPurchasesSortData } from '../purchases.types';
 import { PurchasesService } from '../purchases.service';
 
 @Component({
@@ -98,8 +98,8 @@ export class PurchasesListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Set the initial sort
     this._sort.sort({
-      id: DefaultPurchasesSortId,
-      start: DefaultPurchasesSortDirection,
+      id: DefaultPurchasesSortData.active,
+      start: DefaultPurchasesSortData.direction as any,
       disableClear: true,
     });
 

@@ -1,12 +1,11 @@
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { SortDirection } from '@angular/material/sort';
+import { MskSortable } from '@msk/shared/data-access';
 import { Customer } from '@msk/mirza/panel/customers';
 import { Product, ProductItem } from '@msk/mirza/panel/products';
 import { PaymentTypeDetail } from '@msk/mirza/shell/core/payment-type';
 import { User } from '@msk/mirza/shell/core/user';
 
-export const DefaultSalesSortId = 'number';
-export const DefaultSalesSortDirection: SortDirection = 'desc';
+export const DefaultSalesSortData: MskSortable = { active: 'number', direction: 'desc' };
 
 export class SaleInvoice {
   id: number;

@@ -27,11 +27,7 @@ import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageData, MskPageSizeOptions, MskPagingRequest } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { EMPTY, Observable, catchError, debounceTime, finalize, merge, switchMap, tap } from 'rxjs';
-import {
-  ProductCategory,
-  DefaultProductCategoriesSortId,
-  DefaultProductCategoriesSortDirection,
-} from '../product-categories.types';
+import { ProductCategory, DefaultProductCategorySortData } from '../product-categories.types';
 import { ProductCategoriesService } from '../product-categories.service';
 
 @Component({
@@ -102,8 +98,8 @@ export class ProductCategoriesListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Set the initial sort
     this._sort.sort({
-      id: DefaultProductCategoriesSortId,
-      start: DefaultProductCategoriesSortDirection,
+      id: DefaultProductCategorySortData.active,
+      start: DefaultProductCategorySortData.direction as any,
       disableClear: true,
     });
 
