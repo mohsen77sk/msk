@@ -40,10 +40,6 @@ export class PeopleCardComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((result) => {
-        // Refresh list if needed
-        if (action === 'new' && result != 'cancelled') {
-          this._injector.get(PeopleListComponent).getPersons().subscribe();
-        }
         // Go back to list page
         this._router.navigate([this._activatedRoute.snapshot.url.map(() => '../').join('')], {
           relativeTo: this._activatedRoute,

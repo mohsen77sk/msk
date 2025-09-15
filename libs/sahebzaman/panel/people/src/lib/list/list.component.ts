@@ -1,31 +1,28 @@
-import { AsyncPipe } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
   OnInit,
   ViewEncapsulation,
   inject,
-  signal,
   viewChild,
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ScrollingModule, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
-import { MskPageData, MskPageSizeOptions, MskPagingRequest, MskSort } from '@msk/shared/data-access';
+import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
-import { EMPTY, Observable, catchError, debounceTime, finalize, merge, switchMap, tap } from 'rxjs';
+import { Observable, debounceTime } from 'rxjs';
 import { DefaultPeopleSortData, Person } from '../people.types';
 import { PeopleService } from '../people.service';
 import { PeopleStatusComponent } from '../common/status/status.component';
@@ -37,41 +34,40 @@ import { PeopleStatusComponent } from '../common/status/status.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: mskAnimations,
   imports: [
-    AsyncPipe,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
     RouterOutlet,
+    ScrollingModule,
     MatIconModule,
     MatMenuModule,
     MatInputModule,
     MatRippleModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatPaginatorModule,
     TranslocoDirective,
     MskAvatarComponent,
     PeopleStatusComponent,
     MskFabExtendedCollapseDirective,
   ],
 })
-export class PeopleListComponent implements OnInit, AfterViewInit {
+export class PeopleListComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _peopleService = inject(PeopleService);
+  private _viewport = viewChild.required(CdkVirtualScrollViewport);
 
-  private _paginator = viewChild.required(MatPaginator);
-  private _sort = new MskSort({
+  dataSource!: MskDataSource<Person>;
+
+  sortData = new MskSort({
     active: DefaultPeopleSortData.active,
     direction: DefaultPeopleSortData.direction,
   });
-
-  isLoading = signal(false);
-  pageSizeOptions = MskPageSizeOptions;
-  persons$!: Observable<MskPageData<Person>>;
   filterForm: FormGroup = new FormGroup({
     search: new FormControl<string>(''),
     isActive: new FormControl<boolean | null>(null),
   });
+
+  trackById = (i: number, item: Person | undefined) => item?.id ?? i;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -92,55 +88,26 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
    * On init
    */
   ngOnInit(): void {
-    // Get the persons list
-    this.persons$ = this._peopleService.persons$;
-  }
+    this.dataSource = new MskDataSource<Person>(
+      (params) => this._peopleService.getPersons(params),
+      this.sortData,
+      this.filterForm.controls['search'].valueChanges,
+    );
 
-  /**
-   * After view init
-   */
-  ngAfterViewInit(): void {
-    // If the user changes the sort order or add filter...
-    // Reset back to the first page
-    merge(this._sort.sortChange, this.filterValueChange)
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        tap(() => (this._paginator().pageIndex = 0)),
-      )
-      .subscribe();
-
-    // Get customers if sort or page or filter changes
-    merge(this._sort.sortChange, this._paginator().page, this.filterValueChange)
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        switchMap(() => this.getPersons()),
-      )
-      .subscribe();
-  }
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Get persons list
-   */
-  getPersons(): Observable<unknown> {
-    // Set isLoading to true
-    this.isLoading.set(true);
-    // Call api
-    return this._peopleService
-      .getPersons(new MskPagingRequest(this._paginator(), this._sort, this.filterForm.value))
-      .pipe(
-        catchError((response) => {
-          // Show error
-          // ---
-          return EMPTY;
-        }),
-        finalize(() => {
-          // Set isLoading to false
-          this.isLoading.set(false);
-        }),
-      );
+    // Subscribe to PeopleService changes and update the data source accordingly
+    this._peopleService.changes$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((evt) => {
+      switch (evt.type) {
+        case 'create':
+          this.dataSource.refresh();
+          this._viewport().scrollToIndex(0, 'auto');
+          break;
+        case 'update':
+          this.dataSource.updateWhere((p) => p.id === evt.item.id, evt.item);
+          break;
+        case 'delete':
+          this.dataSource.removeWhere((p) => p.id === evt.id);
+          break;
+      }
+    });
   }
 }

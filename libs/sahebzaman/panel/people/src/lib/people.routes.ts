@@ -50,9 +50,6 @@ export const routes: Routes = [
       {
         path: '',
         component: PeopleListComponent,
-        resolve: {
-          persons: () => inject(PeopleService).getPersons(),
-        },
         children: [
           {
             path: 'card/new',

@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import {
   MskPagingResponse,
   MskLookupResponse,
   MskPageData,
-  EmptyPageData,
   MskPagingRequest,
+  MskChangeEvent,
 } from '@msk/shared/data-access';
 import { DefaultPeopleSortData, Person } from './people.types';
 
@@ -17,17 +17,17 @@ export class PeopleService {
   private _httpClient = inject(HttpClient);
 
   // Private
-  private _persons: BehaviorSubject<MskPageData<Person>> = new BehaviorSubject<MskPageData<Person>>(EmptyPageData);
+  private _changes = new Subject<MskChangeEvent<Person>>();
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for persons
+   * Stream of CRUD changes for in-place list updates
    */
-  get persons$(): Observable<MskPageData<Person>> {
-    return this._persons.asObservable();
+  get changes$(): Observable<MskChangeEvent<Person>> {
+    return this._changes.asObservable();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -55,7 +55,6 @@ export class PeopleService {
             items: response.items.map((item) => new Person(item)),
           });
         }),
-        tap((response) => this._persons.next(response)),
       );
   }
 
@@ -85,9 +84,10 @@ export class PeopleService {
    * @param person
    */
   createPerson(person: Person): Observable<Person> {
-    return this._httpClient
-      .post<Person>(`${this._appConfig.apiEndpoint}/api/person`, person)
-      .pipe(map((response) => new Person(response)));
+    return this._httpClient.post<Person>(`${this._appConfig.apiEndpoint}/api/person`, person).pipe(
+      map((response) => new Person(response)),
+      tap((person) => this._changes.next({ type: 'create', item: person })),
+    );
   }
 
   /**
@@ -98,14 +98,7 @@ export class PeopleService {
   updatePerson(person: Person): Observable<Person> {
     return this._httpClient.put<Person>(`${this._appConfig.apiEndpoint}/api/person`, person).pipe(
       map((response) => new Person(response)),
-      // Update the persons
-      tap((newPerson) => {
-        if (this._persons.value) {
-          const index = this._persons.value.items.findIndex((x) => x.id === newPerson.id) ?? 0;
-          this._persons.value.items[index] = newPerson;
-          this._persons.next(this._persons.value);
-        }
-      }),
+      tap((person) => this._changes.next({ type: 'update', item: person })),
     );
   }
 
@@ -117,14 +110,7 @@ export class PeopleService {
   updatePersonStatus(person: Person): Observable<Person> {
     return this._httpClient.patch<Person>(`${this._appConfig.apiEndpoint}/api/person`, person).pipe(
       map((response) => new Person(response)),
-      // Update the persons
-      tap((newPerson) => {
-        if (this._persons.value) {
-          const index = this._persons.value.items.findIndex((x) => x.id === newPerson.id) ?? 0;
-          this._persons.value.items[index] = newPerson;
-          this._persons.next(this._persons.value);
-        }
-      }),
+      tap((person) => this._changes.next({ type: 'update', item: person })),
     );
   }
 }

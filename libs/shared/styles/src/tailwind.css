@@ -45,6 +45,7 @@
 @import './tailwind/components/msk-material-list.css';
 @import './tailwind/components/msk-material-search.css';
 @import './tailwind/components/prose.css';
+@import './tailwind/components/skeleton.css';
 
 /* Utils */
 @import './tailwind/utilities/avatar-color.css';
