@@ -1,33 +1,29 @@
-import { AsyncPipe } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
   OnInit,
   ViewEncapsulation,
   inject,
-  signal,
   viewChild,
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ScrollingModule, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
-import { MskPageData, MskPageSizeOptions, MskPagingRequest, MskSort } from '@msk/shared/data-access';
+import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
-import { EMPTY, Observable, catchError, debounceTime, finalize, merge, switchMap, tap } from 'rxjs';
-import { DefaultAccountsSortData, Account } from '../accounts.types';
 import { AccountService } from '../accounts.service';
+import { DefaultAccountsSortData, Account } from '../accounts.types';
 import { AccountsStatusComponent } from '../common/status/status.component';
 
 @Component({
@@ -37,52 +33,40 @@ import { AccountsStatusComponent } from '../common/status/status.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: mskAnimations,
   imports: [
-    AsyncPipe,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
     RouterOutlet,
+    ScrollingModule,
     MatIconModule,
     MatMenuModule,
     MatInputModule,
     MatRippleModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatPaginatorModule,
     TranslocoDirective,
     MskAvatarComponent,
     AccountsStatusComponent,
     MskFabExtendedCollapseDirective,
   ],
 })
-export class AccountsListComponent implements OnInit, AfterViewInit {
+export class AccountsListComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _accountService = inject(AccountService);
+  private _viewport = viewChild.required(CdkVirtualScrollViewport);
 
-  private _paginator = viewChild.required(MatPaginator);
-  private _sort = new MskSort({
+  dataSource!: MskDataSource<Account>;
+
+  sortData = new MskSort({
     active: DefaultAccountsSortData.active,
     direction: DefaultAccountsSortData.direction,
   });
-
-  isLoading = signal(false);
-  pageSizeOptions = MskPageSizeOptions;
-  accounts$!: Observable<MskPageData<Account>>;
   filterForm: FormGroup = new FormGroup({
     search: new FormControl<string>(''),
     isActive: new FormControl<boolean | null>(null),
   });
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Accessors
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Getter for change of filter value
-   */
-  get filterValueChange(): Observable<unknown> {
-    return this.filterForm.valueChanges.pipe(debounceTime(300));
-  }
+  trackById = (i: number, item: Account | undefined) => item?.id ?? i;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -92,54 +76,26 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
    * On init
    */
   ngOnInit(): void {
-    // Get the account list
-    this.accounts$ = this._accountService.accounts$;
-  }
+    this.dataSource = new MskDataSource<Account>(
+      (params) => this._accountService.getAccounts(params),
+      this.sortData,
+      this.filterForm.controls['search'].valueChanges,
+    );
 
-  /**
-   * After view init
-   */
-  ngAfterViewInit(): void {
-    // If the user changes the sort order or add filter...
-    // Reset back to the first page
-    merge(this._sort.sortChange, this.filterValueChange)
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        tap(() => (this._paginator().pageIndex = 0)),
-      )
-      .subscribe();
-
-    // Get customers if sort or page or filter changes
-    merge(this._sort.sortChange, this._paginator().page, this.filterValueChange)
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        switchMap(() => this.getAccounts()),
-      )
-      .subscribe();
-  }
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Get account list
-   */
-  getAccounts(): Observable<unknown> {
-    // Set isLoading to true
-    this.isLoading.set(true);
-    // Call api
-    return this._accountService
-      .getAccounts(new MskPagingRequest(this._paginator(), this._sort, this.filterForm.value))
-      .pipe(
-        catchError((response) => {
-          // Show error
-          // ---
-          return EMPTY;
-        }),
-        finalize(() => {
-          this.isLoading.set(false);
-        }),
-      );
+    // Subscribe to PeopleService changes and update the data source accordingly
+    this._accountService.changesAccounts$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((evt) => {
+      switch (evt.type) {
+        case 'create':
+          this.dataSource.refresh();
+          this._viewport().scrollToIndex(0, 'auto');
+          break;
+        case 'update':
+          this.dataSource.updateWhere((p) => p.id === evt.item.id, evt.item);
+          break;
+        case 'delete':
+          this.dataSource.removeWhere((p) => p.id === evt.id);
+          break;
+      }
+    });
   }
 }

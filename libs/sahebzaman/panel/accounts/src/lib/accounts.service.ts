@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, forkJoin, map, tap } from 'rxjs';
+import { Observable, Subject, forkJoin, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import {
   MskPagingResponse,
   MskLookupResponse,
   MskPageData,
-  EmptyPageData,
   MskPagingRequest,
+  MskChangeEvent,
 } from '@msk/shared/data-access';
 import {
   DefaultAccountsSortData,
@@ -27,17 +27,17 @@ export class AccountService {
   private _httpClient = inject(HttpClient);
 
   // Private
-  private _accounts: BehaviorSubject<MskPageData<Account>> = new BehaviorSubject<MskPageData<Account>>(EmptyPageData);
+  private _changesAccounts = new Subject<MskChangeEvent<Account>>();
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for accounts
+   * Stream of CRUD changes for in-place list updates
    */
-  get accounts$(): Observable<MskPageData<Account>> {
-    return this._accounts.asObservable();
+  get changesAccounts$(): Observable<MskChangeEvent<Account>> {
+    return this._changesAccounts.asObservable();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -65,7 +65,6 @@ export class AccountService {
             items: response.items.map((item) => new Account(item)),
           });
         }),
-        tap((response) => this._accounts.next(response)),
       );
   }
 
@@ -126,9 +125,10 @@ export class AccountService {
    * @param account
    */
   createAccount(account: ICreateAccount): Observable<Account> {
-    return this._httpClient
-      .post<Account>(`${this._appConfig.apiEndpoint}/api/account`, account)
-      .pipe(map((response) => new Account(response)));
+    return this._httpClient.post<Account>(`${this._appConfig.apiEndpoint}/api/account`, account).pipe(
+      map((response) => new Account(response)),
+      tap((account) => this._changesAccounts.next({ type: 'create', item: account })),
+    );
   }
 
   /**
@@ -139,14 +139,7 @@ export class AccountService {
   updateAccount(account: IUpdateAccount): Observable<Account> {
     return this._httpClient.put<Account>(`${this._appConfig.apiEndpoint}/api/account`, account).pipe(
       map((response) => new Account(response)),
-      // Update the accounts
-      tap((newAccount) => {
-        if (this._accounts.value) {
-          const index = this._accounts.value.items.findIndex((x) => x.id === newAccount.id) ?? 0;
-          this._accounts.value.items[index] = newAccount;
-          this._accounts.next(this._accounts.value);
-        }
-      }),
+      tap((account) => this._changesAccounts.next({ type: 'update', item: account })),
     );
   }
 
@@ -158,14 +151,7 @@ export class AccountService {
   closeAccount(account: ICloseAccount): Observable<Account> {
     return this._httpClient.post<Account>(`${this._appConfig.apiEndpoint}/api/account/close`, account).pipe(
       map((response) => new Account({ ...response, balance: 0 } as Account)),
-      // Update the accounts
-      tap((newAccount) => {
-        if (this._accounts.value) {
-          const index = this._accounts.value.items.findIndex((x) => x.id === newAccount.id) ?? 0;
-          this._accounts.value.items[index] = newAccount;
-          this._accounts.next(this._accounts.value);
-        }
-      }),
+      tap((account) => this._changesAccounts.next({ type: 'update', item: account })),
     );
   }
 

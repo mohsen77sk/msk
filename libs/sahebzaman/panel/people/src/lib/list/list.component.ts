@@ -22,7 +22,6 @@ import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
-import { Observable, debounceTime } from 'rxjs';
 import { DefaultPeopleSortData, Person } from '../people.types';
 import { PeopleService } from '../people.service';
 import { PeopleStatusComponent } from '../common/status/status.component';
@@ -68,17 +67,6 @@ export class PeopleListComponent implements OnInit {
   });
 
   trackById = (i: number, item: Person | undefined) => item?.id ?? i;
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Accessors
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Getter for change of filter value
-   */
-  get filterValueChange(): Observable<unknown> {
-    return this.filterForm.valueChanges.pipe(debounceTime(300));
-  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
