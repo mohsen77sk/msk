@@ -1,5 +1,5 @@
-import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { MskSort } from './sort.types';
 
 /**
  * MskPagingRequest is a class that encapsulates the parameters needed for paginated requests.
@@ -14,10 +14,10 @@ export class MskPagingRequest {
   sortBy: string;
   [kye: string]: string | number | boolean;
 
-  constructor(page: MatPaginator, sort?: MatSort, filter?: Record<string, unknown>) {
+  constructor(page: MatPaginator, sort?: MskSort, filter?: Record<string, unknown>) {
     this.page = page.pageIndex + 1;
     this.pageSize = page.pageSize;
-    this.sortBy = sort ? `${sort.active} ${sort.direction}` : 'id asc';
+    this.sortBy = sort ? sort.toString() : 'id asc';
     // Add other properties from filter if they exist
     if (filter) {
       Object.keys(filter).forEach((key) => {

@@ -19,13 +19,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
-import { MskPageData, MskPageSizeOptions, MskPagingRequest } from '@msk/shared/data-access';
+import { MskPageData, MskPageSizeOptions, MskPagingRequest, MskSort } from '@msk/shared/data-access';
 import { EMPTY, Observable, catchError, debounceTime, finalize, merge, switchMap, tap } from 'rxjs';
 import { SaleInvoice, DefaultSalesSortData } from '../sales.types';
 import { SalesService } from '../sales.service';
@@ -48,7 +47,6 @@ import { SalesService } from '../sales.service';
     MatRippleModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatSortModule,
     MatPaginatorModule,
     TranslocoDirective,
     MskAvatarComponent,
@@ -60,7 +58,10 @@ export class SalesListComponent implements OnInit, AfterViewInit {
   private _salesService = inject(SalesService);
 
   private _paginator = viewChild.required(MatPaginator);
-  private _sort = new MatSort();
+  private _sort = new MskSort({
+    active: DefaultSalesSortData.active,
+    direction: DefaultSalesSortData.direction,
+  });
 
   isLoading = signal(false);
   pageSizeOptions = MskPageSizeOptions;
@@ -96,13 +97,6 @@ export class SalesListComponent implements OnInit, AfterViewInit {
    * After view init
    */
   ngAfterViewInit(): void {
-    // Set the initial sort
-    this._sort.sort({
-      id: DefaultSalesSortData.active,
-      start: DefaultSalesSortData.direction as any,
-      disableClear: true,
-    });
-
     // If the user changes the sort order or add filter...
     // Reset back to the first page
     merge(this._sort.sortChange, this.filterValueChange)
