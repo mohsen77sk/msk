@@ -49,9 +49,6 @@ export const routes: Routes = [
       {
         path: '',
         component: VendorsListComponent,
-        resolve: {
-          vendors: () => inject(VendorsService).getVendors(),
-        },
         children: [
           {
             path: 'card/new',

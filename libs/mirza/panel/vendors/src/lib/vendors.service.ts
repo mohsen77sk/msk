@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import {
   MskPagingResponse,
   MskPageData,
-  EmptyPageData,
   MskPagingRequest,
   convertToMirzaPagingRequest,
+  MskChangeEvent,
 } from '@msk/shared/data-access';
 import { DefaultVendorsSortData, Vendor } from './vendors.types';
 
@@ -17,17 +17,17 @@ export class VendorsService {
   private _httpClient = inject(HttpClient);
 
   // Private
-  private _vendors: BehaviorSubject<MskPageData<Vendor>> = new BehaviorSubject<MskPageData<Vendor>>(EmptyPageData);
+  private _changes = new Subject<MskChangeEvent<Vendor>>();
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for vendors
+   * Stream of CRUD changes for in-place list updates
    */
-  get vendors$(): Observable<MskPageData<Vendor>> {
-    return this._vendors.asObservable();
+  get changes$(): Observable<MskChangeEvent<Vendor>> {
+    return this._changes.asObservable();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -57,7 +57,6 @@ export class VendorsService {
             items: response.items.map((item) => new Vendor(item)),
           });
         }),
-        tap((response) => this._vendors.next(response)),
       );
   }
 
@@ -102,9 +101,10 @@ export class VendorsService {
    * @param vendor
    */
   createVendor(vendor: Vendor): Observable<Vendor> {
-    return this._httpClient
-      .post<Vendor>(`${this._appConfig.apiEndpoint}/vendor`, vendor)
-      .pipe(map((response) => new Vendor(response)));
+    return this._httpClient.post<Vendor>(`${this._appConfig.apiEndpoint}/vendor`, vendor).pipe(
+      map((response) => new Vendor(response)),
+      tap((vendor) => this._changes.next({ type: 'create', item: vendor })),
+    );
   }
 
   /**
@@ -115,14 +115,7 @@ export class VendorsService {
   updateVendor(vendor: Vendor): Observable<Vendor> {
     return this._httpClient.patch<Vendor>(`${this._appConfig.apiEndpoint}/vendor/${vendor.id}`, vendor).pipe(
       map((response) => new Vendor(response)),
-      // Update the vendors
-      tap((newVendor) => {
-        if (this._vendors.value) {
-          const index = this._vendors.value.items.findIndex((x) => x.id === newVendor.id) ?? 0;
-          this._vendors.value.items[index] = newVendor;
-          this._vendors.next(this._vendors.value);
-        }
-      }),
+      tap((vendor) => this._changes.next({ type: 'update', item: vendor })),
     );
   }
 
@@ -134,16 +127,7 @@ export class VendorsService {
   deleteVendor(vendor: Vendor): Observable<boolean> {
     return this._httpClient.delete<boolean>(`${this._appConfig.apiEndpoint}/vendor/${vendor.id}`).pipe(
       map((response) => response),
-      // remove the vendor
-      tap(() => {
-        if (this._vendors.value) {
-          const index = this._vendors.value.items.findIndex((x) => x.id === vendor.id);
-          if (index > -1) {
-            this._vendors.value.items.splice(index, 1);
-            this._vendors.next(this._vendors.value);
-          }
-        }
-      }),
+      tap(() => this._changes.next({ type: 'delete', id: vendor.id })),
     );
   }
 }

@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import {
   MskPagingResponse,
   MskPageData,
-  EmptyPageData,
   MskPagingRequest,
   convertToMirzaPagingRequest,
+  MskChangeEvent,
 } from '@msk/shared/data-access';
 import { Customer, DefaultCustomersSortData } from './customers.types';
 
@@ -17,19 +17,17 @@ export class CustomersService {
   private _httpClient = inject(HttpClient);
 
   // Private
-  private _customers: BehaviorSubject<MskPageData<Customer>> = new BehaviorSubject<MskPageData<Customer>>(
-    EmptyPageData,
-  );
+  private _changes = new Subject<MskChangeEvent<Customer>>();
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for customers
+   * Stream of CRUD changes for in-place list updates
    */
-  get customers$(): Observable<MskPageData<Customer>> {
-    return this._customers.asObservable();
+  get changes$(): Observable<MskChangeEvent<Customer>> {
+    return this._changes.asObservable();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -59,7 +57,6 @@ export class CustomersService {
             items: response.items.map((item) => new Customer(item)),
           });
         }),
-        tap((response) => this._customers.next(response)),
       );
   }
 
@@ -104,9 +101,10 @@ export class CustomersService {
    * @param customer
    */
   createCustomer(customer: Customer): Observable<Customer> {
-    return this._httpClient
-      .post<Customer>(`${this._appConfig.apiEndpoint}/customer`, customer)
-      .pipe(map((response) => new Customer(response)));
+    return this._httpClient.post<Customer>(`${this._appConfig.apiEndpoint}/customer`, customer).pipe(
+      map((response) => new Customer(response)),
+      tap((customer) => this._changes.next({ type: 'create', item: customer })),
+    );
   }
 
   /**
@@ -117,14 +115,7 @@ export class CustomersService {
   updateCustomer(customer: Customer): Observable<Customer> {
     return this._httpClient.patch<Customer>(`${this._appConfig.apiEndpoint}/customer/${customer.id}`, customer).pipe(
       map((response) => new Customer(response)),
-      // Update the customers
-      tap((newCustomer) => {
-        if (this._customers.value) {
-          const index = this._customers.value.items.findIndex((x) => x.id === newCustomer.id) ?? 0;
-          this._customers.value.items[index] = newCustomer;
-          this._customers.next(this._customers.value);
-        }
-      }),
+      tap((customer) => this._changes.next({ type: 'update', item: customer })),
     );
   }
 
@@ -136,16 +127,7 @@ export class CustomersService {
   deleteCustomer(customer: Customer): Observable<boolean> {
     return this._httpClient.delete<boolean>(`${this._appConfig.apiEndpoint}/customer/${customer.id}`).pipe(
       map((response) => response),
-      // remove the customers
-      tap(() => {
-        if (this._customers.value) {
-          const index = this._customers.value.items.findIndex((x) => x.id === customer.id);
-          if (index > -1) {
-            this._customers.value.items.splice(index, 1);
-            this._customers.next(this._customers.value);
-          }
-        }
-      }),
+      tap(() => this._changes.next({ type: 'delete', id: customer.id })),
     );
   }
 }

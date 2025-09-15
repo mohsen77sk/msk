@@ -12,10 +12,16 @@
   <!-- Main -->
   <div class="content">
     <!-- List -->
-    <div class="content-grid" #gridContent>
+    <cdk-virtual-scroll-viewport class="content-grid" #gridContent [itemSize]="72">
       <!-- Rows -->
-      @for (vendor of (vendors$ | async)?.items; track vendor.id) {
-        <div class="content-grid-item tow-line" [routerLink]="['card', 'view', vendor.id]" matRipple>
+      <div
+        class="content-grid-item tow-line"
+        [class.pointer-events-none]="!vendor"
+        *cdkVirtualFor="let vendor of dataSource; trackBy: trackById"
+        [routerLink]="['card', 'view', vendor?.id]"
+        matRipple
+      >
+        @if (vendor) {
           <!-- Avatar -->
           <div class="content-grid-item-avatar">
             <msk-avatar [name]="vendor.name"></msk-avatar>
@@ -29,16 +35,20 @@
           </div>
           <!-- End -->
           <div class="content-grid-item-end"></div>
-        </div>
-      } @empty {
-        <div
-          class="text-secondary text-title-medium flex flex-1 items-center justify-center p-8 text-center"
-          *transloco="let t"
-        >
-          {{ t('vendors.empty-list') }}
-        </div>
-      }
-    </div>
+        } @else {
+          <div class="content-grid-item-avatar">
+            <div class="skeleton skeleton-avatar"></div>
+          </div>
+          <div class="content-grid-item-content">
+            <div class="skeleton skeleton-text skeleton-text-lg"></div>
+            <div class="skeleton skeleton-text skeleton-text-sm"></div>
+          </div>
+          <div class="content-grid-item-end">
+            <div class="skeleton skeleton-status"></div>
+          </div>
+        }
+      </div>
+    </cdk-virtual-scroll-viewport>
 
     <!-- Fab -->
     <div class="content-fab-container">
@@ -47,16 +57,6 @@
         <span *transloco="let t">{{ t('new') }}</span>
       </button>
     </div>
-
-    <mat-paginator
-      class="content-paginator"
-      [length]="(vendors$ | async)?.total"
-      [pageIndex]="(vendors$ | async)?.pageIndex"
-      [pageSize]="(vendors$ | async)?.pageSize"
-      [pageSizeOptions]="pageSizeOptions"
-      [showFirstLastButtons]="true"
-      [disabled]="isLoading()"
-    ></mat-paginator>
   </div>
 </div>
 

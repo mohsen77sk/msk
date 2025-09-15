@@ -49,9 +49,6 @@ export const routes: Routes = [
       {
         path: '',
         component: CustomersListComponent,
-        resolve: {
-          customers: () => inject(CustomersService).getCustomers(),
-        },
         children: [
           {
             path: 'card/new',
