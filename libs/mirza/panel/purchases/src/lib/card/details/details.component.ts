@@ -153,7 +153,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Set vendor collection
     this.vendorDS = new MskDataSource<Vendor>(
       (params) => this._vendorsService.getLookupVendors(params),
-      new MskSort(DefaultVendorsSortData).sortChange,
+      new MskSort(DefaultVendorsSortData),
       this.form.controls.vendor.valueChanges,
     );
 
@@ -237,7 +237,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     this.productDSList.push(
       new MskDataSource<Product>(
         (params) => this._productsService.getLookupProducts(params),
-        new MskSort(DefaultProductsSortData).sortChange,
+        new MskSort(DefaultProductsSortData),
         group.controls.product.valueChanges,
       ),
     );

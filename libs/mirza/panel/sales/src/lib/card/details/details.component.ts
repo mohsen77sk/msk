@@ -147,7 +147,7 @@ export class SalesCardDetailsComponent implements OnInit {
     // Set customer collection
     this.customerDS = new MskDataSource<Customer>(
       (params) => this._customersService.getLookupCustomers(params),
-      new MskSort(DefaultCustomersSortData).sortChange,
+      new MskSort(DefaultCustomersSortData),
       this.form.controls.customer.valueChanges,
     );
 
@@ -231,7 +231,7 @@ export class SalesCardDetailsComponent implements OnInit {
     this.productDSList.push(
       new MskDataSource<Product>(
         (params) => this._productsService.getLookupProducts(params),
-        new MskSort(DefaultProductsSortData).sortChange,
+        new MskSort(DefaultProductsSortData),
         group.controls.product.valueChanges,
       ),
     );

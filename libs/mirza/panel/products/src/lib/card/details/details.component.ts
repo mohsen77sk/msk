@@ -115,7 +115,7 @@ export class ProductCardDetailsComponent implements OnInit {
     // Set category collection
     this.categoryDS = new MskDataSource<ProductCategory>(
       (params) => this._productCategoriesService.getLookupProductCategories(params),
-      new MskSort(DefaultProductCategorySortData).sortChange,
+      new MskSort(DefaultProductCategorySortData),
       this.form.get('category')?.valueChanges,
     );
   }

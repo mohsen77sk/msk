@@ -29,10 +29,12 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
 
   constructor(
     private fetchPage: FetchPageFn<T>,
-    public sortBy?: Observable<MskSort>,
-    public search?: Observable<unknown>,
+    private _sort?: MskSort,
+    private _search?: Observable<unknown>,
   ) {
     super();
+    // Set default sort
+    this._currentSort = _sort?.toString() ?? '';
   }
 
   connect(collectionViewer: CollectionViewer): Observable<(T | undefined)[]> {
@@ -54,7 +56,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
         .subscribe(),
     );
     this._subscription.add(
-      this.sortBy
+      this._sort?.sortChange
         ?.pipe(
           map((value) => {
             this._currentSort = value.toString();
@@ -67,7 +69,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
         .subscribe(),
     );
     this._subscription.add(
-      this.search
+      this._search
         ?.pipe(
           debounceTime(300),
           filter((value) => typeof value === 'string' || value === null),
