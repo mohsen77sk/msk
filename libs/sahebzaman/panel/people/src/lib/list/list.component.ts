@@ -26,8 +26,8 @@ import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageData, MskPageSizeOptions, MskPagingRequest } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
-import { EMPTY, Observable, catchError, debounceTime, finalize, map, merge, switchMap, tap } from 'rxjs';
-import { DefaultPeopleSortDirection, DefaultPeopleSortId, Person } from '../people.types';
+import { EMPTY, Observable, catchError, debounceTime, finalize, merge, switchMap, tap } from 'rxjs';
+import { DefaultPeopleSortData, Person } from '../people.types';
 import { PeopleService } from '../people.service';
 import { PeopleStatusComponent } from '../common/status/status.component';
 
@@ -101,8 +101,8 @@ export class PeopleListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Set the initial sort
     this._sort.sort({
-      id: DefaultPeopleSortId,
-      start: DefaultPeopleSortDirection,
+      id: DefaultPeopleSortData.active,
+      start: DefaultPeopleSortData.direction as any,
       disableClear: true,
     });
 

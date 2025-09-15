@@ -1,7 +1,6 @@
-import { SortDirection } from '@angular/material/sort';
+import { MskSortable } from '@msk/shared/data-access';
 
-export const DefaultLoanSortId = 'code';
-export const DefaultLoanSortDirection: SortDirection = 'asc';
+export const DefaultLoansSortData: MskSortable = { active: 'code', direction: 'asc' };
 
 export interface ICreateLoan {
   accountId: number;

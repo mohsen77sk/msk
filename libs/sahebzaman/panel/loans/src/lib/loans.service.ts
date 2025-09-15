@@ -9,7 +9,7 @@ import {
   EmptyPageData,
   MskPagingRequest,
 } from '@msk/shared/data-access';
-import { DefaultLoanSortDirection, DefaultLoanSortId, Loan, ICreateLoan, IUpdateLoan } from './loans.types';
+import { DefaultLoansSortData, Loan, ICreateLoan, IUpdateLoan } from './loans.types';
 
 @Injectable({ providedIn: 'root' })
 export class LoanService {
@@ -43,7 +43,7 @@ export class LoanService {
     params: MskPagingRequest = {
       page: 1,
       pageSize: 10,
-      sortBy: `${DefaultLoanSortId} ${DefaultLoanSortDirection}`,
+      sortBy: `${DefaultLoansSortData.active} ${DefaultLoansSortData.direction}`,
     },
   ): Observable<MskPageData<Loan>> {
     return this._httpClient

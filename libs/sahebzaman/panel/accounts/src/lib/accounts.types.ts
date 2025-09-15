@@ -1,8 +1,6 @@
-import { SortDirection } from '@angular/material/sort';
+import { MskSortable } from '@msk/shared/data-access';
 
-export const DefaultAccountSortId = 'code';
-export const DefaultAccountSortDirection: SortDirection = 'asc';
-
+export const DefaultAccountsSortData: MskSortable = { active: 'code', direction: 'asc' };
 export interface ICreateAccount {
   accountTypeId: number;
   initCredit: number;

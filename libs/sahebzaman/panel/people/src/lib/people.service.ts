@@ -9,7 +9,7 @@ import {
   EmptyPageData,
   MskPagingRequest,
 } from '@msk/shared/data-access';
-import { DefaultPeopleSortDirection, DefaultPeopleSortId, Person } from './people.types';
+import { DefaultPeopleSortData, Person } from './people.types';
 
 @Injectable({ providedIn: 'root' })
 export class PeopleService {
@@ -43,7 +43,7 @@ export class PeopleService {
     params: MskPagingRequest = {
       page: 1,
       pageSize: 10,
-      sortBy: `${DefaultPeopleSortId} ${DefaultPeopleSortDirection}`,
+      sortBy: `${DefaultPeopleSortData.active} ${DefaultPeopleSortData.direction}`,
     },
   ): Observable<MskPageData<Person>> {
     return this._httpClient

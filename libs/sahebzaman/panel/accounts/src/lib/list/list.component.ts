@@ -27,7 +27,7 @@ import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageData, MskPageSizeOptions, MskPagingRequest } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { EMPTY, Observable, catchError, debounceTime, finalize, merge, switchMap, tap } from 'rxjs';
-import { DefaultAccountSortDirection, DefaultAccountSortId, Account } from '../accounts.types';
+import { DefaultAccountsSortData, Account } from '../accounts.types';
 import { AccountService } from '../accounts.service';
 import { AccountsStatusComponent } from '../common/status/status.component';
 
@@ -101,8 +101,8 @@ export class AccountsListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Set the initial sort
     this._sort.sort({
-      id: DefaultAccountSortId,
-      start: DefaultAccountSortDirection,
+      id: DefaultAccountsSortData.active,
+      start: DefaultAccountsSortData.direction as any,
       disableClear: true,
     });
 

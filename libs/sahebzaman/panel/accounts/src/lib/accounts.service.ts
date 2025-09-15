@@ -10,8 +10,7 @@ import {
   MskPagingRequest,
 } from '@msk/shared/data-access';
 import {
-  DefaultAccountSortDirection,
-  DefaultAccountSortId,
+  DefaultAccountsSortData,
   Account,
   ICreateAccount,
   IUpdateAccount,
@@ -54,7 +53,7 @@ export class AccountService {
     params: MskPagingRequest = {
       page: 1,
       pageSize: 10,
-      sortBy: `${DefaultAccountSortId} ${DefaultAccountSortDirection}`,
+      sortBy: `${DefaultAccountsSortData.active} ${DefaultAccountsSortData.direction}`,
     },
   ): Observable<MskPageData<Account>> {
     return this._httpClient
