@@ -5,6 +5,7 @@ import {
   debounceTime,
   EMPTY,
   filter,
+  finalize,
   map,
   mergeMap,
   Observable,
@@ -25,6 +26,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
   private _cachedData = Array.from<T>({ length: this._total });
   private _fetchedPages = new Set<number>();
   private readonly _dataStream = new BehaviorSubject<T[]>(this._cachedData);
+  private readonly _loadingStream = new BehaviorSubject<boolean>(false);
   private readonly _subscription = new Subscription();
 
   constructor(
@@ -33,8 +35,11 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
     private _search?: Observable<unknown>,
   ) {
     super();
-    // Set default sort
     this._currentSort = _sort?.toString() ?? '';
+  }
+
+  get loading$(): Observable<boolean> {
+    return this._loadingStream.asObservable();
   }
 
   connect(collectionViewer: CollectionViewer): Observable<(T | undefined)[]> {
@@ -60,9 +65,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
         ?.pipe(
           map((value) => {
             this._currentSort = value.toString();
-            this._fetchedPages.clear();
-            this._cachedData = Array.from<T>({ length: this._total });
-            this._dataStream.next(this._cachedData);
+            this._resetCache();
           }),
           switchMap(() => this._fetchPage(0)),
         )
@@ -75,9 +78,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
           filter((value) => typeof value === 'string' || value === null),
           map((value) => {
             this._currentSearch = value ?? '';
-            this._fetchedPages.clear();
-            this._cachedData = Array.from<T>({ length: this._total });
-            this._dataStream.next(this._cachedData);
+            this._resetCache();
           }),
           switchMap(() => this._fetchPage(0)),
         )
@@ -88,6 +89,8 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
 
   disconnect(): void {
     this._subscription.unsubscribe();
+    this._dataStream.complete();
+    this._loadingStream.complete();
   }
 
   private _getPageForIndex(index: number): number {
@@ -100,7 +103,8 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
     }
     this._fetchedPages.add(pageIndex);
 
-    // pageIndex + 1, this._pageSize, this._currentSearch
+    this._loadingStream.next(true);
+
     return this.fetchPage({
       page: pageIndex + 1,
       pageSize: this._pageSize,
@@ -115,6 +119,14 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
         this._cachedData.splice(pageIndex * this._pageSize, this._pageSize, ...(pageData.items as T[]));
         return this._dataStream.next(this._cachedData);
       }),
+      finalize(() => this._loadingStream.next(false)),
     );
+  }
+
+  private _resetCache(): void {
+    // this._total = 0;
+    this._fetchedPages.clear();
+    this._cachedData = Array.from<T>({ length: this._total });
+    this._dataStream.next(this._cachedData);
   }
 }
