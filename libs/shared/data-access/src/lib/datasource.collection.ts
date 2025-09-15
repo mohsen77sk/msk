@@ -20,7 +20,7 @@ export type FetchPageFn<T> = (params: MskPagingRequest) => Observable<MskPageDat
 
 export class MskDataSource<T> extends DataSource<T | undefined> {
   private _total = 1;
-  private _pageSize = 10;
+  private _pageSize = 25;
   private _currentSort = '';
   private _currentSearch = '';
   private _cachedData = Array.from<T>({ length: this._total });
@@ -222,7 +222,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
    * Emits the updated (empty) cache to the data stream.
    */
   private _resetCache(): void {
-    // this._total = 1;
+    if (this._total === 0) this._total = 1;
     this._fetchedPages.clear();
     this._cachedData = Array.from<T>({ length: this._total });
     this._dataStream.next(this._cachedData);
