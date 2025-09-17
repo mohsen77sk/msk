@@ -39,11 +39,9 @@ export const provideShell = (config: LayoutConfig): Array<Provider | Environment
   // Base providers
   const providers: Array<Provider | EnvironmentProviders> = [
     {
-      // Use the 'fill' appearance on Angular Material form fields by default
+      // Use the 'outline' appearance on Angular Material form fields by default
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'fill',
-      },
+      useValue: { appearance: 'outline' },
     },
     {
       provide: MSK_LAYOUT_CONFIG,
