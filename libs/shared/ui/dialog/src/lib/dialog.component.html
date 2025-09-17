@@ -7,6 +7,7 @@
   <div
     class="z-10 flex items-center justify-between"
     [class.cursor-move]="hasDrag() && !isFullScreen()"
+    [class.bg-surface-container]="isScrolled()"
     [class.shadow-level-2]="isScrolled()"
     cdkDrag
     cdkDragHandle

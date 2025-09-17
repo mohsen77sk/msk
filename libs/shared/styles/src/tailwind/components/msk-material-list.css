@@ -4,7 +4,7 @@
   }
 
   .msk-group-list {
-    @apply grid gap-0.5 pt-4;
+    @apply grid gap-0.5 pb-4;
 
     .msk-list-item {
       @apply bg-surface-bright rounded-extra-small;
