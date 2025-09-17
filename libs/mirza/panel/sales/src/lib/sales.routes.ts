@@ -53,9 +53,6 @@ export const routes: Routes = [
       {
         path: '',
         component: SalesListComponent,
-        resolve: {
-          invoices: () => inject(SalesService).getSaleInvoices(),
-        },
         children: [
           {
             path: 'card/new',

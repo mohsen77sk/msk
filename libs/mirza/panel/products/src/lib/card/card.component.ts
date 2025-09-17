@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, Injector, signal } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MskDialogDataAction } from '@msk/shared/data-access';
-import { ProductsListComponent } from '../list/list.component';
 import { ProductCardDetailsComponent } from './details/details.component';
 
 @Component({
@@ -14,7 +13,6 @@ import { ProductCardDetailsComponent } from './details/details.component';
 })
 export class ProductCardComponent implements OnInit {
   private _router = inject(Router);
-  private _injector = inject(Injector);
   private _matDialog = inject(MatDialog);
   private _activatedRoute = inject(ActivatedRoute);
 
@@ -39,11 +37,7 @@ export class ProductCardComponent implements OnInit {
         },
       })
       .afterClosed()
-      .subscribe((result) => {
-        // Refresh list if needed
-        if (action === 'new' && result != 'cancelled') {
-          this._injector.get(ProductsListComponent).getProducts().subscribe();
-        }
+      .subscribe(() => {
         // Go back to list page
         this._router.navigate([this._activatedRoute.snapshot.url.map(() => '../').join('')], {
           relativeTo: this._activatedRoute,

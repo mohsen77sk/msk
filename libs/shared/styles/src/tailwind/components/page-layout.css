@@ -70,19 +70,7 @@
         }
 
         > .content-fab-container {
-          @apply absolute end-4 bottom-18 z-20 flex flex-col items-end gap-4;
-        }
-
-        > .content-paginator.mat-mdc-paginator {
-          @apply border-t;
-
-          .mat-mdc-paginator-container {
-            @apply md:!justify-between;
-
-            .mat-mdc-paginator-page-size {
-              @apply !hidden md:!flex;
-            }
-          }
+          @apply absolute end-4 bottom-4 z-20 flex flex-col items-end gap-4;
         }
       }
     }

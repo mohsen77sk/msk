@@ -53,9 +53,6 @@ export const routes: Routes = [
       {
         path: '',
         component: PurchasesListComponent,
-        resolve: {
-          productCategories: () => inject(PurchasesService).getPurchaseInvoices(),
-        },
         children: [
           {
             path: 'card/new',

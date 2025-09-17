@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import {
   MskPagingResponse,
   MskPageData,
-  EmptyPageData,
   MskPagingRequest,
   convertToMirzaPagingRequest,
+  MskChangeEvent,
 } from '@msk/shared/data-access';
 import { ProductCategory, DefaultProductCategorySortData } from './product-categories.types';
 
@@ -17,19 +17,17 @@ export class ProductCategoriesService {
   private _httpClient = inject(HttpClient);
 
   // Private
-  private _productCategories: BehaviorSubject<MskPageData<ProductCategory>> = new BehaviorSubject<
-    MskPageData<ProductCategory>
-  >(EmptyPageData);
+  private _changes = new Subject<MskChangeEvent<ProductCategory>>();
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for productCategories
+   * Stream of CRUD changes for in-place list updates
    */
-  get productCategories$(): Observable<MskPageData<ProductCategory>> {
-    return this._productCategories.asObservable();
+  get changes$(): Observable<MskChangeEvent<ProductCategory>> {
+    return this._changes.asObservable();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -59,7 +57,6 @@ export class ProductCategoriesService {
             items: response.items.map((item) => new ProductCategory(item)),
           });
         }),
-        tap((response) => this._productCategories.next(response)),
       );
   }
 
@@ -104,9 +101,10 @@ export class ProductCategoriesService {
    * @param productCategory
    */
   createProductCategory(productCategory: ProductCategory): Observable<ProductCategory> {
-    return this._httpClient
-      .post<ProductCategory>(`${this._appConfig.apiEndpoint}/category`, productCategory)
-      .pipe(map((response) => new ProductCategory(response)));
+    return this._httpClient.post<ProductCategory>(`${this._appConfig.apiEndpoint}/category`, productCategory).pipe(
+      map((response) => new ProductCategory(response)),
+      tap((productCategory) => this._changes.next({ type: 'create', item: productCategory })),
+    );
   }
 
   /**
@@ -119,14 +117,7 @@ export class ProductCategoriesService {
       .patch<ProductCategory>(`${this._appConfig.apiEndpoint}/category/${productCategory.id}`, productCategory)
       .pipe(
         map((response) => new ProductCategory(response)),
-        // Update the productCategories
-        tap((newProductCategory) => {
-          if (this._productCategories.value) {
-            const index = this._productCategories.value.items.findIndex((x) => x.id === newProductCategory.id) ?? 0;
-            this._productCategories.value.items[index] = newProductCategory;
-            this._productCategories.next(this._productCategories.value);
-          }
-        }),
+        tap((productCategory) => this._changes.next({ type: 'update', item: productCategory })),
       );
   }
 
@@ -138,16 +129,7 @@ export class ProductCategoriesService {
   deleteProductCategory(productCategory: ProductCategory): Observable<boolean> {
     return this._httpClient.delete<boolean>(`${this._appConfig.apiEndpoint}/category/${productCategory.id}`).pipe(
       map((response) => response),
-      // remove the productCategories
-      tap(() => {
-        if (this._productCategories.value) {
-          const index = this._productCategories.value.items.findIndex((x) => x.id === productCategory.id);
-          if (index > -1) {
-            this._productCategories.value.items.splice(index, 1);
-            this._productCategories.next(this._productCategories.value);
-          }
-        }
-      }),
+      tap(() => this._changes.next({ type: 'delete', id: productCategory.id })),
     );
   }
 }

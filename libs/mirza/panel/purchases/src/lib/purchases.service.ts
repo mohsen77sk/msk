@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import {
   MskPagingResponse,
   MskPageData,
-  EmptyPageData,
   MskPagingRequest,
   convertToMirzaPagingRequest,
+  MskChangeEvent,
 } from '@msk/shared/data-access';
 import { PurchaseInvoice, DefaultPurchasesSortData, ICreatePurchaseInvoice } from './purchases.types';
 
@@ -17,19 +17,17 @@ export class PurchasesService {
   private _httpClient = inject(HttpClient);
 
   // Private
-  private _invoices: BehaviorSubject<MskPageData<PurchaseInvoice>> = new BehaviorSubject<MskPageData<PurchaseInvoice>>(
-    EmptyPageData,
-  );
+  private _changes = new Subject<MskChangeEvent<PurchaseInvoice>>();
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for purchase invoices
+   * Stream of CRUD changes for in-place list updates
    */
-  get purchaseInvoices$(): Observable<MskPageData<PurchaseInvoice>> {
-    return this._invoices.asObservable();
+  get changes$(): Observable<MskChangeEvent<PurchaseInvoice>> {
+    return this._changes.asObservable();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -59,7 +57,6 @@ export class PurchasesService {
             items: response.items.map((item) => new PurchaseInvoice(item)),
           });
         }),
-        tap((response) => this._invoices.next(response)),
       );
   }
 
@@ -80,9 +77,10 @@ export class PurchasesService {
    * @param invoice
    */
   createPurchaseInvoice(invoice: ICreatePurchaseInvoice): Observable<PurchaseInvoice> {
-    return this._httpClient
-      .post<PurchaseInvoice>(`${this._appConfig.apiEndpoint}/purchase`, invoice)
-      .pipe(map((response) => new PurchaseInvoice(response)));
+    return this._httpClient.post<PurchaseInvoice>(`${this._appConfig.apiEndpoint}/purchase`, invoice).pipe(
+      map((response) => new PurchaseInvoice(response)),
+      tap((invoice) => this._changes.next({ type: 'create', item: invoice })),
+    );
   }
 
   /**
@@ -95,14 +93,7 @@ export class PurchasesService {
       .patch<PurchaseInvoice>(`${this._appConfig.apiEndpoint}/purchase/${invoice.id}`, invoice)
       .pipe(
         map((response) => new PurchaseInvoice(response)),
-        // update the invoices
-        tap((newInvoice) => {
-          if (this._invoices.value) {
-            const index = this._invoices.value.items.findIndex((x) => x.id === newInvoice.id) ?? 0;
-            this._invoices.value.items[index] = newInvoice;
-            this._invoices.next(this._invoices.value);
-          }
-        }),
+        tap((invoice) => this._changes.next({ type: 'update', item: invoice })),
       );
   }
 
@@ -114,16 +105,7 @@ export class PurchasesService {
   deletePurchaseInvoice(invoice: PurchaseInvoice): Observable<boolean> {
     return this._httpClient.delete<boolean>(`${this._appConfig.apiEndpoint}/purchase/${invoice.id}`).pipe(
       map((response) => response),
-      // remove the invoices
-      tap(() => {
-        if (this._invoices.value) {
-          const index = this._invoices.value.items.findIndex((x) => x.id === invoice.id);
-          if (index > -1) {
-            this._invoices.value.items.splice(index, 1);
-            this._invoices.next(this._invoices.value);
-          }
-        }
-      }),
+      tap(() => this._changes.next({ type: 'delete', id: invoice.id })),
     );
   }
 }
