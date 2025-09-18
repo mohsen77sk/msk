@@ -31,6 +31,7 @@ import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
+import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
 import { PaymentType } from '@msk/mirza/shell/core/payment-type';
 import { Customer, CustomersService, DefaultCustomersSortData } from '@msk/mirza/panel/customers';
 import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/panel/products';
@@ -76,6 +77,7 @@ import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleIn
     MskMaskDirective,
     MskSpinnerDirective,
     MskCurrencySymbolDirective,
+    MskDatepickerTouchUiDirective,
   ],
 })
 export class SalesCardDetailsComponent implements OnInit {

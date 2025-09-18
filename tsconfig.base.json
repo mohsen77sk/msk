@@ -69,6 +69,7 @@
       "@msk/shared/animations": ["libs/shared/animations/src/index.ts"],
       "@msk/shared/data-access": ["libs/shared/data-access/src/index.ts"],
       "@msk/shared/directives/currency-symbol": ["libs/shared/directives/currency-symbol/src/index.ts"],
+      "@msk/shared/directives/datepicker-touch-ui": ["libs/shared/directives/datepicker-touch-ui/src/index.ts"],
       "@msk/shared/directives/fab-extended-collapse": ["libs/shared/directives/fab-extended-collapse/src/index.ts"],
       "@msk/shared/directives/mask": ["libs/shared/directives/mask/src/index.ts"],
       "@msk/shared/directives/scroll-reset": ["libs/shared/directives/scroll-reset/src/index.ts"],

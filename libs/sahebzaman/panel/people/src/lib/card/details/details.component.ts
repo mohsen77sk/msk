@@ -18,6 +18,7 @@ import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
+import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import {
   MskHandleFormErrors,
@@ -55,6 +56,7 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
     MskAvatarComponent,
     MskDialogComponent,
     MskSpinnerDirective,
+    MskDatepickerTouchUiDirective,
     MskDateTimePipe,
   ],
 })

@@ -31,6 +31,7 @@ import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
+import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
 import { PaymentType } from '@msk/mirza/shell/core/payment-type';
 import { DefaultVendorsSortData, Vendor, VendorsService } from '@msk/mirza/panel/vendors';
 
@@ -82,6 +83,7 @@ import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/pa
     MskMaskDirective,
     MskSpinnerDirective,
     MskCurrencySymbolDirective,
+    MskDatepickerTouchUiDirective,
   ],
 })
 export class PurchasesCardDetailsComponent implements OnInit {

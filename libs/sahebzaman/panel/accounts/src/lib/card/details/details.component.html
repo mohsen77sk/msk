@@ -175,7 +175,7 @@
           <mat-label>{{ t('createDate') }}</mat-label>
           <input matInput formControlName="createDate" [matDatepicker]="picker" />
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker #picker mskDatepickerTouchUi></mat-datepicker>
           <mat-error>{{ formErrors['createDate'] }}</mat-error>
         </mat-form-field>
       </div>
