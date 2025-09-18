@@ -11,6 +11,11 @@
   }
 }
 
+/* Fix open datepicker on dialog */
+.mat-datepicker-content {
+  --mat-datepicker-calendar-container-background-color: var(--mat-sys-surface-container-highest);
+}
+
 /* Fab extended buttons */
 .mat-mdc-fab.mat-mdc-extended-fab {
   overflow: hidden;

@@ -114,7 +114,7 @@
       </msk-alert>
     }
 
-    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+    <div class="flex flex-col gap-x-4 gap-y-2 sm:flex-row [&>*]:flex-1">
       <!-- Name -->
       <mat-form-field>
         <mat-label>{{ t('name') }}</mat-label>
@@ -150,7 +150,7 @@
     </div>
 
     <!-- Quantity -->
-    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+    <div class="flex flex-col gap-x-4 gap-y-2 sm:flex-row [&>*]:flex-1">
       <mat-form-field>
         <mat-label>{{ t('quantity') }}</mat-label>
         <input matInput type="number" formControlName="quantity" autocomplete="off" />
@@ -169,7 +169,7 @@
     </div>
 
     <!-- Price -->
-    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+    <div class="flex flex-col gap-x-4 gap-y-2 sm:flex-row [&>*]:flex-1">
       <mat-form-field>
         <mat-label>{{ t('cost') }}</mat-label>
         <input matInput formControlName="cost" mskMask="currency" autocomplete="off" />

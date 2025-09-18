@@ -123,7 +123,7 @@
       </msk-alert>
     }
 
-    <div class="flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+    <div class="flex flex-col gap-x-4 gap-y-2 sm:flex-row [&>*]:flex-1">
       <!-- Customer -->
       <mat-form-field>
         <mat-label>{{ t('customer') }}</mat-label>
@@ -237,7 +237,7 @@
       <div class="mt-2 mb-4 border-t"></div>
       @for (paymentType of paymentTypes.controls; track i; let i = $index) {
         <div class="flex flex-row gap-2">
-          <div class="mb-4 flex flex-1 flex-col gap-2 sm:flex-row sm:gap-x-4 [&>*]:flex-1" [formGroupName]="i">
+          <div class="mb-4 flex flex-1 flex-col gap-4 sm:flex-row [&>*]:flex-1" [formGroupName]="i">
             <!-- paymentType -->
             <mat-form-field subscriptSizing="dynamic" class="sm:max-w-64">
               <mat-label>{{ t('paymentType') }}</mat-label>
@@ -273,7 +273,7 @@
       </button>
     </div>
 
-    <div class="mt-2 flex flex-col gap-x-4 sm:flex-row [&>*]:flex-1">
+    <div class="mt-2 flex flex-col gap-x-4 gap-y-2 sm:flex-row [&>*]:flex-1">
       <!-- Discount -->
       <mat-form-field>
         <mat-label>{{ t('discount') }}</mat-label>
