@@ -47,7 +47,7 @@
       <!-- Amount -->
       <mat-form-field>
         <mat-label>{{ t('amount') }}</mat-label>
-        <input matInput formControlName="amount" mskMask="currency" autocomplete="off" />
+        <input matInput formControlName="amount" mskMask="currency" autocomplete="off" inputmode="numeric" />
         <span matTextSuffix mskCurrencySymbol></span>
         <mat-error>{{ formErrors['amount'] }}</mat-error>
       </mat-form-field>

@@ -124,7 +124,7 @@
       <!-- NationalCode -->
       <mat-form-field>
         <mat-label>{{ t('nationalCode') }}</mat-label>
-        <input matInput formControlName="nationalCode" maxlength="10" autocomplete="off" />
+        <input matInput formControlName="nationalCode" maxlength="10" autocomplete="off" inputmode="numeric" />
         <mat-error>{{ formErrors['nationalCode'] }}</mat-error>
       </mat-form-field>
 

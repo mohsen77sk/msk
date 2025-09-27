@@ -204,7 +204,7 @@
             <!-- Quantity -->
             <mat-form-field>
               <mat-label>{{ t('quantity') }}</mat-label>
-              <input matInput type="number" formControlName="quantity" autocomplete="off" />
+              <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
               <mat-hint align="end">
                 {{ product.get('total')?.value | number }} <small mskCurrencySymbol></small>
               </mat-hint>
@@ -256,7 +256,7 @@
             <!-- Value -->
             <mat-form-field subscriptSizing="dynamic">
               <mat-label>{{ t('paymentTypeValue') }}</mat-label>
-              <input matInput formControlName="value" mskMask="decimal" autocomplete="off" />
+              <input matInput formControlName="value" mskMask="decimal" autocomplete="off" inputmode="numeric" />
               <span matTextSuffix mskCurrencySymbol></span>
             </mat-form-field>
           </div>
@@ -283,7 +283,7 @@
       <!-- Discount -->
       <mat-form-field>
         <mat-label>{{ t('discount') }}</mat-label>
-        <input matInput formControlName="discount" mskMask="currency" autocomplete="off" />
+        <input matInput formControlName="discount" mskMask="currency" autocomplete="off" inputmode="numeric" />
         <span matTextSuffix mskCurrencySymbol></span>
         <mat-error>{{ formErrors['discount'] }}</mat-error>
       </mat-form-field>

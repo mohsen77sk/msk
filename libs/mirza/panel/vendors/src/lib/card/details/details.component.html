@@ -125,7 +125,7 @@
     <!-- Contact Number -->
     <mat-form-field>
       <mat-label>{{ t('contactNumber') }}</mat-label>
-      <input matInput formControlName="contactNumber" maxlength="11" autocomplete="off" />
+      <input matInput formControlName="contactNumber" maxlength="11" autocomplete="off" inputmode="tel" />
       <mat-error>{{ formErrors['contactNumber'] }}</mat-error>
     </mat-form-field>
 
