@@ -3,7 +3,7 @@
     @apply flex min-w-0 flex-auto flex-col;
 
     > .header {
-      @apply flex min-h-16 items-center justify-between px-4 md:px-6;
+      @apply flex flex-col gap-3 px-4 py-3 md:px-6;
 
       > label {
         @apply text-title-large;
@@ -36,7 +36,7 @@
           @apply flex flex-auto flex-col overflow-y-auto;
 
           .content-grid-item {
-            @apply text-on-surface flex h-14 flex-[0_0_auto] items-center gap-4 border-b px-4 py-2 transition md:px-8;
+            @apply text-on-surface flex h-14 flex-[0_0_auto] items-center gap-4 px-4 py-2 transition md:px-8;
 
             &.tow-line {
               @apply h-18;

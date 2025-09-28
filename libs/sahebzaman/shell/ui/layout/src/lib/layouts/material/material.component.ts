@@ -11,7 +11,6 @@ import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
 import { NavigationService, Navigation } from '@msk/sahebzaman/shell/core/navigation';
 import { cloneDeep } from 'lodash-es';
 import { UserComponent } from '../../common/user/user.component';
-import { LanguagesComponent } from '../../common/languages/languages.component';
 import { PageTitleComponent } from '../../common/page-title/page-title.component';
 
 @Component({
@@ -26,7 +25,6 @@ import { PageTitleComponent } from '../../common/page-title/page-title.component
     MskFullscreenComponent,
     MskVerticalNavigationComponent,
     UserComponent,
-    LanguagesComponent,
     PageTitleComponent,
     TranslocoDirective,
   ],
