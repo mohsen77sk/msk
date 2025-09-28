@@ -4,7 +4,7 @@
     @if (showAvatar() && user()?.avatar) {
       <img class="relative h-full w-full rounded-full" [src]="user()?.avatar" alt="user-image" />
     } @else {
-      <mat-icon svgIcon="heroicons_outline:user-circle"> </mat-icon>
+      <mat-icon>account_circle</mat-icon>
     }
   </span>
 </button>

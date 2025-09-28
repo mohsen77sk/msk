@@ -8,11 +8,9 @@
 
     <div class="msk-highlight-action">
       <button matIconButton type="button" (click)="copyCode()">
-        <mat-icon
-          class="transition"
-          [ngClass]="{ 'text-green-500': isCopied() }"
-          [svgIcon]="isCopied() ? 'heroicons_outline:clipboard-document-check' : 'heroicons_outline:clipboard-document'"
-        ></mat-icon>
+        <mat-icon class="transition" [ngClass]="{ 'text-green-500': isCopied() }">
+          {{ isCopied() ? 'check_small' : 'content_copy' }}
+        </mat-icon>
       </button>
     </div>
   </div>
