@@ -96,6 +96,7 @@
       "@msk/shared/ui/highlight": ["libs/shared/ui/highlight/src/index.ts"],
       "@msk/shared/ui/loading-bar": ["libs/shared/ui/loading-bar/src/index.ts"],
       "@msk/shared/ui/navigation": ["libs/shared/ui/navigation/src/index.ts"],
+      "@msk/shared/ui/sort-menu": ["libs/shared/ui/sort-menu/src/index.ts"],
       "@msk/shared/utils/app-config": ["libs/shared/utils/app-config/src/index.ts"],
       "@msk/shared/utils/error-handler": ["libs/shared/utils/error-handler/src/index.ts"],
       "@msk/shared/utils/icons": ["libs/shared/utils/icons/src/index.ts"],
