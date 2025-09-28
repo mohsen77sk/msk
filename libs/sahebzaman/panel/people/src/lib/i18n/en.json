@@ -17,6 +17,11 @@
     "2": "Female",
     "3": "Other"
   },
+  "sort": {
+    "code": "Code",
+    "firstName": "First name",
+    "lastName": "Last name"
+  },
   "search": "Search people",
   "empty-list": "There are no persons!",
   "activate": "Activate person",
