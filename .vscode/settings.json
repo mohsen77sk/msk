@@ -1,5 +1,8 @@
 {
   "cSpell.words": ["fullscreen", "jsverse", "onco", "sahebzaman", "transloco"],
   "cSpell.language": "en,fa",
-  "nxConsole.generateAiAgentRules": true
+  "nxConsole.generateAiAgentRules": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  }
 }
