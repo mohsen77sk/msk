@@ -53,6 +53,13 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
     return this._loadingStream.asObservable();
   }
 
+  /**
+   * Returns the total number of items in the data source.
+   */
+  get length(): number {
+    return this._total;
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------

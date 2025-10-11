@@ -57,5 +57,9 @@
     "last-page-label": "Last page",
     "range-page-label-1": "0 of {{length}}",
     "range-page-label-2": "{{startIndex}} - {{endIndex}} of {{length}}"
+  },
+  "empty-state": {
+    "title": "No data found",
+    "desc": "You haven't added anything yet. Click the new button to get started."
   }
 }

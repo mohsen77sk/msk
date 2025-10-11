@@ -3,6 +3,6 @@
   "cSpell.language": "en,fa",
   "nxConsole.generateAiAgentRules": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    // "source.organizeImports": "explicit"
   }
 }

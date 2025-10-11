@@ -57,5 +57,9 @@
     "last-page-label": "صفحه آخر",
     "range-page-label-1": "0 از {{length}}",
     "range-page-label-2": "{{startIndex}} - {{endIndex}} از {{length}}"
+  },
+  "empty-state": {
+    "title": "هیچ داده‌ای یافت نشد",
+    "desc": "هنوز چیزی اضافه نکردی. برای شروع روی دکمه جدید کلیک کن."
   }
 }
