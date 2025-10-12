@@ -20,6 +20,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
+import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
+import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { SaleInvoice, DefaultSalesSortData } from '../sales.types';
@@ -45,6 +47,8 @@ import { SalesService } from '../sales.service';
     MatFormFieldModule,
     TranslocoDirective,
     MskAvatarComponent,
+    MskSortMenuComponent,
+    MskPageTitleDirective,
     MskFabExtendedCollapseDirective,
   ],
 })
@@ -55,12 +59,17 @@ export class SalesListComponent implements OnInit {
 
   dataSource!: MskDataSource<SaleInvoice>;
 
+  sortItems: SortMenuItem[] = [
+    { key: 'number', label: 'sales.sort.number' },
+    { key: 'createdAt', label: 'sales.sort.createdAt' },
+  ];
   sortData = new MskSort({
     active: DefaultSalesSortData.active,
     direction: DefaultSalesSortData.direction,
   });
+  search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
-    search: new FormControl<string>(''),
+    isActive: new FormControl<boolean | null>(null),
   });
 
   trackById = (i: number, item: SaleInvoice | undefined) => item?.id ?? i;
@@ -76,10 +85,10 @@ export class SalesListComponent implements OnInit {
     this.dataSource = new MskDataSource<SaleInvoice>(
       (params) => this._salesService.getSaleInvoices(params),
       this.sortData,
-      this.filterForm.controls['search'].valueChanges,
+      this.search.valueChanges,
     );
 
-    // Subscribe to PeopleService changes and update the data source accordingly
+    // Subscribe to SalesService changes and update the data source accordingly
     this._salesService.changes$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((evt) => {
       switch (evt.type) {
         case 'create':

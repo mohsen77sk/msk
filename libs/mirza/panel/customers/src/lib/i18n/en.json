@@ -15,6 +15,10 @@
     "female": "Female",
     "company": "Other"
   },
+  "sort": {
+    "name": "Name",
+    "createdAt": "Most recent"
+  },
   "search": "Search customers",
   "empty-list": "There are no customers!",
   "delete": "Delete customer",

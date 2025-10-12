@@ -29,6 +29,10 @@
     "gift": "هدیه",
     "notPaid": "پرداخت نشده"
   },
+  "sort": {
+    "number": "شماره",
+    "createdAt": "جدیدترین"
+  },
   "errors": {
     "paymentTypesValueMustEqualByTotal": "مجموع مقادیر پرداختی با مبلغ نهایی برابر نیست."
   },

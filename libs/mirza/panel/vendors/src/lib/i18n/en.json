@@ -15,6 +15,10 @@
     "female": "Female",
     "company": "Other"
   },
+  "sort": {
+    "name": "Name",
+    "createdAt": "Most recent"
+  },
   "search": "Search vendors",
   "empty-list": "There are no vendors!",
   "delete": "Delete vendor",

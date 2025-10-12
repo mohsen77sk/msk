@@ -23,6 +23,9 @@
     "date": "Date",
     "note": "Note"
   },
+  "sort": {
+    "code": "Code"
+  },
   "search": "Search accounts",
   "empty-list": "There are no accounts!",
   "info-edit-title": "Info",

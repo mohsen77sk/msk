@@ -20,6 +20,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
+import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
+import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { Customer, DefaultCustomersSortData } from '../customers.types';
@@ -45,6 +47,8 @@ import { CustomersService } from '../customers.service';
     MatFormFieldModule,
     TranslocoDirective,
     MskAvatarComponent,
+    MskSortMenuComponent,
+    MskPageTitleDirective,
     MskFabExtendedCollapseDirective,
   ],
 })
@@ -55,12 +59,17 @@ export class CustomersListComponent implements OnInit {
 
   dataSource!: MskDataSource<Customer>;
 
+  sortItems: SortMenuItem[] = [
+    { key: 'name', label: 'customers.sort.name' },
+    { key: 'createdAt', label: 'customers.sort.createdAt' },
+  ];
   sortData = new MskSort({
     active: DefaultCustomersSortData.active,
     direction: DefaultCustomersSortData.direction,
   });
+  search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
-    search: new FormControl<string>(''),
+    isActive: new FormControl<boolean | null>(null),
   });
 
   trackById = (i: number, item: Customer | undefined) => item?.id ?? i;
@@ -76,10 +85,10 @@ export class CustomersListComponent implements OnInit {
     this.dataSource = new MskDataSource<Customer>(
       (params) => this._customersService.getCustomers(params),
       this.sortData,
-      this.filterForm.controls['search'].valueChanges,
+      this.search.valueChanges,
     );
 
-    // Subscribe to PeopleService changes and update the data source accordingly
+    // Subscribe to CustomersService changes and update the data source accordingly
     this._customersService.changes$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((evt) => {
       switch (evt.type) {
         case 'create':

@@ -7,6 +7,10 @@
     "name": "Name",
     "note": "Note"
   },
+  "sort": {
+    "name": "Name",
+    "createdAt": "Most recent"
+  },
   "search": "Search categories",
   "empty-list": "There are no categories!",
   "delete": "Delete category",

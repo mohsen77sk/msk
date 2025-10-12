@@ -1,10 +1,10 @@
 <button mat-button [matMenuTriggerFor]="menu">
   <div class="flex flex-col items-start" *transloco="let t">
     <span class="flex items-center gap-1">
-      {{ t('sort-by') }} {{ t(getLabel(sortData().active)) }}
       <mat-icon class="icon-size-5">
         {{ sortData().direction === 'asc' ? 'arrow_downward_alt' : 'arrow_upward_alt' }}
       </mat-icon>
+      {{ t('sort-by') }} {{ t(getLabel(sortData().active)) }}
     </span>
   </div>
 </button>

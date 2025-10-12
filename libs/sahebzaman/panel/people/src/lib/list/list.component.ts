@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
+import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
@@ -48,6 +49,7 @@ import { PeopleStatusComponent } from '../common/status/status.component';
     TranslocoDirective,
     MskAvatarComponent,
     MskSortMenuComponent,
+    MskPageTitleDirective,
     PeopleStatusComponent,
     MskFabExtendedCollapseDirective,
   ],
@@ -68,8 +70,8 @@ export class PeopleListComponent implements OnInit {
     active: DefaultPeopleSortData.active,
     direction: DefaultPeopleSortData.direction,
   });
+  search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
-    search: new FormControl<string>(''),
     isActive: new FormControl<boolean | null>(null),
   });
 
@@ -86,7 +88,7 @@ export class PeopleListComponent implements OnInit {
     this.dataSource = new MskDataSource<Person>(
       (params) => this._peopleService.getPersons(params),
       this.sortData,
-      this.filterForm.controls['search'].valueChanges,
+      this.search.valueChanges,
     );
 
     // Subscribe to PeopleService changes and update the data source accordingly

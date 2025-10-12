@@ -1,12 +1,10 @@
 <div class="page-layout grid-scroll">
   <!-- Header -->
   <div class="header" *transloco="let t">
-    <form class="flex w-full items-center" [formGroup]="filterForm">
-      <div class="msk-mat-search-bar w-full">
-        <mat-icon>search</mat-icon>
-        <input formControlName="search" autocomplete="off" [placeholder]="t('purchases.search')" />
-      </div>
-    </form>
+    <div class="flex items-center justify-between" [formGroup]="filterForm">
+      <span mskPageTitle #pageTitle="mskPageTitle">{{ pageTitle.pageTitle() }}</span>
+      <msk-sort-menu [sortData]="sortData" [sortItems]="sortItems"></msk-sort-menu>
+    </div>
   </div>
 
   <!-- Main -->

@@ -17,6 +17,10 @@
     "gram": "Gram",
     "kg": "Kilogram"
   },
+  "sort": {
+    "name": "Name",
+    "createdAt": "Most recent"
+  },
   "search": "Search products",
   "empty-list": "There are no products!",
   "delete": "Delete product",

@@ -1,7 +1,6 @@
 import { Component, DestroyRef, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
-import { NgClass } from '@angular/common';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,21 +10,18 @@ import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
 import { NavigationService, Navigation } from '@msk/sahebzaman/shell/core/navigation';
 import { cloneDeep } from 'lodash-es';
 import { UserComponent } from '../../common/user/user.component';
-import { PageTitleComponent } from '../../common/page-title/page-title.component';
 
 @Component({
   selector: 'sz-layout-material',
   templateUrl: './material.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [
-    NgClass,
     RouterOutlet,
     MatIconModule,
     MatButtonModule,
     MskFullscreenComponent,
     MskVerticalNavigationComponent,
     UserComponent,
-    PageTitleComponent,
     TranslocoDirective,
   ],
 })

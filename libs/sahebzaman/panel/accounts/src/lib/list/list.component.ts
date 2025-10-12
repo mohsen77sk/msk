@@ -20,6 +20,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
+import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
+import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { AccountService } from '../accounts.service';
@@ -46,6 +48,8 @@ import { AccountsStatusComponent } from '../common/status/status.component';
     MatFormFieldModule,
     TranslocoDirective,
     MskAvatarComponent,
+    MskSortMenuComponent,
+    MskPageTitleDirective,
     AccountsStatusComponent,
     MskFabExtendedCollapseDirective,
   ],
@@ -57,12 +61,13 @@ export class AccountsListComponent implements OnInit {
 
   dataSource!: MskDataSource<Account>;
 
+  sortItems: SortMenuItem[] = [{ key: 'code', label: 'accounts.sort.code' }];
   sortData = new MskSort({
     active: DefaultAccountsSortData.active,
     direction: DefaultAccountsSortData.direction,
   });
+  search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
-    search: new FormControl<string>(''),
     isActive: new FormControl<boolean | null>(null),
   });
 
@@ -79,7 +84,7 @@ export class AccountsListComponent implements OnInit {
     this.dataSource = new MskDataSource<Account>(
       (params) => this._accountService.getAccounts(params),
       this.sortData,
-      this.filterForm.controls['search'].valueChanges,
+      this.search.valueChanges,
     );
 
     // Subscribe to PeopleService changes and update the data source accordingly

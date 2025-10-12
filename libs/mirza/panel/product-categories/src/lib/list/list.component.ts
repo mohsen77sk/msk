@@ -20,6 +20,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
+import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
+import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { ProductCategory, DefaultProductCategorySortData } from '../product-categories.types';
@@ -45,6 +47,8 @@ import { ProductCategoriesService } from '../product-categories.service';
     MatFormFieldModule,
     TranslocoDirective,
     MskAvatarComponent,
+    MskSortMenuComponent,
+    MskPageTitleDirective,
     MskFabExtendedCollapseDirective,
   ],
 })
@@ -55,12 +59,17 @@ export class ProductCategoriesListComponent implements OnInit {
 
   dataSource!: MskDataSource<ProductCategory>;
 
+  sortItems: SortMenuItem[] = [
+    { key: 'name', label: 'categories.sort.name' },
+    { key: 'createdAt', label: 'categories.sort.createdAt' },
+  ];
   sortData = new MskSort({
     active: DefaultProductCategorySortData.active,
     direction: DefaultProductCategorySortData.direction,
   });
+  search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
-    search: new FormControl<string>(''),
+    isActive: new FormControl<boolean | null>(null),
   });
 
   trackById = (i: number, item: ProductCategory | undefined) => item?.id ?? i;
@@ -76,10 +85,10 @@ export class ProductCategoriesListComponent implements OnInit {
     this.dataSource = new MskDataSource<ProductCategory>(
       (params) => this._productCategoriesService.getProductCategories(params),
       this.sortData,
-      this.filterForm.controls['search'].valueChanges,
+      this.search.valueChanges,
     );
 
-    // Subscribe to PeopleService changes and update the data source accordingly
+    // Subscribe to ProductCategories changes and update the data source accordingly
     this._productCategoriesService.changes$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((evt) => {
       switch (evt.type) {
         case 'create':

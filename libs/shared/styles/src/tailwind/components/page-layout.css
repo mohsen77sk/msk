@@ -29,6 +29,14 @@
     &.grid-scroll {
       @apply absolute inset-0 flex-none overflow-hidden;
 
+      > .header {
+        @apply border-b;
+
+        [mskPageTitle] {
+          @apply text-title-medium md:text-title-large;
+        }
+      }
+
       > .content {
         @apply overflow-hidden p-0;
 

@@ -29,6 +29,10 @@
     "gift": "Gift",
     "notPaid": "Not paid"
   },
+  "sort": {
+    "number": "Number",
+    "createdAt": "Most recent"
+  },
   "errors": {
     "paymentTypesValueMustEqualByTotal": "The total amount paid does not equal the final amount."
   },
