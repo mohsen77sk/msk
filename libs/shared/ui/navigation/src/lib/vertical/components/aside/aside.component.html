@@ -34,7 +34,7 @@
   </div>
 </div>
 
-@if (!skipChildren) {
+@if (!skipChildren()) {
   <div class="msk-vertical-navigation-item-children">
     @for (item of item().children; track item.id) {
       <!-- Skip the hidden items -->
