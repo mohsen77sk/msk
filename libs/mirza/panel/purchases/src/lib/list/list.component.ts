@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -19,9 +20,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
-import { MskAvatarComponent } from '@msk/shared/ui/avatar';
+import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
+import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { PurchaseInvoice, DefaultPurchasesSortData } from '../purchases.types';
@@ -34,6 +36,7 @@ import { PurchasesService } from '../purchases.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: mskAnimations,
   imports: [
+    DecimalPipe,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
@@ -46,9 +49,10 @@ import { PurchasesService } from '../purchases.service';
     MatButtonModule,
     MatFormFieldModule,
     TranslocoDirective,
-    MskAvatarComponent,
+    MskDateTimePipe,
     MskSortMenuComponent,
     MskPageTitleDirective,
+    MskCurrencySymbolDirective,
     MskFabExtendedCollapseDirective,
   ],
 })

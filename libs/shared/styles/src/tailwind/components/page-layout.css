@@ -43,6 +43,10 @@
         > .content-grid {
           @apply flex flex-auto flex-col overflow-y-auto;
 
+          .cdk-virtual-scroll-content-wrapper {
+            @apply w-full;
+          }
+
           .content-grid-item {
             @apply text-on-surface flex h-14 flex-[0_0_auto] items-center gap-4 px-4 py-2 transition md:px-8;
 
@@ -67,12 +71,18 @@
               }
 
               > div:nth-child(2) {
-                @apply text-on-surface-variant text-body-small leading-5;
+                @apply text-on-surface-variant text-body-small flex items-center leading-5;
+
+                > *:not(:last-child)::after {
+                  content: '•';
+                  margin-left: 0.5rem;
+                  margin-right: 0.5rem;
+                }
               }
             }
 
             .content-grid-item-end {
-              @apply flex-[0_0_auto];
+              @apply text-label-small flex flex-[0_0_auto] flex-col items-end;
             }
           }
         }

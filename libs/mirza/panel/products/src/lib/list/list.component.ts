@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,6 +24,7 @@ import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
+import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { DefaultProductsSortData, Product } from '../products.types';
 import { ProductsService } from '../products.service';
@@ -34,6 +36,7 @@ import { ProductsService } from '../products.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: mskAnimations,
   imports: [
+    DecimalPipe,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
@@ -49,6 +52,7 @@ import { ProductsService } from '../products.service';
     MskAvatarComponent,
     MskSortMenuComponent,
     MskPageTitleDirective,
+    MskCurrencySymbolDirective,
     MskFabExtendedCollapseDirective,
   ],
 })

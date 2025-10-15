@@ -31,6 +31,10 @@ export class PurchaseInvoice {
     this.vendor = input.vendor ? new Vendor(input.vendor) : undefined;
     this.note = input.note;
   }
+
+  get title(): string {
+    return this.number + ' - ' + this.purchaseItems.map((p) => p.product?.name).join('/');
+  }
 }
 
 export interface ICreatePurchaseInvoice {

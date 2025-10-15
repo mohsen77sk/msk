@@ -20,20 +20,26 @@
         matRipple
       >
         @if (invoice) {
-          <!-- Avatar -->
-          <div class="content-grid-item-avatar">
-            <msk-avatar [name]="invoice.number"></msk-avatar>
-          </div>
           <!-- Content -->
           <div class="content-grid-item-content">
-            <div class="truncate">{{ invoice.number }}</div>
+            <div class="truncate">{{ invoice.title }}</div>
+            <div class="truncate">
+              <span *transloco="let t; prefix: 'sales.paymentTypes'">
+                @for (i of invoice.paymentTypes; track i.paymentType; let last = $last) {
+                  {{ t(i.paymentType) }}
+                  @if (!last) {
+                    -
+                  }
+                }
+              </span>
+              <span>{{ invoice.total | number }} <small mskCurrencySymbol></small></span>
+            </div>
           </div>
           <!-- End -->
-          <div class="content-grid-item-end"></div>
-        } @else {
-          <div class="content-grid-item-avatar">
-            <div class="skeleton skeleton-avatar"></div>
+          <div class="content-grid-item-end">
+            <div class="truncate">{{ invoice.date | mskDateTime: 'relative' }}</div>
           </div>
+        } @else {
           <div class="content-grid-item-content">
             <div class="skeleton skeleton-text skeleton-text-lg"></div>
             <div class="skeleton skeleton-text skeleton-text-sm"></div>

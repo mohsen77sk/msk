@@ -31,6 +31,10 @@ export class SaleInvoice {
     this.customer = input.customer ? new Customer(input.customer) : undefined;
     this.note = input.note;
   }
+
+  get title(): string {
+    return this.number + ' - ' + this.saleItems.map((p) => p.product?.name).join('/');
+  }
 }
 
 export interface ICreateSaleInvoice {
