@@ -1,9 +1,16 @@
 <div class="page-layout grid-scroll">
   <!-- Header -->
-  <div class="header" *transloco="let t">
-    <div class="flex items-center justify-between" [formGroup]="filterForm">
+  <div class="header" [formGroup]="filterForm" *transloco="let t">
+    <div class="flex items-center justify-between">
       <span mskPageTitle #pageTitle="mskPageTitle">{{ pageTitle.pageTitle() }}</span>
       <msk-sort-menu [sortData]="sortData" [sortItems]="sortItems"></msk-sort-menu>
+    </div>
+    <div class="flex h-12 items-center overflow-auto">
+      <msk-filter-menu
+        [label]="t('products.details.category')"
+        formControlName="categoryId"
+        [datasource]="categoryDS"
+      ></msk-filter-menu>
     </div>
   </div>
 

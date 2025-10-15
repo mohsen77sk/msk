@@ -93,6 +93,7 @@
       "@msk/shared/ui/avatar": ["libs/shared/ui/avatar/src/index.ts"],
       "@msk/shared/ui/dialog": ["libs/shared/ui/dialog/src/index.ts"],
       "@msk/shared/ui/empty-state": ["libs/shared/ui/empty-state/src/index.ts"],
+      "@msk/shared/ui/filter-menu": ["libs/shared/ui/filter-menu/src/index.ts"],
       "@msk/shared/ui/fullscreen": ["libs/shared/ui/fullscreen/src/index.ts"],
       "@msk/shared/ui/highlight": ["libs/shared/ui/highlight/src/index.ts"],
       "@msk/shared/ui/loading-bar": ["libs/shared/ui/loading-bar/src/index.ts"],

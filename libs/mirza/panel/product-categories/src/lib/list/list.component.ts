@@ -68,9 +68,6 @@ export class ProductCategoriesListComponent implements OnInit {
     direction: DefaultProductCategorySortData.direction,
   });
   search = new FormControl<string>('');
-  filterForm: FormGroup = new FormGroup({
-    isActive: new FormControl<boolean | null>(null),
-  });
 
   trackById = (i: number, item: ProductCategory | undefined) => item?.id ?? i;
 

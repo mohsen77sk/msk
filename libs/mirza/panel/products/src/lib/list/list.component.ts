@@ -22,10 +22,16 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
+import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
+import {
+  DefaultProductCategorySortData,
+  ProductCategoriesService,
+  ProductCategory,
+} from '@msk/mirza/panel/product-categories';
 import { DefaultProductsSortData, Product } from '../products.types';
 import { ProductsService } from '../products.service';
 
@@ -51,6 +57,7 @@ import { ProductsService } from '../products.service';
     TranslocoDirective,
     MskAvatarComponent,
     MskSortMenuComponent,
+    MskFilterMenuComponent,
     MskPageTitleDirective,
     MskCurrencySymbolDirective,
     MskFabExtendedCollapseDirective,
@@ -60,6 +67,7 @@ export class ProductsListComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _productsService = inject(ProductsService);
   private _viewport = viewChild.required(CdkVirtualScrollViewport);
+  private _productCategoriesService = inject(ProductCategoriesService);
 
   dataSource!: MskDataSource<Product>;
 
@@ -73,8 +81,9 @@ export class ProductsListComponent implements OnInit {
   });
   search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
-    isActive: new FormControl<boolean | null>(null),
+    categoryId: new FormControl<number | null>(null),
   });
+  categoryDS!: MskDataSource<ProductCategory>;
 
   trackById = (i: number, item: Product | undefined) => item?.id ?? i;
 
@@ -90,6 +99,7 @@ export class ProductsListComponent implements OnInit {
       (params) => this._productsService.getProducts(params),
       this.sortData,
       this.search.valueChanges,
+      this.filterForm.valueChanges,
     );
 
     // Subscribe to ProductsService changes and update the data source accordingly
@@ -107,5 +117,11 @@ export class ProductsListComponent implements OnInit {
           break;
       }
     });
+
+    // Set category collection
+    this.categoryDS = new MskDataSource<ProductCategory>(
+      (params) => this._productCategoriesService.getLookupProductCategories(params),
+      new MskSort(DefaultProductCategorySortData),
+    );
   }
 }

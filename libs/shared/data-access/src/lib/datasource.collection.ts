@@ -23,6 +23,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
   private _pageSize = 25;
   private _currentSort = '';
   private _currentSearch = '';
+  private _currentFilter: object | null = null;
   private _cachedData = Array.from<T>({ length: this._total });
   private _fetchedPages = new Set<number>();
   private readonly _dataStream = new BehaviorSubject<T[]>(this._cachedData);
@@ -36,6 +37,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
     private fetchPage: FetchPageFn<T>,
     private _sort?: MskSort,
     private _search?: Observable<unknown>,
+    private _filter?: Observable<unknown>,
   ) {
     super();
     this._currentSort = _sort?.toString() ?? '';
@@ -126,6 +128,23 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
         .subscribe(),
     );
 
+    // Subscribe to filter changes (if a filter observable is provided)
+    this._subscription.add(
+      this._filter
+        ?.pipe(
+          // Only proceed if the value is a object or null
+          filter((value) => typeof value === 'object' || value === null),
+          // Update the current filter value and reset the cache
+          map((value) => {
+            this._currentFilter = value ?? null;
+            this._resetCache();
+          }),
+          // Fetch the first page with the new filter value
+          switchMap(() => this._fetchPage(0)),
+        )
+        .subscribe(),
+    );
+
     // Return the observable data stream
     return this._dataStream;
   }
@@ -206,6 +225,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
       pageSize: this._pageSize,
       sortBy: this._currentSort,
       search: this._currentSearch,
+      ...this._currentFilter,
     }).pipe(
       tap((pageData) => {
         // If the total number of items has changed, update the cache size

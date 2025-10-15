@@ -69,9 +69,6 @@ export class VendorsListComponent implements OnInit {
     direction: DefaultVendorsSortData.direction,
   });
   search = new FormControl<string>('');
-  filterForm: FormGroup = new FormGroup({
-    isActive: new FormControl<boolean | null>(null),
-  });
 
   trackById = (i: number, item: Vendor | undefined) => item?.id ?? i;
 

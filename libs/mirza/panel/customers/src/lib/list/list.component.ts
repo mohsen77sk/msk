@@ -68,9 +68,6 @@ export class CustomersListComponent implements OnInit {
     direction: DefaultCustomersSortData.direction,
   });
   search = new FormControl<string>('');
-  filterForm: FormGroup = new FormGroup({
-    isActive: new FormControl<boolean | null>(null),
-  });
 
   trackById = (i: number, item: Customer | undefined) => item?.id ?? i;
 
