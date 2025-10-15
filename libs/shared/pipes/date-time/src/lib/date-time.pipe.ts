@@ -3,12 +3,38 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { Locale } from 'date-fns/locale';
 import { faIR } from 'date-fns-jalali/locale';
-import { format as gregorianFormat } from 'date-fns';
-import { format as jalaliFormat } from 'date-fns-jalali';
+import { differenceInDays, differenceInYears, format, formatRelative, startOfDay } from 'date-fns';
+import {
+  format as jalaliFormat,
+  formatRelative as jalaliFormatRelative,
+  differenceInDays as jalaliDifferenceInDays,
+  differenceInYears as jalaliDifferenceInYears,
+  startOfDay as jalaliStartOfDay,
+} from 'date-fns-jalali';
 
 const localeFormat = {
-  gregorian: gregorianFormat,
+  gregorian: format,
   jalali: jalaliFormat,
+};
+
+const relativeFormat = {
+  gregorian: formatRelative,
+  jalali: jalaliFormatRelative,
+};
+
+const localeStartOfDay = {
+  gregorian: startOfDay,
+  jalali: jalaliStartOfDay,
+};
+
+const localeDiffInDays = {
+  gregorian: differenceInDays,
+  jalali: jalaliDifferenceInDays,
+};
+
+const localeDiffInYears = {
+  gregorian: differenceInYears,
+  jalali: jalaliDifferenceInYears,
 };
 
 /**
@@ -17,7 +43,6 @@ const localeFormat = {
 @Pipe({
   standalone: true,
   name: 'mskDateTime',
-  pure: false,
 })
 export class MskDateTimePipe implements PipeTransform {
   matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
@@ -46,6 +71,8 @@ export class MskDateTimePipe implements PipeTransform {
     if (value === '' || value == null || value !== value) return null;
 
     switch (format) {
+      case 'relative':
+        return this._formatRelative(value);
       case 'short':
         return this._formatDate(value, 'Pp');
       case 'medium':
@@ -77,7 +104,23 @@ export class MskDateTimePipe implements PipeTransform {
 
   private _formatDate(value: Date | string | number, format: string): string {
     return localeFormat[this._calendarType](new Date(value), format, {
-      locale: this.matDateLocale as Locale,
+      locale: this.matDateLocale,
     });
+  }
+
+  private _formatRelative(date: Date | string | number) {
+    const dateWithoutTime = localeStartOfDay[this._calendarType](date);
+    const baseDateWithoutTime = localeStartOfDay[this._calendarType](new Date());
+
+    const diffInDays = Math.abs(localeDiffInDays[this._calendarType](dateWithoutTime, baseDateWithoutTime));
+    const diffInYears = Math.abs(localeDiffInYears[this._calendarType](dateWithoutTime, baseDateWithoutTime));
+
+    if (diffInDays <= 1) {
+      return relativeFormat[this._calendarType](dateWithoutTime, baseDateWithoutTime, { locale: this.matDateLocale });
+    }
+    if (diffInYears >= 1) {
+      return this._formatDate(dateWithoutTime, 'P');
+    }
+    return this._formatDate(dateWithoutTime, 'MMMM d');
   }
 }
