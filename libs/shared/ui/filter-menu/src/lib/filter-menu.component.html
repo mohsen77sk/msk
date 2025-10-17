@@ -45,7 +45,7 @@
       } @else {
         <mat-icon></mat-icon>
       }
-      <span>{{ item?.name }}</span>
+      <span>{{ item?.name ?? 'loading' | transloco }}</span>
     </button>
   </cdk-virtual-scroll-viewport>
 </mat-menu>
