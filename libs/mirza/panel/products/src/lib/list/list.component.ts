@@ -22,6 +22,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
+import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
@@ -57,6 +58,7 @@ import { ProductsService } from '../products.service';
     MskAvatarComponent,
     MskSortMenuComponent,
     MskFilterMenuComponent,
+    MskEmptyStateComponent,
     MskCurrencySymbolDirective,
     MskFabExtendedCollapseDirective,
   ],

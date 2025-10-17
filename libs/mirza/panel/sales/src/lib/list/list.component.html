@@ -51,6 +51,11 @@
       </div>
     </cdk-virtual-scroll-viewport>
 
+    <!-- Empty state -->
+    @if (dataSource.length === 0) {
+      <msk-empty-state class="inset-0 h-full w-full"></msk-empty-state>
+    }
+
     <!-- Fab -->
     <div class="content-fab-container">
       <button matFab extended [routerLink]="['card', 'new']" [mskFabExtendedCollapse]="gridContent" @zoomIn>
