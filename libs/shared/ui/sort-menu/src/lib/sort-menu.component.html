@@ -10,7 +10,12 @@
 </button>
 <mat-menu #menu="matMenu">
   @for (item of sortItems(); track item.key) {
-    <button mat-menu-item (click)="onSortChange(item.key)">
+    <button
+      mat-menu-item
+      [class.bg-primary-container]="sortData().active === item.key"
+      [class.text-on-primary-container]="sortData().active === item.key"
+      (click)="onSortChange(item.key)"
+    >
       <mat-icon>
         {{
           sortData().active === item.key
