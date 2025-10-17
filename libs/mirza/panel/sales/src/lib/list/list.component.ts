@@ -21,7 +21,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
-import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
@@ -51,7 +50,6 @@ import { SalesService } from '../sales.service';
     TranslocoDirective,
     MskDateTimePipe,
     MskSortMenuComponent,
-    MskPageTitleDirective,
     MskCurrencySymbolDirective,
     MskFabExtendedCollapseDirective,
   ],

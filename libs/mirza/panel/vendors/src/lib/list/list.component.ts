@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -20,7 +20,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
-import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
@@ -48,7 +47,6 @@ import { VendorsService } from '../vendors.service';
     TranslocoDirective,
     MskAvatarComponent,
     MskSortMenuComponent,
-    MskPageTitleDirective,
     MskFabExtendedCollapseDirective,
   ],
 })
