@@ -8,6 +8,7 @@ import {
   MskPagingRequest,
   convertToMirzaPagingRequest,
   MskChangeEvent,
+  MskLookupItem,
 } from '@msk/shared/data-access';
 import { Customer, DefaultCustomersSortData } from './customers.types';
 
@@ -69,7 +70,7 @@ export class CustomersService {
       pageSize: 10,
       sortBy: `${DefaultCustomersSortData.active} ${DefaultCustomersSortData.direction}`,
     },
-  ): Observable<MskPageData<Customer>> {
+  ): Observable<MskPageData<MskLookupItem>> {
     return this._httpClient
       .get<MskPagingResponse<Customer>>(`${this._appConfig.apiEndpoint}/customer`, {
         params: convertToMirzaPagingRequest(params),
@@ -78,7 +79,7 @@ export class CustomersService {
         map((response) => {
           return new MskPageData({
             ...response,
-            items: response.items.map((item) => new Customer(item)),
+            items: response.items.map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
           });
         }),
       );

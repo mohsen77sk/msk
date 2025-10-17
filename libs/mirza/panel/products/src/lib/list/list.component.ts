@@ -24,14 +24,10 @@ import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
-import { MskDataSource, MskSort } from '@msk/shared/data-access';
+import { MskDataSource, MskLookupItem, MskSort } from '@msk/shared/data-access';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
-import {
-  DefaultProductCategorySortData,
-  ProductCategoriesService,
-  ProductCategory,
-} from '@msk/mirza/panel/product-categories';
+import { DefaultProductCategorySortData, ProductCategoriesService } from '@msk/mirza/panel/product-categories';
 import { DefaultProductsSortData, Product } from '../products.types';
 import { ProductsService } from '../products.service';
 
@@ -83,7 +79,7 @@ export class ProductsListComponent implements OnInit {
   filterForm: FormGroup = new FormGroup({
     categoryId: new FormControl<number | null>(null),
   });
-  categoryDS!: MskDataSource<ProductCategory>;
+  categoryLookupDS!: MskDataSource<MskLookupItem>;
 
   trackById = (i: number, item: Product | undefined) => item?.id ?? i;
 
@@ -119,7 +115,7 @@ export class ProductsListComponent implements OnInit {
     });
 
     // Set category collection
-    this.categoryDS = new MskDataSource<ProductCategory>(
+    this.categoryLookupDS = new MskDataSource<MskLookupItem>(
       (params) => this._productCategoriesService.getLookupProductCategories(params),
       new MskSort(DefaultProductCategorySortData),
     );

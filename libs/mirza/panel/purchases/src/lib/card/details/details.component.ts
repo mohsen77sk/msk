@@ -42,7 +42,7 @@ import {
   FormError,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
-import { catchError, combineLatest, EMPTY, map, startWith, tap } from 'rxjs';
+import { catchError, combineLatest, distinctUntilChanged, EMPTY, map, startWith, tap } from 'rxjs';
 import { PurchasesService } from '../../purchases.service';
 import {
   ICreatePurchaseInvoice,
@@ -154,7 +154,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     }
     // Set vendor collection
     this.vendorDS = new MskDataSource<Vendor>(
-      (params) => this._vendorsService.getLookupVendors(params),
+      (params) => this._vendorsService.getVendors(params),
       new MskSort(DefaultVendorsSortData),
       this.form.controls.vendor.valueChanges,
     );
@@ -231,6 +231,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     group.controls.product.valueChanges
       .pipe(
         takeUntilDestroyed(this._destroyRef),
+        distinctUntilChanged(),
         tap(() => group.controls.quantity.setValue(1)),
       )
       .subscribe();
@@ -238,7 +239,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Create a new DataSource for this row
     this.productDSList.push(
       new MskDataSource<Product>(
-        (params) => this._productsService.getLookupProducts(params),
+        (params) => this._productsService.getProducts(params),
         new MskSort(DefaultProductsSortData),
         group.controls.product.valueChanges,
       ),

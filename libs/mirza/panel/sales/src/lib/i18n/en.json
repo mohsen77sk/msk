@@ -21,14 +21,6 @@
     "addPaymentType": "Add payment type",
     "other": "Other"
   },
-  "paymentTypes": {
-    "pose": "POS",
-    "cash": "Cash",
-    "bankTransfer": "Bank transfer",
-    "checks": "Checks",
-    "gift": "Gift",
-    "notPaid": "Not paid"
-  },
   "sort": {
     "number": "Number",
     "createdAt": "Most recent"

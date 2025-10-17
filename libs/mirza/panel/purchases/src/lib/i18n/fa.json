@@ -21,14 +21,6 @@
     "addPaymentType": "افزودن نوع پرداخت",
     "other": "بیشتر"
   },
-  "paymentTypes": {
-    "pose": "دستگاه POS",
-    "cash": "پول نقد",
-    "bankTransfer": "انتقال بانکی",
-    "checks": "چک",
-    "gift": "هدیه",
-    "notPaid": "پرداخت نشده"
-  },
   "sort": {
     "number": "شماره",
     "createdAt": "جدیدترین"

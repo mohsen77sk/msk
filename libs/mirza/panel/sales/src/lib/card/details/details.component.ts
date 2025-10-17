@@ -43,7 +43,7 @@ import {
   FormError,
 } from '@msk/shared/utils/error-handler';
 import { mskAnimations } from '@msk/shared/animations';
-import { catchError, combineLatest, EMPTY, map, startWith, tap } from 'rxjs';
+import { catchError, combineLatest, distinctUntilChanged, EMPTY, map, startWith, tap } from 'rxjs';
 import { SalesService } from '../../sales.service';
 import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleInvoice } from '../../sales.types';
 
@@ -148,7 +148,7 @@ export class SalesCardDetailsComponent implements OnInit {
     }
     // Set customer collection
     this.customerDS = new MskDataSource<Customer>(
-      (params) => this._customersService.getLookupCustomers(params),
+      (params) => this._customersService.getCustomers(params),
       new MskSort(DefaultCustomersSortData),
       this.form.controls.customer.valueChanges,
     );
@@ -225,6 +225,7 @@ export class SalesCardDetailsComponent implements OnInit {
     group.controls.product.valueChanges
       .pipe(
         takeUntilDestroyed(this._destroyRef),
+        distinctUntilChanged(),
         tap(() => group.controls.quantity.setValue(1)),
       )
       .subscribe();
@@ -232,7 +233,7 @@ export class SalesCardDetailsComponent implements OnInit {
     // Create a new DataSource for this row
     this.productDSList.push(
       new MskDataSource<Product>(
-        (params) => this._productsService.getLookupProducts(params),
+        (params) => this._productsService.getProducts(params),
         new MskSort(DefaultProductsSortData),
         group.controls.product.valueChanges,
       ),

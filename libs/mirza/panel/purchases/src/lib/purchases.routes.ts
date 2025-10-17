@@ -48,6 +48,12 @@ export const routes: Routes = [
         scope: 'products',
         loader: scopeLoader((lang: string, root: string) => import(`./../../../products/src/lib/i18n/${lang}.json`)),
       }),
+      provideTranslocoScope({
+        scope: 'paymentTypes',
+        loader: scopeLoader(
+          (lang: string, root: string) => import(`./../../../../shell/core/payment-type/src/lib/i18n/${lang}.json`),
+        ),
+      }),
     ],
     children: [
       {

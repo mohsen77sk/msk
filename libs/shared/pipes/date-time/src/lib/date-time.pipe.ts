@@ -3,10 +3,9 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { Locale } from 'date-fns/locale';
 import { faIR } from 'date-fns-jalali/locale';
-import { differenceInDays, differenceInYears, format, formatRelative, startOfDay } from 'date-fns';
+import { differenceInDays, differenceInYears, format, startOfDay } from 'date-fns';
 import {
   format as jalaliFormat,
-  formatRelative as jalaliFormatRelative,
   differenceInDays as jalaliDifferenceInDays,
   differenceInYears as jalaliDifferenceInYears,
   startOfDay as jalaliStartOfDay,
@@ -15,11 +14,6 @@ import {
 const localeFormat = {
   gregorian: format,
   jalali: jalaliFormat,
-};
-
-const relativeFormat = {
-  gregorian: formatRelative,
-  jalali: jalaliFormatRelative,
 };
 
 const localeStartOfDay = {
@@ -116,7 +110,7 @@ export class MskDateTimePipe implements PipeTransform {
     const diffInYears = Math.abs(localeDiffInYears[this._calendarType](dateWithoutTime, baseDateWithoutTime));
 
     if (diffInDays <= 1) {
-      return relativeFormat[this._calendarType](dateWithoutTime, baseDateWithoutTime, { locale: this.matDateLocale });
+      return new Intl.RelativeTimeFormat(this.matDateLocale.code, { numeric: 'auto' }).format(diffInDays * -1, 'day');
     }
     if (diffInYears >= 1) {
       return this._formatDate(dateWithoutTime, 'P');

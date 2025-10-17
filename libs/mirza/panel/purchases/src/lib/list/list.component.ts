@@ -22,12 +22,16 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
+import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
-import { MskDataSource, MskSort } from '@msk/shared/data-access';
+import { MskDataSource, MskLookupItem, MskSort } from '@msk/shared/data-access';
+import { PaymentTypeService } from '@msk/mirza/shell/core/payment-type';
 import { PurchaseInvoice, DefaultPurchasesSortData } from '../purchases.types';
 import { PurchasesService } from '../purchases.service';
+import { DefaultVendorsSortData, VendorsService } from '@msk/mirza/panel/vendors';
+import { DefaultProductsSortData, ProductsService } from '@msk/mirza/panel/products';
 
 @Component({
   selector: 'mz-purchases-list',
@@ -51,6 +55,7 @@ import { PurchasesService } from '../purchases.service';
     TranslocoDirective,
     MskDateTimePipe,
     MskSortMenuComponent,
+    MskFilterMenuComponent,
     MskEmptyStateComponent,
     MskCurrencySymbolDirective,
     MskFabExtendedCollapseDirective,
@@ -58,14 +63,17 @@ import { PurchasesService } from '../purchases.service';
 })
 export class PurchasesListComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
+  private _vendorsService = inject(VendorsService);
+  private _productsService = inject(ProductsService);
   private _purchasesService = inject(PurchasesService);
+  private _paymentTypeService = inject(PaymentTypeService);
   private _viewport = viewChild.required(CdkVirtualScrollViewport);
 
   dataSource!: MskDataSource<PurchaseInvoice>;
 
   sortItems: SortMenuItem[] = [
     { key: 'number', label: 'purchases.sort.number' },
-    { key: 'createdAt', label: 'purchases.sort.createdAt' },
+    { key: 'date', label: 'purchases.sort.createdAt' },
   ];
   sortData = new MskSort({
     active: DefaultPurchasesSortData.active,
@@ -73,8 +81,13 @@ export class PurchasesListComponent implements OnInit {
   });
   search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
-    isActive: new FormControl<boolean | null>(null),
+    vendorId: new FormControl<number | null>(null),
+    productId: new FormControl<number | null>(null),
+    paymentType: new FormControl<string | null>(null),
   });
+  vendorLookupDS!: MskDataSource<MskLookupItem>;
+  productLookupDS!: MskDataSource<MskLookupItem>;
+  paymentTypeLookupDS!: MskDataSource<MskLookupItem>;
 
   trackById = (i: number, item: PurchaseInvoice | undefined) => item?.id ?? i;
 
@@ -90,6 +103,7 @@ export class PurchasesListComponent implements OnInit {
       (params) => this._purchasesService.getPurchaseInvoices(params),
       this.sortData,
       this.search.valueChanges,
+      this.filterForm.valueChanges,
     );
 
     // Subscribe to PurchasesService changes and update the data source accordingly
@@ -107,5 +121,21 @@ export class PurchasesListComponent implements OnInit {
           break;
       }
     });
+
+    // Set vendor collection
+    this.vendorLookupDS = new MskDataSource<MskLookupItem>(
+      (params) => this._vendorsService.getLookupVendors(params),
+      new MskSort(DefaultVendorsSortData),
+    );
+    // Set product collection
+    this.productLookupDS = new MskDataSource<MskLookupItem>(
+      (params) => this._productsService.getLookupProducts(params),
+      new MskSort(DefaultProductsSortData),
+    );
+    // Set paymentType collection
+    this.paymentTypeLookupDS = new MskDataSource<MskLookupItem>(
+      (params) => this._paymentTypeService.getLookupPaymentTypes(params),
+      new MskSort(),
+    );
   }
 }

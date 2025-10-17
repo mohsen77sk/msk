@@ -3,10 +3,10 @@
     @apply flex min-w-0 flex-auto flex-col;
 
     > .header {
-      @apply flex flex-col gap-2 px-4 py-3 md:px-6;
+      @apply flex flex-col gap-2 py-3;
 
-      > label {
-        @apply text-title-large;
+      > * {
+        @apply px-4 md:px-6;
       }
     }
 
@@ -57,6 +57,10 @@
 
         .filter-container {
           @apply flex h-10 items-center gap-2 overflow-x-auto overflow-y-hidden;
+
+          > * {
+            flex: 0 0 auto;
+          }
         }
 
         [mskPageTitle] {

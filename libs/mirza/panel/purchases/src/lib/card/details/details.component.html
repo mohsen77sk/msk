@@ -83,7 +83,7 @@
       <div class="msk-list-item">
         <div class="msk-list-item-content">
           <span>{{ item.value | number }} <small mskCurrencySymbol></small></span>
-          <span *transloco="let t; prefix: 'purchases.paymentTypes'">{{ t(item.paymentType) }}</span>
+          <span *transloco="let t; prefix: 'paymentTypes'">{{ t(item.paymentType) }}</span>
         </div>
       </div>
     }
@@ -247,9 +247,7 @@
               <mat-label>{{ t('paymentType') }}</mat-label>
               <mat-select formControlName="paymentType">
                 @for (item of paymentTypeList; track item) {
-                  <mat-option [value]="item" *transloco="let t; prefix: 'purchases.paymentTypes'">{{
-                    t(item)
-                  }}</mat-option>
+                  <mat-option [value]="item" *transloco="let t; prefix: 'paymentTypes'">{{ t(item) }}</mat-option>
                 }
               </mat-select>
             </mat-form-field>

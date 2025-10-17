@@ -112,7 +112,7 @@ export class ProductCardDetailsComponent implements OnInit {
     this.form.patchValue(this.data.item() || {});
     // Set category collection
     this.categoryDS = new MskDataSource<ProductCategory>(
-      (params) => this._productCategoriesService.getLookupProductCategories(params),
+      (params) => this._productCategoriesService.getProductCategories(params),
       new MskSort(DefaultProductCategorySortData),
       this.form.get('category')?.valueChanges,
     );

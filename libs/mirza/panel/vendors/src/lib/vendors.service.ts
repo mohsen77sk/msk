@@ -8,6 +8,7 @@ import {
   MskPagingRequest,
   convertToMirzaPagingRequest,
   MskChangeEvent,
+  MskLookupItem,
 } from '@msk/shared/data-access';
 import { DefaultVendorsSortData, Vendor } from './vendors.types';
 
@@ -69,7 +70,7 @@ export class VendorsService {
       pageSize: 10,
       sortBy: `${DefaultVendorsSortData.active} ${DefaultVendorsSortData.direction}`,
     },
-  ): Observable<MskPageData<Vendor>> {
+  ): Observable<MskPageData<MskLookupItem>> {
     return this._httpClient
       .get<MskPagingResponse<Vendor>>(`${this._appConfig.apiEndpoint}/vendor`, {
         params: convertToMirzaPagingRequest(params),
@@ -78,7 +79,7 @@ export class VendorsService {
         map((response) => {
           return new MskPageData({
             ...response,
-            items: response.items.map((item) => new Vendor(item)),
+            items: response.items.map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
           });
         }),
       );
