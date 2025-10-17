@@ -20,7 +20,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
-import { MskPageTitleDirective } from '@msk/shared/ui/navigation';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
@@ -49,7 +48,6 @@ import { PeopleStatusComponent } from '../common/status/status.component';
     TranslocoDirective,
     MskAvatarComponent,
     MskSortMenuComponent,
-    MskPageTitleDirective,
     PeopleStatusComponent,
     MskFabExtendedCollapseDirective,
   ],
