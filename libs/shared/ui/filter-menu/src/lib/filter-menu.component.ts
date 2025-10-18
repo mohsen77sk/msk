@@ -24,13 +24,13 @@ import { MskDataSource, MskLookupItem } from '@msk/shared/data-access';
 export class MskFilterMenuComponent implements ControlValueAccessor {
   // Inputs
   label = input.required<string>();
-  datasource = input.required<MskDataSource<any>>();
+  datasource = input.required<MskDataSource<MskLookupItem>>();
 
-  value = signal<any | null>(null);
+  value = signal<MskLookupItem | undefined>(undefined);
   isDisabled = signal(false);
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private onChange: (value: string | number | null) => void = () => {};
+  private onChange: (value: string | number | undefined) => void = () => {};
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private onTouched: () => void = () => {};
 
@@ -38,7 +38,7 @@ export class MskFilterMenuComponent implements ControlValueAccessor {
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
 
-  writeValue(value: any | null): void {
+  writeValue(value: MskLookupItem | undefined): void {
     this.value.set(value);
   }
 
@@ -54,7 +54,7 @@ export class MskFilterMenuComponent implements ControlValueAccessor {
     this.isDisabled.set(isDisabled);
   }
 
-  updateValue(newValue: any): void {
+  updateValue(newValue: MskLookupItem | undefined): void {
     this.value.set(newValue);
     this.onChange(newValue?.id);
     this.onTouched();
