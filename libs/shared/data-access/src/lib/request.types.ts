@@ -12,24 +12,35 @@ export class MskPagingRequest {
   page: number;
   pageSize: number;
   sortBy: string;
-  [kye: string]: string | number | boolean;
+  [kye: string]: string | number | boolean | Date;
 
   constructor(page: MatPaginator, sort?: MskSort, filter?: Record<string, unknown>) {
     this.page = page.pageIndex + 1;
     this.pageSize = page.pageSize;
     this.sortBy = sort ? sort.toString() : 'id asc';
+
     // Add other properties from filter if they exist
-    if (filter) {
-      Object.keys(filter).forEach((key) => {
-        if (filter[key] !== undefined && filter[key] !== null) {
-          if (typeof filter[key] === 'string' && filter[key].trim() !== '') {
-            this[key] = filter[key].trim();
-          } else if (typeof filter[key] === 'number' || typeof filter[key] === 'boolean') {
-            this[key] = filter[key];
-          }
+    if (!filter) return;
+    Object.entries(filter).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+      // Trim string values
+      if (typeof value === 'string') {
+        const trimmed = value.trim();
+        if (trimmed !== '') {
+          this[key] = trimmed;
         }
-      });
-    }
+        return;
+      }
+      // Allow numbers & booleans
+      if (typeof value === 'number' || typeof value === 'boolean') {
+        this[key] = value;
+        return;
+      }
+      // Allow Date type
+      if (value instanceof Date && !isNaN(value.getTime())) {
+        this[key] = value.toISOString();
+      }
+    });
   }
 }
 
@@ -42,11 +53,14 @@ export function convertToMirzaPagingRequest(params: MskPagingRequest): Record<st
   };
 
   // Add other properties from params if they exist
-  Object.keys(params).forEach((key) => {
-    if (!['page', 'pageSize', 'sortBy'].includes(key)) {
-      if (['string', 'number', 'boolean'].includes(typeof params[key])) {
-        mirzaParams[key] = params[key];
-      }
+  Object.entries(params).forEach(([key, value]) => {
+    if (['page', 'pageSize', 'sortBy'].includes(key)) return;
+    if (value == null) return;
+
+    if (['string', 'number', 'boolean'].includes(typeof value)) {
+      mirzaParams[key] = value as string | number | boolean;
+    } else if (value instanceof Date) {
+      mirzaParams[key] = value.toISOString();
     }
   });
 
