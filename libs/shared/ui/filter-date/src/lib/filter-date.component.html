@@ -1,0 +1,46 @@
+<div class="flex gap-0.5">
+  <button
+    [matButton]="!value() ? 'outlined' : ''"
+    class="rounded-small text-default h-8 ps-4 pe-2"
+    [class.rounded-e-none]="value()"
+    [class.bg-secondary-container]="value()"
+    [class.text-on-secondary-container]="value()"
+    [matMenuTriggerFor]="menu"
+    [disabled]="disabled()"
+  >
+    <span class="flex items-center gap-1">
+      {{ value()?.name ?? label() }}
+      <mat-icon>arrow_drop_down</mat-icon>
+    </span>
+  </button>
+  @if (value()) {
+    <button
+      matIconButton
+      class="bg-secondary-container text-on-secondary-container rounded-e-small relative h-8 w-8 overflow-hidden rounded-none"
+      [style.--mat-icon-button-container-shape.px]="0"
+      (click)="$event.stopPropagation(); updateValue(undefined)"
+    >
+      <mat-icon class="font-light">close_small</mat-icon>
+    </button>
+  }
+</div>
+
+<mat-menu #menu="matMenu" cl>
+  @for (item of datasource; track item.id) {
+    <button
+      mat-menu-item
+      [class.bg-primary-container]="value() === item"
+      [class.text-on-primary-container]="value() === item"
+      (click)="updateValue(item.id)"
+    >
+      @if (value() === item) {
+        <mat-icon>check</mat-icon>
+      } @else {
+        <mat-icon></mat-icon>
+      }
+      <span class="flex min-w-36 items-center gap-8">
+        {{ item?.name }}
+      </span>
+    </button>
+  }
+</mat-menu>

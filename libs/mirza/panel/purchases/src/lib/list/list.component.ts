@@ -22,6 +22,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
+import { MskFilterDateComponent } from '@msk/shared/ui/filter-date';
 import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
@@ -55,6 +56,7 @@ import { DefaultProductsSortData, ProductsService } from '@msk/mirza/panel/produ
     TranslocoDirective,
     MskDateTimePipe,
     MskSortMenuComponent,
+    MskFilterDateComponent,
     MskFilterMenuComponent,
     MskEmptyStateComponent,
     MskCurrencySymbolDirective,
@@ -81,6 +83,8 @@ export class PurchasesListComponent implements OnInit {
   });
   search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
+    dateFrom: new FormControl<Date | null>(null),
+    dateTo: new FormControl<Date | null>(null),
     vendorId: new FormControl<number | null>(null),
     productId: new FormControl<number | null>(null),
     paymentType: new FormControl<string | null>(null),

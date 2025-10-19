@@ -9,6 +9,11 @@
       <msk-sort-menu [sortData]="sortData" [sortItems]="sortItems" />
     </div>
     <div class="filter-container">
+      <msk-filter-date
+        [label]="t('sales.details.date')"
+        [defaultFilter]="'today'"
+        (dateChange)="filterForm.patchValue({ dateFrom: $event.startDate, dateTo: $event.endDate })"
+      ></msk-filter-date>
       <msk-filter-menu
         [label]="t('sales.details.customer')"
         formControlName="customerId"
