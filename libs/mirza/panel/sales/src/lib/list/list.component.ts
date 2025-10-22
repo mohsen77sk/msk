@@ -10,19 +10,20 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { startWith } from 'rxjs';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
-import { MatRippleModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
-import { MskFilterDateComponent } from '@msk/shared/ui/filter-date';
+import { DateRange, DateRangeFactory, MskFilterDateComponent } from '@msk/shared/ui/filter-date';
 import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
@@ -33,6 +34,7 @@ import { SaleInvoice, DefaultSalesSortData } from '../sales.types';
 import { SalesService } from '../sales.service';
 import { CustomersService, DefaultCustomersSortData } from '@msk/mirza/panel/customers';
 import { DefaultProductsSortData, ProductsService } from '@msk/mirza/panel/products';
+import { Locale } from 'date-fns';
 
 @Component({
   selector: 'mz-sales-list',
@@ -70,6 +72,7 @@ export class SalesListComponent implements OnInit {
   private _customersService = inject(CustomersService);
   private _paymentTypeService = inject(PaymentTypeService);
   private _viewport = viewChild.required(CdkVirtualScrollViewport);
+  private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
 
   dataSource!: MskDataSource<SaleInvoice>;
 
@@ -83,8 +86,7 @@ export class SalesListComponent implements OnInit {
   });
   search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
-    dateFrom: new FormControl<Date | null>(null),
-    dateTo: new FormControl<Date | null>(null),
+    dateRange: new FormControl<DateRange | null>(DateRangeFactory.fromKey('today', this._matDateLocale)),
     customerId: new FormControl<number | null>(null),
     productId: new FormControl<number | null>(null),
     paymentType: new FormControl<string | null>(null),
@@ -107,7 +109,7 @@ export class SalesListComponent implements OnInit {
       (params) => this._salesService.getSaleInvoices(params),
       this.sortData,
       this.search.valueChanges,
-      this.filterForm.valueChanges,
+      this.filterForm.valueChanges.pipe(startWith(this.filterForm.value)),
     );
 
     // Subscribe to SalesService changes and update the data source accordingly

@@ -6,10 +6,10 @@
     [class.bg-secondary-container]="value()"
     [class.text-on-secondary-container]="value()"
     [matMenuTriggerFor]="menu"
-    [disabled]="disabled()"
+    [disabled]="isDisabled()"
   >
     <span class="flex items-center gap-1">
-      {{ value()?.name ?? label() }}
+      {{ value()?.key ? (idToNameKey[value()?.key!] | transloco) : label() }}
       <mat-icon>arrow_drop_down</mat-icon>
     </span>
   </button>
@@ -29,17 +29,13 @@
   @for (item of datasource; track item.id) {
     <button
       mat-menu-item
-      [class.bg-primary-container]="value() === item"
-      [class.text-on-primary-container]="value() === item"
+      [class.bg-primary-container]="value()?.key === item.id"
+      [class.text-on-primary-container]="value()?.key === item.id"
       (click)="updateValue(item.id)"
     >
-      @if (value() === item) {
-        <mat-icon>check</mat-icon>
-      } @else {
-        <mat-icon></mat-icon>
-      }
+      <mat-icon>{{ value()?.key === item.id ? 'check' : '' }}</mat-icon>
       <span class="flex min-w-36 items-center gap-8">
-        {{ item?.name }}
+        {{ item?.name | transloco }}
       </span>
     </button>
   }

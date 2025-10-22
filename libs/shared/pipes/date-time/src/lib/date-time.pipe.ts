@@ -2,7 +2,6 @@ import { inject, Pipe, PipeTransform } from '@angular/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { Locale } from 'date-fns/locale';
-import { faIR } from 'date-fns-jalali/locale';
 import { differenceInDays, differenceInYears, format, startOfDay } from 'date-fns';
 import {
   format as jalaliFormat,
@@ -50,7 +49,6 @@ export class MskDateTimePipe implements PipeTransform {
   constructor() {
     if (this.matDateLocale.code === 'fa-IR') {
       this._calendarType = 'jalali';
-      this.matDateLocale = faIR;
     }
   }
 

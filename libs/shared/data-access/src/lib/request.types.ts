@@ -12,7 +12,7 @@ export class MskPagingRequest {
   page: number;
   pageSize: number;
   sortBy: string;
-  [kye: string]: string | number | boolean | Date;
+  [key: string]: string | number | boolean | Date;
 
   constructor(page: MatPaginator, sort?: MskSort, filter?: Record<string, unknown>) {
     this.page = page.pageIndex + 1;
@@ -40,6 +40,12 @@ export class MskPagingRequest {
       if (value instanceof Date && !isNaN(value.getTime())) {
         this[key] = value.toISOString();
       }
+      // Allow Date range type
+      if (key === 'dateRange' && isDateRangeValue(value)) {
+        const { startDate, endDate } = value;
+        if (isValidDate(startDate)) this['dateFrom'] = startDate.toISOString();
+        if (isValidDate(endDate)) this['dateTo'] = endDate.toISOString();
+      }
     });
   }
 }
@@ -61,8 +67,24 @@ export function convertToMirzaPagingRequest(params: MskPagingRequest): Record<st
       mirzaParams[key] = value as string | number | boolean;
     } else if (value instanceof Date) {
       mirzaParams[key] = value.toISOString();
+    } else if (key === 'dateRange' && isDateRangeValue(value)) {
+      const { startDate, endDate } = value;
+      if (isValidDate(startDate)) mirzaParams['dateFrom'] = startDate.toISOString();
+      if (isValidDate(endDate)) mirzaParams['dateTo'] = endDate.toISOString();
     }
   });
 
   return mirzaParams;
+}
+
+// -----------------------------------------------------------------------------------------------------
+// Type guards
+// -----------------------------------------------------------------------------------------------------
+
+function isValidDate(d: unknown): d is Date {
+  return d instanceof Date && !isNaN(d.getTime());
+}
+
+function isDateRangeValue(v: unknown): v is { startDate: Date | null; endDate: Date | null } {
+  return !!v && typeof v === 'object' && 'startDate' in v && 'endDate' in v;
 }

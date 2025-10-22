@@ -7,7 +7,6 @@ import {
   filter,
   finalize,
   map,
-  mergeMap,
   Observable,
   Subscription,
   switchMap,
@@ -84,17 +83,21 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
       }),
     );
 
-    // View changes (scrolling, pagination)
-    this._subscription.add(
-      viewChanges$
-        .pipe(
-          switchMap((pages) => {
-            // When new pages are requested, previous calls are automatically canceled
-            return pages.length ? this._fetchPage(pages[0]) : EMPTY;
-          }),
-        )
-        .subscribe(),
-    );
+    // Filter changes (subscribe first so initial filter is applied before first view fetch)
+    if (this._filter) {
+      this._subscription.add(
+        this._filter
+          .pipe(
+            filter((v) => typeof v === 'object' || v === null),
+            tap((v) => {
+              this._currentFilter = v ?? null;
+              this._resetCache();
+            }),
+            switchMap(() => this._fetchPage(0)), // switchMap cancels previous requests
+          )
+          .subscribe(),
+      );
+    }
 
     // Sort changes
     this._subscription.add(
@@ -124,16 +127,14 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
         .subscribe(),
     );
 
-    // Filter changes
+    // View changes (scrolling, pagination)
     this._subscription.add(
-      this._filter
-        ?.pipe(
-          filter((v) => typeof v === 'object' || v === null),
-          tap((v) => {
-            this._currentFilter = v ?? null;
-            this._resetCache();
+      viewChanges$
+        .pipe(
+          switchMap((pages) => {
+            // When new pages are requested, previous calls are automatically canceled
+            return pages.length ? this._fetchPage(pages[0]) : EMPTY;
           }),
-          switchMap(() => this._fetchPage(0)), // switchMap cancels previous requests
         )
         .subscribe(),
     );

@@ -1,11 +1,12 @@
-export type FilterKey = 'today' | 'lastWeek' | 'lastMonth' | 'thisYear' | 'lastYear';
+export type DateRangeKey = 'today' | 'lastWeek' | 'lastMonth' | 'thisYear' | 'lastYear';
 
-export interface FilterItem {
-  id: FilterKey;
+export interface DateRangeItem {
+  id: DateRangeKey;
   name: string;
 }
 
-export interface DateChangeOutput {
+export interface DateRange {
   startDate: Date | null;
   endDate: Date | null;
+  key?: DateRangeKey;
 }

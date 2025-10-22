@@ -1,113 +1,65 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  OnInit,
-  output,
-  signal,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal, ViewEncapsulation, effect } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 
 import { Locale } from 'date-fns/locale';
-import { faIR } from 'date-fns-jalali/locale';
-import { startOfToday, endOfToday, startOfYear, endOfYear, subYears, subDays } from 'date-fns';
-import {
-  startOfToday as jalaliStartOfToday,
-  endOfToday as jalaliEndOfToday,
-  startOfYear as jalaliStartOfYear,
-  endOfYear as jalaliEndOfYear,
-  subYears as jalaliSubYears,
-  subDays as jalaliSubDays,
-} from 'date-fns-jalali';
-import { DateChangeOutput, FilterItem, FilterKey } from './filter-date.types';
-
-// -----------------------------------------------------------------------------------------------------
-// @ Helper Maps
-// -----------------------------------------------------------------------------------------------------
-
-const dateFnsByCalendar = {
-  gregorian: {
-    startOfToday,
-    endOfToday,
-    startOfYear,
-    endOfYear,
-    subYears,
-    subDays,
-  },
-  jalali: {
-    startOfToday: jalaliStartOfToday,
-    endOfToday: jalaliEndOfToday,
-    startOfYear: jalaliStartOfYear,
-    endOfYear: jalaliEndOfYear,
-    subYears: jalaliSubYears,
-    subDays: jalaliSubDays,
-  },
-};
+import { DateRange, DateRangeItem, DateRangeKey } from './filter-date.types';
+import { DateRangeFactory } from './date-range.factory';
 
 @Component({
   selector: 'msk-filter-date',
   templateUrl: './filter-date.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ScrollingModule, MatIconModule, MatMenuModule, MatButtonModule],
+  imports: [ScrollingModule, MatIconModule, MatMenuModule, MatButtonModule, TranslocoModule],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: MskFilterDateComponent,
+      multi: true,
+    },
+  ],
 })
-export class MskFilterDateComponent implements OnInit {
-  private _translocoService = inject(TranslocoService);
+export class MskFilterDateComponent implements ControlValueAccessor {
   private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
 
   // Inputs
   label = input.required<string>();
   disabled = input<boolean>(false);
-  defaultFilter = input<FilterKey>('today');
-  dateChange = output<DateChangeOutput>();
 
-  value = signal<Partial<FilterItem> | undefined>(undefined);
+  value = signal<DateRange | null>(null);
+  isDisabled = signal<boolean>(false);
 
   // --- Datasource ---
-  datasource: Partial<FilterItem>[] = [
-    { id: 'today', name: this._translocoService.translate('filter-date.today') },
-    { id: 'lastWeek', name: this._translocoService.translate('filter-date.last-week') },
-    { id: 'lastMonth', name: this._translocoService.translate('filter-date.last-month') },
-    { id: 'thisYear', name: this._translocoService.translate('filter-date.this-year') },
-    { id: 'lastYear', name: this._translocoService.translate('filter-date.last-year') },
-    // { id: 'custom', name: this._translocoService.translate('filter-date.custom') },
+  datasource: Partial<DateRangeItem>[] = [
+    { id: 'today', name: 'filter-date.today' },
+    { id: 'lastWeek', name: 'filter-date.last-week' },
+    { id: 'lastMonth', name: 'filter-date.last-month' },
+    { id: 'thisYear', name: 'filter-date.this-year' },
+    { id: 'lastYear', name: 'filter-date.last-year' },
+    // { id: 'custom', name: 'filter-date.custom' },
   ];
 
-  // --- Local state ---
-  private _calendarType: 'gregorian' | 'jalali' = 'gregorian';
+  idToNameKey: Record<DateRangeKey, string> = {
+    today: 'filter-date.today',
+    lastWeek: 'filter-date.last-week',
+    lastMonth: 'filter-date.last-month',
+    thisYear: 'filter-date.this-year',
+    lastYear: 'filter-date.last-year',
+  };
 
   /**
    * Constructor
    */
   constructor() {
-    if (this._matDateLocale.code === 'fa-IR') {
-      this._calendarType = 'jalali';
-      this._matDateLocale = faIR;
-    }
-  }
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Lifecycle hooks
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On init
-   */
-  ngOnInit(): void {
-    const defaultKey = this.defaultFilter();
-    const defaultItem = this.datasource.find((d) => d.id === defaultKey);
-
-    if (defaultItem) {
-      this.value.set(defaultItem);
-      this.updateValue(defaultKey);
-    }
+    effect(() => {
+      this.isDisabled.set(this.disabled());
+    });
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -117,45 +69,48 @@ export class MskFilterDateComponent implements OnInit {
   /**
    * update value and
    */
-  updateValue(filterKey?: FilterKey): void {
-    const today = new Date();
-    const fns = dateFnsByCalendar[this._calendarType];
+  updateValue(filterKey?: DateRangeKey): void {
+    const nextValue: DateRange | null = filterKey ? DateRangeFactory.fromKey(filterKey, this._matDateLocale) : null;
 
-    let startDate: Date | null = today;
-    let endDate: Date | null = today;
+    this.value.set(nextValue);
+    this._onChange(nextValue);
+  }
 
-    switch (filterKey) {
-      case 'today':
-        startDate = fns.startOfToday();
-        endDate = fns.endOfToday();
-        break;
+  // -----------------------------------------------------------------------------------------------------
+  // @ ControlValueAccessor
+  // -----------------------------------------------------------------------------------------------------
 
-      case 'lastWeek':
-        startDate = fns.subDays(today, 6);
-        endDate = fns.endOfToday();
-        break;
+  private _onChange: (value: DateRange | null) => void = () => {
+    return;
+  };
+  private _onTouched: () => void = () => {
+    return;
+  };
 
-      case 'lastMonth':
-        startDate = fns.subDays(today, 30);
-        endDate = fns.endOfToday();
-        break;
-
-      case 'thisYear':
-        startDate = fns.startOfYear(today);
-        endDate = fns.endOfYear(today);
-        break;
-
-      case 'lastYear':
-        startDate = fns.startOfYear(fns.subYears(today, 1));
-        endDate = fns.endOfYear(fns.subYears(today, 1));
-        break;
-
-      default:
-        startDate = null;
-        endDate = null;
+  writeValue(obj: DateRange | DateRangeKey | null): void {
+    if (typeof obj === 'string') {
+      const next: DateRange = DateRangeFactory.fromKey(obj, this._matDateLocale);
+      this.value.set(next);
+      return;
     }
 
-    this.dateChange.emit({ startDate, endDate });
-    this.value.set(this.datasource.find((d) => d.id === filterKey));
+    if (obj?.key && !obj.startDate && !obj.endDate) {
+      const next: DateRange = DateRangeFactory.fromKey(obj.key, this._matDateLocale);
+      this.value.set(next);
+      return;
+    }
+    this.value.set(obj);
+  }
+
+  registerOnChange(fn: typeof this._onChange): void {
+    this._onChange = fn;
+  }
+
+  registerOnTouched(fn: typeof this._onTouched): void {
+    this._onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
   }
 }
