@@ -1,6 +1,3 @@
-import { MatPaginator } from '@angular/material/paginator';
-import { MskSort } from './sort.types';
-
 /**
  * MskPagingRequest is a class that encapsulates the parameters needed for paginated requests.
  * It includes pagination details such as page number, page size, sorting and filter information.
@@ -12,16 +9,16 @@ export class MskPagingRequest {
   page: number;
   pageSize: number;
   sortBy: string;
-  [key: string]: string | number | boolean | Date;
+  [key: string]: string | number | boolean;
 
-  constructor(page: MatPaginator, sort?: MskSort, filter?: Record<string, unknown>) {
-    this.page = page.pageIndex + 1;
-    this.pageSize = page.pageSize;
-    this.sortBy = sort ? sort.toString() : 'id asc';
+  constructor(input: { page: number; pageSize: number; sortBy: string; filter: Record<string, unknown> }) {
+    this.page = input['page'] ?? 0;
+    this.pageSize = input['pageSize'] ?? 10;
+    this.sortBy = input['sortBy'] ?? 'id asc';
 
     // Add other properties from filter if they exist
-    if (!filter) return;
-    Object.entries(filter).forEach(([key, value]) => {
+    if (!input.filter) return;
+    Object.entries(input.filter).forEach(([key, value]) => {
       if (value === undefined || value === null) return;
       // Trim string values
       if (typeof value === 'string') {
@@ -65,12 +62,6 @@ export function convertToMirzaPagingRequest(params: MskPagingRequest): Record<st
 
     if (['string', 'number', 'boolean'].includes(typeof value)) {
       mirzaParams[key] = value as string | number | boolean;
-    } else if (value instanceof Date) {
-      mirzaParams[key] = value.toISOString();
-    } else if (key === 'dateRange' && isDateRangeValue(value)) {
-      const { startDate, endDate } = value;
-      if (isValidDate(startDate)) mirzaParams['dateFrom'] = startDate.toISOString();
-      if (isValidDate(endDate)) mirzaParams['dateTo'] = endDate.toISOString();
     }
   });
 

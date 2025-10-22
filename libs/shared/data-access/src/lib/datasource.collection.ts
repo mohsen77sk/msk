@@ -214,13 +214,17 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
     this._loadingStream.next(true);
 
     // Fetch the page data using the provided fetchPage function
-    return this.fetchPage({
-      page: pageIndex + 1,
-      pageSize: this._pageSize,
-      sortBy: this._currentSort,
-      search: this._currentSearch,
-      ...this._currentFilter,
-    }).pipe(
+    return this.fetchPage(
+      new MskPagingRequest({
+        page: pageIndex + 1,
+        pageSize: this._pageSize,
+        sortBy: this._currentSort,
+        filter: {
+          search: this._currentSearch,
+          ...this._currentFilter,
+        },
+      }),
+    ).pipe(
       tap((pageData) => {
         // If the total number of items has changed, update the cache size
         if (this._total !== pageData.total) {
