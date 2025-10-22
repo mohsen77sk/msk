@@ -42,7 +42,7 @@ export class MskFilterDateComponent implements ControlValueAccessor {
     { id: 'lastMonth', name: 'filter-date.last-month' },
     { id: 'thisYear', name: 'filter-date.this-year' },
     { id: 'lastYear', name: 'filter-date.last-year' },
-    // { id: 'custom', name: 'filter-date.custom' },
+    { id: 'custom', name: 'filter-date.custom' },
   ];
 
   idToNameKey: Record<DateRangeKey, string> = {
@@ -51,6 +51,7 @@ export class MskFilterDateComponent implements ControlValueAccessor {
     lastMonth: 'filter-date.last-month',
     thisYear: 'filter-date.this-year',
     lastYear: 'filter-date.last-year',
+    custom: 'filter-date.last-year',
   };
 
   /**

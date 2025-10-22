@@ -31,11 +31,14 @@
       mat-menu-item
       [class.bg-primary-container]="value()?.key === item.id"
       [class.text-on-primary-container]="value()?.key === item.id"
-      (click)="updateValue(item.id)"
+      (click)="item.id !== 'custom' ? updateValue(item.id) : $event.stopPropagation()"
     >
       <mat-icon>{{ value()?.key === item.id ? 'check' : '' }}</mat-icon>
       <span class="flex min-w-36 items-center gap-8">
         {{ item?.name | transloco }}
+        @if (item.id === 'custom') {
+          <mat-icon class="mat-icon-rtl-mirror">chevron_right</mat-icon>
+        }
       </span>
     </button>
   }

@@ -1,4 +1,4 @@
-export type DateRangeKey = 'today' | 'lastWeek' | 'lastMonth' | 'thisYear' | 'lastYear';
+export type DateRangeKey = 'today' | 'lastWeek' | 'lastMonth' | 'thisYear' | 'lastYear' | 'custom';
 
 export interface DateRangeItem {
   id: DateRangeKey;
