@@ -7,7 +7,6 @@ import {
   filter,
   finalize,
   map,
-  mergeMap,
   Observable,
   Subscription,
   switchMap,
@@ -72,75 +71,70 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
    * Returns an observable stream of the current data array.
    */
   connect(collectionViewer: CollectionViewer): Observable<(T | undefined)[]> {
-    // Subscribe to view changes (e.g., scrolling, viewport changes)
-    this._subscription.add(
-      collectionViewer.viewChange
-        .pipe(
-          // Map the visible range to the pages that need to be fetched
-          map((range) => {
-            const startPage = this._getPageForIndex(range.start);
-            const endPage = this._getPageForIndex(range.end);
-            const pagesToFetch: number[] = [];
-            for (let i = startPage; i <= endPage; i++) {
-              pagesToFetch.push(i);
-            }
-            return pagesToFetch;
-          }),
-          // For each page, initiate a fetch request
-          mergeMap((pages) => pages.map((page) => this._fetchPage(page))),
-          // Flatten the array of fetch observables into a single stream
-          mergeMap((requests) => requests),
-        )
-        .subscribe(),
+    const viewChanges$ = collectionViewer.viewChange.pipe(
+      map((range) => {
+        const startPage = this._getPageForIndex(range.start);
+        const endPage = this._getPageForIndex(range.end);
+        const pages: number[] = [];
+        for (let i = startPage; i <= endPage; i++) {
+          pages.push(i);
+        }
+        return pages;
+      }),
     );
 
-    // Subscribe to sort changes (if a sort object is provided)
+    // Filter changes (subscribe first so initial filter is applied before first view fetch)
+    if (this._filter) {
+      this._subscription.add(
+        this._filter
+          .pipe(
+            filter((v) => typeof v === 'object' || v === null),
+            tap((v) => {
+              this._currentFilter = v ?? null;
+              this._resetCache();
+            }),
+            switchMap(() => this._fetchPage(0)), // switchMap cancels previous requests
+          )
+          .subscribe(),
+      );
+    }
+
+    // Sort changes
     this._subscription.add(
       this._sort?.sortChange
         ?.pipe(
-          // When sort changes, update the current sort and reset the cache
-          map((value) => {
+          tap((value) => {
             this._currentSort = value.toString();
             this._resetCache();
           }),
-          // Fetch the first page with the new sort
-          switchMap(() => this._fetchPage(0)),
+          switchMap(() => this._fetchPage(0)), // switchMap cancels previous requests
         )
         .subscribe(),
     );
 
-    // Subscribe to search changes (if a search observable is provided)
+    // Search changes
     this._subscription.add(
       this._search
         ?.pipe(
-          // Debounce search input to avoid excessive requests
           debounceTime(300),
-          // Only proceed if the value is a string or null
-          filter((value) => typeof value === 'string' || value === null),
-          // Update the current search value and reset the cache
-          map((value) => {
-            this._currentSearch = value ?? '';
+          filter((v) => typeof v === 'string' || v === null),
+          tap((v) => {
+            this._currentSearch = v ?? '';
             this._resetCache();
           }),
-          // Fetch the first page with the new search value
-          switchMap(() => this._fetchPage(0)),
+          switchMap(() => this._fetchPage(0)), // switchMap cancels previous requests
         )
         .subscribe(),
     );
 
-    // Subscribe to filter changes (if a filter observable is provided)
+    // View changes (scrolling, pagination)
     this._subscription.add(
-      this._filter
-        ?.pipe(
-          // Only proceed if the value is a object or null
-          filter((value) => typeof value === 'object' || value === null),
-          // Update the current filter value and reset the cache
-          map((value) => {
-            this._currentFilter = value ?? null;
-            this._resetCache();
+      viewChanges$
+        .pipe(
+          switchMap((pages) => {
+            // When new pages are requested, previous calls are automatically canceled
+            return pages.length ? this._fetchPage(pages[0]) : EMPTY;
           }),
-          // Fetch the first page with the new filter value
-          switchMap(() => this._fetchPage(0)),
         )
         .subscribe(),
     );
@@ -220,13 +214,17 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
     this._loadingStream.next(true);
 
     // Fetch the page data using the provided fetchPage function
-    return this.fetchPage({
-      page: pageIndex + 1,
-      pageSize: this._pageSize,
-      sortBy: this._currentSort,
-      search: this._currentSearch,
-      ...this._currentFilter,
-    }).pipe(
+    return this.fetchPage(
+      new MskPagingRequest({
+        page: pageIndex + 1,
+        pageSize: this._pageSize,
+        sortBy: this._currentSort,
+        filter: {
+          search: this._currentSearch,
+          ...this._currentFilter,
+        },
+      }),
+    ).pipe(
       tap((pageData) => {
         // If the total number of items has changed, update the cache size
         if (this._total !== pageData.total) {

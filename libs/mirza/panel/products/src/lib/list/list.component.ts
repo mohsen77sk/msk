@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { startWith } from 'rxjs';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
@@ -95,7 +96,7 @@ export class ProductsListComponent implements OnInit {
       (params) => this._productsService.getProducts(params),
       this.sortData,
       this.search.valueChanges,
-      this.filterForm.valueChanges,
+      this.filterForm.valueChanges.pipe(startWith(this.filterForm.value)),
     );
 
     // Subscribe to ProductsService changes and update the data source accordingly

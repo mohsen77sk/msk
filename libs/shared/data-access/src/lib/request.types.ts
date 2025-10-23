@@ -1,6 +1,3 @@
-import { MatPaginator } from '@angular/material/paginator';
-import { MskSort } from './sort.types';
-
 /**
  * MskPagingRequest is a class that encapsulates the parameters needed for paginated requests.
  * It includes pagination details such as page number, page size, sorting and filter information.
@@ -12,24 +9,41 @@ export class MskPagingRequest {
   page: number;
   pageSize: number;
   sortBy: string;
-  [kye: string]: string | number | boolean;
+  [key: string]: string | number | boolean;
 
-  constructor(page: MatPaginator, sort?: MskSort, filter?: Record<string, unknown>) {
-    this.page = page.pageIndex + 1;
-    this.pageSize = page.pageSize;
-    this.sortBy = sort ? sort.toString() : 'id asc';
+  constructor(input: { page: number; pageSize: number; sortBy: string; filter: Record<string, unknown> }) {
+    this.page = input['page'] ?? 0;
+    this.pageSize = input['pageSize'] ?? 10;
+    this.sortBy = input['sortBy'] ?? 'id asc';
+
     // Add other properties from filter if they exist
-    if (filter) {
-      Object.keys(filter).forEach((key) => {
-        if (filter[key] !== undefined && filter[key] !== null) {
-          if (typeof filter[key] === 'string' && filter[key].trim() !== '') {
-            this[key] = filter[key].trim();
-          } else if (typeof filter[key] === 'number' || typeof filter[key] === 'boolean') {
-            this[key] = filter[key];
-          }
+    if (!input.filter) return;
+    Object.entries(input.filter).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+      // Trim string values
+      if (typeof value === 'string') {
+        const trimmed = value.trim();
+        if (trimmed !== '') {
+          this[key] = trimmed;
         }
-      });
-    }
+        return;
+      }
+      // Allow numbers & booleans
+      if (typeof value === 'number' || typeof value === 'boolean') {
+        this[key] = value;
+        return;
+      }
+      // Allow Date type
+      if (value instanceof Date && !isNaN(value.getTime())) {
+        this[key] = value.toISOString();
+      }
+      // Allow Date range type
+      if (key === 'dateRange' && isDateRangeValue(value)) {
+        const { startDate, endDate } = value;
+        if (isValidDate(startDate)) this['dateFrom'] = startDate.toISOString();
+        if (isValidDate(endDate)) this['dateTo'] = endDate.toISOString();
+      }
+    });
   }
 }
 
@@ -42,13 +56,26 @@ export function convertToMirzaPagingRequest(params: MskPagingRequest): Record<st
   };
 
   // Add other properties from params if they exist
-  Object.keys(params).forEach((key) => {
-    if (!['page', 'pageSize', 'sortBy'].includes(key)) {
-      if (['string', 'number', 'boolean'].includes(typeof params[key])) {
-        mirzaParams[key] = params[key];
-      }
+  Object.entries(params).forEach(([key, value]) => {
+    if (['page', 'pageSize', 'sortBy'].includes(key)) return;
+    if (value == null) return;
+
+    if (['string', 'number', 'boolean'].includes(typeof value)) {
+      mirzaParams[key] = value as string | number | boolean;
     }
   });
 
   return mirzaParams;
+}
+
+// -----------------------------------------------------------------------------------------------------
+// Type guards
+// -----------------------------------------------------------------------------------------------------
+
+function isValidDate(d: unknown): d is Date {
+  return d instanceof Date && !isNaN(d.getTime());
+}
+
+function isDateRangeValue(v: unknown): v is { startDate: Date | null; endDate: Date | null } {
+  return !!v && typeof v === 'object' && 'startDate' in v && 'endDate' in v;
 }

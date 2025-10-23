@@ -83,6 +83,7 @@ export class AccountsListComponent implements OnInit {
       (params) => this._accountService.getAccounts(params),
       this.sortData,
       this.search.valueChanges,
+      this.filterForm.valueChanges,
     );
 
     // Subscribe to PeopleService changes and update the data source accordingly

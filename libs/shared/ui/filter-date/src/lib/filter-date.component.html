@@ -9,7 +9,7 @@
     [disabled]="isDisabled()"
   >
     <span class="flex items-center gap-1">
-      {{ value()?.name ?? label() }}
+      {{ value()?.key ? (idToNameKey[value()?.key!] | transloco) : label() }}
       <mat-icon>arrow_drop_down</mat-icon>
     </span>
   </button>
@@ -26,26 +26,20 @@
 </div>
 
 <mat-menu #menu="matMenu" cl>
-  <cdk-virtual-scroll-viewport
-    itemSize="48"
-    minBufferPx="240"
-    maxBufferPx="480"
-    [style.width.px]="200"
-    [style.height.px]="(menu?._allItems?.length || 0) > 5 ? 240 : (menu?._allItems?.length || 0) * 48"
-  >
+  @for (item of datasource; track item.id) {
     <button
       mat-menu-item
-      [class.bg-primary-container]="value() === item"
-      [class.text-on-primary-container]="value() === item"
-      *cdkVirtualFor="let item of datasource()"
-      (click)="updateValue(item)"
+      [class.bg-primary-container]="value()?.key === item.id"
+      [class.text-on-primary-container]="value()?.key === item.id"
+      (click)="item.id !== 'custom' ? updateValue(item.id) : $event.stopPropagation()"
     >
-      @if (value() === item) {
-        <mat-icon>check</mat-icon>
-      } @else {
-        <mat-icon></mat-icon>
-      }
-      <span>{{ item?.name ?? ('loading' | transloco) }}</span>
+      <mat-icon>{{ value()?.key === item.id ? 'check' : '' }}</mat-icon>
+      <span class="flex min-w-36 items-center gap-8">
+        {{ item?.name | transloco }}
+        @if (item.id === 'custom') {
+          <mat-icon class="mat-icon-rtl-mirror">chevron_right</mat-icon>
+        }
+      </span>
     </button>
-  </cdk-virtual-scroll-viewport>
+  }
 </mat-menu>

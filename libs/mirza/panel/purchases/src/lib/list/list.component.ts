@@ -10,18 +10,20 @@ import {
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { startWith } from 'rxjs';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
-import { MatRippleModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
+import { DateRange, DateRangeFactory, MskFilterDateComponent } from '@msk/shared/ui/filter-date';
 import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
@@ -32,6 +34,7 @@ import { PurchaseInvoice, DefaultPurchasesSortData } from '../purchases.types';
 import { PurchasesService } from '../purchases.service';
 import { DefaultVendorsSortData, VendorsService } from '@msk/mirza/panel/vendors';
 import { DefaultProductsSortData, ProductsService } from '@msk/mirza/panel/products';
+import { Locale } from 'date-fns';
 
 @Component({
   selector: 'mz-purchases-list',
@@ -55,6 +58,7 @@ import { DefaultProductsSortData, ProductsService } from '@msk/mirza/panel/produ
     TranslocoDirective,
     MskDateTimePipe,
     MskSortMenuComponent,
+    MskFilterDateComponent,
     MskFilterMenuComponent,
     MskEmptyStateComponent,
     MskCurrencySymbolDirective,
@@ -68,6 +72,7 @@ export class PurchasesListComponent implements OnInit {
   private _purchasesService = inject(PurchasesService);
   private _paymentTypeService = inject(PaymentTypeService);
   private _viewport = viewChild.required(CdkVirtualScrollViewport);
+  private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
 
   dataSource!: MskDataSource<PurchaseInvoice>;
 
@@ -81,6 +86,7 @@ export class PurchasesListComponent implements OnInit {
   });
   search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
+    dateRange: new FormControl<DateRange | null>(DateRangeFactory.fromKey('today', this._matDateLocale)),
     vendorId: new FormControl<number | null>(null),
     productId: new FormControl<number | null>(null),
     paymentType: new FormControl<string | null>(null),
@@ -103,7 +109,7 @@ export class PurchasesListComponent implements OnInit {
       (params) => this._purchasesService.getPurchaseInvoices(params),
       this.sortData,
       this.search.valueChanges,
-      this.filterForm.valueChanges,
+      this.filterForm.valueChanges.pipe(startWith(this.filterForm.value)),
     );
 
     // Subscribe to PurchasesService changes and update the data source accordingly

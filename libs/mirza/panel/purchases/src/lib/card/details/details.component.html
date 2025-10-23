@@ -168,7 +168,7 @@
     <div formArrayName="purchaseItems">
       <div class="text-secondary text-title-small">{{ t('products') }}</div>
       <div class="mt-2 mb-4 border-t"></div>
-      @for (product of purchaseItems.controls; track i; let i = $index) {
+      @for (product of purchaseItems.controls; track i; let i = $index; let c = $count) {
         <div class="flex flex-row gap-2">
           <div class="mb-4 flex flex-1 flex-col gap-2 sm:flex-row sm:gap-x-4 [&>*]:flex-1" [formGroupName]="i">
             <!-- Product -->
@@ -210,7 +210,7 @@
               </mat-hint>
             </mat-form-field>
           </div>
-          @if (i !== 0) {
+          @if (c > 1) {
             <button
               type="button"
               class="mt-2 grow-0"
@@ -239,7 +239,7 @@
     <div formArrayName="paymentTypes">
       <div class="text-secondary text-title-small">{{ t('paymentTypes') }}</div>
       <div class="mt-2 mb-4 border-t"></div>
-      @for (paymentType of paymentTypes.controls; track i; let i = $index) {
+      @for (paymentType of paymentTypes.controls; track i; let i = $index; let c = $count) {
         <div class="flex flex-row gap-2">
           <div class="mb-4 flex flex-1 flex-col gap-4 sm:flex-row [&>*]:flex-1" [formGroupName]="i">
             <!-- paymentType -->
@@ -258,7 +258,7 @@
               <span matTextSuffix mskCurrencySymbol></span>
             </mat-form-field>
           </div>
-          @if (i !== 0) {
+          @if (c > 1) {
             <button
               type="button"
               class="mt-2 grow-0"
