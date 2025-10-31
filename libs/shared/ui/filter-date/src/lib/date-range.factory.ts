@@ -1,6 +1,18 @@
 import { DateRange, DateRangeKey } from './filter-date.types';
-import { startOfToday, endOfToday, startOfYear, endOfYear, subYears, subDays, Locale } from 'date-fns';
 import {
+  startOfDay,
+  endOfDay,
+  startOfToday,
+  endOfToday,
+  startOfYear,
+  endOfYear,
+  subYears,
+  subDays,
+  Locale,
+} from 'date-fns';
+import {
+  startOfDay as jalaliStartOfDay,
+  endOfDay as jalaliEndOfDay,
   startOfToday as jalaliStartOfToday,
   endOfToday as jalaliEndOfToday,
   startOfYear as jalaliStartOfYear,
@@ -8,6 +20,29 @@ import {
   subYears as jalaliSubYears,
   subDays as jalaliSubDays,
 } from 'date-fns-jalali';
+
+const CalendarUtils = {
+  gregorian: {
+    startOfDay,
+    endOfDay,
+    startOfToday,
+    endOfToday,
+    startOfYear,
+    endOfYear,
+    subYears,
+    subDays,
+  },
+  jalali: {
+    startOfDay: jalaliStartOfDay,
+    endOfDay: jalaliEndOfDay,
+    startOfToday: jalaliStartOfToday,
+    endOfToday: jalaliEndOfToday,
+    startOfYear: jalaliStartOfYear,
+    endOfYear: jalaliEndOfYear,
+    subYears: jalaliSubYears,
+    subDays: jalaliSubDays,
+  },
+};
 
 /**
  * Utility to compute date ranges by key and locale.
@@ -19,44 +54,46 @@ export class DateRangeFactory {
    * @param localeCode e.g. 'fa-IR' for Jalali; defaults to Gregorian
    */
   static fromKey(key: DateRangeKey, locale?: Locale): DateRange {
-    const calendarType: 'gregorian' | 'jalali' = locale?.code === 'fa-IR' ? 'jalali' : 'gregorian';
-    const { startDate, endDate } = DateRangeFactory.computeRangeByKey(key, calendarType);
-    return { key, startDate, endDate };
-  }
-
-  private static computeRangeByKey(
-    key: DateRangeKey,
-    calendar: 'gregorian' | 'jalali',
-  ): { startDate: Date | null; endDate: Date | null } {
     const today = new Date();
-    const fns =
-      calendar === 'jalali'
-        ? {
-            startOfToday: jalaliStartOfToday,
-            endOfToday: jalaliEndOfToday,
-            startOfYear: jalaliStartOfYear,
-            endOfYear: jalaliEndOfYear,
-            subYears: jalaliSubYears,
-            subDays: jalaliSubDays,
-          }
-        : { startOfToday, endOfToday, startOfYear, endOfYear, subYears, subDays };
+    const calendar = locale?.code === 'fa-IR' ? 'jalali' : 'gregorian';
+    const utils = CalendarUtils[calendar];
 
     switch (key) {
       case 'today':
-        return { startDate: fns.startOfToday(), endDate: fns.endOfToday() };
+        return { key, startDate: utils.startOfToday(), endDate: utils.endOfToday() };
       case 'lastWeek':
-        return { startDate: fns.subDays(today, 6), endDate: fns.endOfToday() };
+        return { key, startDate: utils.subDays(today, 6), endDate: utils.endOfToday() };
       case 'lastMonth':
-        return { startDate: fns.subDays(today, 30), endDate: fns.endOfToday() };
+        return { key, startDate: utils.subDays(today, 30), endDate: utils.endOfToday() };
       case 'thisYear':
-        return { startDate: fns.startOfYear(today), endDate: fns.endOfYear(today) };
+        return { key, startDate: utils.startOfYear(today), endDate: utils.endOfYear(today) };
       case 'lastYear':
         return {
-          startDate: fns.startOfYear(fns.subYears(today, 1)),
-          endDate: fns.endOfYear(fns.subYears(today, 1)),
+          key,
+          startDate: utils.startOfYear(utils.subYears(today, 1)),
+          endDate: utils.endOfYear(utils.subYears(today, 1)),
         };
       default:
         return { startDate: null, endDate: null };
     }
+  }
+
+  /**
+   * Compute a custom DateRange using explicit start and end dates, normalized
+   * to the startOfDay and endOfDay respectively, considering the active calendar type.
+   * @param startDate The user-selected start date
+   * @param endDate The user-selected end date
+   * @param locale The locale, used to determine whether to use Gregorian or Jalali calculations
+   * @returns DateRange with type 'custom'
+   */
+  static fromCustom(startDate: Date, endDate: Date, locale?: Locale): DateRange {
+    const calendar = locale?.code === 'fa-IR' ? 'jalali' : 'gregorian';
+    const utils = CalendarUtils[calendar];
+
+    return {
+      key: 'custom',
+      startDate: utils.startOfDay(startDate),
+      endDate: utils.endOfDay(endDate),
+    };
   }
 }

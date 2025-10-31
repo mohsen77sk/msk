@@ -10,24 +10,19 @@ import {
   startOfDay as jalaliStartOfDay,
 } from 'date-fns-jalali';
 
-const localeFormat = {
-  gregorian: format,
-  jalali: jalaliFormat,
-};
-
-const localeStartOfDay = {
-  gregorian: startOfDay,
-  jalali: jalaliStartOfDay,
-};
-
-const localeDiffInDays = {
-  gregorian: differenceInDays,
-  jalali: jalaliDifferenceInDays,
-};
-
-const localeDiffInYears = {
-  gregorian: differenceInYears,
-  jalali: jalaliDifferenceInYears,
+const CalendarUtils = {
+  gregorian: {
+    format,
+    startOfDay,
+    differenceInDays,
+    differenceInYears,
+  },
+  jalali: {
+    format: jalaliFormat,
+    startOfDay: jalaliStartOfDay,
+    differenceInDays: jalaliDifferenceInDays,
+    differenceInYears: jalaliDifferenceInYears,
+  },
 };
 
 /**
@@ -95,17 +90,18 @@ export class MskDateTimePipe implements PipeTransform {
   }
 
   private _formatDate(value: Date | string | number, format: string): string {
-    return localeFormat[this._calendarType](new Date(value), format, {
+    return CalendarUtils[this._calendarType].format(new Date(value), format, {
       locale: this.matDateLocale,
     });
   }
 
   private _formatRelative(date: Date | string | number) {
-    const dateWithoutTime = localeStartOfDay[this._calendarType](date);
-    const baseDateWithoutTime = localeStartOfDay[this._calendarType](new Date());
+    const utils = CalendarUtils[this._calendarType];
+    const dateWithoutTime = utils.startOfDay(date);
+    const baseDateWithoutTime = utils.startOfDay(new Date());
 
-    const diffInDays = Math.abs(localeDiffInDays[this._calendarType](dateWithoutTime, baseDateWithoutTime));
-    const diffInYears = Math.abs(localeDiffInYears[this._calendarType](dateWithoutTime, baseDateWithoutTime));
+    const diffInDays = Math.abs(utils.differenceInDays(dateWithoutTime, baseDateWithoutTime));
+    const diffInYears = Math.abs(utils.differenceInYears(dateWithoutTime, baseDateWithoutTime));
 
     if (diffInDays <= 1) {
       return new Intl.RelativeTimeFormat(this.matDateLocale.code, { numeric: 'auto' }).format(diffInDays * -1, 'day');

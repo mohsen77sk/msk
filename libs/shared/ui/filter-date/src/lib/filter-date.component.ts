@@ -1,11 +1,23 @@
-import { ChangeDetectionStrategy, Component, inject, input, signal, ViewEncapsulation, effect } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  signal,
+  ViewEncapsulation,
+  effect,
+  computed,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule, MatDateRangePicker } from '@angular/material/datepicker';
+import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 
 import { Locale } from 'date-fns/locale';
 import { DateRange, DateRangeItem, DateRangeKey } from './filter-date.types';
@@ -16,17 +28,28 @@ import { DateRangeFactory } from './date-range.factory';
   templateUrl: './filter-date.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ScrollingModule, MatIconModule, MatMenuModule, MatButtonModule, TranslocoModule],
+  imports: [
+    ScrollingModule,
+    MatIconModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    TranslocoModule,
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: MskFilterDateComponent,
       multi: true,
     },
+    MskDateTimePipe,
   ],
 })
 export class MskFilterDateComponent implements ControlValueAccessor {
   private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
+  private _translocoService = inject(TranslocoService);
+  private _mskDateTimePipe = inject(MskDateTimePipe);
 
   // Inputs
   label = input.required<string>();
@@ -35,6 +58,10 @@ export class MskFilterDateComponent implements ControlValueAccessor {
   value = signal<DateRange | null>(null);
   isDisabled = signal<boolean>(false);
 
+  // Track custom date selection state
+  customStartDate = signal<Date | null>(null);
+  customEndDate = signal<Date | null>(null);
+
   // --- Datasource ---
   datasource: Partial<DateRangeItem>[] = [
     { id: 'today', name: 'filter-date.today' },
@@ -42,7 +69,6 @@ export class MskFilterDateComponent implements ControlValueAccessor {
     { id: 'lastMonth', name: 'filter-date.last-month' },
     { id: 'thisYear', name: 'filter-date.this-year' },
     { id: 'lastYear', name: 'filter-date.last-year' },
-    { id: 'custom', name: 'filter-date.custom' },
   ];
 
   idToNameKey: Record<DateRangeKey, string> = {
@@ -51,8 +77,31 @@ export class MskFilterDateComponent implements ControlValueAccessor {
     lastMonth: 'filter-date.last-month',
     thisYear: 'filter-date.this-year',
     lastYear: 'filter-date.last-year',
-    custom: 'filter-date.last-year',
+    custom: 'filter-date.custom',
   };
+
+  // Computed display label
+  displayLabel = computed(() => {
+    const currentValue = this.value();
+
+    if (!currentValue?.key) {
+      return this.label();
+    }
+
+    if (currentValue.key !== 'custom') {
+      return this._translocoService.translate(this.idToNameKey[currentValue.key]);
+    }
+
+    // For custom range, show formatted dates
+    if (currentValue.startDate && currentValue.endDate) {
+      const startDateStr = this._mskDateTimePipe.transform(currentValue.startDate, 'relative');
+      const endDateStr = this._mskDateTimePipe.transform(currentValue.endDate, 'relative');
+
+      return startDateStr === endDateStr ? startDateStr : `${startDateStr} - ${endDateStr}`;
+    }
+
+    return this.idToNameKey.custom;
+  });
 
   /**
    * Constructor
@@ -71,10 +120,36 @@ export class MskFilterDateComponent implements ControlValueAccessor {
    * update value and
    */
   updateValue(filterKey?: DateRangeKey): void {
-    const nextValue: DateRange | null = filterKey ? DateRangeFactory.fromKey(filterKey, this._matDateLocale) : null;
+    let nextValue: DateRange | null = null;
+
+    if (filterKey && filterKey !== 'custom') {
+      nextValue = DateRangeFactory.fromKey(filterKey, this._matDateLocale);
+    }
+    // custom filter
+    else if (filterKey && filterKey === 'custom') {
+      nextValue = DateRangeFactory.fromCustom(
+        this.customStartDate() as Date,
+        this.customEndDate() as Date,
+        this._matDateLocale,
+      );
+    }
 
     this.value.set(nextValue);
     this._onChange(nextValue);
+    this._onTouched();
+  }
+
+  /**
+   * open custom date picker
+   * @param picker
+   */
+  openCustomDatePicker(picker: MatDateRangePicker<void>): void {
+    // Set current dates before opening picker
+    const currentValue = this.value();
+    this.customStartDate.set(currentValue?.startDate ?? null);
+    this.customEndDate.set(currentValue?.endDate ?? null);
+    // Open
+    picker.open();
   }
 
   // -----------------------------------------------------------------------------------------------------

@@ -9,7 +9,7 @@
     [disabled]="isDisabled()"
   >
     <span class="flex items-center gap-1">
-      {{ value()?.key ? (idToNameKey[value()?.key!] | transloco) : label() }}
+      {{ displayLabel() }}
       <mat-icon>arrow_drop_down</mat-icon>
     </span>
   </button>
@@ -23,6 +23,15 @@
       <mat-icon class="font-light">close_small</mat-icon>
     </button>
   }
+
+  <mat-form-field style="display: none">
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate [value]="customStartDate()" (dateChange)="customStartDate.set($event.value)" />
+      <input matEndDate [value]="customEndDate()" (dateChange)="customEndDate.set($event.value)" />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker touchUi (closed)="updateValue('custom')"></mat-date-range-picker>
+  </mat-form-field>
 </div>
 
 <mat-menu #menu="matMenu" cl>
@@ -31,15 +40,17 @@
       mat-menu-item
       [class.bg-primary-container]="value()?.key === item.id"
       [class.text-on-primary-container]="value()?.key === item.id"
-      (click)="item.id !== 'custom' ? updateValue(item.id) : $event.stopPropagation()"
+      (click)="updateValue(item.id)"
     >
       <mat-icon>{{ value()?.key === item.id ? 'check' : '' }}</mat-icon>
-      <span class="flex min-w-36 items-center gap-8">
-        {{ item?.name | transloco }}
-        @if (item.id === 'custom') {
-          <mat-icon class="mat-icon-rtl-mirror">chevron_right</mat-icon>
-        }
-      </span>
+      <span>{{ item?.name | transloco }}</span>
     </button>
   }
+  <button mat-menu-item (click)="openCustomDatePicker(picker)">
+    <mat-icon></mat-icon>
+    <span class="flex min-w-40 items-center gap-8">
+      {{ 'filter-date.custom' | transloco }}
+      <mat-icon class="mat-icon-rtl-mirror">chevron_right</mat-icon>
+    </span>
+  </button>
 </mat-menu>
