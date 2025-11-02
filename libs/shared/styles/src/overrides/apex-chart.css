@@ -1,0 +1,14 @@
+[dir='rtl'] {
+  .apexcharts-tooltip {
+    direction: rtl;
+
+    .apexcharts-tooltip-series-group {
+      justify-content: unset;
+
+      .apexcharts-tooltip-marker {
+        margin-right: unset;
+        margin-left: 4px;
+      }
+    }
+  }
+}
