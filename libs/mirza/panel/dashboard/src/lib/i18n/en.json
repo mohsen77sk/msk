@@ -1,1 +1,11 @@
-{}
+{
+  "welcome": "Welcome to the dashboard",
+  "sales-summary": "Sales Summary",
+  "payment-summary": "Payment Summary",
+  "order-quantity-summary": "Order quantity summary",
+  "average-order": "Average orders",
+  "max-order": "Highest number",
+  "min-order": "Lowest number",
+  "date-range": "Date Range",
+  "total-sales": "Total sales"
+}

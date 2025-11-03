@@ -1,1 +1,11 @@
-{}
+{
+  "welcome": "خوش آمدید به داشبورد",
+  "sales-summary": "خلاصه فروش",
+  "payment-summary": "خلاصه پرداخت",
+  "order-quantity-summary": "خلاصه تعداد سفارشات",
+  "average-order": "میانگین سفارشات",
+  "max-order": "بیشترین تعداد",
+  "min-order": "کمترین تعداد",
+  "date-range": "بازه تاریخی",
+  "total-sales": "مجموع فروش"
+}
