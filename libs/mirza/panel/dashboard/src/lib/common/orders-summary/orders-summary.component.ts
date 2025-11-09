@@ -17,7 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskUtilsService } from '@msk/shared/services/utils';
-import { DateRange, DateRangeFactory } from '@msk/shared/ui/filter-date';
+import { MskDateRange, DateRangeFactory } from '@msk/shared/utils/datetime';
 import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
 import { filter, startWith, switchMap, tap } from 'rxjs';
 import { Locale } from 'date-fns';
@@ -50,7 +50,7 @@ export class DashboardOrdersSummaryComponent implements OnInit {
   private _translocoService = inject(TranslocoService);
   private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
 
-  dateRange = new FormControl<DateRange>(DateRangeFactory.fromKey('lastMonth', this._matDateLocale));
+  dateRange = new FormControl<MskDateRange>(DateRangeFactory.fromKey('lastMonth', this._matDateLocale));
 
   isLoading = signal(false);
   chartOptions: ApexOptions = {};

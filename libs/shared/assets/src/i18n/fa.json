@@ -60,8 +60,11 @@
   },
   "filter-date": {
     "today": "امروز",
+    "yesterday": "دیروز",
     "last-week": "7 روز آخر",
     "last-month": "30 روز آخر",
+    "last-3month": "3 ماه گذشته",
+    "last-6month": "6 ماه گذشته",
     "this-year": "امسال",
     "last-year": "سال گذشته",
     "custom": "محدوده سفارشی"

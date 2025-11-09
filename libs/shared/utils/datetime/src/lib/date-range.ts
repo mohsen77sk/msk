@@ -1,12 +1,15 @@
-import { DateRange, DateRangeKey } from './filter-date.types';
+import { MskDateRange, MskDateRangeKey } from './date-range.types';
 import {
   startOfDay,
   endOfDay,
   startOfToday,
   endOfToday,
+  startOfYesterday,
+  endOfYesterday,
   startOfYear,
   endOfYear,
   subYears,
+  subMonths,
   subDays,
   Locale,
 } from 'date-fns';
@@ -15,9 +18,12 @@ import {
   endOfDay as jalaliEndOfDay,
   startOfToday as jalaliStartOfToday,
   endOfToday as jalaliEndOfToday,
+  startOfYesterday as jalaliStartOfYesterday,
+  endOfYesterday as jalaliEndOfYesterday,
   startOfYear as jalaliStartOfYear,
   endOfYear as jalaliEndOfYear,
   subYears as jalaliSubYears,
+  subMonths as jalaliSubMonths,
   subDays as jalaliSubDays,
 } from 'date-fns-jalali';
 
@@ -27,9 +33,12 @@ const CalendarUtils = {
     endOfDay,
     startOfToday,
     endOfToday,
+    startOfYesterday,
+    endOfYesterday,
     startOfYear,
     endOfYear,
     subYears,
+    subMonths,
     subDays,
   },
   jalali: {
@@ -37,9 +46,12 @@ const CalendarUtils = {
     endOfDay: jalaliEndOfDay,
     startOfToday: jalaliStartOfToday,
     endOfToday: jalaliEndOfToday,
+    startOfYesterday: jalaliStartOfYesterday,
+    endOfYesterday: jalaliEndOfYesterday,
     startOfYear: jalaliStartOfYear,
     endOfYear: jalaliEndOfYear,
     subYears: jalaliSubYears,
+    subMonths: jalaliSubMonths,
     subDays: jalaliSubDays,
   },
 };
@@ -53,7 +65,7 @@ export class DateRangeFactory {
    * @param key e.g. 'today', 'lastWeek', 'lastMonth', 'thisYear', 'lastYear'
    * @param localeCode e.g. 'fa-IR' for Jalali; defaults to Gregorian
    */
-  static fromKey(key: DateRangeKey, locale?: Locale): DateRange {
+  static fromKey(key: MskDateRangeKey, locale?: Locale): MskDateRange {
     const today = new Date();
     const calendar = locale?.code === 'fa-IR' ? 'jalali' : 'gregorian';
     const utils = CalendarUtils[calendar];
@@ -61,10 +73,16 @@ export class DateRangeFactory {
     switch (key) {
       case 'today':
         return { key, startDate: utils.startOfToday(), endDate: utils.endOfToday() };
+      case 'yesterday':
+        return { key, startDate: utils.startOfYesterday(), endDate: utils.endOfYesterday() };
       case 'lastWeek':
-        return { key, startDate: utils.subDays(today, 6), endDate: utils.endOfToday() };
+        return { key, startDate: utils.startOfDay(utils.subDays(today, 6)), endDate: utils.endOfToday() };
       case 'lastMonth':
-        return { key, startDate: utils.subDays(today, 30), endDate: utils.endOfToday() };
+        return { key, startDate: utils.startOfDay(utils.subMonths(today, 1)), endDate: utils.endOfToday() };
+      case 'last3Month':
+        return { key, startDate: utils.startOfDay(utils.subMonths(today, 3)), endDate: utils.endOfToday() };
+      case 'last6Month':
+        return { key, startDate: utils.startOfDay(utils.subMonths(today, 6)), endDate: utils.endOfToday() };
       case 'thisYear':
         return { key, startDate: utils.startOfYear(today), endDate: utils.endOfYear(today) };
       case 'lastYear':
@@ -86,7 +104,7 @@ export class DateRangeFactory {
    * @param locale The locale, used to determine whether to use Gregorian or Jalali calculations
    * @returns DateRange with type 'custom'
    */
-  static fromCustom(startDate: Date, endDate: Date, locale?: Locale): DateRange {
+  static fromCustom(startDate: Date, endDate: Date, locale?: Locale): MskDateRange {
     const calendar = locale?.code === 'fa-IR' ? 'jalali' : 'gregorian';
     const utils = CalendarUtils[calendar];
 

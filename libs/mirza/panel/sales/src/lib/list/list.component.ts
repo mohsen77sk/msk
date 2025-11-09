@@ -23,11 +23,12 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
-import { DateRange, DateRangeFactory, MskFilterDateComponent } from '@msk/shared/ui/filter-date';
+import { MskFilterDateComponent } from '@msk/shared/ui/filter-date';
 import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
+import { DateRangeFactory, MskDateRange } from '@msk/shared/utils/datetime';
 import { MskDataSource, MskLookupItem, MskSort } from '@msk/shared/data-access';
 import { PaymentTypeService } from '@msk/mirza/shell/core/payment-type';
 import { SaleInvoice, DefaultSalesSortData } from '../sales.types';
@@ -86,7 +87,7 @@ export class SalesListComponent implements OnInit {
   });
   search = new FormControl<string>('');
   filterForm: FormGroup = new FormGroup({
-    dateRange: new FormControl<DateRange | null>(DateRangeFactory.fromKey('today', this._matDateLocale)),
+    dateRange: new FormControl<MskDateRange | null>(DateRangeFactory.fromKey('today', this._matDateLocale)),
     customerId: new FormControl<number | null>(null),
     productId: new FormControl<number | null>(null),
     paymentType: new FormControl<string | null>(null),

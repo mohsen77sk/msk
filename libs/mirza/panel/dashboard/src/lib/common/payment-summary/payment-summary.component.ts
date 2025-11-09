@@ -5,7 +5,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { DateRange, DateRangeFactory } from '@msk/shared/ui/filter-date';
+import { MskDateRange, DateRangeFactory } from '@msk/shared/utils/datetime';
 import { Locale } from 'date-fns';
 
 @Component({
@@ -18,5 +18,5 @@ import { Locale } from 'date-fns';
 export class DashboardPaymentSummaryComponent {
   private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
 
-  dateRange = new FormControl<DateRange>(DateRangeFactory.fromKey('today', this._matDateLocale));
+  dateRange = new FormControl<MskDateRange>(DateRangeFactory.fromKey('today', this._matDateLocale));
 }

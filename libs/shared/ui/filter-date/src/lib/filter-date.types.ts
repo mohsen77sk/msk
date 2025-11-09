@@ -1,12 +1,13 @@
-export type DateRangeKey = 'today' | 'lastWeek' | 'lastMonth' | 'thisYear' | 'lastYear' | 'custom';
+import { MskDateRangeItem, MskDateRange, MskDateRangeKey } from '@msk/shared/utils/datetime';
 
-export interface DateRangeItem {
+export type DateRangeKey = Extract<
+  MskDateRangeKey,
+  'today' | 'lastWeek' | 'lastMonth' | 'thisYear' | 'lastYear' | 'custom'
+>;
+export interface DateRangeItem extends MskDateRangeItem {
   id: DateRangeKey;
-  name: string;
 }
 
-export interface DateRange {
-  startDate: Date | null;
-  endDate: Date | null;
+export interface DateRange extends MskDateRange {
   key?: DateRangeKey;
 }

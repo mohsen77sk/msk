@@ -18,10 +18,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule, MatDateRangePicker } from '@angular/material/datepicker';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
+import { DateRangeFactory } from '@msk/shared/utils/datetime';
 
 import { Locale } from 'date-fns/locale';
 import { DateRange, DateRangeItem, DateRangeKey } from './filter-date.types';
-import { DateRangeFactory } from './date-range.factory';
 
 @Component({
   selector: 'msk-filter-date',
@@ -123,7 +123,7 @@ export class MskFilterDateComponent implements ControlValueAccessor {
     let nextValue: DateRange | null = null;
 
     if (filterKey && filterKey !== 'custom') {
-      nextValue = DateRangeFactory.fromKey(filterKey, this._matDateLocale);
+      nextValue = DateRangeFactory.fromKey(filterKey, this._matDateLocale) as DateRange;
     }
     // custom filter
     else if (filterKey && filterKey === 'custom') {
@@ -131,7 +131,7 @@ export class MskFilterDateComponent implements ControlValueAccessor {
         this.customStartDate() as Date,
         this.customEndDate() as Date,
         this._matDateLocale,
-      );
+      ) as DateRange;
     }
 
     this.value.set(nextValue);
@@ -165,13 +165,13 @@ export class MskFilterDateComponent implements ControlValueAccessor {
 
   writeValue(obj: DateRange | DateRangeKey | null): void {
     if (typeof obj === 'string') {
-      const next: DateRange = DateRangeFactory.fromKey(obj, this._matDateLocale);
+      const next: DateRange = DateRangeFactory.fromKey(obj, this._matDateLocale) as DateRange;
       this.value.set(next);
       return;
     }
 
     if (obj?.key && !obj.startDate && !obj.endDate) {
-      const next: DateRange = DateRangeFactory.fromKey(obj.key, this._matDateLocale);
+      const next: DateRange = DateRangeFactory.fromKey(obj.key, this._matDateLocale) as DateRange;
       this.value.set(next);
       return;
     }

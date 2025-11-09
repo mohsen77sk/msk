@@ -60,8 +60,11 @@
   },
   "filter-date": {
     "today": "Today",
+    "yesterday": "Yesterday",
     "last-week": "Last 7 days",
     "last-month": "Last 30 days",
+    "last-3month": "Last 3 months",
+    "last-6month": "Last 6 months",
     "this-year": "This year",
     "last-year": "Last year",
     "custom": "Custom date range"
