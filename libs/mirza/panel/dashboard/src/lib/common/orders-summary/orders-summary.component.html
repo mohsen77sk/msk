@@ -1,29 +1,44 @@
 <div class="m-6 mb-0 flex items-start justify-between" *transloco="let t">
   <span class="text-title-medium truncate">{{ t('dashboard.order-quantity-summary') }}</span>
-  <div class="ms-1"></div>
+  <div class="ms-1">
+    <button matButton="tonal" class="text-label-medium h-6 min-h-6 px-3" [matMenuTriggerFor]="menu">
+      <span>{{ t(idToNameKey[dateRange.value?.key ?? 'lastMonth']) }}</span>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="changeDateRange('lastMonth')">
+        <span>{{ t('filter-date.last-month') }}</span>
+      </button>
+      <button mat-menu-item (click)="changeDateRange('last3Month')">
+        <span>{{ t('filter-date.last-3month') }}</span>
+      </button>
+      <button mat-menu-item (click)="changeDateRange('last6Month')">
+        <span>{{ t('filter-date.last-6month') }}</span>
+      </button>
+    </mat-menu>
+  </div>
 </div>
 <div class="mx-6 mt-6 flex items-start" *transloco="let t">
   <div class="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-12">
     <div class="flex flex-col">
       <div class="text-on-surface-variant flex items-center">
         <span class="text-body-medium">{{ t('dashboard.average-order') }}</span>
-        <!-- <mat-icon class="icon-size-4 fill ms-1">help</mat-icon> -->
+        <mat-icon class="icon-size-4 fill ms-1">help</mat-icon>
       </div>
-      <div class="text-title-large mt-2 flex items-start">{{ averageCount() | number }}</div>
+      <div class="text-title-large mt-2 flex items-start">{{ isLoading() ? '-' : (averageCount() | number) }}</div>
     </div>
     <div class="flex flex-col">
       <div class="text-on-surface-variant flex items-center">
         <span class="text-body-medium">{{ t('dashboard.max-order') }}</span>
-        <!-- <mat-icon class="icon-size-4 fill ms-1">help</mat-icon> -->
+        <mat-icon class="icon-size-4 fill ms-1">help</mat-icon>
       </div>
-      <div class="text-title-large mt-2 flex items-start">{{ maxCount() | number }}</div>
+      <div class="text-title-large mt-2 flex items-start">{{ isLoading() ? '-' : (maxCount() | number) }}</div>
     </div>
     <div class="flex flex-col">
       <div class="text-on-surface-variant flex items-center">
         <span class="text-body-medium">{{ t('dashboard.min-order') }}</span>
-        <!-- <mat-icon class="icon-size-4 fill ms-1">help</mat-icon> -->
+        <mat-icon class="icon-size-4 fill ms-1">help</mat-icon>
       </div>
-      <div class="text-title-large mt-2 flex items-start">{{ minCount() | number }}</div>
+      <div class="text-title-large mt-2 flex items-start">{{ isLoading() ? '-' : (minCount() | number) }}</div>
     </div>
   </div>
 </div>

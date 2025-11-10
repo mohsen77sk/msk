@@ -12,12 +12,13 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskUtilsService } from '@msk/shared/services/utils';
-import { MskDateRange, DateRangeFactory } from '@msk/shared/utils/datetime';
+import { MskDateRange, DateRangeFactory, MskDateRangeKey } from '@msk/shared/utils/datetime';
 import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
 import { filter, startWith, switchMap, tap } from 'rxjs';
 import { Locale } from 'date-fns';
@@ -34,6 +35,7 @@ import { SalesDailyReport } from '../../dashboard.types';
     FormsModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatMenuModule,
     MatButtonModule,
     MatProgressSpinnerModule,
     TranslocoDirective,
@@ -51,6 +53,12 @@ export class DashboardOrdersSummaryComponent implements OnInit {
   private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
 
   dateRange = new FormControl<MskDateRange>(DateRangeFactory.fromKey('lastMonth', this._matDateLocale));
+
+  idToNameKey: Record<string, string> = {
+    lastMonth: 'filter-date.last-month',
+    last3Month: 'filter-date.last-3month',
+    last6Month: 'filter-date.last-6month',
+  };
 
   isLoading = signal(false);
   chartOptions: ApexOptions = {};
@@ -81,7 +89,9 @@ export class DashboardOrdersSummaryComponent implements OnInit {
         tap((res) => {
           this.generateChartData(res);
           const salesNumbers = res.map((item) => item.numberOfSales);
-          this.averageCount.set(salesNumbers.reduce((sum, current) => sum + current, 0) / salesNumbers.length);
+          this.averageCount.set(
+            Math.round(salesNumbers.reduce((sum, current) => sum + current, 0) / salesNumbers.length),
+          );
           this.maxCount.set(Math.max(...salesNumbers));
           this.minCount.set(Math.min(...salesNumbers));
           this.isLoading.set(false);
@@ -93,6 +103,14 @@ export class DashboardOrdersSummaryComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Change date range filter
+   * @param key
+   */
+  changeDateRange(key: MskDateRangeKey): void {
+    this.dateRange.setValue(DateRangeFactory.fromKey(key, this._matDateLocale));
+  }
 
   /**
    * Prepare the chart data from the data
