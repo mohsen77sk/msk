@@ -13,6 +13,12 @@ export const routes: Routes = [
         scope: 'dashboard',
         loader: scopeLoader((lang: string, root: string) => import(`./${root}/${lang}.json`)),
       }),
+      provideTranslocoScope({
+        scope: 'paymentTypes',
+        loader: scopeLoader(
+          (lang: string, root: string) => import(`./../../../../shell/core/payment-type/src/lib/i18n/${lang}.json`),
+        ),
+      }),
     ],
   },
 ];
