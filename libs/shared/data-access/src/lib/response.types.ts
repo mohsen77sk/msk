@@ -7,6 +7,7 @@ export interface MskPagingResponse<T> {
   total: number;
   page: number;
   pageSize: number;
+  [key: string]: unknown;
 }
 
 export interface MskHttpErrorResponse extends HttpErrorResponse {

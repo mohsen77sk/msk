@@ -9,7 +9,7 @@ import {
   convertToMirzaPagingRequest,
   MskChangeEvent,
 } from '@msk/shared/data-access';
-import { SaleInvoice, DefaultSalesSortData, ICreateSaleInvoice } from './sales.types';
+import { SaleInvoice, DefaultSalesSortData, ICreateSaleInvoice, ISaleInvoiceSummery } from './sales.types';
 
 @Injectable({ providedIn: 'root' })
 export class SalesService {
@@ -45,7 +45,7 @@ export class SalesService {
       pageSize: 10,
       sortBy: `${DefaultSalesSortData.active} ${DefaultSalesSortData.direction}`,
     },
-  ): Observable<MskPageData<SaleInvoice>> {
+  ): Observable<MskPageData<SaleInvoice, ISaleInvoiceSummery>> {
     return this._httpClient
       .get<MskPagingResponse<SaleInvoice>>(`${this._appConfig.apiEndpoint}/sale`, {
         params: convertToMirzaPagingRequest(params),
@@ -55,6 +55,7 @@ export class SalesService {
           return new MskPageData({
             ...response,
             items: response.items.map((item) => new SaleInvoice(item)),
+            data: response['summary'] as ISaleInvoiceSummery,
           });
         }),
       );

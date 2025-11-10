@@ -67,3 +67,8 @@ export interface IPurchaseItemForm {
   quantity: FormControl<number | null>;
   total: FormControl<number | null>;
 }
+
+export interface IPurchaseInvoiceSummery {
+  totalSum: number;
+  paymentTypes: { paymentType: string; value: number }[];
+}

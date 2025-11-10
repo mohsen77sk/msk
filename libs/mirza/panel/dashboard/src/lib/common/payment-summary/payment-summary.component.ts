@@ -73,7 +73,7 @@ export class DashboardPaymentSummaryComponent implements OnInit {
    * Sum of payment types value
    */
   get paymentTypesValueSum(): number {
-    return (this.chartOptions.series as number[]).reduce((sum, item) => sum + item, 0);
+    return (this.chartOptions.series as number[])?.reduce((sum, item) => sum + item, 0) ?? 0;
   }
 
   // -----------------------------------------------------------------------------------------------------

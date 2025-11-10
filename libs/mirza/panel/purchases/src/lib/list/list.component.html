@@ -30,6 +30,26 @@
 
   <!-- Main -->
   <div class="content">
+    <!-- Summery -->
+    @if (!!!(dataSource.loading$ | async) && dataSource.length > 0) {
+      <div class="flex snap-x items-center gap-4 overflow-x-auto border-b p-4" *transloco="let t">
+        <div class="msk-mat-card-filled min-w-24 shrink-0 snap-center px-4 py-3">
+          <div class="text-on-surface-variant text-label-medium mb-2">{{ t('sum') }}</div>
+          <div class="text-label-large">
+            {{ dataSummery()?.totalSum ?? 0 | number }} <small mskCurrencySymbol></small>
+          </div>
+        </div>
+        @for (item of dataSummery()?.paymentTypes; track item.paymentType) {
+          <div class="msk-mat-card-filled min-w-24 shrink-0 snap-center px-4 py-3">
+            <div class="text-on-surface-variant text-label-medium mb-2">
+              {{ t('paymentTypes.' + item.paymentType) }}
+            </div>
+            <div class="text-label-large">{{ item.value | number }} <small mskCurrencySymbol></small></div>
+          </div>
+        }
+      </div>
+    }
+
     <!-- List -->
     <cdk-virtual-scroll-viewport class="content-grid" #gridContent [itemSize]="72">
       <!-- Rows -->

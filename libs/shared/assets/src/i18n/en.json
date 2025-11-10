@@ -8,6 +8,7 @@
   "deposit": "Deposit",
   "withdraw": "Withdraw",
   "transfer": "Transfer",
+  "sum": "Sum",
   "open": "Open",
   "close": "Close",
   "export": "Export",

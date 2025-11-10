@@ -9,7 +9,12 @@ import {
   convertToMirzaPagingRequest,
   MskChangeEvent,
 } from '@msk/shared/data-access';
-import { PurchaseInvoice, DefaultPurchasesSortData, ICreatePurchaseInvoice } from './purchases.types';
+import {
+  PurchaseInvoice,
+  DefaultPurchasesSortData,
+  ICreatePurchaseInvoice,
+  IPurchaseInvoiceSummery,
+} from './purchases.types';
 
 @Injectable({ providedIn: 'root' })
 export class PurchasesService {
@@ -45,7 +50,7 @@ export class PurchasesService {
       pageSize: 10,
       sortBy: `${DefaultPurchasesSortData.active} ${DefaultPurchasesSortData.direction}`,
     },
-  ): Observable<MskPageData<PurchaseInvoice>> {
+  ): Observable<MskPageData<PurchaseInvoice, IPurchaseInvoiceSummery>> {
     return this._httpClient
       .get<MskPagingResponse<PurchaseInvoice>>(`${this._appConfig.apiEndpoint}/purchase`, {
         params: convertToMirzaPagingRequest(params),
@@ -55,6 +60,7 @@ export class PurchasesService {
           return new MskPageData({
             ...response,
             items: response.items.map((item) => new PurchaseInvoice(item)),
+            data: response['summary'] as IPurchaseInvoiceSummery,
           });
         }),
       );

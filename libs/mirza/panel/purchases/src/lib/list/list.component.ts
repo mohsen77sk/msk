@@ -1,4 +1,4 @@
-import { DecimalPipe } from '@angular/common';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,11 +6,12 @@ import {
   OnInit,
   ViewEncapsulation,
   inject,
+  signal,
   viewChild,
 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { startWith } from 'rxjs';
+import { startWith, tap } from 'rxjs';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,7 +32,7 @@ import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-exte
 import { DateRangeFactory, MskDateRange } from '@msk/shared/utils/datetime';
 import { MskDataSource, MskLookupItem, MskSort } from '@msk/shared/data-access';
 import { PaymentTypeService } from '@msk/mirza/shell/core/payment-type';
-import { PurchaseInvoice, DefaultPurchasesSortData } from '../purchases.types';
+import { PurchaseInvoice, DefaultPurchasesSortData, IPurchaseInvoiceSummery } from '../purchases.types';
 import { PurchasesService } from '../purchases.service';
 import { DefaultVendorsSortData, VendorsService } from '@msk/mirza/panel/vendors';
 import { DefaultProductsSortData, ProductsService } from '@msk/mirza/panel/products';
@@ -44,6 +45,7 @@ import { Locale } from 'date-fns';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: mskAnimations,
   imports: [
+    AsyncPipe,
     DecimalPipe,
     FormsModule,
     ReactiveFormsModule,
@@ -76,6 +78,7 @@ export class PurchasesListComponent implements OnInit {
   private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
 
   dataSource!: MskDataSource<PurchaseInvoice>;
+  dataSummery = signal<IPurchaseInvoiceSummery | undefined>(undefined);
 
   sortItems: SortMenuItem[] = [
     { key: 'number', label: 'purchases.sort.number' },
@@ -107,7 +110,7 @@ export class PurchasesListComponent implements OnInit {
    */
   ngOnInit(): void {
     this.dataSource = new MskDataSource<PurchaseInvoice>(
-      (params) => this._purchasesService.getPurchaseInvoices(params),
+      (params) => this._purchasesService.getPurchaseInvoices(params).pipe(tap((res) => this.dataSummery.set(res.data))),
       this.sortData,
       this.search.valueChanges,
       this.filterForm.valueChanges.pipe(startWith(this.filterForm.value)),
