@@ -18,7 +18,8 @@
     "totalPrice": "Total price",
     "addProduct": "Add product",
     "paymentTypes": "Payments",
-    "addPaymentType": "Add payment type"
+    "addPaymentType": "Add payment type",
+    "other": "Other"
   },
   "sort": {
     "number": "Number",
