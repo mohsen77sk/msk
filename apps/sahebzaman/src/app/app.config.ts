@@ -18,7 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideShell({
       locale: locale['fa'],
       currencyCode: 'IRR',
-      calenderType: 'jalali',
       type: 'material',
       scheme: 'auto',
       screens: {

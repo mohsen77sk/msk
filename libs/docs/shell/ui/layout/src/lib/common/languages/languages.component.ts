@@ -8,7 +8,7 @@ import { MskLayoutConfigService } from '@msk/shared/services/config';
 import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
 import { AvailableLangsIds, availableLangs } from '@msk/shared/utils/transloco';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { locale, localeCalenderType } from '../../layout.types';
+import { locale } from '../../layout.types';
 
 @Component({
   selector: 'doc-languages',
@@ -58,7 +58,6 @@ export class DocsLanguagesComponent implements OnInit {
       // Set the active locale in config
       this._layoutConfigService.config = {
         locale: locale[lang],
-        calenderType: localeCalenderType[lang],
       };
       // reload
       window.location.reload();
