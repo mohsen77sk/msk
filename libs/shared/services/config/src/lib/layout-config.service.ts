@@ -14,6 +14,10 @@ export class MskLayoutConfigService {
    * Constructor
    */
   constructor() {
+    // If all config keys match between storage and default, reset storage to default config
+    if (this._areObjectKeysEqual(this._getFromStorage(), this._defaultConfig)) {
+      this._setToStorage(this._defaultConfig);
+    }
     // Private
     this._config = new BehaviorSubject(this._getFromStorage() ?? this._defaultConfig);
   }
@@ -53,8 +57,8 @@ export class MskLayoutConfigService {
    */
   reset(): void {
     // Set the config
-    this._setToStorage(this.config);
-    this._config.next(this.config);
+    this._setToStorage(this._defaultConfig);
+    this._config.next(this._defaultConfig);
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -83,5 +87,36 @@ export class MskLayoutConfigService {
     } catch {
       return null;
     }
+  }
+
+  /**
+   * Checks whether the keys of two objects are equal (deep equality).
+   * Only compares keys, not values for primitives. For nested objects,
+   * recursively compares keys.
+   *
+   * @param obj1 First object to compare
+   * @param obj2 Second object to compare
+   * @returns true if objects have the same structure of keys, false otherwise
+   */
+  private _areObjectKeysEqual(obj1: any, obj2: any): boolean {
+    const keys1 = Object.keys(obj1 || {});
+    const keys2 = Object.keys(obj2 || {});
+
+    if (keys1.length !== keys2.length) return false;
+
+    for (const key of keys1) {
+      if (!keys2.includes(key)) return false;
+
+      const val1 = obj1[key];
+      const val2 = obj2[key];
+
+      const bothObjects = val1 && val2 && typeof val1 === 'object' && typeof val2 === 'object';
+
+      if (bothObjects) {
+        if (!this._areObjectKeysEqual(val1, val2)) return false;
+      }
+    }
+
+    return true;
   }
 }

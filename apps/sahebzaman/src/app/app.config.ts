@@ -17,6 +17,8 @@ export const appConfig: ApplicationConfig = {
     provideMskAppConfig(environment),
     provideShell({
       locale: locale['fa'],
+      currencyCode: 'IRR',
+      calenderType: 'jalali',
       type: 'material',
       scheme: 'auto',
       screens: {

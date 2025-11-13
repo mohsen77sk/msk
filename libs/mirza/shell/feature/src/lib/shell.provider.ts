@@ -58,7 +58,7 @@ export const provideShell = (config: LayoutConfig): Array<Provider | Environment
       provide: DEFAULT_CURRENCY_CODE,
       useFactory: (): string => {
         const layoutConfigService = inject(MskLayoutConfigService);
-        return layoutConfigService.config.locale.currencyCode;
+        return layoutConfigService.config.currencyCode;
       },
     },
     {

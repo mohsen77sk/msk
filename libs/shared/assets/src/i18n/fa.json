@@ -25,11 +25,16 @@
   "sz-app-name": "صاحب الزمان",
   "mz-app-name": "میرزا بنویس",
   "oc-app-name": "آنکو",
+  "currency": {
+    "IRR": "ریال",
+    "IRT": "تومان"
+  },
   "layout": {
     "settings": "مدیریت تنظیمات حساب شما",
     "sign-out": "خروج از سیستم",
     "languages": "زبان سیستم",
     "themes": "تم سیستم",
+    "currency": "واحد پول",
     "toggle-fullscreen": "تغییر حالت تمام صفحه",
     "on": "روشن",
     "off": "خاموش",
@@ -38,7 +43,8 @@
     "default": "پیش فرض دستگاه",
     "dark-theme": "تم تاریک",
     "select-theme": "انتخاب تم",
-    "select-language": "انتخاب زبان"
+    "select-language": "انتخاب زبان",
+    "select-currency": "انتخاب واحد پولی"
   },
   "error-validation": {
     "required": "این فیلد اجباری است",

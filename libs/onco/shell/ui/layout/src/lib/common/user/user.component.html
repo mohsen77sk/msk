@@ -1,6 +1,6 @@
 <!-- Button -->
 <button matIconButton [matMenuTriggerFor]="userActions">
-  <span class="relative h-7 w-7">
+  <span class="relative h-6 w-6">
     @if (showAvatar() && user()?.avatar) {
       <img class="relative h-full w-full rounded-full" [src]="user()?.avatar" alt="user-image" />
     } @else {
@@ -56,6 +56,13 @@
           <span class="ms-3 font-medium">{{ t('layout.languages') }}</span>
         </div>
         <span class="text-label-medium font-light">{{ activeLang() }}</span>
+      </div>
+      <div class="mz-user-panel-profile-item" (click)="openLayoutCurrencyDialog()" aria-hidden="true">
+        <div>
+          <mat-icon class="mat-icon-rtl-mirror">universal_currency_alt</mat-icon>
+          <span class="ms-3 font-medium">{{ t('layout.currency') }}</span>
+        </div>
+        <span class="text-label-medium font-light">{{ t('currency.' + activeCurrency()) }}</span>
       </div>
     </div>
     <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">

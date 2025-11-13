@@ -23,6 +23,7 @@ import { availableLangs } from '@msk/shared/utils/transloco';
 import { UserService, User } from '@msk/sahebzaman/shell/core/user';
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
+import { LayoutCurrencyDialogComponent } from '../layout-currency-dialog/layout-currency-dialog.component';
 import { tap } from 'rxjs';
 
 @Component({
@@ -53,6 +54,7 @@ export class UserComponent implements OnInit {
 
   user = signal<User | null>(null);
   activeLang = signal<string>('');
+  activeCurrency = signal<string>('');
   layoutScheme = signal<LayoutScheme>('auto');
 
   // -----------------------------------------------------------------------------------------------------
@@ -75,7 +77,10 @@ export class UserComponent implements OnInit {
     this._layoutConfigService.config$
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        tap((config) => this.layoutScheme.set(config.scheme)),
+        tap((config) => {
+          this.layoutScheme.set(config.scheme);
+          this.activeCurrency.set(config.currencyCode);
+        }),
       )
       .subscribe();
 
@@ -104,6 +109,13 @@ export class UserComponent implements OnInit {
    */
   openLayoutLanguageDialog() {
     this._dialog.open(LayoutLanguageDialogComponent).afterClosed().subscribe();
+  }
+
+  /**
+   * Open currency dialog
+   */
+  openLayoutCurrencyDialog() {
+    this._dialog.open(LayoutCurrencyDialogComponent).afterClosed().subscribe();
   }
 
   /**

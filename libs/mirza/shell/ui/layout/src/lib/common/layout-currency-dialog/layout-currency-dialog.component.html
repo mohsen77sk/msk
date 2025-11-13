@@ -1,0 +1,12 @@
+<h2 matDialogTitle *transloco="let t">{{ t('layout.select-currency') }}</h2>
+<div matDialogContent *transloco="let t">
+  <mat-radio-group
+    class="flex flex-col"
+    [ngModel]="layoutCurrencyCode"
+    (change)="setCurrencyCode($event)"
+    aria-label="Select an currency option"
+  >
+    <mat-radio-button value="IRR">{{ t('currency.IRR') }}</mat-radio-button>
+    <mat-radio-button value="IRT">{{ t('currency.IRT') }}</mat-radio-button>
+  </mat-radio-group>
+</div>

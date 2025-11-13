@@ -25,11 +25,16 @@
   "sz-app-name": "SahebZaman",
   "mz-app-name": "Mirza write",
   "oc-app-name": "Onco",
+  "currency": {
+    "IRR": "IRR",
+    "IRT": "IRT"
+  },
   "layout": {
     "settings": "Manage your account settings",
     "sign-out": "Sign out",
     "languages": "Languages",
     "themes": "Themes",
+    "currency": "Currency",
     "toggle-fullscreen": "Toggle Fullscreen",
     "on": "On",
     "off": "Off",
@@ -38,7 +43,8 @@
     "default": "Device default",
     "dark-theme": "Dark theme",
     "select-theme": "Select theme",
-    "select-language": "Select language"
+    "select-language": "Select language",
+    "select-currency": "Select currency"
   },
   "error-validation": {
     "required": "This is required",
