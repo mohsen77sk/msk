@@ -8,6 +8,7 @@
   "deposit": "Deposit",
   "withdraw": "Withdraw",
   "transfer": "Transfer",
+  "sum": "Sum",
   "open": "Open",
   "close": "Close",
   "export": "Export",
@@ -24,11 +25,16 @@
   "sz-app-name": "SahebZaman",
   "mz-app-name": "Mirza write",
   "oc-app-name": "Onco",
+  "currency": {
+    "IRR": "IRR",
+    "IRT": "IRT"
+  },
   "layout": {
     "settings": "Manage your account settings",
     "sign-out": "Sign out",
     "languages": "Languages",
     "themes": "Themes",
+    "currency": "Currency",
     "toggle-fullscreen": "Toggle Fullscreen",
     "on": "On",
     "off": "Off",
@@ -37,7 +43,8 @@
     "default": "Device default",
     "dark-theme": "Dark theme",
     "select-theme": "Select theme",
-    "select-language": "Select language"
+    "select-language": "Select language",
+    "select-currency": "Select currency"
   },
   "error-validation": {
     "required": "This is required",
@@ -60,8 +67,11 @@
   },
   "filter-date": {
     "today": "Today",
+    "yesterday": "Yesterday",
     "last-week": "Last 7 days",
     "last-month": "Last 30 days",
+    "last-3month": "Last 3 months",
+    "last-6month": "Last 6 months",
     "this-year": "This year",
     "last-year": "Last year",
     "custom": "Custom date range"
