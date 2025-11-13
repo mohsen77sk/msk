@@ -14,8 +14,8 @@ export class MskLayoutConfigService {
    * Constructor
    */
   constructor() {
-    // If all config keys match between storage and default, reset storage to default config
-    if (this._areObjectKeysEqual(this._getFromStorage(), this._defaultConfig)) {
+    // If all config keys not match between storage and default, reset storage to default config
+    if (!this._areObjectKeysEqual(this._getFromStorage(), this._defaultConfig)) {
       this._setToStorage(this._defaultConfig);
     }
     // Private
