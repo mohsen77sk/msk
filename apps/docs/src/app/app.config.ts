@@ -13,6 +13,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideDocsShell({
       locale: locale['en'],
+      currencyCode: 'IRR',
+      calenderType: 'jalali',
       type: 'material',
       scheme: 'auto',
       screens: {

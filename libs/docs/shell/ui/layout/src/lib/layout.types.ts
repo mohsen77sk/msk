@@ -1,19 +1,22 @@
 import { Locale } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { faIR } from 'date-fns-jalali/locale';
-import { LayoutLocale } from '@msk/shared/services/config';
+import { LayoutCalenderType, LayoutLocale } from '@msk/shared/services/config';
 
 export const locale: { [key: string]: LayoutLocale } = {
   en: {
     id: 'en-US',
     direction: 'ltr',
-    currencyCode: 'IRR',
   },
   fa: {
     id: 'fa-IR',
     direction: 'rtl',
-    currencyCode: 'IRR',
   },
+};
+
+export const localeCalenderType: { [key: string]: LayoutCalenderType } = {
+  en: 'gregorian',
+  fa: 'jalali',
 };
 
 export const localeDate: { [key: string]: Locale } = {
