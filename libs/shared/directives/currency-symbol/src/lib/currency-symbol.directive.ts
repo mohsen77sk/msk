@@ -1,5 +1,5 @@
 import { DEFAULT_CURRENCY_CODE, Directive, ElementRef, inject, LOCALE_ID, OnInit } from '@angular/core';
-import { TranslocoService } from '@jsverse/transloco';
+import { CURRENCY_BY_CODE, MskAvailableCurrencyCodes } from '@msk/shared/constants';
 
 @Directive({
   standalone: true,
@@ -8,7 +8,6 @@ import { TranslocoService } from '@jsverse/transloco';
 })
 export class MskCurrencySymbolDirective implements OnInit {
   private _elementRef = inject(ElementRef);
-  private _translocoService = inject(TranslocoService);
   private _localeId = inject(LOCALE_ID);
   private _currencyCode = inject(DEFAULT_CURRENCY_CODE);
 
@@ -20,15 +19,14 @@ export class MskCurrencySymbolDirective implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    let currencySymbol = this._translocoService.translate('currency.' + this._currencyCode);
-
     // If don't have translate
-    if (currencySymbol === this._currencyCode) {
-      currencySymbol =
-        Intl.NumberFormat(this._localeId, { style: 'currency', currency: this._currencyCode })
-          .formatToParts()
-          .find((part) => part.type === 'currency')?.value || this._currencyCode;
-    }
+    const currencySymbol =
+      Intl.NumberFormat(this._localeId, {
+        style: 'currency',
+        currency: CURRENCY_BY_CODE[this._currencyCode as MskAvailableCurrencyCodes].intlCode,
+      })
+        .formatToParts()
+        .find((part) => part.type === 'currency')?.value || this._currencyCode;
 
     (this._elementRef.nativeElement as Element).innerHTML = currencySymbol;
   }
