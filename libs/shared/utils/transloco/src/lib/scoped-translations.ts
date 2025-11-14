@@ -1,4 +1,4 @@
-import { availableLangs } from './transloco.types';
+import { availableLangs } from '@msk/shared/constants';
 
 /**
  * Transloco scope inline loader

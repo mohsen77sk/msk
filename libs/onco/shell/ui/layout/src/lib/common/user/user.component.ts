@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewEncapsulation,
   booleanAttribute,
+  computed,
   inject,
   input,
   signal,
@@ -19,11 +20,10 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
-import { availableLangs } from '@msk/shared/utils/transloco';
 import { UserService, User } from '@msk/onco/shell/core/user';
+import { availableLangs } from '@msk/shared/constants';
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
-import { LayoutCurrencyDialogComponent } from '../layout-currency-dialog/layout-currency-dialog.component';
 import { tap } from 'rxjs';
 
 @Component({
@@ -54,8 +54,9 @@ export class UserComponent implements OnInit {
 
   user = signal<User | null>(null);
   activeLang = signal<string>('');
-  activeCurrency = signal<string>('');
   layoutScheme = signal<LayoutScheme>('auto');
+
+  activeLangLabel = computed(() => availableLangs.find((x) => x.id === this.activeLang())?.label ?? '');
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -79,16 +80,7 @@ export class UserComponent implements OnInit {
         takeUntilDestroyed(this._destroyRef),
         tap((config) => {
           this.layoutScheme.set(config.scheme);
-          this.activeCurrency.set(config.currencyCode);
         }),
-      )
-      .subscribe();
-
-    // Subscribe to language changes
-    this._translocoService.langChanges$
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        tap((activeLang) => this.activeLang.set(availableLangs.find((x) => x.id === activeLang)?.label ?? '')),
       )
       .subscribe();
   }
@@ -109,13 +101,6 @@ export class UserComponent implements OnInit {
    */
   openLayoutLanguageDialog() {
     this._dialog.open(LayoutLanguageDialogComponent).afterClosed().subscribe();
-  }
-
-  /**
-   * Open currency dialog
-   */
-  openLayoutCurrencyDialog() {
-    this._dialog.open(LayoutCurrencyDialogComponent).afterClosed().subscribe();
   }
 
   /**

@@ -3,7 +3,7 @@
     @apply !block;
 
     .sticky-header {
-      @apply sticky top-0 z-10 border-b bg-inherit py-1;
+      @apply bg-surface sticky top-0 z-10 border-b py-1;
     }
   }
 }

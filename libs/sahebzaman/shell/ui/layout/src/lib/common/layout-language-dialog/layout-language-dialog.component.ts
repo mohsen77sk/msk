@@ -5,9 +5,8 @@ import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MskLayoutConfigService } from '@msk/shared/services/config';
 import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
-import { AvailableLangsIds, availableLangs } from '@msk/shared/utils/transloco';
+import { MskAvailableLangsIds, availableLangs, LANG_BY_ID } from '@msk/shared/constants';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { locale } from '../../layout.types';
 
 @Component({
   selector: 'sz-layout-language-dialog',
@@ -23,7 +22,7 @@ export class LayoutLanguageDialogComponent implements OnInit {
   private _splashScreenService = inject(MskSplashScreenService);
 
   availableLangs = availableLangs;
-  activeLang!: AvailableLangsIds;
+  activeLang!: MskAvailableLangsIds;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -36,7 +35,7 @@ export class LayoutLanguageDialogComponent implements OnInit {
     // Subscribe to language changes
     this._translocoService.langChanges$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((activeLang) => {
       // Get the active lang
-      this.activeLang = activeLang as AvailableLangsIds;
+      this.activeLang = activeLang as MskAvailableLangsIds;
     });
   }
 
@@ -49,14 +48,15 @@ export class LayoutLanguageDialogComponent implements OnInit {
    *
    * @param event
    */
-  setActiveLang(event: MatRadioChange): void {
+  setActiveLang(event: MatRadioChange<MskAvailableLangsIds>): void {
     // Show splash screen
     this._splashScreenService.show();
 
     setTimeout(() => {
       // Set the active locale in config
       this._layoutConfigService.config = {
-        locale: locale[event.value],
+        lang: LANG_BY_ID[event.value].id,
+        direction: LANG_BY_ID[event.value].direction,
       };
       // reload
       window.location.reload();

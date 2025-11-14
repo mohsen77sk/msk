@@ -6,9 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MskLayoutConfigService } from '@msk/shared/services/config';
 import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
-import { AvailableLangsIds, availableLangs } from '@msk/shared/utils/transloco';
+import { LANG_BY_ID, MskAvailableLangsIds, availableLangs } from '@msk/shared/constants';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { locale } from '../../layout.types';
 
 @Component({
   selector: 'doc-languages',
@@ -24,7 +23,7 @@ export class DocsLanguagesComponent implements OnInit {
   private _splashScreenService = inject(MskSplashScreenService);
 
   availableLangs = availableLangs;
-  activeLang!: AvailableLangsIds;
+  activeLang!: MskAvailableLangsIds;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -37,7 +36,7 @@ export class DocsLanguagesComponent implements OnInit {
     // Subscribe to language changes
     this._translocoService.langChanges$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((activeLang) => {
       // Get the active lang
-      this.activeLang = activeLang as AvailableLangsIds;
+      this.activeLang = activeLang as MskAvailableLangsIds;
     });
   }
 
@@ -50,14 +49,15 @@ export class DocsLanguagesComponent implements OnInit {
    *
    * @param lang
    */
-  setActiveLang(lang: AvailableLangsIds): void {
+  setActiveLang(lang: MskAvailableLangsIds): void {
     // Show splash screen
     this._splashScreenService.show();
 
+    // Set the active locale in config
     setTimeout(() => {
-      // Set the active locale in config
       this._layoutConfigService.config = {
-        locale: locale[lang],
+        lang: LANG_BY_ID[lang].id,
+        direction: LANG_BY_ID[lang].direction,
       };
       // reload
       window.location.reload();

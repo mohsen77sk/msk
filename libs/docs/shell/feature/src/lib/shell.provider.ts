@@ -14,6 +14,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarConfig } from '@angular/material/snack-b
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideDateFnsAdapter } from 'ngx-material-date-fns-adapter';
 
+import { LANG_BY_ID, MskAvailableLangsIds } from '@msk/shared/constants';
 import { MSK_LAYOUT_CONFIG, LayoutConfig, MskLayoutConfigService } from '@msk/shared/services/config';
 import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
 import { MskPlatformService } from '@msk/shared/services/platform';
@@ -27,7 +28,6 @@ import { provideMskLoading } from '@msk/shared/utils/loading';
 import { docsRoutes } from './shell.routes';
 
 import localeFaIR from '@angular/common/locales/fa';
-import { localeDate } from '@msk/docs/shell/ui/layout';
 registerLocaleData(localeFaIR, 'fa-IR');
 
 /**
@@ -51,21 +51,21 @@ export const provideDocsShell = (config: LayoutConfig): Array<Provider | Environ
       provide: LOCALE_ID,
       useFactory: (): string => {
         const layoutConfigService = inject(MskLayoutConfigService);
-        return layoutConfigService.config.locale.id;
+        return LANG_BY_ID[layoutConfigService.config.lang].locale;
       },
     },
     {
       provide: DEFAULT_CURRENCY_CODE,
       useFactory: (): string => {
         const layoutConfigService = inject(MskLayoutConfigService);
-        return layoutConfigService.config.currencyCode;
+        return layoutConfigService.config.currency;
       },
     },
     {
       provide: MAT_DATE_LOCALE,
       useFactory: () => {
         const locale = inject(LOCALE_ID);
-        return localeDate[locale.split('-')[0]];
+        return LANG_BY_ID[locale.split('-')[0] as MskAvailableLangsIds].localeDate;
       },
     },
     {
@@ -73,7 +73,7 @@ export const provideDocsShell = (config: LayoutConfig): Array<Provider | Environ
       provide: MAT_DIALOG_DEFAULT_OPTIONS,
       useFactory: (): MatDialogConfig => {
         const layoutConfigService = inject(MskLayoutConfigService);
-        return { direction: layoutConfigService.config.locale.direction };
+        return { direction: layoutConfigService.config.direction };
       },
     },
     {
@@ -81,7 +81,7 @@ export const provideDocsShell = (config: LayoutConfig): Array<Provider | Environ
       provide: MAT_SNACK_BAR_DATA,
       useFactory: (): MatSnackBarConfig => {
         const layoutConfigService = inject(MskLayoutConfigService);
-        return { direction: layoutConfigService.config.locale.direction };
+        return { direction: layoutConfigService.config.direction };
       },
     },
 

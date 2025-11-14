@@ -55,14 +55,14 @@
           <mat-icon class="mat-icon-rtl-mirror">language</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.languages') }}</span>
         </div>
-        <span class="text-label-medium font-light">{{ activeLang() }}</span>
+        <span class="text-label-medium font-light">{{ t(activeLangLabel()) }}</span>
       </div>
       <div class="mz-user-panel-profile-item" (click)="openLayoutCurrencyDialog()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">universal_currency_alt</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.currency') }}</span>
         </div>
-        <span class="text-label-medium font-light">{{ t('currency.' + activeCurrency()) }}</span>
+        <span class="text-label-medium font-light">{{ t(activeCurrencyLabel()) }}</span>
       </div>
     </div>
     <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">

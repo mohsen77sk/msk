@@ -9,6 +9,7 @@ import {
   LOCALE_ID,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CURRENCY_BY_CODE, MskAvailableCurrencyCodes } from '@msk/shared/constants';
 import { MskMaskType } from './mask.types';
 
 @Directive({
@@ -77,7 +78,7 @@ export class MskMaskDirective implements ControlValueAccessor {
     if (value === null || isNaN(value)) return '';
     const formatOpts = new Intl.NumberFormat(this._localeId, {
       style: this.mskMask(),
-      currency: this._currencyCode,
+      currency: CURRENCY_BY_CODE[this._currencyCode as MskAvailableCurrencyCodes].intlCode,
     }).resolvedOptions();
 
     return new Intl.NumberFormat(this._localeId, {

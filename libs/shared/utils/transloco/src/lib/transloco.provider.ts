@@ -8,7 +8,7 @@ import {
 } from '@jsverse/transloco';
 import { translocoInterceptor } from './transloco.interceptor';
 import { TranslocoHttpLoader } from './transloco.http-loader';
-import { availableLangs } from './transloco.types';
+import { availableLangs } from '@msk/shared/constants';
 import { firstValueFrom } from 'rxjs';
 
 export const provideMskTransloco = (): Array<Provider | EnvironmentProviders> => {
@@ -16,7 +16,7 @@ export const provideMskTransloco = (): Array<Provider | EnvironmentProviders> =>
     provideHttpClient(withInterceptors([translocoInterceptor])),
     provideTransloco({
       config: {
-        availableLangs: availableLangs,
+        availableLangs: availableLangs.map((x) => x.id),
         prodMode: !isDevMode(),
       },
       loader: TranslocoHttpLoader,
@@ -41,7 +41,7 @@ export function MskTranslocoTestingModule(options: TranslocoTestingOptions = {})
   return TranslocoTestingModule.forRoot({
     langs: {},
     translocoConfig: {
-      availableLangs: availableLangs,
+      availableLangs: availableLangs.map((x) => x.id),
       defaultLang: availableLangs[0].id,
     },
     preloadLangs: true,

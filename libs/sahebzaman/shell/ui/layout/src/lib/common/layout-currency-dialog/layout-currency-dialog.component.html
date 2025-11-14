@@ -6,7 +6,8 @@
     (change)="setCurrencyCode($event)"
     aria-label="Select an currency option"
   >
-    <mat-radio-button value="IRR">{{ t('currency.IRR') }}</mat-radio-button>
-    <mat-radio-button value="IRT">{{ t('currency.IRT') }}</mat-radio-button>
+    @for (lang of availableCurrencies; track lang.code) {
+      <mat-radio-button [value]="lang.code">{{ t(lang.label) }}</mat-radio-button>
+    }
   </mat-radio-group>
 </div>

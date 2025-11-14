@@ -25,6 +25,14 @@
   "sz-app-name": "صاحب الزمان",
   "mz-app-name": "میرزا بنویس",
   "oc-app-name": "آنکو",
+  "languages": {
+    "en": "English",
+    "fa": "فارسی"
+  },
+  "calendars": {
+    "gregory": "میلادی",
+    "persian": "شمسی"
+  },
   "currency": {
     "IRR": "ریال",
     "IRT": "تومان"

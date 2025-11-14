@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChang
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-import { locale } from '@msk/docs/shell/ui/layout';
+import { LANG_BY_ID } from '@msk/shared/constants';
 import { provideDocsShell } from '@msk/docs/shell/feature';
 
 export const appConfig: ApplicationConfig = {
@@ -12,8 +12,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(),
     provideDocsShell({
-      locale: locale['en'],
-      currencyCode: 'IRR',
+      lang: LANG_BY_ID['fa'].id,
+      direction: LANG_BY_ID['fa'].direction,
+      calendar: 'persian',
+      currency: 'IRR',
       type: 'material',
       scheme: 'auto',
       screens: {

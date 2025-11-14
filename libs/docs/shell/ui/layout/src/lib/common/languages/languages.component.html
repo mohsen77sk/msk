@@ -8,7 +8,7 @@
     <button mat-menu-item (click)="setActiveLang(lang.id)">
       <span class="flex items-center">
         <ng-container *ngTemplateOutlet="flagImage; context: { $implicit: lang.id }"></ng-container>
-        <span class="mx-3">{{ lang.label }}</span>
+        <span class="mx-3" *transloco="let t">{{ t(lang.label) }}</span>
       </span>
     </button>
   }

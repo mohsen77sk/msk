@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewEncapsulation,
   booleanAttribute,
+  computed,
   inject,
   input,
   signal,
@@ -16,10 +17,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
-import { availableLangs } from '@msk/shared/utils/transloco';
+import { availableCurrencies, availableLangs } from '@msk/shared/constants';
 import { UserService, User } from '@msk/mirza/shell/core/user';
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
@@ -47,7 +48,6 @@ export class UserComponent implements OnInit {
   private _router = inject(Router);
   private _dialog = inject(MatDialog);
   private _userService = inject(UserService);
-  private _translocoService = inject(TranslocoService);
   private _layoutConfigService = inject(MskLayoutConfigService);
 
   showAvatar = input(true, { transform: booleanAttribute });
@@ -56,6 +56,9 @@ export class UserComponent implements OnInit {
   activeLang = signal<string>('');
   activeCurrency = signal<string>('');
   layoutScheme = signal<LayoutScheme>('auto');
+
+  activeLangLabel = computed(() => availableLangs.find((x) => x.id === this.activeLang())?.label ?? '');
+  activeCurrencyLabel = computed(() => availableCurrencies.find((x) => x.code === this.activeCurrency())?.label ?? '');
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -78,17 +81,10 @@ export class UserComponent implements OnInit {
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         tap((config) => {
+          this.activeLang.set(config.lang);
           this.layoutScheme.set(config.scheme);
-          this.activeCurrency.set(config.currencyCode);
+          this.activeCurrency.set(config.currency);
         }),
-      )
-      .subscribe();
-
-    // Subscribe to language changes
-    this._translocoService.langChanges$
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        tap((activeLang) => this.activeLang.set(availableLangs.find((x) => x.id === activeLang)?.label ?? '')),
       )
       .subscribe();
   }

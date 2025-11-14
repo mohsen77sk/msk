@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MskSplashScreenService } from '@msk/shared/services/splash-screen';
-import { LayoutCurrencyCode, MskLayoutConfigService } from '@msk/shared/services/config';
+import { MskLayoutConfigService } from '@msk/shared/services/config';
+import { MskAvailableCurrencyCodes, availableCurrencies } from '@msk/shared/constants';
 import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
@@ -19,7 +20,8 @@ export class LayoutCurrencyDialogComponent implements OnInit {
   private _layoutConfigService = inject(MskLayoutConfigService);
   private _splashScreenService = inject(MskSplashScreenService);
 
-  layoutCurrencyCode!: LayoutCurrencyCode;
+  availableCurrencies = availableCurrencies;
+  layoutCurrencyCode!: MskAvailableCurrencyCodes;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -32,7 +34,7 @@ export class LayoutCurrencyDialogComponent implements OnInit {
     // Subscribe to config changes
     this._layoutConfigService.config$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((config) => {
       // Get the config
-      this.layoutCurrencyCode = config.currencyCode;
+      this.layoutCurrencyCode = config.currency;
     });
   }
 
@@ -52,7 +54,7 @@ export class LayoutCurrencyDialogComponent implements OnInit {
     setTimeout(() => {
       // Set the active currencyCode in config
       this._layoutConfigService.config = {
-        currencyCode: event.value,
+        currency: event.value,
       };
       // reload
       window.location.reload();

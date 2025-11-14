@@ -1,8 +1,7 @@
 import { Direction } from '@angular/cdk/bidi';
+import { MskAvailableCurrencyCodes, MskAvailableCalendarTypes, MskAvailableLangsIds } from '@msk/shared/constants';
 
 // -------------------- TYPES --------------------
-export type LayoutLocale = { id: string; direction: Direction };
-export type LayoutCurrencyCode = string;
 export type LayoutScheme = 'auto' | 'dark' | 'light';
 export type LayoutScreens = { [key: string]: string };
 export type LayoutTheme = 'theme-default' | string;
@@ -11,8 +10,10 @@ export type LayoutType = 'empty' | 'material';
 
 // -------------------- CONFIG INTERFACE --------------------
 export interface LayoutConfig {
-  locale: LayoutLocale;
-  currencyCode: LayoutCurrencyCode;
+  lang: MskAvailableLangsIds;
+  direction: Direction;
+  currency: MskAvailableCurrencyCodes;
+  calendar: MskAvailableCalendarTypes;
   screens: LayoutScreens;
   scheme: LayoutScheme;
   themes: LayoutThemes;

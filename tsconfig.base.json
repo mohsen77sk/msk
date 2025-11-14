@@ -67,6 +67,7 @@
       "@msk/sahebzaman/shell/feature": ["libs/sahebzaman/shell/feature/src/index.ts"],
       "@msk/sahebzaman/shell/ui/layout": ["libs/sahebzaman/shell/ui/layout/src/index.ts"],
       "@msk/shared/animations": ["libs/shared/animations/src/index.ts"],
+      "@msk/shared/constants": ["libs/shared/constants/src/index.ts"],
       "@msk/shared/data-access": ["libs/shared/data-access/src/index.ts"],
       "@msk/shared/directives/currency-symbol": ["libs/shared/directives/currency-symbol/src/index.ts"],
       "@msk/shared/directives/datepicker-touch-ui": ["libs/shared/directives/datepicker-touch-ui/src/index.ts"],

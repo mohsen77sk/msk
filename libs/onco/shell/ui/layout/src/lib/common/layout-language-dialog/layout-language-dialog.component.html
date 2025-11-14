@@ -7,7 +7,7 @@
     aria-label="Select an language option"
   >
     @for (lang of availableLangs; track lang.id) {
-      <mat-radio-button [value]="lang.id">{{ lang.label }}</mat-radio-button>
+      <mat-radio-button [value]="lang.id">{{ t(lang.label) }}</mat-radio-button>
     }
   </mat-radio-group>
 </div>
