@@ -34,8 +34,8 @@
     "persian": "Jalali (Persian)"
   },
   "currency": {
-    "IRR": "IRR",
-    "IRT": "IRT"
+    "IRR": "IRR (Iran rial)",
+    "IRT": "IRT (Iran toman)"
   },
   "layout": {
     "settings": "Manage your account settings",

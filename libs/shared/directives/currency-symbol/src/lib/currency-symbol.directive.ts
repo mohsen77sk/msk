@@ -22,12 +22,12 @@ export class MskCurrencySymbolDirective implements OnInit {
    */
   ngOnInit(): void {
     const currency = CURRENCY_BY_CODE[this._currencyCode as MskAvailableCurrencyCodes];
-    let currencySymbol = '';
+    let symbol = '';
 
     if (currency.code === 'IRT') {
-      currencySymbol = this._translocoService.translate(currency.label);
+      symbol = this._localeId === 'fa-IR' ? this._translocoService.translate(currency.label) : this._currencyCode;
     } else {
-      currencySymbol =
+      symbol =
         Intl.NumberFormat(this._localeId, {
           style: 'currency',
           currency: currency.intlCode,
@@ -36,6 +36,6 @@ export class MskCurrencySymbolDirective implements OnInit {
           .find((part) => part.type === 'currency')?.value || this._currencyCode;
     }
 
-    (this._elementRef.nativeElement as Element).innerHTML = currencySymbol;
+    (this._elementRef.nativeElement as Element).innerHTML = symbol;
   }
 }
