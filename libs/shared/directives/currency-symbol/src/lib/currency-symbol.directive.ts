@@ -1,4 +1,5 @@
 import { DEFAULT_CURRENCY_CODE, Directive, ElementRef, inject, LOCALE_ID, OnInit } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
 import { CURRENCY_BY_CODE, MskAvailableCurrencyCodes } from '@msk/shared/constants';
 
 @Directive({
@@ -8,6 +9,7 @@ import { CURRENCY_BY_CODE, MskAvailableCurrencyCodes } from '@msk/shared/constan
 })
 export class MskCurrencySymbolDirective implements OnInit {
   private _elementRef = inject(ElementRef);
+  private _translocoService = inject(TranslocoService);
   private _localeId = inject(LOCALE_ID);
   private _currencyCode = inject(DEFAULT_CURRENCY_CODE);
 
@@ -19,14 +21,20 @@ export class MskCurrencySymbolDirective implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    // If don't have translate
-    const currencySymbol =
-      Intl.NumberFormat(this._localeId, {
-        style: 'currency',
-        currency: CURRENCY_BY_CODE[this._currencyCode as MskAvailableCurrencyCodes].intlCode,
-      })
-        .formatToParts()
-        .find((part) => part.type === 'currency')?.value || this._currencyCode;
+    const currency = CURRENCY_BY_CODE[this._currencyCode as MskAvailableCurrencyCodes];
+    let currencySymbol = '';
+
+    if (currency.code === 'IRT') {
+      currencySymbol = this._translocoService.translate(currency.label);
+    } else {
+      currencySymbol =
+        Intl.NumberFormat(this._localeId, {
+          style: 'currency',
+          currency: currency.intlCode,
+        })
+          .formatToParts()
+          .find((part) => part.type === 'currency')?.value || this._currencyCode;
+    }
 
     (this._elementRef.nativeElement as Element).innerHTML = currencySymbol;
   }
