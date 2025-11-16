@@ -80,6 +80,7 @@
       "@msk/shared/pages/errors/internal-server-error": ["libs/shared/pages/errors/internal-server-error/src/index.ts"],
       "@msk/shared/pages/errors/maintenance": ["libs/shared/pages/errors/maintenance/src/index.ts"],
       "@msk/shared/pages/errors/not-found": ["libs/shared/pages/errors/not-found/src/index.ts"],
+      "@msk/shared/pipes/currency": ["libs/shared/pipes/currency/src/index.ts"],
       "@msk/shared/pipes/date-time": ["libs/shared/pipes/date-time/src/index.ts"],
       "@msk/shared/pipes/find-by-key": ["libs/shared/pipes/find-by-key/src/index.ts"],
       "@msk/shared/services/config": ["libs/shared/services/config/src/index.ts"],

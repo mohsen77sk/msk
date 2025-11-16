@@ -21,7 +21,7 @@ import { MskMaskType } from './mask.types';
 export class MskMaskDirective implements ControlValueAccessor {
   private _elementRef = inject(ElementRef);
   private _localeId = inject(LOCALE_ID);
-  private _currencyCode = inject(DEFAULT_CURRENCY_CODE);
+  private _currencyCode = inject(DEFAULT_CURRENCY_CODE) as MskAvailableCurrencyCodes;
 
   private onChange!: (value: number | null) => void;
   private onTouched!: () => void;
@@ -76,17 +76,16 @@ export class MskMaskDirective implements ControlValueAccessor {
 
   private _format(value: number | null): string {
     if (value === null || isNaN(value)) return '';
-    const formatOpts = new Intl.NumberFormat(this._localeId, {
-      style: this.mskMask(),
-      currency: CURRENCY_BY_CODE[this._currencyCode as MskAvailableCurrencyCodes].intlCode,
-    }).resolvedOptions();
+
+    const config = CURRENCY_BY_CODE[this._currencyCode];
+    const displayValue = config.multiplier ? value / config.multiplier : value;
 
     return new Intl.NumberFormat(this._localeId, {
       style: 'decimal',
       numberingSystem: 'latn',
-      minimumFractionDigits: formatOpts.minimumFractionDigits,
-      maximumFractionDigits: formatOpts.maximumFractionDigits,
-    }).format(value);
+      minimumFractionDigits: config.fraction,
+      maximumFractionDigits: config.fraction,
+    }).format(displayValue);
   }
 
   private _parse(value: string): number | null {
@@ -97,7 +96,11 @@ export class MskMaskDirective implements ControlValueAccessor {
     // Identify decimal separator (last non-digit char)
     const decSep = parts[parts.length - 1];
     const normalized = value.replace(new RegExp(`[^0-9${decSep}]`, 'g'), '').replace(decSep, '.');
-    const num = parseFloat(normalized);
+    let num = parseFloat(normalized);
+
+    const config = CURRENCY_BY_CODE[this._currencyCode];
+    if (config.multiplier) num = num * config.multiplier;
+
     return isNaN(num) ? null : num;
   }
 

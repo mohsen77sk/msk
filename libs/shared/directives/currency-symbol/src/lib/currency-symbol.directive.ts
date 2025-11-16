@@ -1,5 +1,4 @@
 import { DEFAULT_CURRENCY_CODE, Directive, ElementRef, inject, LOCALE_ID, OnInit } from '@angular/core';
-import { TranslocoService } from '@jsverse/transloco';
 import { CURRENCY_BY_CODE, MskAvailableCurrencyCodes } from '@msk/shared/constants';
 
 @Directive({
@@ -8,10 +7,9 @@ import { CURRENCY_BY_CODE, MskAvailableCurrencyCodes } from '@msk/shared/constan
   exportAs: 'mskCurrencySymbol',
 })
 export class MskCurrencySymbolDirective implements OnInit {
-  private _elementRef = inject(ElementRef);
-  private _translocoService = inject(TranslocoService);
+  private _elementRef = inject(ElementRef<HTMLElement>);
   private _localeId = inject(LOCALE_ID);
-  private _currencyCode = inject(DEFAULT_CURRENCY_CODE);
+  private _currencyCode = inject(DEFAULT_CURRENCY_CODE) as MskAvailableCurrencyCodes;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -21,21 +19,23 @@ export class MskCurrencySymbolDirective implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    const currency = CURRENCY_BY_CODE[this._currencyCode as MskAvailableCurrencyCodes];
-    let symbol = '';
+    const config = CURRENCY_BY_CODE[this._currencyCode];
 
-    if (currency.code === 'IRT') {
-      symbol = this._localeId === 'fa-IR' ? this._translocoService.translate(currency.label) : this._currencyCode;
-    } else {
-      symbol =
-        Intl.NumberFormat(this._localeId, {
-          style: 'currency',
-          currency: currency.intlCode,
-        })
-          .formatToParts()
-          .find((part) => part.type === 'currency')?.value || this._currencyCode;
+    let symbol = new Intl.NumberFormat(this._localeId, {
+      style: 'currency',
+      currency: config.intlCode,
+    })
+      .formatToParts()
+      .find((part) => part.type === 'currency')?.value;
+
+    // Replace IRT
+    if (this._currencyCode === 'IRT') {
+      symbol = symbol
+        ?.replace(/\s*IRR\s*$/u, ` IRT`)
+        ?.replace(/\s*ریال(?:\s*ایران)?\s*$/u, ` تومان`)
+        ?.replace(/\s*﷼\s*$/u, ` تومان`);
     }
 
-    (this._elementRef.nativeElement as Element).innerHTML = symbol;
+    this._elementRef.nativeElement.textContent = symbol;
   }
 }

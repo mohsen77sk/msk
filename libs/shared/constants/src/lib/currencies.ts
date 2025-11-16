@@ -5,6 +5,7 @@ export interface MskCurrencyConfig {
   label: string;
   intlCode: string;
   fraction: number;
+  multiplier?: number;
 }
 
 export const availableCurrencies: MskCurrencyConfig[] = [
@@ -13,12 +14,14 @@ export const availableCurrencies: MskCurrencyConfig[] = [
     label: 'currency.IRR',
     intlCode: 'IRR',
     fraction: 0,
+    multiplier: 1,
   },
   {
     code: 'IRT',
     label: 'currency.IRT',
     intlCode: 'IRR', // چون Intl تومان ساپورت نمی‌کنه
     fraction: 0,
+    multiplier: 10,
   },
 ];
 
