@@ -21,12 +21,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
+import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskLookupItem, MskSort } from '@msk/shared/data-access';
-import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { DefaultProductCategorySortData, ProductCategoriesService } from '@msk/mirza/panel/product-categories';
 import { DefaultProductsSortData, Product } from '../products.types';
@@ -52,11 +52,11 @@ import { ProductsService } from '../products.service';
     MatButtonModule,
     MatFormFieldModule,
     TranslocoDirective,
+    MskCurrencyPipe,
     MskAvatarComponent,
     MskSortMenuComponent,
     MskFilterMenuComponent,
     MskEmptyStateComponent,
-    MskCurrencySymbolDirective,
     MskFabExtendedCollapseDirective,
   ],
 })

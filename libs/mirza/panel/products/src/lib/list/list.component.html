@@ -48,7 +48,7 @@
           </div>
           <!-- End -->
           <div class="content-grid-item-end">
-            <div class="truncate">{{ product.sellPrice | number }} <small mskCurrencySymbol></small></div>
+            <div class="truncate">{{ product.sellPrice | mskCurrency }}</div>
           </div>
         } @else {
           <div class="content-grid-item-avatar">

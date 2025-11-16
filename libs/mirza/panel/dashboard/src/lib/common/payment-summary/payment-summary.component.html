@@ -50,14 +50,14 @@
             {{ (value / paymentTypesValueSum) * 100 | number: '1.0-0' }}%
           </span>
         </div>
-        <div class="text-right font-medium">{{ value | number }} <span mskCurrencySymbol></span></div>
+        <div class="text-right font-medium">{{ value | mskCurrency }}</div>
       </div>
     }
     <div class="flex justify-between pt-4 pb-3">
       <div class="me-3 flex items-center gap-2">
         <div class="inline-flex gap-2 truncate" *transloco="let t">{{ t('dashboard.total-sales') }}</div>
       </div>
-      <div class="text-right font-medium">{{ paymentTypesValueSum | number }} <span mskCurrencySymbol></span></div>
+      <div class="text-right font-medium">{{ paymentTypesValueSum | mskCurrency }}</div>
     </div>
   </div>
 </div>

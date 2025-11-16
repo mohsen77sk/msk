@@ -36,7 +36,7 @@
         <div class="msk-mat-card-filled min-w-24 shrink-0 snap-center px-4 py-3">
           <div class="text-on-surface-variant text-label-medium mb-2">{{ t('sum') }}</div>
           <div class="text-label-large">
-            {{ dataSummery()?.totalSum ?? 0 | number }} <small mskCurrencySymbol></small>
+            {{ dataSummery()?.totalSum ?? 0 | mskCurrency }}
           </div>
         </div>
         @for (item of dataSummery()?.paymentTypes; track item.paymentType) {
@@ -44,7 +44,7 @@
             <div class="text-on-surface-variant text-label-medium mb-2">
               {{ t('paymentTypes.' + item.paymentType) }}
             </div>
-            <div class="text-label-large">{{ item.value | number }} <small mskCurrencySymbol></small></div>
+            <div class="text-label-large">{{ item.value | mskCurrency }}</div>
           </div>
         }
       </div>
@@ -73,7 +73,7 @@
                   }
                 }
               </span>
-              <span>{{ invoice.total | number }} <small mskCurrencySymbol></small></span>
+              <span>{{ invoice.total | mskCurrency }}</span>
             </div>
           </div>
           <!-- End -->

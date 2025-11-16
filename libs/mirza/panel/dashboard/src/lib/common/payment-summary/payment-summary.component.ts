@@ -16,7 +16,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
+import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskDateRange, DateRangeFactory, MskDateRangeKey } from '@msk/shared/utils/datetime';
 import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
 import { Locale } from 'date-fns';
@@ -37,7 +37,7 @@ import { SalesPaymentTypeReport } from '../../dashboard.types';
     MatMenuModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MskCurrencySymbolDirective,
+    MskCurrencyPipe,
     TranslocoDirective,
     NgApexchartsModule,
   ],

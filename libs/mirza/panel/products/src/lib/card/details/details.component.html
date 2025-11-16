@@ -63,7 +63,7 @@
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">paid</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ data.item()?.cost | number }} <small mskCurrencySymbol></small></span>
+          <span>{{ data.item()?.cost | mskCurrency }}</span>
           <span>{{ t('cost') }}</span>
         </div>
       </div>
@@ -73,7 +73,7 @@
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">sell</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ data.item()?.sellPrice | number }} <small mskCurrencySymbol></small></span>
+          <span>{{ data.item()?.sellPrice | mskCurrency }}</span>
           <span>{{ t('sell-price') }}</span>
         </div>
       </div>

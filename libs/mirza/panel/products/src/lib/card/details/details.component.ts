@@ -13,6 +13,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MskDataSource, MskDialogData, MskHttpErrorResponse, MskSort } from '@msk/shared/data-access';
+import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
@@ -60,6 +61,7 @@ import {
     MatDialogModule,
     TranslocoPipe,
     TranslocoDirective,
+    MskCurrencyPipe,
     MskAlertComponent,
     MskDialogComponent,
     MskMaskDirective,

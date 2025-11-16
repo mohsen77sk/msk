@@ -48,7 +48,7 @@
     <div class="msk-list-item">
       <mat-icon class="msk-list-item-icon">percent_discount</mat-icon>
       <div class="msk-list-item-content">
-        <span>{{ data.item()?.discount | number }} <small mskCurrencySymbol></small></span>
+        <span>{{ data.item()?.discount | mskCurrency }}</span>
         <span>{{ t('discount') }}</span>
       </div>
     </div>
@@ -56,7 +56,7 @@
     <div class="msk-list-item">
       <mat-icon class="msk-list-item-icon">payments</mat-icon>
       <div class="msk-list-item-content">
-        <span>{{ data.item()?.total | number }} <small mskCurrencySymbol></small></span>
+        <span>{{ data.item()?.total | mskCurrency }}</span>
         <span>{{ t('total') }}</span>
       </div>
     </div>
@@ -71,7 +71,7 @@
             <div *transloco="let t; prefix: 'products.units'">
               {{ item.quantity }} <small>{{ t(item.product?.unit ?? '') }}</small>
             </div>
-            <div>{{ item.total | number }} <small mskCurrencySymbol></small></div>
+            <div>{{ item.total | mskCurrency }}</div>
           </span>
         </div>
       </div>
@@ -82,7 +82,7 @@
     @for (item of data.item()?.paymentTypes; track $index) {
       <div class="msk-list-item">
         <div class="msk-list-item-content">
-          <span>{{ item.value | number }} <small mskCurrencySymbol></small></span>
+          <span>{{ item.value | mskCurrency }}</span>
           <span *transloco="let t; prefix: 'paymentTypes'">{{ t(item.paymentType) }}</span>
         </div>
       </div>
@@ -206,7 +206,7 @@
               <mat-label>{{ t('quantity') }}</mat-label>
               <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
               <mat-hint align="end">
-                {{ product.get('total')?.value | number }} <small mskCurrencySymbol></small>
+                {{ product.get('total')?.value | mskCurrency }}
               </mat-hint>
             </mat-form-field>
           </div>

@@ -1,4 +1,4 @@
-import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -22,12 +22,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { mskAnimations } from '@msk/shared/animations';
+import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
 import { MskFilterDateComponent } from '@msk/shared/ui/filter-date';
 import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
-import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { DateRangeFactory, MskDateRange } from '@msk/shared/utils/datetime';
 import { MskDataSource, MskLookupItem, MskSort } from '@msk/shared/data-access';
@@ -46,7 +46,6 @@ import { Locale } from 'date-fns';
   animations: mskAnimations,
   imports: [
     AsyncPipe,
-    DecimalPipe,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
@@ -59,12 +58,12 @@ import { Locale } from 'date-fns';
     MatButtonModule,
     MatFormFieldModule,
     TranslocoDirective,
+    MskCurrencyPipe,
     MskDateTimePipe,
     MskSortMenuComponent,
     MskFilterDateComponent,
     MskFilterMenuComponent,
     MskEmptyStateComponent,
-    MskCurrencySymbolDirective,
     MskFabExtendedCollapseDirective,
   ],
 })

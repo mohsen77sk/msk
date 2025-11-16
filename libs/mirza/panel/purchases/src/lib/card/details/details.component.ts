@@ -1,5 +1,5 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -23,6 +23,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MskDataSource, MskDialogData, MskHttpErrorResponse, MskSort } from '@msk/shared/data-access';
+import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
@@ -60,7 +61,6 @@ import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/pa
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DecimalPipe,
     NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
@@ -77,6 +77,7 @@ import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/pa
     MatAutocompleteModule,
     TranslocoPipe,
     TranslocoDirective,
+    MskCurrencyPipe,
     MskDateTimePipe,
     MskAlertComponent,
     MskDialogComponent,
