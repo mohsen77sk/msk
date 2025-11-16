@@ -35,7 +35,7 @@
         @if (isLoadingBalance()) {
           <mat-spinner diameter="24"></mat-spinner>
         } @else {
-          {{ data.item()?.balance | number }} <small mskCurrencySymbol></small>
+          {{ data.item()?.balance | mskCurrency }}
         }
       </span>
     </div>

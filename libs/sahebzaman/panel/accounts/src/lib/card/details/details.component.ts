@@ -1,4 +1,4 @@
-import { NgTemplateOutlet, DecimalPipe, AsyncPipe } from '@angular/common';
+import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,6 +23,7 @@ import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
+import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import {
   MskHandleFormErrors,
@@ -52,7 +53,6 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
   imports: [
     NgTemplateOutlet,
     AsyncPipe,
-    DecimalPipe,
     FormsModule,
     ReactiveFormsModule,
     MatIconModule,
@@ -75,6 +75,7 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
     MskSelectSearchDirective,
     MskCurrencySymbolDirective,
     MskDatepickerTouchUiDirective,
+    MskCurrencyPipe,
     MskDateTimePipe,
   ],
 })
