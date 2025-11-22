@@ -89,11 +89,17 @@ export class DashboardOrdersSummaryComponent implements OnInit {
         tap((res) => {
           this.generateChartData(res);
           const salesNumbers = res.map((item) => item.numberOfSales);
-          this.averageCount.set(
-            Math.round(salesNumbers.reduce((sum, current) => sum + current, 0) / salesNumbers.length),
-          );
-          this.maxCount.set(Math.max(...salesNumbers));
-          this.minCount.set(Math.min(...salesNumbers));
+          if (salesNumbers.length > 0) {
+            this.averageCount.set(
+              Math.round(salesNumbers.reduce((sum, current) => sum + current, 0) / salesNumbers.length),
+            );
+            this.maxCount.set(Math.max(...salesNumbers));
+            this.minCount.set(Math.min(...salesNumbers));
+          } else {
+            this.averageCount.set(0);
+            this.maxCount.set(0);
+            this.minCount.set(0);
+          }
           this.isLoading.set(false);
         }),
       )
