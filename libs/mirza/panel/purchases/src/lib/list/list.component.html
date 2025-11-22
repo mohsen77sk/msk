@@ -31,7 +31,7 @@
   <!-- Main -->
   <div class="content">
     <!-- Summery -->
-    @if (!!!(dataSource.loading$ | async) && dataSource.length > 0) {
+    @if (dataSource.length > 0) {
       <div class="flex snap-x items-center gap-4 overflow-x-auto border-b p-4" *transloco="let t">
         <div class="msk-mat-card-filled min-w-24 shrink-0 snap-center px-4 py-3">
           <div class="text-on-surface-variant text-label-medium mb-2">{{ t('sum') }}</div>

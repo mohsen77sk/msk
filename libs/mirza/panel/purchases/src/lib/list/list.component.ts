@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -45,7 +44,6 @@ import { Locale } from 'date-fns';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: mskAnimations,
   imports: [
-    AsyncPipe,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
