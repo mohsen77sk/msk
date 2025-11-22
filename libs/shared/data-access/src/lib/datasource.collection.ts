@@ -6,7 +6,9 @@ import {
   EMPTY,
   filter,
   finalize,
+  forkJoin,
   map,
+  mergeMap,
   Observable,
   Subscription,
   switchMap,
@@ -131,9 +133,18 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
     this._subscription.add(
       viewChanges$
         .pipe(
-          switchMap((pages) => {
-            // When new pages are requested, previous calls are automatically canceled
-            return pages.length ? this._fetchPage(pages[0]) : EMPTY;
+          mergeMap((pages) => {
+            if (!pages.length) return EMPTY;
+            const requests = pages.filter((p) => !this._fetchedPages.has(p)).map((p) => this._fetchPage(p));
+            return requests.length ? forkJoin(requests) : EMPTY;
+          }, 5),
+          tap((results) => {
+            results.forEach((pageData) => {
+              const pageIndex = pageData.pageIndex;
+              this._fetchedPages.add(pageIndex);
+              this._cachedData.splice(pageIndex * this._pageSize, this._pageSize, ...pageData.items);
+            });
+            this._dataStream.next(this._cachedData);
           }),
         )
         .subscribe(),
@@ -203,7 +214,7 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
    * @param pageIndex The zero-based index of the page to fetch
    * @returns Observable that completes when the page is fetched and cache is updated
    */
-  private _fetchPage(pageIndex: number): Observable<unknown> {
+  private _fetchPage(pageIndex: number): Observable<MskPageData<T, unknown>> {
     if (this._fetchedPages.has(pageIndex)) {
       // If the page has already been fetched, return EMPTY observable
       return EMPTY;
