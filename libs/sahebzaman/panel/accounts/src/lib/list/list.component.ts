@@ -86,7 +86,7 @@ export class AccountsListComponent implements OnInit {
       this.filterForm.valueChanges,
     );
 
-    // Subscribe to PeopleService changes and update the data source accordingly
+    // Subscribe to AccountService changes and update the data source accordingly
     this._accountService.changesAccounts$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((evt) => {
       switch (evt.type) {
         case 'create':

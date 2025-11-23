@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import {
   MskPagingResponse,
   MskLookupResponse,
   MskPageData,
-  EmptyPageData,
   MskPagingRequest,
+  MskChangeEvent,
 } from '@msk/shared/data-access';
 import { DefaultLoansSortData, Loan, ICreateLoan, IUpdateLoan } from './loans.types';
 
@@ -17,17 +17,17 @@ export class LoanService {
   private _httpClient = inject(HttpClient);
 
   // Private
-  private _loans: BehaviorSubject<MskPageData<Loan>> = new BehaviorSubject<MskPageData<Loan>>(EmptyPageData);
+  private _changesLoans = new Subject<MskChangeEvent<Loan>>();
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Getter for loans
+   * Stream of CRUD changes for in-place list updates
    */
-  get loans$(): Observable<MskPageData<Loan>> {
-    return this._loans.asObservable();
+  get changesLoans$(): Observable<MskChangeEvent<Loan>> {
+    return this._changesLoans.asObservable();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -55,7 +55,6 @@ export class LoanService {
             items: response.items.map((item) => new Loan(item)),
           });
         }),
-        tap((response) => this._loans.next(response)),
       );
   }
 
@@ -85,9 +84,10 @@ export class LoanService {
    * @param loan
    */
   createLoan(loan: ICreateLoan): Observable<Loan> {
-    return this._httpClient
-      .post<Loan>(`${this._appConfig.apiEndpoint}/api/loan`, loan)
-      .pipe(map((response) => new Loan(response)));
+    return this._httpClient.post<Loan>(`${this._appConfig.apiEndpoint}/api/loan`, loan).pipe(
+      map((response) => new Loan(response)),
+      tap((loan) => this._changesLoans.next({ type: 'create', item: loan })),
+    );
   }
 
   /**
@@ -98,14 +98,7 @@ export class LoanService {
   updateLoan(loan: IUpdateLoan): Observable<Loan> {
     return this._httpClient.put<Loan>(`${this._appConfig.apiEndpoint}/api/loan`, loan).pipe(
       map((response) => new Loan(response)),
-      // Update the loans
-      tap((newLoan) => {
-        if (this._loans.value) {
-          const index = this._loans.value.items.findIndex((x) => x.id === newLoan.id) ?? 0;
-          this._loans.value.items[index] = newLoan;
-          this._loans.next(this._loans.value);
-        }
-      }),
+      tap((loan) => this._changesLoans.next({ type: 'update', item: loan })),
     );
   }
 }

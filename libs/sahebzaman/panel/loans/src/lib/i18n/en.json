@@ -1,1 +1,7 @@
-{}
+{
+  "sort": {
+    "code": "Code"
+  },
+  "search": "Search loans",
+  "empty-list": "There are no loans!"
+}
