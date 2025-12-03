@@ -1,0 +1,41 @@
+name: Sahebzaman Manual Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy-sahebzaman:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [24.11]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build sahebzaman
+        run: npx nx build sahebzaman --skip-nx-cache
+
+      - name: Copy web.config
+        run: cp ./tools/web.config dist/apps/sahebzaman/browser/
+
+      - name: Upload files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.SAHEBZAMAN_FTP_SERVER }}
+          username: ${{ secrets.SAHEBZAMAN_FTP_USERNAME }}
+          password: ${{ secrets.SAHEBZAMAN_FTP_PASSWORD }}
+          local-dir: dist/apps/sahebzaman/browser/
+          server-dir: ./
+          dangerous-clean-slate: true
