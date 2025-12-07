@@ -32,7 +32,45 @@
         <span>{{ t('layout.settings') }}</span>
       </button>
     </div>
-    <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">
+    <div class="mz-user-panel-profile-list" *transloco="let t">
+      <div class="mz-user-panel-profile-item" aria-hidden="true" (click)="$event.stopPropagation(); toggleMoreStores()">
+        <span class="font-medium">
+          {{ showMoreStores() ? t('layout.hide-more-stores') : t('layout.show-more-stores') }}
+        </span>
+        <div class="flex items-center gap-1">
+          <div class="flex flex-row-reverse items-center gap-1" [class.hidden]="showMoreStores()">
+            @for (store of stores().slice(0, 3); track store.id) {
+              <msk-avatar [name]="store.name" size="small"></msk-avatar>
+            }
+            @if (stores().length > 3) {
+              <msk-avatar [name]="'+'" size="small"></msk-avatar>
+            }
+          </div>
+          <div
+            class="bg-surface-container-low size-6 rounded-full transition-transform duration-300"
+            [class.rotate-180]="showMoreStores()"
+          >
+            <mat-icon class="text-on-surface-variant">keyboard_arrow_down</mat-icon>
+          </div>
+        </div>
+      </div>
+      @if (showMoreStores()) {
+        <div class="w-full overflow-hidden" [@expandCollapse]="showMoreStores() ? 'expanded' : 'collapsed'">
+          @for (store of stores(); track store.id) {
+            <div class="mz-user-panel-profile-item" (click)="selectActiveStore(store)" aria-hidden="true">
+              <div>
+                <msk-avatar [name]="store.name" size="small"></msk-avatar>
+                <span class="ms-3 font-medium">{{ store.name }}</span>
+              </div>
+              @if (currentStore() === store) {
+                <div class="msk-chips">{{ t('active') }}</div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+    <div class="mz-user-panel-profile-list" *transloco="let t">
       <div class="mz-user-panel-profile-item" (click)="openLayoutSchemeDialog()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">dark_mode</mat-icon>
@@ -65,7 +103,7 @@
         <span class="text-label-medium font-light">{{ t(activeCurrencyLabel()) }}</span>
       </div>
     </div>
-    <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">
+    <div class="mz-user-panel-profile-list" *transloco="let t">
       <div class="mz-user-panel-profile-item" (click)="signOut()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">logout</mat-icon>

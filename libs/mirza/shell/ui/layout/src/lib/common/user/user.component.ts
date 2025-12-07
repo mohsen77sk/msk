@@ -21,7 +21,9 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
 import { availableCurrencies, availableLangs } from '@msk/shared/constants';
+import { mskAnimations } from '@msk/shared/animations';
 import { UserService, User } from '@msk/mirza/shell/core/user';
+import { StoreService, Store } from '@msk/mirza/shell/core/store';
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
 import { LayoutCurrencyDialogComponent } from '../layout-currency-dialog/layout-currency-dialog.component';
@@ -33,6 +35,7 @@ import { tap } from 'rxjs';
   styleUrl: './user.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: mskAnimations,
   imports: [
     NgClass,
     MatMenuModule,
@@ -48,6 +51,7 @@ export class UserComponent implements OnInit {
   private _router = inject(Router);
   private _dialog = inject(MatDialog);
   private _userService = inject(UserService);
+  private _storeService = inject(StoreService);
   private _layoutConfigService = inject(MskLayoutConfigService);
 
   showAvatar = input(true, { transform: booleanAttribute });
@@ -56,6 +60,9 @@ export class UserComponent implements OnInit {
   activeLang = signal<string>('');
   activeCurrency = signal<string>('');
   layoutScheme = signal<LayoutScheme>('auto');
+  stores = signal<Store[]>([]);
+  currentStore = signal<Store | null>(null);
+  showMoreStores = signal<boolean>(false);
 
   activeLangLabel = computed(() => availableLangs.find((x) => x.id === this.activeLang())?.label ?? '');
   activeCurrencyLabel = computed(() => availableCurrencies.find((x) => x.code === this.activeCurrency())?.label ?? '');
@@ -73,6 +80,22 @@ export class UserComponent implements OnInit {
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         tap((user) => this.user.set(user)),
+      )
+      .subscribe();
+
+    // Subscribe to stores changes
+    this._storeService.stores$
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap((stores) => this.stores.set(stores)),
+      )
+      .subscribe();
+
+    // Subscribe to current store changes
+    this._storeService.currentStore$
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap((store) => this.currentStore.set(store)),
       )
       .subscribe();
 
@@ -112,6 +135,26 @@ export class UserComponent implements OnInit {
    */
   openLayoutCurrencyDialog() {
     this._dialog.open(LayoutCurrencyDialogComponent).afterClosed().subscribe();
+  }
+
+  /**
+   * Toggle more stores
+   */
+  toggleMoreStores() {
+    this.showMoreStores.set(!this.showMoreStores());
+  }
+
+  /**
+   * Select active store
+   * @param store
+   */
+  selectActiveStore(store: Store) {
+    if (this.currentStore() === store) {
+      return;
+    }
+
+    this._storeService.currentStore = store;
+    this._router.navigate(['/signed-in-redirect']);
   }
 
   /**

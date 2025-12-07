@@ -40,7 +40,7 @@ export class MskAvatarComponent {
   @HostBinding('class')
   get classList(): object {
     return {
-      'size-7': this.size() === 'small',
+      'size-6': this.size() === 'small',
       'text-label-medium': this.size() === 'small',
       'size-10': this.size() === 'medium',
       'text-title-medium': this.size() === 'medium',

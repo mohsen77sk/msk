@@ -32,7 +32,7 @@
         <span>{{ t('layout.settings') }}</span>
       </button>
     </div>
-    <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">
+    <div class="sz-user-panel-profile-list" *transloco="let t">
       <div class="sz-user-panel-profile-item" (click)="openLayoutSchemeDialog()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">dark_mode</mat-icon>
@@ -65,7 +65,7 @@
         <span class="text-label-medium font-light">{{ t(activeCurrencyLabel()) }}</span>
       </div>
     </div>
-    <div class="flex flex-col items-center justify-center pb-4 transition" *transloco="let t">
+    <div class="sz-user-panel-profile-list" *transloco="let t">
       <div class="sz-user-panel-profile-item" (click)="signOut()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">logout</mat-icon>

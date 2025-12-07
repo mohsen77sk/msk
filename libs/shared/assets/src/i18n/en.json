@@ -52,7 +52,9 @@
     "dark-theme": "Dark theme",
     "select-theme": "Select theme",
     "select-language": "Select language",
-    "select-currency": "Select currency"
+    "select-currency": "Select currency",
+    "show-more-stores": "Show more stores",
+    "hide-more-stores": "Hide more stores"
   },
   "error-validation": {
     "required": "This is required",
