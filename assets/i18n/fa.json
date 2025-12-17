@@ -52,7 +52,9 @@
     "dark-theme": "تم تاریک",
     "select-theme": "انتخاب تم",
     "select-language": "انتخاب زبان",
-    "select-currency": "انتخاب واحد پولی"
+    "select-currency": "انتخاب واحد پولی",
+    "show-more-stores": "نمایش فروشگاه‌های",
+    "hide-more-stores": "پنهان کردن فروشگاه‌های"
   },
   "error-validation": {
     "required": "این فیلد اجباری است",
