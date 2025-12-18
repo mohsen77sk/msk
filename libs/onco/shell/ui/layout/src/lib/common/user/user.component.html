@@ -1,6 +1,6 @@
 <!-- Button -->
 <button matIconButton [matMenuTriggerFor]="userActions">
-  <span class="relative h-6 w-6">
+  <span class="relative size-6">
     @if (showAvatar() && user()?.avatar) {
       <img class="relative h-full w-full rounded-full" [src]="user()?.avatar" alt="user-image" />
     } @else {
