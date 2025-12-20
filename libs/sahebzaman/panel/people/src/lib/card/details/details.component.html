@@ -83,11 +83,11 @@
     <div class="msk-group-list elevated">
       <div class="msk-list-item cursor-pointer" matRipple (click)="updateStatus()" aria-hidden="true">
         <div class="msk-list-item-icon">
-          <mat-icon [ngClass]="{ 'text-error': data.item()?.isActive }">
+          <mat-icon [class.text-error]="data.item()?.isActive">
             {{ data.item()?.isActive ? 'cancel' : 'check_circle' }}
           </mat-icon>
         </div>
-        <div class="msk-list-item-content" [ngClass]="{ 'text-error': data.item()?.isActive }">
+        <div class="msk-list-item-content" [class.text-error]="data.item()?.isActive">
           {{ data.item()?.isActive ? t('people.deactivate') : t('people.activate') }}
         </div>
       </div>

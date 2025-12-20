@@ -1,4 +1,4 @@
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -33,15 +33,14 @@ import { filter, map } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     NgTemplateOutlet,
     DragDropModule,
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    TranslocoDirective,
-  ],
+    TranslocoDirective
+],
 })
 export class MskDialogComponent implements OnInit, AfterViewInit {
   private _parent = inject(MatDialogRef);

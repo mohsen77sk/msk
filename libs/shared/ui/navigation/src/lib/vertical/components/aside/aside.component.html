@@ -1,8 +1,8 @@
 <!-- Item wrapper -->
-<div class="msk-vertical-navigation-item-wrapper" [ngClass]="item().classes?.wrapper!">
+<div class="msk-vertical-navigation-item-wrapper" [class]="item().classes?.wrapper!">
   <div
     class="msk-vertical-navigation-item"
-    [ngClass]="{
+    [class]="{
       'msk-vertical-navigation-item-active': active,
       'msk-vertical-navigation-item-disabled': item().disabled,
       'msk-vertical-navigation-item-active-forced': item().active,
@@ -11,13 +11,13 @@
   >
     <!-- Icon -->
     @if (item().icon) {
-      <mat-icon class="msk-vertical-navigation-item-icon" [ngClass]="item().classes?.icon!">{{ item().icon }}</mat-icon>
+      <mat-icon class="msk-vertical-navigation-item-icon" [class]="item().classes?.icon!">{{ item().icon }}</mat-icon>
     }
 
     <!-- Title -->
     <div class="msk-vertical-navigation-item-title-wrapper">
       <div class="msk-vertical-navigation-item-title">
-        <span [ngClass]="item().classes?.title!">
+        <span [class]="item().classes?.title!">
           {{ item().title }}
         </span>
       </div>
@@ -26,7 +26,7 @@
     <!-- Badge -->
     @if (item().badge) {
       <div class="msk-vertical-navigation-item-badge">
-        <div class="msk-vertical-navigation-item-badge-content" [ngClass]="item().badge?.classes!">
+        <div class="msk-vertical-navigation-item-badge-content" [class]="item().badge?.classes!">
           {{ item().badge?.title }}
         </div>
       </div>

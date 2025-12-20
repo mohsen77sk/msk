@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +11,7 @@ import { MskSnackBarConfig } from '../snack-bar.types';
   styleUrl: './snack-bar.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, MatIconModule, MatButtonModule, MatSnackBarModule],
+  imports: [MatIconModule, MatButtonModule, MatSnackBarModule],
 })
 export class MskSnackbarComponent {
   data: MskSnackBarConfig = inject(MAT_SNACK_BAR_DATA);

@@ -9,7 +9,7 @@ import {
   input,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { IsActiveMatchOptions, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -23,7 +23,7 @@ import { MskNavigationItem } from '../../../navigation.types';
   templateUrl: './basic.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, NgTemplateOutlet, RouterLink, RouterLinkActive, MatTooltipModule, MatIconModule],
+  imports: [NgTemplateOutlet, RouterLink, RouterLinkActive, MatTooltipModule, MatIconModule],
 })
 export class MskVerticalNavigationBasicItemComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

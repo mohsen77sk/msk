@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -31,14 +31,13 @@ import { MskNavigationItem } from '../../../navigation.types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     MatIconModule,
     MatTooltipModule,
     MskVerticalNavigationBasicItemComponent,
     forwardRef(() => MskVerticalNavigationCollapsableItemComponent),
     MskVerticalNavigationDividerItemComponent,
-    forwardRef(() => MskVerticalNavigationGroupItemComponent),
-  ],
+    forwardRef(() => MskVerticalNavigationGroupItemComponent)
+],
 })
 export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

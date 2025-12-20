@@ -1,7 +1,7 @@
 import { Component, DestroyRef, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
-import { NgClass } from '@angular/common';
+
 import { TranslocoDirective } from '@jsverse/transloco';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +18,6 @@ import { PageTitleComponent } from '../../common/page-title/page-title.component
   templateUrl: './material.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [
-    NgClass,
     RouterOutlet,
     MatIconModule,
     MatButtonModule,
@@ -26,8 +25,8 @@ import { PageTitleComponent } from '../../common/page-title/page-title.component
     MskVerticalNavigationComponent,
     UserComponent,
     PageTitleComponent,
-    TranslocoDirective,
-  ],
+    TranslocoDirective
+],
 })
 export class LayoutMaterialComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

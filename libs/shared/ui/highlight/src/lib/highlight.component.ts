@@ -16,7 +16,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { NgClass } from '@angular/common';
+
 import { DomSanitizer } from '@angular/platform-browser';
 import { ClipboardModule, Clipboard } from '@angular/cdk/clipboard';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,7 +30,7 @@ import { MskHighlightService } from './highlight.service';
   exportAs: 'mskHighlight',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, ClipboardModule, MatIconModule, MatButtonModule],
+  imports: [ClipboardModule, MatIconModule, MatButtonModule],
 })
 export class MskHighlightComponent implements AfterViewInit {
   private _clipboard = inject(Clipboard);

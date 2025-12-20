@@ -7,7 +7,7 @@
 
 <!-- Title -->
 @if (data.title) {
-  <h2 [ngClass]="{ 'text-center': data.icon?.show }" mat-dialog-title>{{ data.title }}</h2>
+  <h2 [class.text-center]="data.icon?.show" mat-dialog-title>{{ data.title }}</h2>
 }
 
 <!-- Message -->
