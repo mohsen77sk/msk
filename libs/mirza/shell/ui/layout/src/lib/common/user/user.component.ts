@@ -149,12 +149,12 @@ export class UserComponent implements OnInit {
    * @param store
    */
   selectActiveStore(store: Store) {
-    if (this.currentStore() === store) {
+    if (this.currentStore()?.id === store.id) {
       return;
     }
 
     this._storeService.currentStore = store;
-    this._router.navigate(['/signed-in-redirect']);
+    this._router.navigate(['/panel/redirect']);
   }
 
   /**

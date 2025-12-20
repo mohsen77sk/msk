@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { AuthGuard, NoAuthGuard } from '@msk/mirza/shell/core/auth';
 import { LayoutComponent } from '@msk/mirza/shell/ui/layout';
 import { initialDataResolver } from './shell.resolvers';
+import { createRedirectComponent } from './common/dynamic-redirect.component';
 
 export const routes: Route[] = [
   // Redirect empty path to '/panel/dashboard'
@@ -67,6 +68,10 @@ export const routes: Route[] = [
       {
         path: 'panel',
         children: [
+          {
+            path: 'redirect',
+            component: createRedirectComponent('/panel/dashboard'),
+          },
           {
             path: 'dashboard',
             loadChildren: () => import('@msk/mirza/panel/dashboard').then((r) => r.routes),
