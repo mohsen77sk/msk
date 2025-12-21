@@ -2,8 +2,8 @@
 
 <ng-template let-highlightedCode="highlightedCode" let-lang="lang">
   <div class="msk-highlight msk-highlight-code-container not-prose" dir="ltr">
-    <pre [ngClass]="'language-' + lang()">
-      <code [ngClass]="'language-' + lang()" [innerHTML]="highlightedCode"></code>
+    <pre [class]="'language-' + lang()">
+      <code [class]="'language-' + lang()" [innerHTML]="highlightedCode"></code>
     </pre>
 
     <div class="msk-highlight-action">
