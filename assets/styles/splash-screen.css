@@ -79,6 +79,10 @@ body:not(.splash-screen-hidden) {
   overflow: hidden;
 }
 
+body:not(.splash-screen-hidden) .cdk-overlay-container {
+  display: none;
+}
+
 body.splash-screen-hidden splash-screen {
   visibility: hidden;
   opacity: 0;
