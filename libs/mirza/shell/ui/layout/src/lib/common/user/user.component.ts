@@ -21,7 +21,6 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
 import { availableCurrencies, availableLangs } from '@msk/shared/constants';
-import { mskAnimations } from '@msk/shared/animations';
 import { UserService, User } from '@msk/mirza/shell/core/user';
 import { StoreService, Store } from '@msk/mirza/shell/core/store';
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
@@ -35,7 +34,6 @@ import { tap } from 'rxjs';
   styleUrl: './user.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: mskAnimations,
   imports: [
     NgClass,
     MatMenuModule,

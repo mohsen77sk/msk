@@ -21,7 +21,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { mskAnimations } from '@msk/shared/animations';
 import { MskMediaWatcherService } from '@msk/shared/services/media-watcher';
 import { filter, map } from 'rxjs';
 
@@ -29,7 +28,6 @@ import { filter, map } from 'rxjs';
   selector: 'msk-dialog',
   templateUrl: './dialog.component.html',
   exportAs: 'mskDialog',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -39,8 +37,8 @@ import { filter, map } from 'rxjs';
     MatButtonModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    TranslocoDirective
-],
+    TranslocoDirective,
+  ],
 })
 export class MskDialogComponent implements OnInit, AfterViewInit {
   private _parent = inject(MatDialogRef);

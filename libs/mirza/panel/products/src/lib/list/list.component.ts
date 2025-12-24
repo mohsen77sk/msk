@@ -20,7 +20,6 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { mskAnimations } from '@msk/shared/animations';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
@@ -37,7 +36,6 @@ import { ProductsService } from '../products.service';
   templateUrl: './list.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: mskAnimations,
   imports: [
     DecimalPipe,
     FormsModule,

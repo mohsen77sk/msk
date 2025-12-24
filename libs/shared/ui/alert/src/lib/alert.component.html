@@ -1,5 +1,9 @@
 @if (!dismissible() || (dismissible() && !hasDismissed())) {
-  <div class="msk-alert-container" [@fadeIn]="!hasDismissed()" [@fadeOut]="!hasDismissed()">
+  <div
+    class="msk-alert-container"
+    [class.msk-fade-in]="!hasDismissed()"
+    [class.msk-fade-out]="hasDismissed()"
+  >
     <!-- Border -->
     @if (appearance() === 'border') {
       <div class="msk-alert-border"></div>

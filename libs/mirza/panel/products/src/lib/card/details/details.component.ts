@@ -28,7 +28,6 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { mskAnimations } from '@msk/shared/animations';
 import { catchError, EMPTY, map, tap } from 'rxjs';
 import { ProductsService } from '../../products.service';
 import { ICreateProduct, Product, ProductUnit } from '../../products.types';
@@ -41,7 +40,6 @@ import {
 @Component({
   selector: 'mz-product-details',
   templateUrl: './details.component.html',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

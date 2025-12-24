@@ -42,7 +42,6 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { mskAnimations } from '@msk/shared/animations';
 import { catchError, combineLatest, distinctUntilChanged, EMPTY, map, startWith, tap } from 'rxjs';
 import { PurchasesService } from '../../purchases.service';
 import {
@@ -57,7 +56,6 @@ import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/pa
 @Component({
   selector: 'mz-purchases-details',
   templateUrl: './details.component.html',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

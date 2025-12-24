@@ -109,7 +109,7 @@
   <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
     <!-- Alert -->
     @if (alert().show) {
-      <msk-alert class="mb-4" appearance="outline" type="error" @shake>
+      <msk-alert class="msk-shake mb-4" appearance="outline" type="error">
         {{ alert().message }}
       </msk-alert>
     }

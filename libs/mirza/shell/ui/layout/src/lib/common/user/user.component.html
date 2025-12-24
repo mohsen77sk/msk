@@ -51,7 +51,7 @@
         </div>
       </div>
       @if (showMoreStores()) {
-        <div class="w-full overflow-hidden" [@expandCollapse]="showMoreStores() ? 'expanded' : 'collapsed'">
+        <div class="w-full overflow-hidden" animate.enter="msk-expanded" animate.leave="msk-collapsed">
           @for (store of stores(); track store.id) {
             <div class="mz-user-panel-profile-item" (click)="selectActiveStore(store)" aria-hidden="true">
               <div>

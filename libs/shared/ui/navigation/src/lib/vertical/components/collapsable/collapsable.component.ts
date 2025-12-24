@@ -1,4 +1,3 @@
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -15,7 +14,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { mskAnimations } from '@msk/shared/animations';
 import { filter } from 'rxjs';
 import { MskVerticalNavigationBasicItemComponent } from '../basic/basic.component';
 import { MskVerticalNavigationDividerItemComponent } from '../divider/divider.component';
@@ -27,7 +25,6 @@ import { MskNavigationItem } from '../../../navigation.types';
 @Component({
   selector: 'msk-vertical-navigation-collapsable-item',
   templateUrl: './collapsable.component.html',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -36,8 +33,8 @@ import { MskNavigationItem } from '../../../navigation.types';
     MskVerticalNavigationBasicItemComponent,
     forwardRef(() => MskVerticalNavigationCollapsableItemComponent),
     MskVerticalNavigationDividerItemComponent,
-    forwardRef(() => MskVerticalNavigationGroupItemComponent)
-],
+    forwardRef(() => MskVerticalNavigationGroupItemComponent),
+  ],
 })
 export class MskVerticalNavigationCollapsableItemComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

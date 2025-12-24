@@ -24,7 +24,6 @@ import { AnimationBuilder, AnimationPlayer, animate, style } from '@angular/anim
 import { NavigationEnd, Router } from '@angular/router';
 import { Directionality } from '@angular/cdk/bidi';
 import { ScrollStrategy, ScrollStrategyOptions } from '@angular/cdk/overlay';
-import { mskAnimations } from '@msk/shared/animations';
 import { MskUtilsService } from '@msk/shared/services/utils';
 import { MskScrollbarDirective } from '@msk/shared/directives/scrollbar';
 import { ReplaySubject, Subscription, delay, filter, map, merge, pairwise } from 'rxjs';
@@ -46,7 +45,6 @@ import {
   templateUrl: './vertical-navigation.component.html',
   styleUrls: ['./styles/default.css', './styles/rail.css'],
   exportAs: 'mskVerticalNavigation',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

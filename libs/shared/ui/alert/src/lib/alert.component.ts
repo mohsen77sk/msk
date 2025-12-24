@@ -15,7 +15,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { mskAnimations } from '@msk/shared/animations';
 import { MskUtilsService } from '@msk/shared/services/utils';
 import { MskAlertService } from './alert.service';
 import { MskAlertAppearance, MskAlertType } from './alert.types';
@@ -26,7 +25,6 @@ import { filter } from 'rxjs';
   templateUrl: './alert.component.html',
   styleUrl: './alert.component.css',
   exportAs: 'mskAlert',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatButtonModule],

@@ -1,6 +1,5 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MskVerticalNavigationComponent } from './vertical-navigation.component';
 
 describe('MskVerticalNavigationComponent', () => {
@@ -11,7 +10,6 @@ describe('MskVerticalNavigationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MskVerticalNavigationComponent],
-      providers: [provideAnimationsAsync()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MskVerticalNavigationComponent);

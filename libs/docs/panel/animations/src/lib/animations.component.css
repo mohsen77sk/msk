@@ -1,11 +1,14 @@
 doc-animations {
   .mat-mdc-tab-body-wrapper {
     .mat-mdc-tab-body {
-      &:first-child {
-        .mat-mdc-tab-body-content {
-          display: flex;
-          justify-content: center;
-          min-height: 152px;
+      .mat-mdc-tab-body-content {
+        min-height: 152px;
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+
+        .msk-highlight {
+          width: 100%;
         }
       }
     }
@@ -22,11 +25,12 @@ doc-animations {
   box-shadow: var(--mat-sys-level3);
   background-color: var(--mat-sys-tertiary-container);
 
-  .animated-box-content {
+  > span {
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 1 0 auto;
+    width: 100%;
     height: 100%;
     text-align: center;
     font-size: 12px;

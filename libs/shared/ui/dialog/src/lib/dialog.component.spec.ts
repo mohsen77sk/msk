@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MSK_LAYOUT_CONFIG } from '@msk/shared/services/config';
 import { MskTranslocoTestingModule } from '@msk/shared/utils/transloco';
@@ -13,7 +12,6 @@ describe('MskDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MskTranslocoTestingModule(), MatDialogModule, MskDialogComponent],
       providers: [
-        provideAnimationsAsync(),
         { provide: MatDialogRef, useValue: { addPanelClass: jest.fn(), removePanelClass: jest.fn() } },
         { provide: MSK_LAYOUT_CONFIG, useValue: {} },
       ],

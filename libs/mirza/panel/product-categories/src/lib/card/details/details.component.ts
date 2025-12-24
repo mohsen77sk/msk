@@ -22,7 +22,6 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { mskAnimations } from '@msk/shared/animations';
 import { ProductCategory } from '../../product-categories.types';
 import { ProductCategoriesService } from '../../product-categories.service';
 import { catchError, EMPTY, map, tap } from 'rxjs';
@@ -30,7 +29,6 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
 @Component({
   selector: 'mz-product-categories-details',
   templateUrl: './details.component.html',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

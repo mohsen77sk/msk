@@ -31,7 +31,6 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { mskAnimations } from '@msk/shared/animations';
 import { PeopleService } from '@msk/sahebzaman/panel/people';
 import { AccountService } from '../../accounts.service';
 import {
@@ -47,7 +46,6 @@ import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 @Component({
   selector: 'sz-people-details',
   templateUrl: './details.component.html',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
