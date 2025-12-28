@@ -26,7 +26,6 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { mskAnimations } from '@msk/shared/animations';
 import { Person } from '../../people.types';
 import { PeopleService } from '../../people.service';
 import { catchError, EMPTY, map, tap } from 'rxjs';
@@ -34,7 +33,6 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
 @Component({
   selector: 'sz-people-details',
   templateUrl: './details.component.html',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -56,8 +54,8 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
     MskDialogComponent,
     MskSpinnerDirective,
     MskDatepickerTouchUiDirective,
-    MskDateTimePipe
-],
+    MskDateTimePipe,
+  ],
 })
 export class PeopleCardDetailsComponent implements OnInit {
   readonly data = inject<MskDialogData<Person | undefined>>(MAT_DIALOG_DATA);

@@ -36,7 +36,7 @@
 </div>
 
 @if (!isCollapsed) {
-  <div class="msk-vertical-navigation-item-children" @expandCollapse>
+  <div class="msk-vertical-navigation-item-children" animate.enter="msk-expanded">
     @for (item of item().children; track item.id) {
       <!-- Skip the hidden items -->
       @if ((item.hidden && !item.hidden(item)) || !item.hidden) {

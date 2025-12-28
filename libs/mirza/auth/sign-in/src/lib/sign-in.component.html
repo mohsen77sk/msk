@@ -26,7 +26,7 @@
           [appearance]="'outline'"
           [showIcon]="false"
           [type]="alert().type"
-          [@shake]="alert().type === 'error'"
+          [class.msk-shake]="alert().type === 'error'"
         >
           {{ alert().message }}
         </msk-alert>

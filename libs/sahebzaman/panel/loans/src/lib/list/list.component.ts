@@ -18,7 +18,6 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { mskAnimations } from '@msk/shared/animations';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
@@ -30,7 +29,6 @@ import { DefaultLoansSortData, Loan } from '../loans.types';
   templateUrl: './list.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: mskAnimations,
   imports: [
     FormsModule,
     ReactiveFormsModule,

@@ -1,6 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { LANG_BY_ID } from '@msk/shared/constants';
 import { provideDocsShell } from '@msk/docs/shell/feature';
@@ -9,7 +8,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideAnimationsAsync(),
     provideHttpClient(),
     provideDocsShell({
       lang: LANG_BY_ID['fa'].id,

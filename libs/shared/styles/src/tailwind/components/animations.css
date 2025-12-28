@@ -1,0 +1,230 @@
+/* Shared animation classes converted from @msk/shared/animations triggers */
+:root {
+  --msk-anim-entering: 225ms;
+  --msk-anim-exiting: 195ms;
+  --msk-curve-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --msk-curve-deceleration: cubic-bezier(0, 0, 0.2, 1);
+  --msk-curve-acceleration: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* Fade */
+@keyframes msk-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes msk-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.msk-fade-in {
+  animation: msk-fade-in var(--msk-anim-entering) var(--msk-curve-deceleration) both;
+}
+
+.msk-fade-out {
+  animation: msk-fade-out var(--msk-anim-exiting) var(--msk-curve-acceleration) both;
+}
+
+/* Slide */
+@keyframes msk-slide-in-top {
+  from {
+    transform: translate3d(0, -100%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes msk-slide-in-bottom {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes msk-slide-in-left {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes msk-slide-in-right {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes msk-slide-out-top {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+@keyframes msk-slide-out-bottom {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes msk-slide-out-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes msk-slide-out-right {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+.msk-slide-in-top {
+  animation: msk-slide-in-top var(--msk-anim-entering) var(--msk-curve-deceleration) both;
+}
+
+.msk-slide-in-bottom {
+  animation: msk-slide-in-bottom var(--msk-anim-entering) var(--msk-curve-deceleration) both;
+}
+
+.msk-slide-in-left {
+  animation: msk-slide-in-left var(--msk-anim-entering) var(--msk-curve-deceleration) both;
+}
+
+.msk-slide-in-right {
+  animation: msk-slide-in-right var(--msk-anim-entering) var(--msk-curve-deceleration) both;
+}
+
+.msk-slide-out-top {
+  animation: msk-slide-out-top var(--msk-anim-exiting) var(--msk-curve-acceleration) both;
+}
+
+.msk-slide-out-bottom {
+  animation: msk-slide-out-bottom var(--msk-anim-exiting) var(--msk-curve-acceleration) both;
+}
+
+.msk-slide-out-left {
+  animation: msk-slide-out-left var(--msk-anim-exiting) var(--msk-curve-acceleration) both;
+}
+
+.msk-slide-out-right {
+  animation: msk-slide-out-right var(--msk-anim-exiting) var(--msk-curve-acceleration) both;
+}
+
+/* Zoom */
+@keyframes msk-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes msk-zoom-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+.msk-zoom-in {
+  animation: msk-zoom-in var(--msk-anim-entering) var(--msk-curve-deceleration) both;
+}
+
+.msk-zoom-out {
+  animation: msk-zoom-out var(--msk-anim-exiting) var(--msk-curve-acceleration) both;
+}
+
+/* Shake */
+@keyframes msk-shake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  10% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  20% {
+    transform: translate3d(10px, 0, 0);
+  }
+  30% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  40% {
+    transform: translate3d(10px, 0, 0);
+  }
+  50% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  60% {
+    transform: translate3d(10px, 0, 0);
+  }
+  70% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  80% {
+    transform: translate3d(10px, 0, 0);
+  }
+  90% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.msk-shake {
+  animation: msk-shake 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+}
+
+/* Expand / collapse */
+.msk-expanded {
+  transition:
+    height var(--msk-anim-entering) var(--msk-curve-deceleration),
+    opacity var(--msk-anim-entering) var(--msk-curve-deceleration);
+  height: auto;
+  opacity: 1;
+}
+
+.msk-collapsed {
+  transition:
+    height var(--msk-anim-exiting) var(--msk-curve-acceleration),
+    opacity var(--msk-anim-exiting) var(--msk-curve-acceleration);
+  height: 0 !important;
+  min-height: 0 !important;
+  opacity: 0;
+}

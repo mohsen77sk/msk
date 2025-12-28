@@ -20,11 +20,9 @@ import {
   viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { AnimationBuilder, AnimationPlayer, animate, style } from '@angular/animations';
 import { NavigationEnd, Router } from '@angular/router';
 import { Directionality } from '@angular/cdk/bidi';
 import { ScrollStrategy, ScrollStrategyOptions } from '@angular/cdk/overlay';
-import { mskAnimations } from '@msk/shared/animations';
 import { MskUtilsService } from '@msk/shared/services/utils';
 import { MskScrollbarDirective } from '@msk/shared/directives/scrollbar';
 import { ReplaySubject, Subscription, delay, filter, map, merge, pairwise } from 'rxjs';
@@ -46,7 +44,6 @@ import {
   templateUrl: './vertical-navigation.component.html',
   styleUrls: ['./styles/default.css', './styles/rail.css'],
   exportAs: 'mskVerticalNavigation',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -60,7 +57,6 @@ import {
 })
 export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, OnDestroy {
   private _destroyRef = inject(DestroyRef);
-  private _animationBuilder = inject(AnimationBuilder);
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _elementRef = inject(ElementRef);
   private _renderer2 = inject(Renderer2);
@@ -92,7 +88,6 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
   private _asideOverlay: HTMLElement | undefined;
   private readonly _handleOverlayClick: () => void;
   private readonly _handleAsideOverlayClick: () => void;
-  private _player!: AnimationPlayer;
   private _scrollStrategy: ScrollStrategy = this._scrollStrategyOptions.block();
   private _mskScrollbarDirectives!: QueryList<MskScrollbarDirective>;
   private _mskScrollbarDirectivesSubscription!: Subscription;
@@ -491,13 +486,12 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
     // Enable block scroll strategy
     this._scrollStrategy.enable();
 
-    // Create the enter animation and attach it to the player
-    this._player = this._animationBuilder
-      .build([animate('300ms cubic-bezier(0.25, 0.8, 0.25, 1)', style({ opacity: 1 }))])
-      .create(this._overlay);
-
-    // Play the animation
-    this._player.play();
+    // Add animation using Web Animations API
+    this._overlay?.animate([{ opacity: 0 }, { opacity: 1 }], {
+      duration: 300,
+      easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+      fill: 'forwards',
+    });
 
     // Add an event listener to the overlay
     this._overlay?.addEventListener('click', this._handleOverlayClick);
@@ -513,16 +507,15 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
       return;
     }
 
-    // Create the leave animation and attach it to the player
-    this._player = this._animationBuilder
-      .build([animate('300ms cubic-bezier(0.25, 0.8, 0.25, 1)', style({ opacity: 0 }))])
-      .create(this._overlay);
-
-    // Play the animation
-    this._player.play();
+    // Create animation using Web Animations API
+    const animation = this._overlay.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 300,
+      easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+      fill: 'forwards',
+    });
 
     // Once the animation is done...
-    this._player.onDone(() => {
+    animation.onfinish = () => {
       // If the overlay still exists...
       if (this._overlay) {
         // Remove the event listener
@@ -535,7 +528,7 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
 
       // Disable block scroll strategy
       this._scrollStrategy.disable();
-    });
+    };
   }
 
   /**
@@ -558,13 +551,12 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
     // Append the aside overlay to the parent of the navigation
     this._renderer2.appendChild(this._elementRef.nativeElement.parentElement, this._asideOverlay);
 
-    // Create the enter animation and attach it to the player
-    this._player = this._animationBuilder
-      .build([animate('300ms cubic-bezier(0.25, 0.8, 0.25, 1)', style({ opacity: 1 }))])
-      .create(this._asideOverlay);
-
-    // Play the animation
-    this._player.play();
+    // Add animation using Web Animations API
+    this._asideOverlay?.animate([{ opacity: 0 }, { opacity: 1 }], {
+      duration: 300,
+      easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+      fill: 'forwards',
+    });
 
     // Add an event listener to the aside overlay
     this._asideOverlay?.addEventListener('click', this._handleAsideOverlayClick);
@@ -580,16 +572,15 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
       return;
     }
 
-    // Create the leave animation and attach it to the player
-    this._player = this._animationBuilder
-      .build([animate('300ms cubic-bezier(0.25, 0.8, 0.25, 1)', style({ opacity: 0 }))])
-      .create(this._asideOverlay);
-
-    // Play the animation
-    this._player.play();
+    // Create animation using Web Animations API
+    const animation = this._asideOverlay.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 300,
+      easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+      fill: 'forwards',
+    });
 
     // Once the animation is done...
-    this._player.onDone(() => {
+    animation.onfinish = () => {
       // If the aside overlay still exists...
       if (this._asideOverlay) {
         // Remove the event listener
@@ -599,7 +590,7 @@ export class MskVerticalNavigationComponent implements OnInit, AfterViewInit, On
         this._asideOverlay?.parentNode?.removeChild(this._asideOverlay);
         this._asideOverlay = undefined;
       }
-    });
+    };
   }
 
   /**

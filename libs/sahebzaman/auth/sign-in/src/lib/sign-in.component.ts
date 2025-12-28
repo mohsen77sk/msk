@@ -22,7 +22,6 @@ import { AuthService } from '@msk/sahebzaman/shell/core/auth';
 import { MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent, MskAlertType } from '@msk/shared/ui/alert';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
-import { mskAnimations } from '@msk/shared/animations';
 import { catchError, map } from 'rxjs';
 
 @Component({
@@ -30,7 +29,6 @@ import { catchError, map } from 'rxjs';
   templateUrl: './sign-in.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: mskAnimations,
   imports: [
     RouterLink,
     FormsModule,

@@ -76,10 +76,16 @@
     class="msk-vertical-navigation-aside-wrapper"
     [mskScrollbar]="true"
     [mskScrollbarOptions]="{ wheelPropagation: false, suppressScrollX: true }"
-    [@fadeInLeft]="(position() === 'start' && !isRtl()) || (position() === 'end' && isRtl())"
-    [@fadeInRight]="(position() === 'start' && isRtl()) || (position() === 'end' && !isRtl())"
-    [@fadeOutLeft]="(position() === 'start' && !isRtl()) || (position() === 'end' && isRtl())"
-    [@fadeOutRight]="(position() === 'start' && isRtl()) || (position() === 'end' && !isRtl())"
+    [animate.enter]="
+      (position() === 'start' && !isRtl()) || (position() === 'end' && isRtl())
+        ? 'msk-slide-in-left'
+        : 'msk-slide-in-right'
+    "
+    [animate.leave]="
+      (position() === 'start' && !isRtl()) || (position() === 'end' && isRtl())
+        ? 'msk-slide-out-left'
+        : 'msk-slide-out-right'
+    "
   >
     <!-- Items -->
     @for (item of navigation(); track item.id) {

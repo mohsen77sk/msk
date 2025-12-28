@@ -38,6 +38,7 @@
 @import './tailwind/base.css';
 
 /* Components */
+@import './tailwind/components/animations.css';
 @import './tailwind/components/page-layout.css';
 @import './tailwind/components/example-viewer.css';
 @import './tailwind/components/msk-chips.css';

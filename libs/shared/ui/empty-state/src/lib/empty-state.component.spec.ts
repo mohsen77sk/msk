@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MskTranslocoTestingModule } from '@msk/shared/utils/transloco';
 import { MskEmptyStateComponent } from './empty-state.component';
 
 describe('MskEmptyStateComponent', () => {
@@ -7,7 +8,7 @@ describe('MskEmptyStateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MskEmptyStateComponent],
+      imports: [MskTranslocoTestingModule(), MskEmptyStateComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MskEmptyStateComponent);

@@ -34,7 +34,6 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { mskAnimations } from '@msk/shared/animations';
 import { Customer, GenderEnum } from '../../customers.types';
 import { CustomersService } from '../../customers.service';
 import { catchError, EMPTY, map, tap } from 'rxjs';
@@ -42,7 +41,6 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
 @Component({
   selector: 'mz-customers-details',
   templateUrl: './details.component.html',
-  animations: mskAnimations,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
