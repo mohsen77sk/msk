@@ -2,7 +2,7 @@
   "name": "Onco",
   "short_name": "Onco",
   "theme_color": "#000000",
-  "background_color": "#fafafa",
+  "background_color": "#1d2026",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
