@@ -38,8 +38,8 @@
 
   /* Set the background and foreground colors */
   body {
-    color: var(--mat-sys-on-background);
-    background: var(--mat-sys-background);
+    color: var(--mat-sys-on-surface);
+    background: var(--mat-sys-surface-container);
   }
 
   /* Better spacing and border for horizontal rule */
