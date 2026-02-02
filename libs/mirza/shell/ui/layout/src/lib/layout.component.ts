@@ -73,6 +73,7 @@ export class LayoutComponent implements OnInit {
           // Update the layout scheme and layout theme
           this._updateLayoutScheme();
           this._updateLayoutTheme();
+          this._syncMetaThemeColor();
         }),
       )
       .subscribe();
@@ -204,5 +205,20 @@ export class LayoutComponent implements OnInit {
     // 3. Change dir attribute for the currently selected direction
     this._document.documentElement.setAttribute('dir', this.layoutDirection);
     this._document.body.setAttribute('dir', this.layoutDirection);
+  }
+
+  /**
+   * Update the meta theme color
+   *
+   * @private
+   */
+  private _syncMetaThemeColor(token = '--mat-sys-background'): void {
+    const meta = this._document.querySelector('meta[name="theme-color"]');
+    const color = getComputedStyle(this._document.documentElement).getPropertyValue(token).trim();
+    const [light, dark] = color.replace('light-dark(', '').replace(')', '').split(',').map(v => v.trim());
+
+    if (meta && color) {
+      meta.setAttribute('content', this.layoutScheme === 'light' ? light : dark);
+    }
   }
 }
