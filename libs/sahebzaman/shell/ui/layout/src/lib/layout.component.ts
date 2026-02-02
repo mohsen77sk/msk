@@ -212,7 +212,7 @@ export class LayoutComponent implements OnInit {
    *
    * @private
    */
-  private _syncMetaThemeColor(token = '--mat-sys-background'): void {
+  private _syncMetaThemeColor(token = '--mat-sys-surface-container'): void {
     const meta = this._document.querySelector('meta[name="theme-color"]');
     const color = getComputedStyle(this._document.documentElement).getPropertyValue(token).trim();
     const [light, dark] = color.replace('light-dark(', '').replace(')', '').split(',').map(v => v.trim());
