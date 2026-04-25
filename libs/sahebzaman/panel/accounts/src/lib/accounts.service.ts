@@ -19,6 +19,7 @@ import {
   AccountTransaction,
   ICreateAccountTransaction,
   IUpdateAccountTransaction,
+  IReverseAccountTransaction,
 } from './accounts.types';
 
 @Injectable({ providedIn: 'root' })
@@ -178,13 +179,13 @@ export class AccountService {
   }
 
   /**
-   * Delete account transaction
+   * Reverse account transaction
    *
    * @param transaction
    */
-  deleteAccountTransaction(transactionId: number): Observable<boolean> {
+  reverseAccountTransaction(transaction: IReverseAccountTransaction): Observable<AccountTransaction> {
     return this._httpClient
-      .delete<boolean>(`${this._appConfig.apiEndpoint}/api/accountTransaction/${transactionId}`)
-      .pipe(map((response) => response));
+      .put<AccountTransaction>(`${this._appConfig.apiEndpoint}/api/accountTransaction/reverse`, transaction)
+      .pipe(map((response) => new AccountTransaction(response)));
   }
 }

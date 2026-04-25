@@ -78,6 +78,13 @@ export interface ICreateAccountTransaction {
 
 export interface IUpdateAccountTransaction {
   id: number;
+  accountId: number;
+  note?: string;
+}
+
+export interface IReverseAccountTransaction {
+  id: number;
+  accountId: number;
   note?: string;
 }
 
@@ -88,7 +95,6 @@ export class AccountTransaction {
   debit: number;
   date: Date;
   note: string;
-  editable: boolean;
 
   constructor(input: AccountTransaction) {
     this.id = input.id;
@@ -97,7 +103,6 @@ export class AccountTransaction {
     this.debit = input.debit;
     this.date = new Date(input.date);
     this.note = input.note;
-    this.editable = input.editable ?? false;
   }
 }
 
