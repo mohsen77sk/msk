@@ -1,6 +1,7 @@
 import { MskSortable } from '@msk/shared/data-access';
 
 export const DefaultAccountsSortData: MskSortable = { active: 'code', direction: 'asc' };
+export const DefaultAccountTransactionsSortData: MskSortable = { active: 'date', direction: 'desc' };
 export interface ICreateAccount {
   accountTypeId: number;
   initCredit: number;

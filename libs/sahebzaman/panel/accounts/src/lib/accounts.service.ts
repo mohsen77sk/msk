@@ -20,6 +20,7 @@ import {
   ICreateAccountTransaction,
   IUpdateAccountTransaction,
   IReverseAccountTransaction,
+  DefaultAccountTransactionsSortData,
 } from './accounts.types';
 
 @Injectable({ providedIn: 'root' })
@@ -154,6 +155,33 @@ export class AccountService {
       map((response) => new Account({ ...response, balance: 0 } as Account)),
       tap((account) => this._changesAccounts.next({ type: 'update', item: account })),
     );
+  }
+
+  /**
+   * Get account transactions
+   *
+   * @param params
+   */
+  getAccountTransactions(
+    params: MskPagingRequest = {
+      accountId: 0,
+      page: 1,
+      pageSize: 10,
+      sortBy: `${DefaultAccountTransactionsSortData.active} ${DefaultAccountTransactionsSortData.direction}`,
+    },
+  ): Observable<MskPageData<AccountTransaction>> {
+    return this._httpClient
+      .get<
+        MskPagingResponse<AccountTransaction>
+      >(`${this._appConfig.apiEndpoint}/api/accountTransaction/all`, { params })
+      .pipe(
+        map((response) => {
+          return new MskPageData({
+            ...response,
+            items: response.items.map((item) => new AccountTransaction(item)),
+          });
+        }),
+      );
   }
 
   /**

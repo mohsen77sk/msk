@@ -10,6 +10,8 @@
     "closeDate": "تاریخ بستن",
     "initCredit": "موجودی اولیه",
     "credit": "موجودی",
+    "transactions": "تراکنش ها",
+    "lastTransactions": "آخرین تراکنش ها",
     "owners": "صاحبان حساب",
     "note": "توضیحات",
     "status": "وضعیت"

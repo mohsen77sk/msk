@@ -35,7 +35,9 @@ import { PeopleService } from '@msk/sahebzaman/panel/people';
 import { AccountService } from '../../accounts.service';
 import {
   Account,
+  AccountTransaction,
   AccountTransactionTypeEnum,
+  DefaultAccountTransactionsSortData,
   ICloseAccount,
   ICreateAccountTransaction,
   IUpdateAccount,
@@ -92,6 +94,7 @@ export class AccountsCardDetailsComponent implements OnInit {
   formErrors: FormError = {};
   personList$: Observable<MskLookupResponse> = this._peopleService.getLookupPersons();
   accountTypeList$: Observable<MskLookupResponse> = this._accountService.getLookupAccountTypes();
+  lastTransactionList$: Observable<AccountTransaction[]> = this._getLastTransactionList();
   AccountTransactionTypeEnum = AccountTransactionTypeEnum;
   isLoadingBalance = signal(false);
 
@@ -286,5 +289,25 @@ export class AccountsCardDetailsComponent implements OnInit {
         }),
       )
       .subscribe();
+  }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Private methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Get 5 last transactions
+   *
+   * @private
+   */
+  _getLastTransactionList(): Observable<AccountTransaction[]> {
+    return this._accountService
+      .getAccountTransactions({
+        accountId: this.data.item()?.id ?? 0,
+        page: 1,
+        pageSize: 5,
+        sortBy: `${DefaultAccountTransactionsSortData.active} ${DefaultAccountTransactionsSortData.direction}`,
+      })
+      .pipe(map((response) => response.items));
   }
 }

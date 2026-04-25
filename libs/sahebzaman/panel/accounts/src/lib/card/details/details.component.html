@@ -55,6 +55,45 @@
     </div>
   }
   <div class="msk-group-list">
+    <div class="msk-list-item subtitle">{{ t('lastTransactions') }}</div>
+    @for (item of lastTransactionList$ | async; track item.id) {
+      <div class="msk-list-item">
+        <div
+          class="msk-list-item-icon size-10 rounded-full"
+          [class]="
+            item.credit > 0
+              ? 'bg-teal-100 text-teal-900 dark:bg-teal-900 dark:text-teal-100'
+              : item.debit > 0
+                ? 'bg-red-100 text-red-900 dark:bg-red-900 dark:text-red-100'
+                : ''
+          "
+        >
+          <mat-icon>{{ item.credit > 0 ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ item.code }}</span>
+          <span>{{ item.date | mskDateTime: 'P hh:mm' }}</span>
+        </div>
+        <div class="msk-list-item-secondary">
+          <div class="font-medium">{{ item.credit || item.debit | mskCurrency }}</div>
+        </div>
+      </div>
+    } @empty {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon size-10">
+          <div class="skeleton skeleton-avatar"></div>
+        </div>
+        <div class="msk-list-item-content">
+          <div class="skeleton skeleton-text skeleton-text-lg"></div>
+          <div class="skeleton skeleton-text skeleton-text-sm"></div>
+        </div>
+        <div class="msk-list-item-secondary">
+          <div class="skeleton skeleton-status"></div>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="msk-group-list">
     <div class="msk-list-item subtitle">{{ t('owners') }}</div>
     @for (person of data.item()?.persons; track person.id) {
       <div class="msk-list-item cursor-pointer" matRipple>

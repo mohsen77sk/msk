@@ -10,6 +10,8 @@
     "closeDate": "Close date",
     "initCredit": "Init credit",
     "credit": "Credit",
+    "transactions": "Transactions",
+    "lastTransactions": "Last transactions",
     "owners": "Owners",
     "note": "Note",
     "status": "Status"
