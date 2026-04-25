@@ -108,78 +108,78 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist/apps/docs/browser
 
-  deploy-sahebzaman:
-    name: Publish sahebzaman
-    runs-on: ubuntu-latest
-    needs: build
-    if: needs.build.outputs.sahebzaman_affected == 'true'
+  # deploy-sahebzaman:
+  #   name: Publish sahebzaman
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   if: needs.build.outputs.sahebzaman_affected == 'true'
 
-    steps:
-      - name: Checkout repository to get web.config
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout repository to get web.config
+  #       uses: actions/checkout@v4
 
-      - name: Try to download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist/
+  #     - name: Try to download artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: dist
+  #         path: dist/
 
-      - name: Copy web.config to build directory
-        run: cp ./tools/web.config dist/apps/sahebzaman/browser/
+  #     - name: Copy web.config to build directory
+  #       run: cp ./tools/web.config dist/apps/sahebzaman/browser/
 
-      - name: Upload files via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.SAHEBZAMAN_FTP_SERVER }}
-          username: ${{ secrets.SAHEBZAMAN_FTP_USERNAME }}
-          password: ${{ secrets.SAHEBZAMAN_FTP_PASSWORD }}
-          local-dir: dist/apps/sahebzaman/browser/
-          server-dir: ./
-          dangerous-clean-slate: true
+  #     - name: Upload files via FTP
+  #       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+  #       with:
+  #         server: ${{ secrets.SAHEBZAMAN_FTP_SERVER }}
+  #         username: ${{ secrets.SAHEBZAMAN_FTP_USERNAME }}
+  #         password: ${{ secrets.SAHEBZAMAN_FTP_PASSWORD }}
+  #         local-dir: dist/apps/sahebzaman/browser/
+  #         server-dir: ./
+  #         dangerous-clean-slate: true
 
-  deploy-mirza:
-    name: Publish mirza
-    runs-on: ubuntu-latest
-    needs: build
-    if: needs.build.outputs.mirza_affected == 'true'
+  # deploy-mirza:
+  #   name: Publish mirza
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   if: needs.build.outputs.mirza_affected == 'true'
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Define Docker TAG
-        id: vars
-        run: |
-          BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
-          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
-          echo "TAG=${BRANCH_NAME}-${SHORT_SHA}" >> $GITHUB_OUTPUT
-          echo "Docker tag will be: ${BRANCH_NAME}-${SHORT_SHA}"
+  #     - name: Define Docker TAG
+  #       id: vars
+  #       run: |
+  #         BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
+  #         SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+  #         echo "TAG=${BRANCH_NAME}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+  #         echo "Docker tag will be: ${BRANCH_NAME}-${SHORT_SHA}"
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.MIRZA_DOCKER_USERNAME }}
-          password: ${{ secrets.MIRZA_DOCKER_PASSWORD }}
+  #     - name: Log in to Docker Hub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ secrets.MIRZA_DOCKER_USERNAME }}
+  #         password: ${{ secrets.MIRZA_DOCKER_PASSWORD }}
 
-      - name: Build Docker image
-        run: |
-          docker build -f Dockerfile.mirza -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
-          docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:${GITHUB_REF##*/}
+  #     - name: Build Docker image
+  #       run: |
+  #         docker build -f Dockerfile.mirza -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
+  #         docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:${GITHUB_REF##*/}
 
-      - name: Push Docker images
-        run: |
-          docker push $IMAGE_NAME:${{ steps.vars.outputs.TAG }}
-          docker push $IMAGE_NAME:${GITHUB_REF##*/}
+  #     - name: Push Docker images
+  #       run: |
+  #         docker push $IMAGE_NAME:${{ steps.vars.outputs.TAG }}
+  #         docker push $IMAGE_NAME:${GITHUB_REF##*/}
 
-      - name: Set up kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.MIRZA_KUBECONFIG }}" > ~/.kube/config
-          chmod 600 ~/.kube/config
+  #     - name: Set up kubeconfig
+  #       run: |
+  #         mkdir -p ~/.kube
+  #         echo "${{ secrets.MIRZA_KUBECONFIG }}" > ~/.kube/config
+  #         chmod 600 ~/.kube/config
 
-      - name: Deploy to K3s
-        run: |
-          BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
-          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
-          TAG=${BRANCH_NAME}-${SHORT_SHA}
-          kubectl set image deployment/angular-app angular-app=${{ secrets.MIRZA_DOCKER_USERNAME }}/mirza:$TAG
-          kubectl rollout status deployment/angular-app
+  #     - name: Deploy to K3s
+  #       run: |
+  #         BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
+  #         SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+  #         TAG=${BRANCH_NAME}-${SHORT_SHA}
+  #         kubectl set image deployment/angular-app angular-app=${{ secrets.MIRZA_DOCKER_USERNAME }}/mirza:$TAG
+  #         kubectl rollout status deployment/angular-app
