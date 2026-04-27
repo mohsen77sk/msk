@@ -38,12 +38,14 @@ import {
   AccountTransaction,
   AccountTransactionTypeEnum,
   DefaultAccountTransactionsSortData,
+  IBalanceAccount,
   ICloseAccount,
   ICreateAccountTransaction,
   IUpdateAccount,
 } from '../../accounts.types';
 import { AccountsCreateTransactionComponent } from '../../common/create-transaction/create-transaction.component';
-import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
+import { catchError, combineLatest, EMPTY, finalize, forkJoin, map, Observable, switchMap, tap } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'sz-people-details',
@@ -94,9 +96,14 @@ export class AccountsCardDetailsComponent implements OnInit {
   formErrors: FormError = {};
   personList$: Observable<MskLookupResponse> = this._peopleService.getLookupPersons();
   accountTypeList$: Observable<MskLookupResponse> = this._accountService.getLookupAccountTypes();
-  lastTransactionList$: Observable<AccountTransaction[]> = this._getLastTransactionList();
   AccountTransactionTypeEnum = AccountTransactionTypeEnum;
   isLoadingBalance = signal(false);
+  isLoadingLastTransaction = signal(false);
+  refreshTransactionList = signal(0);
+
+  lastTransactionList$: Observable<AccountTransaction[]> = combineLatest([
+    toObservable(this.refreshTransactionList),
+  ]).pipe(switchMap(() => this._getLastTransactionList()));
 
   alert = signal({
     show: false,
@@ -218,29 +225,9 @@ export class AccountsCardDetailsComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         if (result != 'cancelled') {
-          // Set loading balance
-          this.isLoadingBalance.set(true);
-          // Get the balance
-          this._accountService
-            .getBalanceAccount(this.data.item()?.id ?? 0)
-            .pipe(
-              tap((response) => {
-                // Update the balance value
-                this.data.item.set({ ...this.data.item(), balance: response.balance } as Account);
-                this.isLoadingBalance.set(false);
-              }),
-              catchError((response: MskHttpErrorResponse) => {
-                // Show error
-                this._mskSnackbarService.error(response.error.message);
-                // Update the balance value
-                this.data.item.set({ ...this.data.item(), balance: 0 } as Account);
-                // Show balance
-                this.isLoadingBalance.set(false);
-                // Return
-                return EMPTY;
-              }),
-            )
-            .subscribe();
+          // Get the balance and last transactions
+          this._getBalanceAccount().subscribe();
+          this.refreshTransactionList.update((v) => v + 1);
         }
       });
   }
@@ -296,18 +283,51 @@ export class AccountsCardDetailsComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
 
   /**
+   * Get account balance
+   *
+   * @private
+   */
+  private _getBalanceAccount(): Observable<IBalanceAccount> {
+    // Set loading balance
+    this.isLoadingBalance.set(true);
+    // Get balance
+    return this._accountService.getBalanceAccount(this.data.item()?.id ?? 0).pipe(
+      tap((response) => {
+        // Update the balance value
+        this.data.item.set({ ...this.data.item(), balance: response.balance } as Account);
+      }),
+      catchError((response: MskHttpErrorResponse) => {
+        // Show error
+        this._mskSnackbarService.error(response.error.message);
+        // Update the balance value
+        this.data.item.set({ ...this.data.item(), balance: 0 } as Account);
+        // Return
+        return EMPTY;
+      }),
+      // Show balance value
+      finalize(() => this.isLoadingBalance.set(false)),
+    );
+  }
+
+  /**
    * Get 5 last transactions
    *
    * @private
    */
-  _getLastTransactionList(): Observable<AccountTransaction[]> {
+  private _getLastTransactionList(): Observable<AccountTransaction[]> {
+    // Set loading last transactions
+    this.isLoadingLastTransaction.set(true);
+    // Get last transactions
     return this._accountService
       .getAccountTransactions({
         accountId: this.data.item()?.id ?? 0,
         page: 1,
-        pageSize: 5,
+        pageSize: 3,
         sortBy: `${DefaultAccountTransactionsSortData.active} ${DefaultAccountTransactionsSortData.direction}`,
       })
-      .pipe(map((response) => response.items));
+      .pipe(
+        map((response) => response.items),
+        finalize(() => this.isLoadingLastTransaction.set(false)),
+      );
   }
 }
