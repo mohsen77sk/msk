@@ -14,7 +14,7 @@
 
 ## Overview
 
-An Nx monorepo containing multiple Angular 20 applications and shared/domain libraries. Each app composes features from domain-specific libs (e.g., `mirza`, `onco`, `sahebzaman`) and common building blocks from `shared`.
+An Nx monorepo containing multiple Angular 20 applications and shared/domain libraries. Each app composes features from domain-specific libs (e.g., `mirza`, `sahebzaman`) and common building blocks from `shared`.
 
 - Framework: Angular 20, Nx 21
 - UI: Angular Material, Tailwind CSS 4
@@ -51,9 +51,6 @@ npx nx serve sahebzaman    # http://localhost:5200
 
 # Mirza (write)
 npx nx serve mirza-write   # http://localhost:5300
-
-# Onco app
-npx nx serve onco          # http://localhost:5400
 ```
 
 Notes:
@@ -85,19 +82,6 @@ Notes:
         │         ├── typography (dir)
         │         └── ...
         ├── mirza (dir)
-        │    ├── assets (dir)
-        │    ├── shell (dir)
-        │    │    ├── core (dir)
-        │    │    ├── feature (angular:lib) - for configure any forRoot modules
-        │    │    └── ui (dir)
-        │    │        └── layout (angular:lib)
-        │    ├── auth (dir)
-        │    │    ├── sign-in (angular:lib)
-        │    │    └── sign-out (angular:lib)
-        │    └── panel (dir)
-        │         ├── dashboard (angular:lib)
-        │         └── ...
-        ├── onco (dir)
         │    ├── assets (dir)
         │    ├── shell (dir)
         │    │    ├── core (dir)

@@ -25,10 +25,6 @@ export default [
               onlyDependOnLibsWithTags: ['scope:shared', 'scope:mirza'],
             },
             {
-              sourceTag: 'scope:onco-app',
-              onlyDependOnLibsWithTags: ['scope:shared', 'scope:onco'],
-            },
-            {
               sourceTag: 'scope:docs-app',
               onlyDependOnLibsWithTags: ['scope:shared', 'scope:docs'],
             },
@@ -39,10 +35,6 @@ export default [
             {
               sourceTag: 'scope:mirza',
               onlyDependOnLibsWithTags: ['scope:shared', 'scope:mirza'],
-            },
-            {
-              sourceTag: 'scope:onco',
-              onlyDependOnLibsWithTags: ['scope:shared', 'scope:onco'],
             },
             {
               sourceTag: 'scope:docs',
