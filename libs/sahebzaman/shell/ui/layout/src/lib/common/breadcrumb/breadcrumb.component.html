@@ -4,7 +4,7 @@
       @if (!first) {
         <mat-icon class="icon-size-4 mat-icon-rtl-mirror">chevron_forward</mat-icon>
       }
-      <a class="whitespace-nowrap" [ngClass]="last ? 'text-secondary' : 'text-primary'">{{ item.title }}</a>
+      <a class="whitespace-nowrap" [class]="last ? 'text-secondary' : 'text-primary'">{{ item.title }}</a>
     </div>
   }
 </div>

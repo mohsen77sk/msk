@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -25,7 +24,6 @@ import { MskNavigationItem } from '../../../navigation.types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     MatIconModule,
     MskVerticalNavigationBasicItemComponent,
     forwardRef(() => MskVerticalNavigationCollapsableItemComponent),

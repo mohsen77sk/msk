@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -33,15 +32,7 @@ import { availableCurrencies, availableLangs } from '@msk/shared/constants';
   styleUrl: './user.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    NgClass,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogModule,
-    TranslocoDirective,
-    MskAvatarComponent,
-  ],
+  imports: [MatMenuModule, MatIconModule, MatButtonModule, MatDialogModule, TranslocoDirective, MskAvatarComponent],
 })
 export class UserComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

@@ -9,7 +9,6 @@ import {
   input,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgClass } from '@angular/common';
 import { MskVerticalNavigationComponent } from '../../vertical-navigation.component';
 import { MskNavigationService } from '../../../navigation.service';
 import { MskNavigationItem } from '../../../navigation.types';
@@ -19,7 +18,6 @@ import { MskNavigationItem } from '../../../navigation.types';
   templateUrl: './divider.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass],
 })
 export class MskVerticalNavigationDividerItemComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

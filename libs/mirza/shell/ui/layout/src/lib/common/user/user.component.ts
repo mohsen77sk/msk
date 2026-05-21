@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -34,15 +33,7 @@ import { tap } from 'rxjs';
   styleUrl: './user.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    NgClass,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogModule,
-    TranslocoDirective,
-    MskAvatarComponent,
-  ],
+  imports: [MatMenuModule, MatIconModule, MatButtonModule, MatDialogModule, TranslocoDirective, MskAvatarComponent],
 })
 export class UserComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

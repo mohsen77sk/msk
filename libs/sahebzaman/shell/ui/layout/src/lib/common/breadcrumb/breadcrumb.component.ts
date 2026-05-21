@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -20,7 +19,7 @@ import { filter } from 'rxjs';
   templateUrl: './breadcrumb.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass, MatIcon],
+  imports: [MatIcon],
 })
 export class BreadcrumbComponent implements AfterViewInit {
   private _destroyRef = inject(DestroyRef);

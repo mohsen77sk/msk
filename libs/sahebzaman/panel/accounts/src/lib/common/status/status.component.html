@@ -1,7 +1,7 @@
 <ng-container *transloco="let t">
   <mat-icon
     class="text-green-400"
-    [ngClass]="[value() ? 'text-green-400' : 'text-red-400']"
+    [class]="[value() ? 'text-green-400' : 'text-red-400']"
     [matTooltip]="value() ? t('active') : t('inactive')"
   >
     {{ value() ? 'check_circle' : 'cancel' }}

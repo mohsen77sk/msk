@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostBinding, input, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -7,7 +6,6 @@ import { ChangeDetectionStrategy, Component, HostBinding, input, ViewEncapsulati
   exportAs: 'mskAvatar',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass],
 })
 export class MskAvatarComponent {
   name = input.required<string>();
