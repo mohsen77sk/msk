@@ -3,9 +3,9 @@
   "active": "فعال",
   "inactive": "غیر فعال",
   "activate": "فعال کردن",
-  "deactivate": "غیر فعال کردن",
+  "deactivate": "غیر‌فعال کردن",
   "delete": "حذف",
-  "deposit": "سپرده گذاری",
+  "deposit": "سپرده‌گذاری",
   "withdraw": "برداشتن",
   "transfer": "انتقال",
   "sum": "مجموع",
@@ -22,9 +22,9 @@
   "settings": "تنظیمات",
   "loading": "در حال بارگذاری...",
   "not-found": "موردی یافت نشد",
+  "error": "خطا",
   "sz-app-name": "صاحب الزمان",
   "mz-app-name": "میرزا بنویس",
-  "oc-app-name": "آنکو",
   "languages": {
     "en": "English",
     "fa": "فارسی"
