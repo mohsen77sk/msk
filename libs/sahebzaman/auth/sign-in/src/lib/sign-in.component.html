@@ -20,25 +20,25 @@
       </div>
 
       <!-- Alert -->
-      @if (showAlert()) {
+      @if (alert()) {
         <msk-alert
           class="mt-8"
           [appearance]="'outline'"
           [showIcon]="false"
-          [type]="alert().type"
-          [class.msk-shake]="alert().type === 'error'"
+          [type]="alert()?.type ?? 'error'"
+          [class.msk-shake]="alert()?.type === 'error'"
         >
-          {{ alert().message }}
+          {{ alert()?.message }}
         </msk-alert>
       }
 
       <!-- Sign in form -->
-      <form class="mt-6" [formGroup]="signInForm" #signInNgForm="ngForm">
+      <form class="mt-6" [formRoot]="signInForm">
         <!-- Username field -->
         <mat-form-field class="mt-2 w-full">
           <mat-label> {{ t('signIn.username') }} </mat-label>
-          <input id="username" matInput formControlName="username" />
-          <mat-error> {{ t('error-validation.required') }} </mat-error>
+          <input id="username" matInput [formField]="signInForm.username" />
+          <mat-error [mskFormFieldError]="signInForm.username"></mat-error>
         </mat-form-field>
 
         <!-- Password field -->
@@ -48,7 +48,7 @@
             id="password"
             matInput
             type="password"
-            formControlName="password"
+            [formField]="signInForm.password"
             ngxTouchKeyboard
             #passwordVirtualKeyboard="ngxTouchKeyboard"
             #passwordField
@@ -75,12 +75,12 @@
               <mat-icon class="icon-size-5">keyboard</mat-icon>
             </button>
           </div>
-          <mat-error> {{ t('error-validation.required') }} </mat-error>
+          <mat-error [mskFormFieldError]="signInForm.password"></mat-error>
         </mat-form-field>
 
         <!-- Actions -->
         <div class="mt-2 inline-flex w-full items-center justify-between">
-          <mat-checkbox formControlName="rememberMe"> {{ t('signIn.remember-me') }} </mat-checkbox>
+          <mat-checkbox [formField]="signInForm.rememberMe"> {{ t('signIn.remember-me') }} </mat-checkbox>
           <a class="text-label-medium text-primary hover:underline focus:underline" [routerLink]="['/forgot-password']">
             {{ t('signIn.forgot-password') }}
           </a>
@@ -88,13 +88,13 @@
 
         <!-- Submit button -->
         <button
+          type="submit"
           class="mt-6 w-full"
           matButton="filled"
-          [disabled]="signInForm.disabled"
-          [mskSpinner]="signInForm.disabled"
-          (click)="signIn()"
+          [disabled]="signInForm().submitting()"
+          [mskSpinner]="signInForm().submitting()"
         >
-          {{ signInForm.enabled ? t('signIn.sign-in') : '' }}
+          {{ signInForm().submitting() ? '' : t('signIn.sign-in') }}
         </button>
       </form>
     </div>

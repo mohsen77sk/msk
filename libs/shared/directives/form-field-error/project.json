@@ -1,0 +1,21 @@
+{
+  "name": "shared-directives-form-field-error",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/directives/form-field-error/src",
+  "prefix": "msk",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:ui"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/shared/directives/form-field-error/jest.config.cts",
+        "tsConfig": "libs/shared/directives/form-field-error/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
