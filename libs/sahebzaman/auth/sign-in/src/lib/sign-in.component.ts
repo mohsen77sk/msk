@@ -65,7 +65,7 @@ export class SignInComponent implements AfterViewInit {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * On init
+   * After view init
    */
   ngAfterViewInit(): void {
     this.signInForm().focusBoundControl();
