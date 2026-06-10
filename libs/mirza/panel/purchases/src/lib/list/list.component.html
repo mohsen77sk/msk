@@ -42,7 +42,7 @@
         @for (item of dataSummery()?.paymentTypes; track item.paymentType) {
           <div class="msk-mat-card-filled min-w-24 shrink-0 snap-center px-4 py-3">
             <div class="text-on-surface-variant text-label-medium mb-2">
-              {{ t('paymentTypes.' + item.paymentType) }}
+              {{ paymentTypeName(item.paymentType) }}
             </div>
             <div class="text-label-large">{{ item.value | mskCurrency }}</div>
           </div>
@@ -65,9 +65,9 @@
           <div class="content-grid-item-content">
             <div class="truncate">{{ invoice.title }}</div>
             <div class="truncate">
-              <span *transloco="let t; prefix: 'paymentTypes'">
+              <span>
                 @for (i of invoice.paymentTypes; track i.paymentType; let last = $last) {
-                  {{ t(i.paymentType) }}
+                  {{ paymentTypeName(i.paymentType) }}
                   @if (!last) {
                     -
                   }

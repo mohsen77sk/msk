@@ -59,7 +59,7 @@ export interface IPurchaseForm {
   note: FormControl<string | null>;
 }
 export interface IPaymentTypeForm {
-  paymentType: FormControl<string | null>;
+  paymentType: FormControl<number | string | null>;
   value: FormControl<number | null>;
 }
 export interface IPurchaseItemForm {
@@ -70,5 +70,5 @@ export interface IPurchaseItemForm {
 
 export interface IPurchaseInvoiceSummery {
   totalSum: number;
-  paymentTypes: { paymentType: string; value: number }[];
+  paymentTypes: { paymentType: number | string; value: number }[];
 }

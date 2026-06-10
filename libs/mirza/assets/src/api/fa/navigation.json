@@ -35,6 +35,13 @@
         "link": "/panel/product-categories"
       },
       {
+        "id": "panel.payment-types",
+        "title": "انواع پرداخت",
+        "type": "basic",
+        "icon": "payments",
+        "link": "/panel/payment-types"
+      },
+      {
         "id": "panel.products",
         "title": "محصولات",
         "type": "basic",

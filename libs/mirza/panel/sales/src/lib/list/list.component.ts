@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MAT_DATE_LOCALE, MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
@@ -69,11 +69,13 @@ export class SalesListComponent implements OnInit {
   private _productsService = inject(ProductsService);
   private _customersService = inject(CustomersService);
   private _paymentTypeService = inject(PaymentTypeService);
+  private _translocoService = inject(TranslocoService);
   private _viewport = viewChild.required(CdkVirtualScrollViewport);
   private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
 
   dataSource!: MskDataSource<SaleInvoice>;
   dataSummery = signal<ISaleInvoiceSummery | undefined>(undefined);
+  paymentTypeNames = signal(new Map<number | string, string>());
 
   sortItems: SortMenuItem[] = [
     { key: 'number', label: 'sales.sort.number' },
@@ -88,13 +90,17 @@ export class SalesListComponent implements OnInit {
     dateRange: new FormControl<MskDateRange | null>(DateRangeFactory.fromKey('today', this._matDateLocale)),
     customerId: new FormControl<number | null>(null),
     productId: new FormControl<number | null>(null),
-    paymentType: new FormControl<string | null>(null),
+    paymentType: new FormControl<number | string | null>(null),
   });
   customerLookupDS!: MskDataSource<MskLookupItem>;
   productLookupDS!: MskDataSource<MskLookupItem>;
   paymentTypeLookupDS!: MskDataSource<MskLookupItem>;
 
   trackById = (i: number, item: SaleInvoice | undefined) => item?.id ?? i;
+
+  paymentTypeName(id: number | string): string {
+    return this.paymentTypeNames().get(id) ?? `${id}`;
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -104,6 +110,8 @@ export class SalesListComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
+    this._loadPaymentTypes();
+
     this.dataSource = new MskDataSource<SaleInvoice>(
       (params) => this._salesService.getSaleInvoices(params).pipe(tap((res) => this.dataSummery.set(res.data))),
       this.sortData,
@@ -142,5 +150,34 @@ export class SalesListComponent implements OnInit {
       (params) => this._paymentTypeService.getLookupPaymentTypes(params),
       new MskSort(),
     );
+  }
+
+  private _loadPaymentTypes(): void {
+    this._paymentTypeService
+      .getPaymentTypes({ page: 1, pageSize: 50, sortBy: 'title asc' })
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap((response) =>
+          this.paymentTypeNames.set(
+            new Map(
+              response.items.flatMap((item) => {
+                const title = this._paymentTypeTitle(item.code, item.title);
+                return [
+                  [item.code, title] as [number | string, string],
+                  [item.id, title] as [number | string, string],
+                ];
+              }),
+            ),
+          ),
+        ),
+      )
+      .subscribe();
+  }
+
+  private _paymentTypeTitle(code: string, title: string): string {
+    const key = `paymentTypes.${code}`;
+    const translated = this._translocoService.translate(key);
+
+    return translated === key ? title : translated;
   }
 }

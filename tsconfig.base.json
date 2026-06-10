@@ -36,6 +36,7 @@
       "@msk/mirza/panel/customers": ["libs/mirza/panel/customers/src/index.ts"],
       "@msk/mirza/panel/dashboard": ["libs/mirza/panel/dashboard/src/index.ts"],
       "@msk/mirza/panel/product-categories": ["libs/mirza/panel/product-categories/src/index.ts"],
+      "@msk/mirza/panel/payment-types": ["libs/mirza/panel/payment-types/src/index.ts"],
       "@msk/mirza/panel/products": ["libs/mirza/panel/products/src/index.ts"],
       "@msk/mirza/panel/purchases": ["libs/mirza/panel/purchases/src/index.ts"],
       "@msk/mirza/panel/sales": ["libs/mirza/panel/sales/src/index.ts"],

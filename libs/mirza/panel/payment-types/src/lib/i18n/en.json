@@ -1,0 +1,21 @@
+{
+  "details": {
+    "new": "New payment type",
+    "edit": "Edit payment type",
+    "view": "{{title}}",
+    "specs": "Specification",
+    "code": "Code",
+    "title": "Title",
+    "isDefault": "Default",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "sort": {
+    "title": "Title",
+    "createdAt": "Most recent"
+  },
+  "search": "Search payment types",
+  "empty-list": "There are no payment types!",
+  "delete": "Delete payment type",
+  "delete-message": "Are you sure you want to delete <b>{{title}}</b>?"
+}

@@ -33,7 +33,7 @@ import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
-import { PaymentType } from '@msk/mirza/shell/core/payment-type';
+import { PaymentType, PaymentTypeService } from '@msk/mirza/shell/core/payment-type';
 import { DefaultVendorsSortData, Vendor, VendorsService } from '@msk/mirza/panel/vendors';
 
 import {
@@ -93,13 +93,14 @@ export class PurchasesCardDetailsComponent implements OnInit {
   private _vendorsService = inject(VendorsService);
   private _productsService = inject(ProductsService);
   private _purchasesService = inject(PurchasesService);
+  private _paymentTypeService = inject(PaymentTypeService);
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
 
   form!: FormGroup<IPurchaseForm>;
   formErrors: FormError = {};
-  paymentTypeList: PaymentType[] = Object.values(PaymentType);
+  paymentTypeList = signal<PaymentType[]>([]);
   productDSList: MskDataSource<Product>[] = [];
   vendorDS!: MskDataSource<Vendor>;
 
@@ -151,6 +152,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
       this.data.item()?.purchaseItems.forEach((v, i) => i !== 0 && this.addPurchaseItem());
       this.form.patchValue(this.data.item() || {});
     }
+    this._loadPaymentTypes();
     // Set vendor collection
     this.vendorDS = new MskDataSource<Vendor>(
       (params) => this._vendorsService.getVendors(params),
@@ -202,6 +204,17 @@ export class PurchasesCardDetailsComponent implements OnInit {
    */
   productDisplayFn(value: Product): string {
     return value?.name;
+  }
+
+  paymentTypeName(id: number | string): string {
+    const paymentType = this.paymentTypeList().find((paymentType) => paymentType.code === id || paymentType.id === id);
+
+    if (!paymentType) return `${id}`;
+
+    const key = `paymentTypes.${paymentType.code}`;
+    const translated = this._translocoService.translate(key);
+
+    return translated === key ? paymentType.title : translated;
   }
 
   /**
@@ -259,7 +272,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
    */
   addPaymentType(): void {
     const group = this._formBuilder.group<IPaymentTypeForm>({
-      paymentType: this._formBuilder.control(PaymentType.POSE, Validators.required),
+      paymentType: this._formBuilder.control(this.paymentTypeList()[0]?.code ?? null, Validators.required),
       value: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
     });
     this.paymentTypes.push(group);
@@ -340,7 +353,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
       vendorId: this.form.controls.vendor.value?.id ?? null,
       date: this.form.controls.date.value?.toISOString() ?? new Date().toISOString(),
       paymentTypes: this.form.controls.paymentTypes.controls.map((x) => ({
-        paymentType: x.controls.paymentType.value as PaymentType,
+        paymentType: x.controls.paymentType.value as number | string,
         value: x.controls.value.value ?? 0,
       })),
       purchaseItems: this.form.controls.purchaseItems.controls.map((x) => ({
@@ -394,6 +407,32 @@ export class PurchasesCardDetailsComponent implements OnInit {
     const discount = this.form.controls.discount.value || 0;
 
     return Math.max(0, purchaseItemsTotal - discount);
+  }
+
+  /**
+   * Load payment types from API for the payment select controls
+   */
+  private _loadPaymentTypes(): void {
+    this._paymentTypeService
+      .getPaymentTypes({ page: 1, pageSize: 50, sortBy: 'title asc' })
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap((response) => {
+          this.paymentTypeList.set(response.items);
+          const defaultPaymentType = response.items[0]?.code ?? null;
+
+          if (defaultPaymentType === null) return;
+
+          this.paymentTypes.controls
+            .filter((group) => group.controls.paymentType.value === null)
+            .forEach((group) => group.controls.paymentType.setValue(defaultPaymentType, { emitEvent: false }));
+        }),
+        catchError((response: MskHttpErrorResponse) => {
+          this.alert.set({ show: true, message: response.error.message });
+          return EMPTY;
+        }),
+      )
+      .subscribe();
   }
 
   /**
