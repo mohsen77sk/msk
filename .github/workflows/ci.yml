@@ -162,7 +162,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -f Dockerfile-production.mirza -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
+          docker build -f Dockerfile.mirza.production -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
           docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:latest
 
       - name: Push Docker images
@@ -207,7 +207,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -f Dockerfile-stage.mirza -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
+          docker build -f Dockerfile.mirza.stage -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
           docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:staging
 
       - name: Push Docker images
