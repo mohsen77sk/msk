@@ -2,7 +2,7 @@ name: Nx CI Pipeline
 
 on:
   push:
-    branches: ['master']
+    branches: ['master', 'dev']
 
 env:
   IMAGE_NAME: ${{ secrets.MIRZA_DOCKER_USERNAME }}/mirza
@@ -79,11 +79,12 @@ jobs:
           fi
 
       - name: Rebuild docs with base href
-        if: steps.check-affected.outputs.docs_affected == 'true'
+        if: steps.check-affected.outputs.docs_affected == 'true' && github.ref == 'refs/heads/master'
         run: |
           npx nx build docs --base-href=/msk/ --skip-nx-cache
 
       - name: Upload artifacts
+        if: steps.check-affected.outputs.docs_affected == 'true' && github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v4
         with:
           name: dist
@@ -93,7 +94,7 @@ jobs:
     name: Publish docs
     runs-on: ubuntu-latest
     needs: build
-    if: needs.build.outputs.docs_affected == 'true'
+    if: needs.build.outputs.docs_affected == 'true' && github.ref == 'refs/heads/master'
 
     steps:
       - name: Try to download artifacts
@@ -112,7 +113,7 @@ jobs:
   #   name: Publish sahebzaman
   #   runs-on: ubuntu-latest
   #   needs: build
-  #   if: needs.build.outputs.sahebzaman_affected == 'true'
+  #   if: needs.build.outputs.sahebzaman_affected == 'true' && github.ref == 'refs/heads/master'
 
   #   steps:
   #     - name: Checkout repository to get web.config
@@ -137,49 +138,92 @@ jobs:
   #         server-dir: ./
   #         dangerous-clean-slate: true
 
-  # deploy-mirza:
-  #   name: Publish mirza
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   if: needs.build.outputs.mirza_affected == 'true'
+  deploy-mirza-production:
+    name: Deploy mirza (Production - Master)
+    runs-on: ubuntu-latest
+    needs: build
+    if: needs.build.outputs.mirza_affected == 'true' && github.ref == 'refs/heads/master'
 
-  #   steps:
-  #     - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - name: Define Docker TAG
-  #       id: vars
-  #       run: |
-  #         BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
-  #         SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
-  #         echo "TAG=${BRANCH_NAME}-${SHORT_SHA}" >> $GITHUB_OUTPUT
-  #         echo "Docker tag will be: ${BRANCH_NAME}-${SHORT_SHA}"
+      - name: Define Docker TAG
+        id: vars
+        run: |
+          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+          echo "TAG=prod-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "Docker tag will be: prod-${SHORT_SHA}"
 
-  #     - name: Log in to Docker Hub
-  #       uses: docker/login-action@v2
-  #       with:
-  #         username: ${{ secrets.MIRZA_DOCKER_USERNAME }}
-  #         password: ${{ secrets.MIRZA_DOCKER_PASSWORD }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.MIRZA_DOCKER_USERNAME }}
+          password: ${{ secrets.MIRZA_DOCKER_PASSWORD }}
 
-  #     - name: Build Docker image
-  #       run: |
-  #         docker build -f Dockerfile.mirza -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
-  #         docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:${GITHUB_REF##*/}
+      - name: Build Docker image
+        run: |
+          docker build -f Dockerfile.mirza -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
+          docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:latest
 
-  #     - name: Push Docker images
-  #       run: |
-  #         docker push $IMAGE_NAME:${{ steps.vars.outputs.TAG }}
-  #         docker push $IMAGE_NAME:${GITHUB_REF##*/}
+      - name: Push Docker images
+        run: |
+          docker push $IMAGE_NAME:${{ steps.vars.outputs.TAG }}
+          docker push $IMAGE_NAME:latest
 
-  #     - name: Set up kubeconfig
-  #       run: |
-  #         mkdir -p ~/.kube
-  #         echo "${{ secrets.MIRZA_KUBECONFIG }}" > ~/.kube/config
-  #         chmod 600 ~/.kube/config
+      - name: Set up kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.MIRZA_KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
 
-  #     - name: Deploy to K3s
-  #       run: |
-  #         BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
-  #         SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
-  #         TAG=${BRANCH_NAME}-${SHORT_SHA}
-  #         kubectl set image deployment/angular-app angular-app=${{ secrets.MIRZA_DOCKER_USERNAME }}/mirza:$TAG
-  #         kubectl rollout status deployment/angular-app
+      - name: Deploy to K3s (Production)
+        run: |
+          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+          TAG=prod-${SHORT_SHA}
+          kubectl set image deployment/angular-app angular-app=${{ secrets.MIRZA_DOCKER_USERNAME }}/mirza:$TAG
+          kubectl rollout status deployment/angular-app
+
+  deploy-mirza-staging:
+    name: Deploy mirza (Staging - Dev)
+    runs-on: ubuntu-latest
+    needs: build
+    if: needs.build.outputs.mirza_affected == 'true' && github.ref == 'refs/heads/dev'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Define Docker TAG
+        id: vars
+        run: |
+          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+          echo "TAG=staging-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "Docker tag will be: staging-${SHORT_SHA}"
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.MIRZA_DOCKER_USERNAME }}
+          password: ${{ secrets.MIRZA_DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -f Dockerfile.mirza -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
+          docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:staging
+
+      - name: Push Docker images
+        run: |
+          docker push $IMAGE_NAME:${{ steps.vars.outputs.TAG }}
+          docker push $IMAGE_NAME:staging
+
+      - name: Set up kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.MIRZA_KUBECONFIG }}" > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Deploy to K3s (Staging)
+        run: |
+          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+          TAG=staging-${SHORT_SHA}
+          kubectl set image deployment/angular-app-staging angular-app=${{ secrets.MIRZA_DOCKER_USERNAME }}/mirza:$TAG
+          kubectl rollout status deployment/angular-app-staging
