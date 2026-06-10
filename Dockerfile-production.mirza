@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 RUN npm ci
-RUN npm run build-mirza
+RUN npm run build-mirza-production
 
 # Stage 2: Serve via NGINX
 FROM nginx:alpine

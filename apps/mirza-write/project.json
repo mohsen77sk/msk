@@ -61,19 +61,41 @@
               "maximumError": "40kb"
             }
           ],
+          "fileReplacements": [
+            {
+              "replace": "apps/mirza-write/src/environments/environment.ts",
+              "with": "apps/mirza-write/src/environments/environment.production.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "serviceWorker": "apps/mirza-write/ngsw-config.json"
+        },
+        "stage": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "3mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "20kb",
+              "maximumError": "40kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/mirza-write/src/environments/environment.ts",
+              "with": "apps/mirza-write/src/environments/environment.stage.ts"
+            }
+          ],
           "outputHashing": "all",
           "serviceWorker": "apps/mirza-write/ngsw-config.json"
         },
         "development": {
           "optimization": false,
           "extractLicenses": false,
-          "sourceMap": true,
-          "fileReplacements": [
-            {
-              "replace": "apps/mirza-write/src/environments/environment.ts",
-              "with": "apps/mirza-write/src/environments/environment.development.ts"
-            }
-          ]
+          "sourceMap": true
         }
       },
       "defaultConfiguration": "production"
