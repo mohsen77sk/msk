@@ -28,18 +28,18 @@
         "link": "/panel/vendors"
       },
       {
-        "id": "panel.product-categories",
-        "title": "دسته بندی محصولات",
-        "type": "basic",
-        "icon": "category",
-        "link": "/panel/product-categories"
-      },
-      {
         "id": "panel.payment-types",
         "title": "انواع پرداخت",
         "type": "basic",
         "icon": "payments",
         "link": "/panel/payment-types"
+      },
+      {
+        "id": "panel.product-categories",
+        "title": "دسته بندی محصولات",
+        "type": "basic",
+        "icon": "category",
+        "link": "/panel/product-categories"
       },
       {
         "id": "panel.products",

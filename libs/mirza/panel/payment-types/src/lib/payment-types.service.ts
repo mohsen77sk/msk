@@ -10,12 +10,10 @@ import {
   convertToMirzaPagingRequest,
   MskChangeEvent,
 } from '@msk/shared/data-access';
-import { DefaultPaymentTypeSortData, PaymentType } from './payment-type.types';
-
-type PaymentTypesResponse = MskPagingResponse<PaymentType> | PaymentType[];
+import { DefaultPaymentTypeSortData, PaymentType } from './payment-types.types';
 
 @Injectable({ providedIn: 'root' })
-export class PaymentTypeService {
+export class PaymentTypesService {
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
 
@@ -43,10 +41,17 @@ export class PaymentTypeService {
     },
   ): Observable<MskPageData<PaymentType>> {
     return this._httpClient
-      .get<PaymentTypesResponse>(`${this._appConfig.apiEndpoint}/payment-types`, {
+      .get<MskPagingResponse<PaymentType>>(`${this._appConfig.apiEndpoint}/payment-types`, {
         params: convertToMirzaPagingRequest(params),
       })
-      .pipe(map((response) => this._normalizePaymentTypesResponse(response, params)));
+      .pipe(
+        map((response) => {
+          return new MskPageData({
+            ...response,
+            items: response.items.map((item) => new PaymentType(item)),
+          });
+        }),
+      );
   }
 
   /**
@@ -59,20 +64,26 @@ export class PaymentTypeService {
       sortBy: `${DefaultPaymentTypeSortData.active} ${DefaultPaymentTypeSortData.direction}`,
     },
   ): Observable<MskPageData<MskLookupItem>> {
-    return this.getPaymentTypes(params).pipe(
-      map((response) => {
-        return new MskPageData({
-          page: response.pageIndex + 1,
-          pageSize: response.pageSize,
-          total: response.total,
-          items: response.items.map((item) => ({ id: item.code, code: item.code, name: item.title }) as MskLookupItem),
-        });
-      }),
-    );
+    return this._httpClient
+      .get<MskPagingResponse<PaymentType>>(`${this._appConfig.apiEndpoint}/payment-types`, {
+        params: convertToMirzaPagingRequest(params),
+      })
+      .pipe(
+        map((response) => {
+          return new MskPageData({
+            ...response,
+            items: response.items
+              .sort((a, b) => Number(b.isDefault) - Number(a.isDefault))
+              .map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
+          });
+        }),
+      );
   }
 
   /**
    * Get payment type
+   *
+   * @param id
    */
   getPaymentType(id: number | string): Observable<PaymentType> {
     return this._httpClient
@@ -82,6 +93,8 @@ export class PaymentTypeService {
 
   /**
    * Create payment type
+   *
+   * @param paymentType
    */
   createPaymentType(paymentType: PaymentType): Observable<PaymentType> {
     return this._httpClient.post<PaymentType>(`${this._appConfig.apiEndpoint}/payment-types`, paymentType).pipe(
@@ -92,6 +105,8 @@ export class PaymentTypeService {
 
   /**
    * Update payment type
+   *
+   * @param paymentType
    */
   updatePaymentType(paymentType: PaymentType): Observable<PaymentType> {
     return this._httpClient
@@ -104,36 +119,13 @@ export class PaymentTypeService {
 
   /**
    * Delete payment type
+   *
+   * @param paymentType
    */
   deletePaymentType(paymentType: PaymentType): Observable<boolean> {
     return this._httpClient.delete<boolean>(`${this._appConfig.apiEndpoint}/payment-types/${paymentType.id}`).pipe(
       map((response) => response),
       tap(() => this._changes.next({ type: 'delete', id: paymentType.id })),
     );
-  }
-
-  private _normalizePaymentTypesResponse(
-    response: PaymentTypesResponse,
-    params: MskPagingRequest,
-  ): MskPageData<PaymentType> {
-    if (Array.isArray(response)) {
-      const items = this._sortPaymentTypes(response.map((item) => new PaymentType(item)));
-
-      return new MskPageData({
-        page: params.page,
-        pageSize: params.pageSize,
-        total: items.length,
-        items,
-      });
-    }
-
-    return new MskPageData({
-      ...response,
-      items: this._sortPaymentTypes(response.items.map((item) => new PaymentType(item))),
-    });
-  }
-
-  private _sortPaymentTypes(items: PaymentType[]): PaymentType[] {
-    return items.sort((a, b) => Number(b.isDefault) - Number(a.isDefault) || a.title.localeCompare(b.title));
   }
 }

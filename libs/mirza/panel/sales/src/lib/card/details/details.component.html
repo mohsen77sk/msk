@@ -83,7 +83,7 @@
       <div class="msk-list-item">
         <div class="msk-list-item-content">
           <span>{{ item.value | mskCurrency }}</span>
-          <span>{{ paymentTypeName(item.paymentType) }}</span>
+          <span>{{ item.paymentType }}</span>
         </div>
       </div>
     }
@@ -241,11 +241,32 @@
             <!-- paymentType -->
             <mat-form-field subscriptSizing="dynamic" class="sm:max-w-64">
               <mat-label>{{ t('paymentType') }}</mat-label>
-              <mat-select formControlName="paymentType">
-                @for (item of paymentTypeList(); track item.id) {
-                  <mat-option [value]="item.code">{{ paymentTypeName(item.code) }}</mat-option>
-                }
-              </mat-select>
+              <input type="text" matInput formControlName="paymentType" [matAutocomplete]="autoPaymentType" />
+              @if (paymentType.get('paymentType')?.value) {
+                <button
+                  type="button"
+                  matIconButton
+                  matSuffix
+                  [disabled]="form.disabled"
+                  (click)="paymentType.get('paymentType')?.reset()"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              }
+              <mat-autocomplete #autoPaymentType="matAutocomplete" [displayWith]="paymentTypeDisplayFn">
+                <cdk-virtual-scroll-viewport
+                  itemSize="48"
+                  minBufferPx="240"
+                  maxBufferPx="480"
+                  [style.height.px]="
+                    (autoPaymentType?.options?.length || 0) > 5 ? 240 : (autoPaymentType?.options?.length || 0) * 48
+                  "
+                >
+                  <mat-option *cdkVirtualFor="let pt of paymentTypeDSList[i]" [value]="pt">
+                    {{ pt?.name || ('loading' | transloco) }}
+                  </mat-option>
+                </cdk-virtual-scroll-viewport>
+              </mat-autocomplete>
             </mat-form-field>
             <!-- Value -->
             <mat-form-field subscriptSizing="dynamic">

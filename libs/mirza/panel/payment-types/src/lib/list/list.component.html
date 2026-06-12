@@ -4,7 +4,7 @@
     <div class="search-container">
       <div class="msk-mat-search-bar">
         <mat-icon>search</mat-icon>
-        <input [formControl]="search" autocomplete="off" [placeholder]="t('paymentTypesPanel.search')" />
+        <input [formControl]="search" autocomplete="off" [placeholder]="t('paymentTypes.search')" />
       </div>
       <msk-sort-menu [sortData]="sortData" [sortItems]="sortItems" />
     </div>
@@ -25,11 +25,11 @@
         @if (paymentType) {
           <!-- Avatar -->
           <div class="content-grid-item-avatar">
-            <msk-avatar [name]="paymentTypeTitle(paymentType)"></msk-avatar>
+            <msk-avatar [name]="paymentType.name"></msk-avatar>
           </div>
           <!-- Content -->
           <div class="content-grid-item-content">
-            <div class="truncate">{{ paymentTypeTitle(paymentType) }}</div>
+            <div class="truncate">{{ paymentType.name }}</div>
           </div>
           <!-- End -->
           <div class="content-grid-item-end"></div>

@@ -2,7 +2,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { MskSortable } from '@msk/shared/data-access';
 import { Vendor } from '@msk/mirza/panel/vendors';
 import { Product, ProductItem } from '@msk/mirza/panel/products';
-import { PaymentTypeDetail } from '@msk/mirza/shell/core/payment-type';
+import { PaymentType, PaymentTypeDetail } from '@msk/mirza/panel/payment-types';
 import { User } from '@msk/mirza/shell/core/user';
 
 export const DefaultPurchasesSortData: MskSortable = { active: 'number', direction: 'desc' };
@@ -59,7 +59,7 @@ export interface IPurchaseForm {
   note: FormControl<string | null>;
 }
 export interface IPaymentTypeForm {
-  paymentType: FormControl<number | string | null>;
+  paymentType: FormControl<PaymentType | null>;
   value: FormControl<number | null>;
 }
 export interface IPurchaseItemForm {
@@ -70,5 +70,5 @@ export interface IPurchaseItemForm {
 
 export interface IPurchaseInvoiceSummery {
   totalSum: number;
-  paymentTypes: { paymentType: number | string; value: number }[];
+  paymentTypes: { paymentType: string; value: number }[];
 }

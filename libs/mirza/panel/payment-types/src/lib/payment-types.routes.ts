@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, Routes } from '@angular/router';
-import { PaymentTypeService } from '@msk/mirza/shell/core/payment-type';
+import { PaymentTypesService } from './payment-types.service';
 import { PaymentTypesComponent } from './payment-types.component';
 import { PaymentTypesListComponent } from './list/list.component';
 import { PaymentTypesCardComponent } from './card/card.component';
@@ -17,7 +17,7 @@ import { catchError, throwError } from 'rxjs';
  * @param state
  */
 const paymentTypeResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-  const paymentTypeService = inject(PaymentTypeService);
+  const paymentTypeService = inject(PaymentTypesService);
   const router = inject(Router);
 
   return paymentTypeService.getPaymentType(route.paramMap.get('id') ?? 0).pipe(
@@ -41,14 +41,8 @@ export const routes: Routes = [
     component: PaymentTypesComponent,
     providers: [
       provideTranslocoScope({
-        scope: 'paymentTypesPanel',
-        loader: scopeLoader((lang: string, root: string) => import(`./${root}/${lang}.json`)),
-      }),
-      provideTranslocoScope({
         scope: 'paymentTypes',
-        loader: scopeLoader(
-          (lang: string) => import(`./../../../../shell/core/payment-type/src/lib/i18n/${lang}.json`),
-        ),
+        loader: scopeLoader((lang: string, root: string) => import(`./${root}/${lang}.json`)),
       }),
     ],
     children: [

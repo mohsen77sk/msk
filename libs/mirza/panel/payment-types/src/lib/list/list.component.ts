@@ -17,13 +17,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
-import { DefaultPaymentTypeSortData, PaymentType, PaymentTypeService } from '@msk/mirza/shell/core/payment-type';
+import { DefaultPaymentTypeSortData, PaymentType } from '../payment-types.types';
+import { PaymentTypesService } from '../payment-types.service';
 
 @Component({
   selector: 'mz-payment-types-list',
@@ -51,15 +52,14 @@ import { DefaultPaymentTypeSortData, PaymentType, PaymentTypeService } from '@ms
 })
 export class PaymentTypesListComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
-  private _paymentTypeService = inject(PaymentTypeService);
-  private _translocoService = inject(TranslocoService);
+  private _paymentTypeService = inject(PaymentTypesService);
   private _viewport = viewChild.required(CdkVirtualScrollViewport);
 
   dataSource!: MskDataSource<PaymentType>;
 
   sortItems: SortMenuItem[] = [
-    { key: 'title', label: 'paymentTypesPanel.sort.title' },
-    { key: 'createdAt', label: 'paymentTypesPanel.sort.createdAt' },
+    { key: 'name', label: 'paymentTypes.sort.name' },
+    { key: 'createdAt', label: 'paymentTypes.sort.createdAt' },
   ];
   sortData = new MskSort({
     active: DefaultPaymentTypeSortData.active,
@@ -68,13 +68,6 @@ export class PaymentTypesListComponent implements OnInit {
   search = new FormControl<string>('');
 
   trackById = (i: number, item: PaymentType | undefined) => item?.id ?? i;
-
-  paymentTypeTitle(paymentType: PaymentType): string {
-    const key = `paymentTypes.${paymentType.code}`;
-    const translated = this._translocoService.translate(key);
-
-    return translated === key ? paymentType.title : translated;
-  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks

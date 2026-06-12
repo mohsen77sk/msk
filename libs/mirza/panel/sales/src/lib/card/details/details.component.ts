@@ -33,7 +33,7 @@ import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
-import { PaymentType, PaymentTypeService } from '@msk/mirza/shell/core/payment-type';
+import { PaymentType, PaymentTypesService } from '@msk/mirza/panel/payment-types';
 import { Customer, CustomersService, DefaultCustomersSortData } from '@msk/mirza/panel/customers';
 import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/panel/products';
 
@@ -87,14 +87,14 @@ export class SalesCardDetailsComponent implements OnInit {
   private _salesService = inject(SalesService);
   private _productsService = inject(ProductsService);
   private _customersService = inject(CustomersService);
-  private _paymentTypeService = inject(PaymentTypeService);
+  private _paymentTypeService = inject(PaymentTypesService);
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
 
   form!: FormGroup<ISalesForm>;
   formErrors: FormError = {};
-  paymentTypeList = signal<PaymentType[]>([]);
+  paymentTypeDSList: MskDataSource<PaymentType>[] = [];
   productDSList: MskDataSource<Product>[] = [];
   customerDS!: MskDataSource<Customer>;
 
@@ -144,9 +144,8 @@ export class SalesCardDetailsComponent implements OnInit {
     if (this.data.item()) {
       this.data.item()?.paymentTypes.forEach((v, i) => i !== 0 && this.addPaymentType());
       this.data.item()?.saleItems.forEach((v, i) => i !== 0 && this.addSaleItem());
-      this.form.patchValue(this.data.item() || {});
+      // this.form.patchValue(this.data.item() || {});
     }
-    this._loadPaymentTypes();
     // Set customer collection
     this.customerDS = new MskDataSource<Customer>(
       (params) => this._customersService.getCustomers(params),
@@ -200,15 +199,12 @@ export class SalesCardDetailsComponent implements OnInit {
     return value?.name;
   }
 
-  paymentTypeName(id: number | string): string {
-    const paymentType = this.paymentTypeList().find((paymentType) => paymentType.code === id || paymentType.id === id);
-
-    if (!paymentType) return `${id}`;
-
-    const key = `paymentTypes.${paymentType.code}`;
-    const translated = this._translocoService.translate(key);
-
-    return translated === key ? paymentType.title : translated;
+  /**
+   * Get the paymentType name
+   * @param value paymentType
+   */
+  paymentTypeDisplayFn(value: PaymentType): string {
+    return value?.name;
   }
 
   /**
@@ -266,10 +262,19 @@ export class SalesCardDetailsComponent implements OnInit {
    */
   addPaymentType(): void {
     const group = this._formBuilder.group<IPaymentTypeForm>({
-      paymentType: this._formBuilder.control(this.paymentTypeList()[0]?.code ?? null, Validators.required),
+      paymentType: this._formBuilder.control<PaymentType | null>(null, Validators.required),
       value: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
     });
     this.paymentTypes.push(group);
+
+    // Create a new DataSource for this row
+    this.paymentTypeDSList.push(
+      new MskDataSource<PaymentType>(
+        (params) => this._paymentTypeService.getPaymentTypes(params),
+        new MskSort(DefaultProductsSortData),
+        group.controls.paymentType.valueChanges,
+      ),
+    );
   }
 
   /**
@@ -347,7 +352,7 @@ export class SalesCardDetailsComponent implements OnInit {
       customerId: this.form.controls.customer.value?.id ?? null,
       saleDate: this.form.controls.saleDate.value?.toISOString() ?? new Date().toISOString(),
       paymentTypes: this.form.controls.paymentTypes.controls.map((x) => ({
-        paymentType: x.controls.paymentType.value as number | string,
+        paymentTypeId: x.controls.paymentType.value?.id ?? 0,
         value: x.controls.value.value ?? 0,
       })),
       saleItems: this.form.controls.saleItems.controls.map((x) => ({
@@ -401,32 +406,6 @@ export class SalesCardDetailsComponent implements OnInit {
     const discount = this.form.controls.discount.value || 0;
 
     return Math.max(0, saleItemsTotal - discount);
-  }
-
-  /**
-   * Load payment types from API for the payment select controls
-   */
-  private _loadPaymentTypes(): void {
-    this._paymentTypeService
-      .getPaymentTypes({ page: 1, pageSize: 50, sortBy: 'title asc' })
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        tap((response) => {
-          this.paymentTypeList.set(response.items);
-          const defaultPaymentType = response.items[0]?.code ?? null;
-
-          if (defaultPaymentType === null) return;
-
-          this.paymentTypes.controls
-            .filter((group) => group.controls.paymentType.value === null)
-            .forEach((group) => group.controls.paymentType.setValue(defaultPaymentType, { emitEvent: false }));
-        }),
-        catchError((response: MskHttpErrorResponse) => {
-          this.alert.set({ show: true, message: response.error.message });
-          return EMPTY;
-        }),
-      )
-      .subscribe();
   }
 
   /**

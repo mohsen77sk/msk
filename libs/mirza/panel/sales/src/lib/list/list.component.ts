@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MAT_DATE_LOCALE, MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
@@ -29,10 +29,10 @@ import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { DateRangeFactory, MskDateRange } from '@msk/shared/utils/datetime';
 import { MskDataSource, MskLookupItem, MskSort } from '@msk/shared/data-access';
-import { PaymentTypeService } from '@msk/mirza/shell/core/payment-type';
 import { SaleInvoice, DefaultSalesSortData, ISaleInvoiceSummery } from '../sales.types';
 import { SalesService } from '../sales.service';
-import { CustomersService, DefaultCustomersSortData } from '@msk/mirza/panel/customers';
+import { DefaultPaymentTypeSortData, PaymentTypesService } from '@msk/mirza/panel/payment-types';
+import { DefaultCustomersSortData, CustomersService } from '@msk/mirza/panel/customers';
 import { DefaultProductsSortData, ProductsService } from '@msk/mirza/panel/products';
 import { Locale } from 'date-fns';
 
@@ -68,14 +68,13 @@ export class SalesListComponent implements OnInit {
   private _salesService = inject(SalesService);
   private _productsService = inject(ProductsService);
   private _customersService = inject(CustomersService);
-  private _paymentTypeService = inject(PaymentTypeService);
-  private _translocoService = inject(TranslocoService);
+  private _paymentTypeService = inject(PaymentTypesService);
   private _viewport = viewChild.required(CdkVirtualScrollViewport);
   private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
 
   dataSource!: MskDataSource<SaleInvoice>;
   dataSummery = signal<ISaleInvoiceSummery | undefined>(undefined);
-  paymentTypeNames = signal(new Map<number | string, string>());
+  paymentTypeNames = signal(new Map<number, string>());
 
   sortItems: SortMenuItem[] = [
     { key: 'number', label: 'sales.sort.number' },
@@ -90,17 +89,13 @@ export class SalesListComponent implements OnInit {
     dateRange: new FormControl<MskDateRange | null>(DateRangeFactory.fromKey('today', this._matDateLocale)),
     customerId: new FormControl<number | null>(null),
     productId: new FormControl<number | null>(null),
-    paymentType: new FormControl<number | string | null>(null),
+    paymentType: new FormControl<number | null>(null),
   });
   customerLookupDS!: MskDataSource<MskLookupItem>;
   productLookupDS!: MskDataSource<MskLookupItem>;
   paymentTypeLookupDS!: MskDataSource<MskLookupItem>;
 
   trackById = (i: number, item: SaleInvoice | undefined) => item?.id ?? i;
-
-  paymentTypeName(id: number | string): string {
-    return this.paymentTypeNames().get(id) ?? `${id}`;
-  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -110,8 +105,6 @@ export class SalesListComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    this._loadPaymentTypes();
-
     this.dataSource = new MskDataSource<SaleInvoice>(
       (params) => this._salesService.getSaleInvoices(params).pipe(tap((res) => this.dataSummery.set(res.data))),
       this.sortData,
@@ -148,36 +141,7 @@ export class SalesListComponent implements OnInit {
     // Set paymentType collection
     this.paymentTypeLookupDS = new MskDataSource<MskLookupItem>(
       (params) => this._paymentTypeService.getLookupPaymentTypes(params),
-      new MskSort(),
+      new MskSort(DefaultPaymentTypeSortData),
     );
-  }
-
-  private _loadPaymentTypes(): void {
-    this._paymentTypeService
-      .getPaymentTypes({ page: 1, pageSize: 50, sortBy: 'title asc' })
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        tap((response) =>
-          this.paymentTypeNames.set(
-            new Map(
-              response.items.flatMap((item) => {
-                const title = this._paymentTypeTitle(item.code, item.title);
-                return [
-                  [item.code, title] as [number | string, string],
-                  [item.id, title] as [number | string, string],
-                ];
-              }),
-            ),
-          ),
-        ),
-      )
-      .subscribe();
-  }
-
-  private _paymentTypeTitle(code: string, title: string): string {
-    const key = `paymentTypes.${code}`;
-    const translated = this._translocoService.translate(key);
-
-    return translated === key ? title : translated;
   }
 }

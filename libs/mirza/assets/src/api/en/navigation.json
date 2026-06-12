@@ -28,18 +28,18 @@
         "link": "/panel/vendors"
       },
       {
-        "id": "panel.product-categories",
-        "title": "product categories",
-        "type": "basic",
-        "icon": "category",
-        "link": "/panel/product-categories"
-      },
-      {
         "id": "panel.payment-types",
         "title": "Payment types",
         "type": "basic",
         "icon": "payments",
         "link": "/panel/payment-types"
+      },
+      {
+        "id": "panel.product-categories",
+        "title": "product categories",
+        "type": "basic",
+        "icon": "category",
+        "link": "/panel/product-categories"
       },
       {
         "id": "panel.products",

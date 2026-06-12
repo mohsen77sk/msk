@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -23,7 +22,8 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { PaymentType, PaymentTypeService } from '@msk/mirza/shell/core/payment-type';
+import { PaymentTypesService } from '../../payment-types.service';
+import { PaymentType } from '../../payment-types.types';
 import { catchError, EMPTY, map, tap } from 'rxjs';
 
 @Component({
@@ -40,7 +40,6 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
     MatRippleModule,
     MatButtonModule,
     MatSelectModule,
-    MatRadioModule,
     MatTooltipModule,
     MatFormFieldModule,
     MatDialogModule,
@@ -57,7 +56,7 @@ export class PaymentTypesCardDetailsComponent implements OnInit {
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
-  private _paymentTypeService = inject(PaymentTypeService);
+  private _paymentTypeService = inject(PaymentTypesService);
 
   form!: FormGroup;
   formErrors: FormError = {};
@@ -78,8 +77,8 @@ export class PaymentTypesCardDetailsComponent implements OnInit {
     // Create the form
     this.form = this._formBuilder.group({
       id: [0, Validators.required],
-      title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      isDefault: [false, Validators.required],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      isDefault: false,
     });
     // Handling errors
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
@@ -98,24 +97,15 @@ export class PaymentTypesCardDetailsComponent implements OnInit {
     this.data.action.set('edit');
   }
 
-  paymentTypeTitle(paymentType: PaymentType | undefined): string {
-    if (!paymentType) return '-';
-
-    const key = `paymentTypes.${paymentType.code}`;
-    const translated = this._translocoService.translate(key);
-
-    return translated === key ? paymentType.title : translated;
-  }
-
   /**
    * Delete the payment type
    */
   deletePaymentType(): void {
     // Open the confirmation dialog
     const confirmation = this._mskConfirmationService.open({
-      title: this._translocoService.translate('paymentTypesPanel.delete'),
-      message: this._translocoService.translate('paymentTypesPanel.delete-message', {
-        title: this.paymentTypeTitle(this.data.item()),
+      title: this._translocoService.translate('paymentTypes.delete'),
+      message: this._translocoService.translate('paymentTypes.delete-message', {
+        name: this.data.item()?.name,
       }),
       actions: {
         confirm: { label: this._translocoService.translate('delete') },
@@ -160,17 +150,10 @@ export class PaymentTypesCardDetailsComponent implements OnInit {
     // Reset the alert
     this.alert.set({ show: false, message: '' });
 
-    const title = this.form.get('title')?.value ?? '';
-    const model = {
-      ...this.data.item(),
-      ...this.form.value,
-      code: this.data.action() === 'edit' ? (this.data.item()?.code ?? this._toCamelCase(title)) : this._toCamelCase(title),
-    } as PaymentType;
-
     const result =
       this.data.action() === 'edit'
-        ? this._paymentTypeService.updatePaymentType(model)
-        : this._paymentTypeService.createPaymentType(model);
+        ? this._paymentTypeService.updatePaymentType(this.form.value)
+        : this._paymentTypeService.createPaymentType(this.form.value);
 
     result
       .pipe(
@@ -189,16 +172,5 @@ export class PaymentTypesCardDetailsComponent implements OnInit {
         }),
       )
       .subscribe();
-  }
-
-  private _toCamelCase(value: string): string {
-    const words = value.match(/[\p{L}\p{N}]+/gu) ?? [];
-
-    return words
-      .map((word, index) => {
-        const normalized = word.toLowerCase();
-        return index === 0 ? normalized : normalized.charAt(0).toUpperCase() + normalized.slice(1);
-      })
-      .join('');
   }
 }

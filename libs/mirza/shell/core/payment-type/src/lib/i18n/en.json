@@ -1,8 +1,0 @@
-{
-  "pose": "POS",
-  "cash": "Cash",
-  "bankTransfer": "Bank transfer",
-  "checks": "Checks",
-  "gift": "Gift",
-  "notPaid": "Not paid"
-}

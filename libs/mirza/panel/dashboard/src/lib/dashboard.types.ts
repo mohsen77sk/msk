@@ -1,4 +1,4 @@
-import { PaymentType } from '@msk/mirza/shell/core/payment-type';
+import { PaymentType } from '@msk/mirza/panel/payment-types';
 
 export class SalesDailyReport {
   date: Date;
