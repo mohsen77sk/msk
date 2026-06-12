@@ -150,7 +150,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     if (this.data.item()) {
       this.data.item()?.paymentTypes.forEach((v, i) => i !== 0 && this.addPaymentType());
       this.data.item()?.purchaseItems.forEach((v, i) => i !== 0 && this.addPurchaseItem());
-      // this.form.patchValue(this.data.item() || {});
+      this.form.patchValue(this.data.item() || {});
     }
     // Set vendor collection
     this.vendorDS = new MskDataSource<Vendor>(

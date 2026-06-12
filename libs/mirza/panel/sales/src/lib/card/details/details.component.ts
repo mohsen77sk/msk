@@ -144,7 +144,7 @@ export class SalesCardDetailsComponent implements OnInit {
     if (this.data.item()) {
       this.data.item()?.paymentTypes.forEach((v, i) => i !== 0 && this.addPaymentType());
       this.data.item()?.saleItems.forEach((v, i) => i !== 0 && this.addSaleItem());
-      // this.form.patchValue(this.data.item() || {});
+      this.form.patchValue(this.data.item() || {});
     }
     // Set customer collection
     this.customerDS = new MskDataSource<Customer>(
