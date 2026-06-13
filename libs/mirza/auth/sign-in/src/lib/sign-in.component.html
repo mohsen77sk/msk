@@ -94,7 +94,7 @@
           [disabled]="signInForm().submitting()"
           [mskSpinner]="signInForm().submitting()"
         >
-          {{ signInForm().submitting() ? t('signIn.sign-in') : '' }}
+          {{ signInForm().submitting() ? '' : t('signIn.sign-in') }}
         </button>
       </form>
     </div>
