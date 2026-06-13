@@ -73,7 +73,6 @@ export interface ISaleInvoiceSummery {
   paymentTypes: {
     paymentTypeId?: number;
     paymentTypeName?: string;
-    paymentType?: string;
     value: number;
   }[];
 }

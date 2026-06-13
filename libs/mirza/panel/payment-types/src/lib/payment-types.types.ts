@@ -21,8 +21,7 @@ export class PaymentTypeDetail {
 
   constructor(input: Partial<PaymentTypeDetail>) {
     this.id = input.id;
-    this.paymentType =
-      input.paymentType && typeof input.paymentType === 'object' ? new PaymentType(input.paymentType) : undefined;
+    this.paymentType = input.paymentType ? new PaymentType(input.paymentType) : undefined;
     this.paymentTypeId = input.paymentTypeId || this.paymentType?.id || 0;
     this.value = input.value || 0;
   }

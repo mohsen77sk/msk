@@ -39,10 +39,10 @@
             {{ dataSummery()?.totalSum ?? 0 | mskCurrency }}
           </div>
         </div>
-        @for (item of dataSummery()?.paymentTypes; track item.paymentTypeId ?? item.paymentTypeName ?? item.paymentType) {
+        @for (item of dataSummery()?.paymentTypes; track item.paymentTypeId) {
           <div class="msk-mat-card-filled min-w-24 shrink-0 snap-center px-4 py-3">
             <div class="text-on-surface-variant text-label-medium mb-2">
-              {{ item.paymentTypeName ?? item.paymentType }}
+              {{ item.paymentTypeName }}
             </div>
             <div class="text-label-large">{{ item.value | mskCurrency }}</div>
           </div>
@@ -66,7 +66,7 @@
             <div class="truncate">{{ invoice.title }}</div>
             <div class="truncate">
               <span>
-                @for (i of invoice.paymentTypes; track i.paymentTypeId || i.paymentType?.id || $index; let last = $last) {
+                @for (i of invoice.paymentTypes; track i.id; let last = $last) {
                   {{ i.paymentType?.name }}
                   @if (!last) {
                     -
