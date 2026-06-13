@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskDateRange, DateRangeFactory, MskDateRangeKey } from '@msk/shared/utils/datetime';
 import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
@@ -47,7 +47,6 @@ export class DashboardPaymentSummaryComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
   private _decimalPipe = inject(DecimalPipe);
   private _dashboardService = inject(DashboardService);
-  private _translocoService = inject(TranslocoService);
   private _matDateLocale = inject(MAT_DATE_LOCALE) as Locale;
 
   dateRange = new FormControl<MskDateRange>(DateRangeFactory.fromKey('today', this._matDateLocale));
@@ -137,7 +136,7 @@ export class DashboardPaymentSummaryComponent implements OnInit {
         },
       },
       colors: ['#3182ce', '#319795', '#dd6b20', '#805ad5'],
-      labels: value.map((v) => this._translocoService.translate('paymentTypes.' + v.paymentType)),
+      labels: value.map((v) => v.paymentType),
       plotOptions: {
         pie: {
           customScale: 0.9,

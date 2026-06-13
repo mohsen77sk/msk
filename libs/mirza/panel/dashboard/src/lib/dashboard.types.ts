@@ -1,5 +1,3 @@
-import { PaymentType } from '@msk/mirza/panel/payment-types';
-
 export class SalesDailyReport {
   date: Date;
   numberOfSales: number;
@@ -16,11 +14,11 @@ export class SalesDailyReport {
 }
 
 export class SalesPaymentTypeReport {
-  paymentType: PaymentType;
+  paymentType: string;
   totalAmount: number;
 
-  constructor(input: { paymentType: PaymentType; totalamount: number }) {
+  constructor(input: { paymentType: string; totalamount: number | string }) {
     this.paymentType = input.paymentType;
-    this.totalAmount = input.totalamount;
+    this.totalAmount = Number(input.totalamount);
   }
 }
