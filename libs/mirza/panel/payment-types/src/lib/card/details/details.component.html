@@ -37,13 +37,14 @@
       </div>
     </div>
     <!-- Default -->
-    <!-- <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">check_circle</mat-icon>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.isDefault ? t('yes') : t('no') }}</span>
-        <span>{{ t('isDefault') }}</span>
+    @if (data.item()?.isDefault) {
+      <div class="msk-list-item h-16">
+        <mat-icon class="msk-list-item-icon">check_circle</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ t('isDefault') }}</span>
+        </div>
       </div>
-    </div> -->
+    }
   </div>
   <div class="mt-6" *transloco="let t">
     <div class="text-title-small mb-4">{{ t('settings') }}</div>
@@ -77,12 +78,8 @@
     </mat-form-field>
 
     <!-- Is default -->
-    <!-- <div class="flex flex-col gap-2">
-      <div class="text-secondary text-label-large">{{ t('isDefault') }}</div>
-      <mat-radio-group class="flex gap-6" formControlName="isDefault">
-        <mat-radio-button [value]="true">{{ t('yes') }}</mat-radio-button>
-        <mat-radio-button [value]="false">{{ t('no') }}</mat-radio-button>
-      </mat-radio-group>
-    </div> -->
+    <div class="flex gap-2">
+      <mat-checkbox formControlName="isDefault">{{ t('isDefault') }}</mat-checkbox>
+    </div>
   </form>
 </ng-template>

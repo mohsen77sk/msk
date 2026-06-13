@@ -7,6 +7,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
@@ -41,6 +42,7 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
     MatButtonModule,
     MatSelectModule,
     MatTooltipModule,
+    MatCheckboxModule,
     MatFormFieldModule,
     MatDialogModule,
     TranslocoDirective,

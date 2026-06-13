@@ -1,6 +1,7 @@
 import { MskSortable } from '@msk/shared/data-access';
 
 export const DefaultPaymentTypeSortData: MskSortable = { active: 'name', direction: 'asc' };
+export const LockupPaymentTypeSortData: MskSortable = { active: 'isDefault', direction: 'asc' };
 export class PaymentType {
   id: number;
   name: string;

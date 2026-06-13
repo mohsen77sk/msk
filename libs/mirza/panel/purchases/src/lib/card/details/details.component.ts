@@ -33,7 +33,7 @@ import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
-import { PaymentType, PaymentTypesService } from '@msk/mirza/panel/payment-types';
+import { LockupPaymentTypeSortData, PaymentType, PaymentTypesService } from '@msk/mirza/panel/payment-types';
 import { DefaultVendorsSortData, Vendor, VendorsService } from '@msk/mirza/panel/vendors';
 
 import {
@@ -276,8 +276,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Create a new DataSource for this row
     this.paymentTypeDSList.push(
       new MskDataSource<PaymentType>(
-        (params) => this._paymentTypeService.getPaymentTypes(params),
-        new MskSort(DefaultProductsSortData),
+        (params) => this._paymentTypeService.getPaymentTypes(params).pipe(),
+        new MskSort(LockupPaymentTypeSortData),
         group.controls.paymentType.valueChanges,
       ),
     );
