@@ -14,13 +14,16 @@ export class PaymentType {
 }
 
 export class PaymentTypeDetail {
+  id?: number;
   paymentType?: PaymentType;
   paymentTypeId: number;
   value: number;
 
   constructor(input: Partial<PaymentTypeDetail>) {
-    this.paymentType = input.paymentType ? new PaymentType(input.paymentType) : undefined;
-    this.paymentTypeId = input.paymentTypeId || 0;
+    this.id = input.id;
+    this.paymentType =
+      input.paymentType && typeof input.paymentType === 'object' ? new PaymentType(input.paymentType) : undefined;
+    this.paymentTypeId = input.paymentTypeId || this.paymentType?.id || 0;
     this.value = input.value || 0;
   }
 }

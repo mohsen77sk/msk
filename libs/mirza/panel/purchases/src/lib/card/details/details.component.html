@@ -83,7 +83,7 @@
       <div class="msk-list-item">
         <div class="msk-list-item-content">
           <span>{{ item.value | mskCurrency }}</span>
-          <span>{{ item.paymentType }}</span>
+          <span>{{ item.paymentType?.name || '-' }}</span>
         </div>
       </div>
     }

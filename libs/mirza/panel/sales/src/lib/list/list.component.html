@@ -22,7 +22,7 @@
       ></msk-filter-menu>
       <msk-filter-menu
         [label]="t('sales.details.paymentType')"
-        formControlName="paymentType"
+        formControlName="paymentTypeId"
         [datasource]="paymentTypeLookupDS"
       ></msk-filter-menu>
     </div>
@@ -39,10 +39,10 @@
             {{ dataSummery()?.totalSum ?? 0 | mskCurrency }}
           </div>
         </div>
-        @for (item of dataSummery()?.paymentTypes; track item.paymentType) {
+        @for (item of dataSummery()?.paymentTypes; track item.paymentTypeId ?? item.paymentTypeName ?? item.paymentType) {
           <div class="msk-mat-card-filled min-w-24 shrink-0 snap-center px-4 py-3">
             <div class="text-on-surface-variant text-label-medium mb-2">
-              {{ item.paymentType }}
+              {{ item.paymentTypeName ?? item.paymentType }}
             </div>
             <div class="text-label-large">{{ item.value | mskCurrency }}</div>
           </div>
@@ -66,7 +66,7 @@
             <div class="truncate">{{ invoice.title }}</div>
             <div class="truncate">
               <span>
-                @for (i of invoice.paymentTypes; track i.paymentType; let last = $last) {
+                @for (i of invoice.paymentTypes; track i.paymentTypeId || i.paymentType?.id || $index; let last = $last) {
                   {{ i.paymentType?.name }}
                   @if (!last) {
                     -

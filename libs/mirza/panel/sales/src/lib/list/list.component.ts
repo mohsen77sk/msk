@@ -74,7 +74,6 @@ export class SalesListComponent implements OnInit {
 
   dataSource!: MskDataSource<SaleInvoice>;
   dataSummery = signal<ISaleInvoiceSummery | undefined>(undefined);
-  paymentTypeNames = signal(new Map<number, string>());
 
   sortItems: SortMenuItem[] = [
     { key: 'number', label: 'sales.sort.number' },
@@ -89,7 +88,7 @@ export class SalesListComponent implements OnInit {
     dateRange: new FormControl<MskDateRange | null>(DateRangeFactory.fromKey('today', this._matDateLocale)),
     customerId: new FormControl<number | null>(null),
     productId: new FormControl<number | null>(null),
-    paymentType: new FormControl<number | null>(null),
+    paymentTypeId: new FormControl<number | null>(null),
   });
   customerLookupDS!: MskDataSource<MskLookupItem>;
   productLookupDS!: MskDataSource<MskLookupItem>;

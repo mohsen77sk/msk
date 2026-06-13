@@ -70,5 +70,10 @@ export interface ISaleItemForm {
 
 export interface ISaleInvoiceSummery {
   totalSum: number;
-  paymentTypes: { paymentType: string; value: number }[];
+  paymentTypes: {
+    paymentTypeId?: number;
+    paymentTypeName?: string;
+    paymentType?: string;
+    value: number;
+  }[];
 }
