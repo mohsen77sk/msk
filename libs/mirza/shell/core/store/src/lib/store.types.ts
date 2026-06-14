@@ -9,12 +9,12 @@ export class Store {
   id: number;
   name: string;
   isActive: boolean;
-  logoUrl: string | null;
+  logoUrl?: string;
 
   constructor(input: IStoreResponse) {
     this.id = input.id;
     this.name = input.name;
     this.isActive = input.status ?? false;
-    this.logoUrl = input.logoUrl ?? null;
+    this.logoUrl = input.logoUrl ?? undefined;
   }
 }

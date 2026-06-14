@@ -56,6 +56,11 @@
     "show-more-stores": "Show more stores",
     "hide-more-stores": "Hide more stores"
   },
+  "upload-image": {
+    "ext-error": "Only images are allowed.",
+    "size-error": "Image must be smaller than 2MB.",
+    "upload-error": "Image upload failed. Please try again."
+  },
   "error-validation": {
     "required": "This is required",
     "pattern": "Invalid value",

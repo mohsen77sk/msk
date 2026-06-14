@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
-import { BehaviorSubject, map, Observable, ReplaySubject, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, ReplaySubject, startWith, tap, withLatestFrom } from 'rxjs';
 import { IStoreResponse, Store } from './store.types';
 
 @Injectable({ providedIn: 'root' })
@@ -10,7 +10,6 @@ export class StoreService {
   private _appConfig = inject(MSK_APP_CONFIG);
 
   private _stores: ReplaySubject<Store[]> = new ReplaySubject<Store[]>(1);
-  private _storeList: Store[] = [];
   private _currentStore: BehaviorSubject<Store | null>;
 
   /**
@@ -73,7 +72,6 @@ export class StoreService {
         }
       }),
       tap((stores) => {
-        this._storeList = stores;
         this._stores.next(stores);
       }),
     );
@@ -89,22 +87,24 @@ export class StoreService {
     const formData = new FormData();
     formData.append('logo', file);
 
-    return this._httpClient.patch<IStoreResponse>(`${this._appConfig.apiEndpoint}/store/${storeId}/logo`, formData).pipe(
-      map((response) => new Store(response)),
-      tap((store) => {
-        this._storeList = this._storeList.map((item) => (item.id === store.id ? store : item));
+    return this._httpClient
+      .patch<IStoreResponse>(`${this._appConfig.apiEndpoint}/store/${storeId}/logo`, formData)
+      .pipe(
+        map((response) => new Store(response)),
+        withLatestFrom(this.stores$.pipe(startWith([] as Store[]))),
+        tap(([store, stores]) => {
+          const updatedStores = stores.some((item) => item.id === store.id)
+            ? stores.map((item) => (item.id === store.id ? store : item))
+            : [...stores, store];
 
-        if (!this._storeList.some((item) => item.id === store.id)) {
-          this._storeList = [...this._storeList, store];
-        }
+          this._stores.next(updatedStores);
 
-        this._stores.next(this._storeList);
-
-        if (this.currentStore?.id === store.id) {
-          this.currentStore = store;
-        }
-      }),
-    );
+          if (this.currentStore?.id === store.id) {
+            this.currentStore = store;
+          }
+        }),
+        map(([store]) => store),
+      );
   }
 
   // -----------------------------------------------------------------------------------------------------

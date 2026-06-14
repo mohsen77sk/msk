@@ -16,8 +16,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslocoDirective } from '@jsverse/transloco';
+import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
+import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
+import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
 import { availableCurrencies, availableLangs } from '@msk/shared/constants';
 import { UserService, User } from '@msk/mirza/shell/core/user';
@@ -33,7 +35,15 @@ import { finalize, tap } from 'rxjs';
   styleUrl: './user.component.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatMenuModule, MatIconModule, MatButtonModule, MatDialogModule, TranslocoDirective, MskAvatarComponent],
+  imports: [
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    TranslocoDirective,
+    MskAvatarComponent,
+    MskSpinnerDirective,
+  ],
 })
 export class UserComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
@@ -41,6 +51,8 @@ export class UserComponent implements OnInit {
   private _dialog = inject(MatDialog);
   private _userService = inject(UserService);
   private _storeService = inject(StoreService);
+  private _translocoService = inject(TranslocoService);
+  private _mskSnackbarService = inject(MskSnackbarService);
   private _layoutConfigService = inject(MskLayoutConfigService);
 
   showAvatar = input(true, { transform: booleanAttribute });
@@ -52,8 +64,6 @@ export class UserComponent implements OnInit {
   stores = signal<Store[]>([]);
   currentStore = signal<Store | null>(null);
   showMoreStores = signal<boolean>(false);
-  logoPreviewUrl = signal<string | null>(null);
-  logoUploadError = signal<string | null>(null);
   isLogoUploading = signal<boolean>(false);
 
   activeLangLabel = computed(() => availableLangs.find((x) => x.id === this.activeLang())?.label ?? '');
@@ -159,44 +169,26 @@ export class UserComponent implements OnInit {
     const file = input.files?.[0];
     input.value = '';
 
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      this.logoUploadError.set('Only JPG, PNG, and WebP images are allowed.');
+    if (!file.type.startsWith('image/')) {
+      this._mskSnackbarService.error(this._translocoService.translate('upload-image.ext-error'));
       return;
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      this.logoUploadError.set('Logo must be smaller than 2MB.');
+      this._mskSnackbarService.error(this._translocoService.translate('upload-image.size-error'));
       return;
     }
 
-    const store = this.currentStore();
-
-    if (!store) {
-      this.logoUploadError.set('Select a store before uploading a logo.');
-      return;
-    }
-
-    const previewUrl = URL.createObjectURL(file);
-    this.logoPreviewUrl.set(previewUrl);
-    this.logoUploadError.set(null);
     this.isLogoUploading.set(true);
 
     this._storeService
-      .uploadStoreLogo(store.id, file)
-      .pipe(
-        finalize(() => {
-          URL.revokeObjectURL(previewUrl);
-          this.logoPreviewUrl.set(null);
-          this.isLogoUploading.set(false);
-        }),
-      )
+      .uploadStoreLogo(this.currentStore()?.id ?? 0, file)
+      .pipe(finalize(() => this.isLogoUploading.set(false)))
       .subscribe({
         error: () => {
-          this.logoUploadError.set('Logo upload failed. Please try again.');
+          this._mskSnackbarService.error(this._translocoService.translate('upload-image.upload-error'));
         },
       });
   }
