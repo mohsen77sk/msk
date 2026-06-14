@@ -10,6 +10,7 @@ export class StoreService {
   private _appConfig = inject(MSK_APP_CONFIG);
 
   private _stores: ReplaySubject<Store[]> = new ReplaySubject<Store[]>(1);
+  private _storeList: Store[] = [];
   private _currentStore: BehaviorSubject<Store | null>;
 
   /**
@@ -72,7 +73,36 @@ export class StoreService {
         }
       }),
       tap((stores) => {
+        this._storeList = stores;
         this._stores.next(stores);
+      }),
+    );
+  }
+
+  /**
+   * Upload store logo
+   *
+   * @param storeId
+   * @param file
+   */
+  uploadStoreLogo(storeId: number, file: File): Observable<Store> {
+    const formData = new FormData();
+    formData.append('logo', file);
+
+    return this._httpClient.patch<IStoreResponse>(`${this._appConfig.apiEndpoint}/store/${storeId}/logo`, formData).pipe(
+      map((response) => new Store(response)),
+      tap((store) => {
+        this._storeList = this._storeList.map((item) => (item.id === store.id ? store : item));
+
+        if (!this._storeList.some((item) => item.id === store.id)) {
+          this._storeList = [...this._storeList, store];
+        }
+
+        this._stores.next(this._storeList);
+
+        if (this.currentStore?.id === store.id) {
+          this.currentStore = store;
+        }
       }),
     );
   }

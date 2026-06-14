@@ -64,4 +64,8 @@
       align-items: center;
     }
   }
+
+  input[type='file'].hidden {
+    display: none;
+  }
 }

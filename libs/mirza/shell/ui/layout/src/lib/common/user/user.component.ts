@@ -25,7 +25,7 @@ import { StoreService, Store } from '@msk/mirza/shell/core/store';
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
 import { LayoutCurrencyDialogComponent } from '../layout-currency-dialog/layout-currency-dialog.component';
-import { tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 
 @Component({
   selector: 'mz-user',
@@ -52,6 +52,9 @@ export class UserComponent implements OnInit {
   stores = signal<Store[]>([]);
   currentStore = signal<Store | null>(null);
   showMoreStores = signal<boolean>(false);
+  logoPreviewUrl = signal<string | null>(null);
+  logoUploadError = signal<string | null>(null);
+  isLogoUploading = signal<boolean>(false);
 
   activeLangLabel = computed(() => availableLangs.find((x) => x.id === this.activeLang())?.label ?? '');
   activeCurrencyLabel = computed(() => availableCurrencies.find((x) => x.code === this.activeCurrency())?.label ?? '');
@@ -144,6 +147,58 @@ export class UserComponent implements OnInit {
 
     this._storeService.currentStore = store;
     this._router.navigate(['/panel/redirect']);
+  }
+
+  /**
+   * Upload current store logo
+   *
+   * @param event
+   */
+  uploadCurrentStoreLogo(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+
+    if (!file) {
+      return;
+    }
+
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      this.logoUploadError.set('Only JPG, PNG, and WebP images are allowed.');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      this.logoUploadError.set('Logo must be smaller than 2MB.');
+      return;
+    }
+
+    const store = this.currentStore();
+
+    if (!store) {
+      this.logoUploadError.set('Select a store before uploading a logo.');
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    this.logoPreviewUrl.set(previewUrl);
+    this.logoUploadError.set(null);
+    this.isLogoUploading.set(true);
+
+    this._storeService
+      .uploadStoreLogo(store.id, file)
+      .pipe(
+        finalize(() => {
+          URL.revokeObjectURL(previewUrl);
+          this.logoPreviewUrl.set(null);
+          this.isLogoUploading.set(false);
+        }),
+      )
+      .subscribe({
+        error: () => {
+          this.logoUploadError.set('Logo upload failed. Please try again.');
+        },
+      });
   }
 
   /**

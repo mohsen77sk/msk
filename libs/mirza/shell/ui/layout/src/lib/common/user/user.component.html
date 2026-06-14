@@ -1,7 +1,7 @@
 <!-- Button -->
 <button matIconButton [matMenuTriggerFor]="userActions">
   <span class="relative size-6">
-    <msk-avatar [name]="currentStore()?.name ?? ''" size="small"></msk-avatar>
+    <msk-avatar [name]="currentStore()?.name ?? ''" [imageUrl]="currentStore()?.logoUrl ?? undefined" size="small"></msk-avatar>
   </span>
 </button>
 <!-- Menu -->
@@ -19,15 +19,33 @@
   </div>
   <div class="mz-user-panel-profile-container" #container (scroll)="(null)">
     <div class="mt-4 flex justify-center">
-      <msk-avatar [name]="user()?.name ?? ''" [imageUrl]="user()?.avatar" size="big"></msk-avatar>
+      <msk-avatar
+        [name]="currentStore()?.name ?? user()?.name ?? ''"
+        [imageUrl]="logoPreviewUrl() ?? currentStore()?.logoUrl ?? undefined"
+        size="big"
+      ></msk-avatar>
     </div>
     <div class="my-2">
-      <span class="text-title-medium">{{ user()?.name }}</span>
+      <span class="text-title-medium">{{ currentStore()?.name ?? user()?.name }}</span>
     </div>
     <div class="pt-2 pb-6" *transloco="let t">
-      <button matButton="outlined">
-        <span>{{ t('layout.settings') }}</span>
+      <input
+        #logoInput
+        class="hidden"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        (change)="uploadCurrentStoreLogo($event)"
+      />
+      <button matButton="outlined" type="button" [disabled]="isLogoUploading() || !currentStore()" (click)="logoInput.click()">
+        <mat-icon>{{ currentStore()?.logoUrl ? 'edit' : 'upload' }}</mat-icon>
+        <span>{{ currentStore()?.logoUrl ? 'Change logo' : 'Upload logo' }}</span>
       </button>
+      @if (isLogoUploading()) {
+        <div class="mt-2 text-label-medium text-on-surface-variant">Uploading...</div>
+      }
+      @if (logoUploadError()) {
+        <div class="mt-2 text-label-medium text-error">{{ logoUploadError() }}</div>
+      }
     </div>
     <div class="mz-user-panel-profile-list" *transloco="let t">
       <div class="mz-user-panel-profile-item" aria-hidden="true" (click)="$event.stopPropagation(); toggleMoreStores()">
@@ -37,7 +55,7 @@
         <div class="flex items-center gap-1">
           <div class="flex flex-row-reverse items-center gap-1" [class.hidden]="showMoreStores()">
             @for (store of stores().slice(0, 3); track store.id) {
-              <msk-avatar [name]="store.name" size="small"></msk-avatar>
+              <msk-avatar [name]="store.name" [imageUrl]="store.logoUrl ?? undefined" size="small"></msk-avatar>
             }
             @if (stores().length > 3) {
               <msk-avatar [name]="'+'" size="small"></msk-avatar>
@@ -56,7 +74,7 @@
           @for (store of stores(); track store.id) {
             <div class="mz-user-panel-profile-item" (click)="selectActiveStore(store)" aria-hidden="true">
               <div>
-                <msk-avatar [name]="store.name" size="small"></msk-avatar>
+                <msk-avatar [name]="store.name" [imageUrl]="store.logoUrl ?? undefined" size="small"></msk-avatar>
                 <span class="ms-3 font-medium">{{ store.name }}</span>
               </div>
               @if (currentStore() === store) {
