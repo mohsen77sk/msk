@@ -67,9 +67,8 @@ export class StoreService {
       tap((stores) => {
         const filteredStore = stores.filter((x) => x.isActive);
 
-        if (this.currentStore === null || !filteredStore.some((x) => x.id === this.currentStore?.id)) {
-          this.currentStore = filteredStore.length > 0 ? filteredStore[0] : null;
-        }
+        this.currentStore =
+          (this.currentStore ? filteredStore.find((x) => x.id === this.currentStore?.id) : filteredStore[0]) ?? null;
       }),
       tap((stores) => {
         this._stores.next(stores);
