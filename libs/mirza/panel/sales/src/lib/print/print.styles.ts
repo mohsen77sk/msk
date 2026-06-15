@@ -1,0 +1,118 @@
+export const SALE_RECEIPT_PRINT_STYLES = `
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+
+  @media print {
+    html,
+    body {
+      width: 80mm;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  html,
+  body {
+    width: 80mm;
+    margin: 0;
+    padding: 0;
+    color: #000;
+    background: #fff;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .sale-receipt-print {
+    width: 80mm;
+    padding: 4mm;
+    color: #000;
+    background: #fff;
+  }
+
+  .sale-receipt-print--rtl {
+    direction: rtl;
+    text-align: right;
+  }
+
+  .sale-receipt-print--ltr {
+    direction: ltr;
+    text-align: left;
+  }
+
+  .sale-receipt-print__header {
+    text-align: center;
+  }
+
+  .sale-receipt-print__logo {
+    display: block;
+    max-width: 40mm;
+    max-height: 24mm;
+    margin: 0 auto 3mm;
+    object-fit: contain;
+  }
+
+  .sale-receipt-print__store {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .sale-receipt-print__separator {
+    border-top: 1px dashed #000;
+    margin: 3mm 0;
+  }
+
+  .sale-receipt-print__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 3mm;
+    margin: 1mm 0;
+  }
+
+  .sale-receipt-print__row span:first-child {
+    overflow-wrap: anywhere;
+  }
+
+  .sale-receipt-print__row span:last-child {
+    flex: none;
+    text-align: end;
+  }
+
+  .sale-receipt-print--rtl .sale-receipt-print__value {
+    text-align: left;
+  }
+
+  .sale-receipt-print--ltr .sale-receipt-print__value {
+    text-align: right;
+  }
+
+  .sale-receipt-print__section-title {
+    margin-bottom: 1.5mm;
+    font-weight: 700;
+  }
+
+  .sale-receipt-print__item {
+    margin-bottom: 2mm;
+  }
+
+  .sale-receipt-print__item-name {
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+
+  .sale-receipt-print__total {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .sale-receipt-print__footer {
+    margin-top: 4mm;
+    text-align: center;
+  }
+`;

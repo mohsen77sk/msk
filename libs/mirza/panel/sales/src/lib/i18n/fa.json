@@ -26,10 +26,27 @@
     "createdAt": "جدیدترین"
   },
   "errors": {
-    "paymentTypesValueMustEqualByTotal": "مجموع مقادیر پرداختی با مبلغ نهایی برابر نیست."
+    "paymentTypesValueMustEqualByTotal": "مجموع مقادیر پرداختی با مبلغ نهایی برابر نیست.",
+    "printWindowBlocked": "پنجره چاپ مسدود شد."
+  },
+  "receipt": {
+    "sale": "شماره فروش",
+    "date": "تاریخ",
+    "customer": "مشتری",
+    "items": "اقلام",
+    "discount": "تخفیف",
+    "total": "جمع کل",
+    "payments": "پرداخت‌ها",
+    "thankYou": "متشکریم",
+    "units": {
+      "piece": "عدد",
+      "kg": "کیلوگرم",
+      "gram": "گرم"
+    }
   },
   "search": "جستجوی فاکتور فروش",
   "empty-list": "هیچ فاکتوری فروشی وجود ندارد!",
   "delete": "حذف فاکتور فروش",
-  "delete-message": "آیا مطمئن هستید که می خواهید فاکتور شماره <b>{{number}}</b> را حذف کنید؟"
+  "delete-message": "آیا مطمئن هستید که می خواهید فاکتور شماره <b>{{number}}</b> را حذف کنید؟",
+  "print-receipt": "چاپ رسید"
 }

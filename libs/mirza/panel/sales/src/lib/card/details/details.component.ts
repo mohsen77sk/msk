@@ -8,6 +8,8 @@ import {
   inject,
   signal,
   DestroyRef,
+  ViewChild,
+  computed,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -36,6 +38,7 @@ import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker
 import { LockupPaymentTypeSortData, PaymentType, PaymentTypesService } from '@msk/mirza/panel/payment-types';
 import { Customer, CustomersService, DefaultCustomersSortData } from '@msk/mirza/panel/customers';
 import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/panel/products';
+import { Store, StoreService } from '@msk/mirza/shell/core/store';
 
 import {
   MskHandleFormErrors,
@@ -46,6 +49,10 @@ import {
 import { catchError, combineLatest, distinctUntilChanged, EMPTY, map, startWith, tap } from 'rxjs';
 import { SalesService } from '../../sales.service';
 import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleInvoice } from '../../sales.types';
+import { SaleReceiptPrintService } from '../../print/print.service';
+import { ReceiptPrintData } from '../../print/print.types';
+import { SaleReceiptPrintComponent } from '../../print/print.component';
+import { SALE_RECEIPT_PRINT_STYLES } from '../../print/print.styles';
 
 @Component({
   selector: 'mz-sales-details',
@@ -77,7 +84,9 @@ import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleIn
     MskSpinnerDirective,
     MskCurrencySymbolDirective,
     MskDatepickerTouchUiDirective,
+    SaleReceiptPrintComponent,
   ],
+  providers: [SaleReceiptPrintService],
 })
 export class SalesCardDetailsComponent implements OnInit {
   readonly data = inject<MskDialogData<SaleInvoice | undefined>>(MAT_DIALOG_DATA);
@@ -88,9 +97,14 @@ export class SalesCardDetailsComponent implements OnInit {
   private _productsService = inject(ProductsService);
   private _customersService = inject(CustomersService);
   private _paymentTypeService = inject(PaymentTypesService);
+  private _printService = inject(SaleReceiptPrintService);
+  private _storeService = inject(StoreService);
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
+
+  @ViewChild(SaleReceiptPrintComponent)
+  private _receiptPrint?: SaleReceiptPrintComponent;
 
   form!: FormGroup<ISalesForm>;
   formErrors: FormError = {};
@@ -101,6 +115,10 @@ export class SalesCardDetailsComponent implements OnInit {
   alert = signal({
     show: false,
     message: '',
+  });
+
+  receiptData = computed<ReceiptPrintData>(() => {
+    return new ReceiptPrintData(this.data.item() as SaleInvoice, this._storeService.currentStore as Store);
   });
 
   /**
@@ -283,6 +301,29 @@ export class SalesCardDetailsComponent implements OnInit {
    */
   removePaymentType(index: number): void {
     this.paymentTypes.removeAt(index);
+  }
+
+  /**
+   * Print the current sale as an 80mm thermal receipt
+   */
+  printReceipt(): void {
+    const receiptHtml = this._receiptPrint?.html;
+
+    if (!receiptHtml) {
+      this._mskSnackbarService.error(this._translocoService.translate('sales.errors.printWindowBlocked'));
+      return;
+    }
+
+    const opened = this._printService.print({
+      html: receiptHtml,
+      title: this._translocoService.translate('sales.details.printReceipt'),
+      styles: SALE_RECEIPT_PRINT_STYLES,
+      windowFeatures: 'width=360,height=640',
+    });
+
+    if (!opened) {
+      this._mskSnackbarService.error(this._translocoService.translate('sales.errors.printWindowBlocked'));
+    }
   }
 
   /**

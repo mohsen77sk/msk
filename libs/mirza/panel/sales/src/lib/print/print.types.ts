@@ -1,0 +1,62 @@
+import { ProductItem } from '@msk/mirza/panel/products';
+import { SaleInvoice } from '../sales.types';
+import { Store } from '@msk/mirza/shell/core/store';
+import { PaymentTypeDetail } from '@msk/mirza/panel/payment-types';
+
+export interface PrintDocumentOptions {
+  html: string;
+  title?: string;
+  styles?: string;
+  windowFeatures?: string;
+  imageLoadTimeoutMs?: number;
+}
+
+export class ReceiptPrintData {
+  storeName: string;
+  storeLogoUrl?: string;
+  saleNumber: string;
+  saleDate?: Date;
+  customerName?: string;
+  items: ReceiptPrintItem[];
+  discount: number;
+  total: number;
+  payments: ReceiptPrintPayment[];
+  footerText: string;
+
+  constructor(input: SaleInvoice, store: Store) {
+    this.storeName = store?.name ?? '';
+    this.storeLogoUrl = store?.logoUrl;
+    this.saleNumber = input.number;
+    this.saleDate = input.saleDate;
+    this.customerName = input.customer?.name;
+    this.items = (input.saleItems ?? []).map((item) => new ReceiptPrintItem(item));
+    this.discount = input.discount ?? 0;
+    this.total = input.total ?? 0;
+    this.payments = (input.paymentTypes ?? []).map((item) => new ReceiptPrintPayment(item));
+    this.footerText = 'Thank you';
+  }
+}
+
+export class ReceiptPrintItem {
+  productName: string;
+  quantity: number;
+  unit?: string;
+  total: number;
+
+  constructor(input: ProductItem) {
+    this.productName = input.product?.name ?? '-';
+    this.quantity = input.quantity;
+    this.unit = input.product?.unit;
+    this.total = input.total;
+  }
+}
+
+export class ReceiptPrintPayment {
+  name: string;
+  value: number;
+
+  constructor(input: PaymentTypeDetail) {
+    this.name = input.paymentType?.name ?? '-';
+    this.value = input.value;
+  }
+}

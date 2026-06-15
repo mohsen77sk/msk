@@ -26,10 +26,27 @@
     "createdAt": "Most recent"
   },
   "errors": {
-    "paymentTypesValueMustEqualByTotal": "The total amount paid does not equal the final amount."
+    "paymentTypesValueMustEqualByTotal": "The total amount paid does not equal the final amount.",
+    "printWindowBlocked": "The print window was blocked."
+  },
+  "receipt": {
+    "sale": "Sale",
+    "date": "Date",
+    "customer": "Customer",
+    "items": "Items",
+    "discount": "Discount",
+    "total": "Total",
+    "payments": "Payments",
+    "thankYou": "Thank you",
+    "units": {
+      "piece": "piece",
+      "kg": "kg",
+      "gram": "gram"
+    }
   },
   "search": "Search sale invoice",
   "empty-list": "There are no sale invoices!",
   "delete": "Delete sale invoice",
-  "delete-message": "Are you sure you want to delete invoice <b>{{number}}</b>?"
+  "delete-message": "Are you sure you want to delete invoice <b>{{number}}</b>?",
+  "print-receipt": "Print receipt"
 }
