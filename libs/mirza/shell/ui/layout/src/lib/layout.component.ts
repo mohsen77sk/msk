@@ -20,6 +20,7 @@ import { LayoutMaterialComponent } from './layouts/material/material.component';
   imports: [BidiModule, MskLoadingBarComponent, LayoutEmptyComponent, LayoutMaterialComponent],
 })
 export class LayoutComponent implements OnInit {
+  private readonly _newSaleUrl = '/panel/sales/card/new';
   private _router = inject(Router);
   private _document = inject(DOCUMENT);
   private _renderer2 = inject(Renderer2);
@@ -43,6 +44,13 @@ export class LayoutComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
+    const removeNewSaleShortcutListener = this._renderer2.listen(
+      this._document,
+      'keydown',
+      (event: KeyboardEvent) => this._handleNewSaleShortcut(event),
+    );
+    this._destroyRef.onDestroy(removeNewSaleShortcutListener);
+
     // Set the theme and scheme based on the configuration
     combineLatest([
       this._mskLayoutConfigService.config$,
@@ -112,6 +120,29 @@ export class LayoutComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
   // @ Private methods
   // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Open the new sale form from anywhere inside the authenticated panel
+   */
+  private _handleNewSaleShortcut(event: KeyboardEvent): void {
+    if (
+      !event.ctrlKey ||
+      !event.shiftKey ||
+      event.key.toLowerCase() !== 's' ||
+      !this._router.url.startsWith('/panel')
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (this._router.url.split('?')[0] === this._newSaleUrl) {
+      return;
+    }
+
+    this._router.navigateByUrl(this._newSaleUrl);
+  }
 
   /**
    * Update the selected layout type

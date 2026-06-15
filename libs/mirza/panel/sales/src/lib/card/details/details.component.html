@@ -115,7 +115,7 @@
 </ng-template>
 
 <ng-template #formTemplate let-t="t">
-  <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
+  <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form" (keydown)="handleSaleFormKeydown($event)">
     <!-- Alert -->
     @if (alert().show) {
       <msk-alert class="msk-shake mb-4" appearance="outline" type="error">
@@ -171,12 +171,18 @@
       <div class="text-secondary text-title-small">{{ t('products') }}</div>
       <div class="mt-2 mb-4 border-t"></div>
       @for (product of saleItems.controls; track i; let i = $index; let c = $count) {
-        <div class="flex flex-row gap-2">
+        <div class="flex flex-row gap-2" (keydown)="handleSaleItemRowKeydown($event, i)">
           <div class="mb-4 flex flex-1 flex-col gap-2 *:flex-1 sm:flex-row sm:gap-x-4" [formGroupName]="i">
             <!-- Product -->
             <mat-form-field class="sm:max-w-64">
               <mat-label>{{ t('product') }}</mat-label>
-              <input type="text" matInput formControlName="product" [matAutocomplete]="autoProduct" />
+              <input
+                #productInput
+                type="text"
+                matInput
+                formControlName="product"
+                [matAutocomplete]="autoProduct"
+              />
               @if (product.get('product')?.value) {
                 <button
                   type="button"
@@ -188,7 +194,11 @@
                   <mat-icon>close</mat-icon>
                 </button>
               }
-              <mat-autocomplete #autoProduct="matAutocomplete" [displayWith]="productDisplayFn">
+              <mat-autocomplete
+                #autoProduct="matAutocomplete"
+                [displayWith]="productDisplayFn"
+                (optionSelected)="handleProductSelected(i, $event.option.value)"
+              >
                 <cdk-virtual-scroll-viewport
                   itemSize="48"
                   minBufferPx="240"
@@ -206,7 +216,15 @@
             <!-- Quantity -->
             <mat-form-field>
               <mat-label>{{ t('quantity') }}</mat-label>
-              <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
+              <input
+                #quantityInput
+                matInput
+                type="number"
+                formControlName="quantity"
+                autocomplete="off"
+                inputmode="numeric"
+                (keydown)="handleQuantityKeydown($event, i)"
+              />
               <mat-hint align="end">
                 {{ product.get('total')?.value | mskCurrency }}
               </mat-hint>
@@ -225,7 +243,13 @@
           }
         </div>
       }
-      <button type="button" class="mb-4 w-full" matButton="tonal" [disabled]="form.disabled" (click)="addSaleItem()">
+      <button
+        type="button"
+        class="mb-4 w-full"
+        matButton="tonal"
+        [disabled]="form.disabled"
+        (click)="addProductRowAndFocus()"
+      >
         <mat-icon>add</mat-icon>
         {{ t('addProduct') }}
       </button>
@@ -271,7 +295,14 @@
             <!-- Value -->
             <mat-form-field subscriptSizing="dynamic">
               <mat-label>{{ t('paymentTypeValue') }}</mat-label>
-              <input matInput formControlName="value" mskMask="decimal" autocomplete="off" inputmode="numeric" />
+              <input
+                #paymentValueInput
+                matInput
+                formControlName="value"
+                mskMask="decimal"
+                autocomplete="off"
+                inputmode="numeric"
+              />
               <span matTextSuffix mskCurrencySymbol></span>
             </mat-form-field>
           </div>

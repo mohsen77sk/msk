@@ -1,10 +1,15 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   OnInit,
+  QueryList,
   ViewEncapsulation,
   ChangeDetectionStrategy,
+  ViewChildren,
   inject,
   signal,
   DestroyRef,
@@ -79,9 +84,10 @@ import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleIn
     MskDatepickerTouchUiDirective,
   ],
 })
-export class SalesCardDetailsComponent implements OnInit {
+export class SalesCardDetailsComponent implements OnInit, AfterViewInit {
   readonly data = inject<MskDialogData<SaleInvoice | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<SalesCardDetailsComponent>);
+  private _changeDetectorRef = inject(ChangeDetectorRef);
   private _destroyRef = inject(DestroyRef);
   private _formBuilder = inject(FormBuilder);
   private _salesService = inject(SalesService);
@@ -92,11 +98,21 @@ export class SalesCardDetailsComponent implements OnInit {
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
 
+  @ViewChildren('productInput')
+  private _productInputs!: QueryList<ElementRef<HTMLInputElement>>;
+
+  @ViewChildren('quantityInput')
+  private _quantityInputs!: QueryList<ElementRef<HTMLInputElement>>;
+
+  @ViewChildren('paymentValueInput')
+  private _paymentValueInputs!: QueryList<ElementRef<HTMLInputElement>>;
+
   form!: FormGroup<ISalesForm>;
   formErrors: FormError = {};
   paymentTypeDSList: MskDataSource<PaymentType>[] = [];
   productDSList: MskDataSource<Product>[] = [];
   customerDS!: MskDataSource<Customer>;
+  private _defaultPaymentTypeApplied = false;
 
   alert = signal({
     show: false,
@@ -172,6 +188,12 @@ export class SalesCardDetailsComponent implements OnInit {
       });
   }
 
+  ngAfterViewInit(): void {
+    if (this.data.action() === 'new') {
+      requestAnimationFrame(() => this.focusProductSearch());
+    }
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
@@ -205,6 +227,72 @@ export class SalesCardDetailsComponent implements OnInit {
    */
   paymentTypeDisplayFn(value: PaymentType): string {
     return value?.name;
+  }
+
+  /**
+   * Focus a product search input by row index
+   */
+  focusProductSearch(index = 0): void {
+    this._focusInput(this._productInputs, index);
+  }
+
+  /**
+   * Focus a product search input by row index
+   */
+  focusProductRow(index: number): void {
+    this.focusProductSearch(index);
+  }
+
+  /**
+   * Focus the last product search input
+   */
+  focusLastProductRow(): void {
+    this.focusProductRow(this.saleItems.length - 1);
+  }
+
+  /**
+   * Focus a quantity input by row index
+   */
+  focusQuantity(index: number): void {
+    queueMicrotask(() => this._focusInput(this._quantityInputs, index, true));
+  }
+
+  /**
+   * Focus a payment amount input by row index
+   */
+  focusPayment(index = 0): void {
+    this._focusInput(this._paymentValueInputs, index, true);
+  }
+
+  /**
+   * Fold duplicate product selections into the existing sale item row
+   */
+  handleProductSelected(index: number, selectedProduct: Product | undefined): void {
+    if (!selectedProduct) {
+      return;
+    }
+
+    const existingIndex = this.saleItems.controls.findIndex((item, itemIndex) => {
+      return itemIndex !== index && item.controls.product.value?.id === selectedProduct.id;
+    });
+
+    if (existingIndex === -1) {
+      this.focusQuantity(index);
+      return;
+    }
+
+    const existingItem = this.saleItems.at(existingIndex);
+    const existingQuantity = Number(existingItem.controls.quantity.value ?? 0) || 0;
+
+    existingItem.controls.quantity.setValue(Math.max(1, existingQuantity + 1));
+
+    if (this.saleItems.length > 1) {
+      this.removeSaleItem(index);
+      this._changeDetectorRef.detectChanges();
+    }
+
+    const focusedIndex = existingIndex > index ? existingIndex - 1 : existingIndex;
+    this.focusQuantity(focusedIndex);
   }
 
   /**
@@ -249,6 +337,19 @@ export class SalesCardDetailsComponent implements OnInit {
   }
 
   /**
+   * Add a sale item row and focus its product search input
+   */
+  addProductRowAndFocus(): void {
+    if (this.form.disabled) {
+      return;
+    }
+
+    this.addSaleItem();
+    this._changeDetectorRef.detectChanges();
+    requestAnimationFrame(() => this.focusLastProductRow());
+  }
+
+  /**
    * Remove a sale item row in form
    * @param index index of the sale item to remove
    */
@@ -267,10 +368,15 @@ export class SalesCardDetailsComponent implements OnInit {
     });
     this.paymentTypes.push(group);
 
+    const paymentTypeIndex = this.paymentTypes.length - 1;
+
     // Create a new DataSource for this row
     this.paymentTypeDSList.push(
       new MskDataSource<PaymentType>(
-        (params) => this._paymentTypeService.getPaymentTypes(params),
+        (params) =>
+          this._paymentTypeService
+            .getPaymentTypes(params)
+            .pipe(tap((pageData) => this._applyDefaultPaymentType(paymentTypeIndex, pageData.items[0]))),
         new MskSort(LockupPaymentTypeSortData),
         group.controls.paymentType.valueChanges,
       ),
@@ -283,6 +389,90 @@ export class SalesCardDetailsComponent implements OnInit {
    */
   removePaymentType(index: number): void {
     this.paymentTypes.removeAt(index);
+  }
+
+  /**
+   * Handle keyboard shortcuts scoped to the sale form
+   */
+  handleSaleFormKeydown(event: KeyboardEvent): void {
+    if (this.form.disabled) {
+      return;
+    }
+
+    if (event.ctrlKey && event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.saveAndClose();
+      return;
+    }
+
+    if (event.altKey && event.key.toLowerCase() === 'p') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.focusProductSearch();
+      return;
+    }
+
+    if (event.ctrlKey && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.focusProductSearch();
+      return;
+    }
+
+    if (event.altKey && event.key.toLowerCase() === 'a') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.addProductRowAndFocus();
+      return;
+    }
+
+    if (event.altKey && event.key.toLowerCase() === 'm') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.focusPayment();
+    }
+  }
+
+  /**
+   * Handle quantity keyboard flow inside a sale item row
+   */
+  handleQuantityKeydown(event: KeyboardEvent, index: number): void {
+    const quantityControl = this.saleItems.at(index).controls.quantity;
+    const currentQuantity = Number(quantityControl.value ?? 1) || 1;
+
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      this._focusNextProductRow(index);
+      return;
+    }
+
+    if (event.key === '+') {
+      event.preventDefault();
+      quantityControl.setValue(currentQuantity + 1);
+      return;
+    }
+
+    if (event.key === '-') {
+      event.preventDefault();
+      quantityControl.setValue(Math.max(1, currentQuantity - 1));
+    }
+  }
+
+  /**
+   * Remove a row from keyboard only when the user is not typing in a field
+   */
+  handleSaleItemRowKeydown(event: KeyboardEvent, index: number): void {
+    if (event.key !== 'Delete' || this.saleItems.length <= 1 || this._isTypingTarget(event.target)) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    this.removeSaleItem(index);
+    this._changeDetectorRef.detectChanges();
+    this.focusProductSearch(Math.min(index, this.saleItems.length - 1));
   }
 
   /**
@@ -421,5 +611,65 @@ export class SalesCardDetailsComponent implements OnInit {
     const total = this.form.controls.total.value || 0;
 
     return paymentTypesTotal === total;
+  }
+
+  private _focusNextProductRow(index: number): void {
+    const nextEmptyProductIndex = this.saleItems.controls.findIndex((item, itemIndex) => {
+      return itemIndex > index && !item.controls.product.value;
+    });
+
+    if (nextEmptyProductIndex !== -1) {
+      this.focusProductRow(nextEmptyProductIndex);
+      return;
+    }
+
+    this.addProductRowAndFocus();
+  }
+
+  private _focusInput(inputs: QueryList<ElementRef<HTMLInputElement>>, index: number, select = false): void {
+    const input = inputs.get(index)?.nativeElement;
+
+    if (!input) {
+      return;
+    }
+
+    input.focus();
+
+    if (select) {
+      input.select();
+    }
+  }
+
+  private _isTypingTarget(target: EventTarget | null): boolean {
+    if (!(target instanceof HTMLElement)) {
+      return false;
+    }
+
+    return target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target.isContentEditable;
+  }
+
+  private _applyDefaultPaymentType(index: number, paymentType: PaymentType | undefined): void {
+    if (
+      this._defaultPaymentTypeApplied ||
+      this.data.action() !== 'new' ||
+      index !== 0 ||
+      !paymentType ||
+      this.paymentTypes.length !== 1
+    ) {
+      return;
+    }
+
+    const paymentTypeForm = this.paymentTypes.at(0);
+
+    if (paymentTypeForm.controls.paymentType.value || paymentTypeForm.controls.value.dirty) {
+      return;
+    }
+
+    paymentTypeForm.controls.paymentType.setValue(paymentType, { emitEvent: false });
+    paymentTypeForm.controls.value.setValue(this.form.controls.total.value ?? 0, { emitEvent: false });
+    paymentTypeForm.controls.paymentType.markAsPristine();
+    paymentTypeForm.controls.value.markAsPristine();
+    this._defaultPaymentTypeApplied = true;
+    this._changeDetectorRef.markForCheck();
   }
 }
