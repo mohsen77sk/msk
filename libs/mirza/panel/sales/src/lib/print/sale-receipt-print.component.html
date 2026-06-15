@@ -1,0 +1,69 @@
+<div
+  #receipt
+  class="sale-receipt-print"
+  [class.sale-receipt-print--rtl]="direction === 'rtl'"
+  [class.sale-receipt-print--ltr]="direction === 'ltr'"
+  [attr.dir]="direction"
+>
+  <div class="sale-receipt-print__header">
+    @if (data.storeLogoUrl) {
+      <img class="sale-receipt-print__logo" [src]="data.storeLogoUrl" [alt]="data.storeName" />
+    }
+    <div class="sale-receipt-print__store">{{ data.storeName }}</div>
+  </div>
+
+  <div class="sale-receipt-print__separator"></div>
+
+  <div class="sale-receipt-print__row">
+    <span class="sale-receipt-print__label">{{ 'sales.receipt.sale' | transloco }}</span>
+    <span class="sale-receipt-print__value" dir="auto">{{ data.saleNumber }}</span>
+  </div>
+  @if (data.saleDate) {
+    <div class="sale-receipt-print__row">
+      <span class="sale-receipt-print__label">{{ 'sales.receipt.date' | transloco }}</span>
+      <span class="sale-receipt-print__value" dir="auto">{{ data.saleDate | mskDateTime: 'short' }}</span>
+    </div>
+  }
+  @if (data.customerName) {
+    <div class="sale-receipt-print__row">
+      <span class="sale-receipt-print__label">{{ 'sales.receipt.customer' | transloco }}</span>
+      <span class="sale-receipt-print__value" dir="auto">{{ data.customerName }}</span>
+    </div>
+  }
+
+  <div class="sale-receipt-print__separator"></div>
+
+  <div class="sale-receipt-print__section-title">{{ 'sales.receipt.items' | transloco }}</div>
+  @for (item of data.items; track $index) {
+    <div class="sale-receipt-print__item">
+      <div class="sale-receipt-print__item-name">{{ item.productName }}</div>
+      <div class="sale-receipt-print__row">
+        <span class="sale-receipt-print__label" dir="auto">{{ item.quantity }} {{ translateUnit(item.unit) }}</span>
+        <span class="sale-receipt-print__value" dir="auto">{{ item.total | mskCurrency }}</span>
+      </div>
+    </div>
+  }
+
+  <div class="sale-receipt-print__separator"></div>
+
+  <div class="sale-receipt-print__row">
+    <span class="sale-receipt-print__label">{{ 'sales.receipt.discount' | transloco }}</span>
+    <span class="sale-receipt-print__value" dir="auto">{{ data.discount | mskCurrency }}</span>
+  </div>
+  <div class="sale-receipt-print__row sale-receipt-print__total">
+    <span class="sale-receipt-print__label">{{ 'sales.receipt.total' | transloco }}</span>
+    <span class="sale-receipt-print__value" dir="auto">{{ data.total | mskCurrency }}</span>
+  </div>
+
+  <div class="sale-receipt-print__separator"></div>
+
+  <div class="sale-receipt-print__section-title">{{ 'sales.receipt.payments' | transloco }}</div>
+  @for (payment of data.payments; track $index) {
+    <div class="sale-receipt-print__row">
+      <span class="sale-receipt-print__label">{{ payment.name }}</span>
+      <span class="sale-receipt-print__value" dir="auto">{{ payment.value | mskCurrency }}</span>
+    </div>
+  }
+
+  <div class="sale-receipt-print__footer">{{ 'sales.receipt.thankYou' | transloco }}</div>
+</div>

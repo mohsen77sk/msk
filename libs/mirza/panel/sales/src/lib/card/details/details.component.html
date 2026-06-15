@@ -13,6 +13,12 @@
   ></ng-container>
 
   <ng-template #trailing>
+    @if (data.action() === 'view' && data.item()) {
+      <button matButton="tonal" (click)="printReceipt()">
+        <mat-icon>print</mat-icon>
+        <span>{{ t('printReceipt') }}</span>
+      </button>
+    }
     <button matIconButton (click)="editMode()">
       <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
     </button>
@@ -24,6 +30,10 @@
     </button>
   </ng-template>
 </msk-dialog>
+
+@if (receiptData(); as printData) {
+  <mz-sale-receipt-print class="hidden" [data]="printData"></mz-sale-receipt-print>
+}
 
 <ng-template #viewTemplate let-t="t">
   <div class="msk-group-list">

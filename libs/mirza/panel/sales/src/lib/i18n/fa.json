@@ -19,6 +19,7 @@
     "addProduct": "افزودن محصول",
     "paymentTypes": "پرداختی ها",
     "addPaymentType": "افزودن نوع پرداخت",
+    "printReceipt": "چاپ رسید",
     "other": "بیشتر"
   },
   "sort": {
@@ -26,7 +27,23 @@
     "createdAt": "جدیدترین"
   },
   "errors": {
-    "paymentTypesValueMustEqualByTotal": "مجموع مقادیر پرداختی با مبلغ نهایی برابر نیست."
+    "paymentTypesValueMustEqualByTotal": "مجموع مقادیر پرداختی با مبلغ نهایی برابر نیست.",
+    "printWindowBlocked": "پنجره چاپ مسدود شد."
+  },
+  "receipt": {
+    "sale": "شماره فروش",
+    "date": "تاریخ",
+    "customer": "مشتری",
+    "items": "اقلام",
+    "discount": "تخفیف",
+    "total": "جمع کل",
+    "payments": "پرداخت‌ها",
+    "thankYou": "متشکریم",
+    "units": {
+      "piece": "عدد",
+      "kg": "کیلوگرم",
+      "gram": "گرم"
+    }
   },
   "search": "جستجوی فاکتور فروش",
   "empty-list": "هیچ فاکتوری فروشی وجود ندارد!",
