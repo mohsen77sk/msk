@@ -19,7 +19,6 @@
     "addProduct": "Add product",
     "paymentTypes": "Payments",
     "addPaymentType": "Add payment type",
-    "printReceipt": "Print receipt",
     "other": "Other"
   },
   "sort": {
@@ -48,5 +47,6 @@
   "search": "Search sale invoice",
   "empty-list": "There are no sale invoices!",
   "delete": "Delete sale invoice",
-  "delete-message": "Are you sure you want to delete invoice <b>{{number}}</b>?"
+  "delete-message": "Are you sure you want to delete invoice <b>{{number}}</b>?",
+  "print-receipt": "Print receipt"
 }

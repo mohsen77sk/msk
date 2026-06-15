@@ -5,11 +5,11 @@ import {
   OnInit,
   ViewEncapsulation,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   inject,
   signal,
   DestroyRef,
   ViewChild,
+  computed,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -38,7 +38,7 @@ import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker
 import { LockupPaymentTypeSortData, PaymentType, PaymentTypesService } from '@msk/mirza/panel/payment-types';
 import { Customer, CustomersService, DefaultCustomersSortData } from '@msk/mirza/panel/customers';
 import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/panel/products';
-import { StoreService } from '@msk/mirza/shell/core/store';
+import { Store, StoreService } from '@msk/mirza/shell/core/store';
 
 import {
   MskHandleFormErrors,
@@ -49,10 +49,10 @@ import {
 import { catchError, combineLatest, distinctUntilChanged, EMPTY, map, startWith, tap } from 'rxjs';
 import { SalesService } from '../../sales.service';
 import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleInvoice } from '../../sales.types';
-import { PrintService } from '../../print/print.service';
-import { ReceiptPrintData } from '../../print/receipt-print-data.type';
-import { SaleReceiptPrintComponent } from '../../print/sale-receipt-print.component';
-import { SALE_RECEIPT_PRINT_STYLES } from '../../print/sale-receipt-print.styles';
+import { SaleReceiptPrintService } from '../../print/print.service';
+import { ReceiptPrintData } from '../../print/print.types';
+import { SaleReceiptPrintComponent } from '../../print/print.component';
+import { SALE_RECEIPT_PRINT_STYLES } from '../../print/print.styles';
 
 @Component({
   selector: 'mz-sales-details',
@@ -86,19 +86,19 @@ import { SALE_RECEIPT_PRINT_STYLES } from '../../print/sale-receipt-print.styles
     MskDatepickerTouchUiDirective,
     SaleReceiptPrintComponent,
   ],
+  providers: [SaleReceiptPrintService],
 })
 export class SalesCardDetailsComponent implements OnInit {
   readonly data = inject<MskDialogData<SaleInvoice | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<SalesCardDetailsComponent>);
-  private _changeDetectorRef = inject(ChangeDetectorRef);
   private _destroyRef = inject(DestroyRef);
   private _formBuilder = inject(FormBuilder);
   private _salesService = inject(SalesService);
   private _productsService = inject(ProductsService);
   private _customersService = inject(CustomersService);
   private _paymentTypeService = inject(PaymentTypesService);
+  private _printService = inject(SaleReceiptPrintService);
   private _storeService = inject(StoreService);
-  private _printService = inject(PrintService);
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
@@ -111,11 +111,14 @@ export class SalesCardDetailsComponent implements OnInit {
   paymentTypeDSList: MskDataSource<PaymentType>[] = [];
   productDSList: MskDataSource<Product>[] = [];
   customerDS!: MskDataSource<Customer>;
-  receiptData = signal<ReceiptPrintData | null>(null);
 
   alert = signal({
     show: false,
     message: '',
+  });
+
+  receiptData = computed<ReceiptPrintData>(() => {
+    return new ReceiptPrintData(this.data.item() as SaleInvoice, this._storeService.currentStore as Store);
   });
 
   /**
@@ -223,38 +226,6 @@ export class SalesCardDetailsComponent implements OnInit {
   }
 
   /**
-   * Print the current sale as an 80mm thermal receipt
-   */
-  printReceipt(): void {
-    const sale = this.data.item();
-
-    if (!sale) {
-      return;
-    }
-
-    this.receiptData.set(this._mapReceiptData(sale));
-    this._changeDetectorRef.detectChanges();
-
-    const receiptHtml = this._receiptPrint?.html;
-
-    if (!receiptHtml) {
-      this._mskSnackbarService.error(this._translocoService.translate('sales.errors.printWindowBlocked'));
-      return;
-    }
-
-    const opened = this._printService.print({
-      html: receiptHtml,
-      title: this._translocoService.translate('sales.details.printReceipt'),
-      styles: SALE_RECEIPT_PRINT_STYLES,
-      windowFeatures: 'width=360,height=640',
-    });
-
-    if (!opened) {
-      this._mskSnackbarService.error(this._translocoService.translate('sales.errors.printWindowBlocked'));
-    }
-  }
-
-  /**
    * Add a sale item row in form
    */
   addSaleItem(): void {
@@ -330,6 +301,29 @@ export class SalesCardDetailsComponent implements OnInit {
    */
   removePaymentType(index: number): void {
     this.paymentTypes.removeAt(index);
+  }
+
+  /**
+   * Print the current sale as an 80mm thermal receipt
+   */
+  printReceipt(): void {
+    const receiptHtml = this._receiptPrint?.html;
+
+    if (!receiptHtml) {
+      this._mskSnackbarService.error(this._translocoService.translate('sales.errors.printWindowBlocked'));
+      return;
+    }
+
+    const opened = this._printService.print({
+      html: receiptHtml,
+      title: this._translocoService.translate('sales.details.printReceipt'),
+      styles: SALE_RECEIPT_PRINT_STYLES,
+      windowFeatures: 'width=360,height=640',
+    });
+
+    if (!opened) {
+      this._mskSnackbarService.error(this._translocoService.translate('sales.errors.printWindowBlocked'));
+    }
   }
 
   /**
@@ -468,30 +462,5 @@ export class SalesCardDetailsComponent implements OnInit {
     const total = this.form.controls.total.value || 0;
 
     return paymentTypesTotal === total;
-  }
-
-  private _mapReceiptData(sale: SaleInvoice): ReceiptPrintData {
-    const store = this._storeService.currentStore;
-
-    return {
-      storeName: store?.name ?? '',
-      storeLogoUrl: store?.logoUrl,
-      saleNumber: sale.number,
-      saleDate: sale.saleDate,
-      customerName: sale.customer?.name,
-      items: (sale.saleItems ?? []).map((item) => ({
-        productName: item.product?.name ?? '-',
-        quantity: item.quantity,
-        unit: item.product?.unit,
-        total: item.total,
-      })),
-      discount: sale.discount ?? 0,
-      total: sale.total ?? 0,
-      payments: (sale.paymentTypes ?? []).map((payment) => ({
-        name: payment.paymentType?.name ?? '-',
-        value: payment.value,
-      })),
-      footerText: 'Thank you',
-    };
   }
 }

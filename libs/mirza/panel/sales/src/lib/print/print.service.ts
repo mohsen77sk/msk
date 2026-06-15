@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { PrintDocumentOptions } from './print-document-options.type';
+import { PrintDocumentOptions } from './print.types';
 
-@Injectable({ providedIn: 'root' })
-export class PrintService {
+@Injectable()
+export class SaleReceiptPrintService {
   print(options: PrintDocumentOptions): boolean {
     const printWindow = window.open('', '_blank', options.windowFeatures ?? 'width=360,height=640');
 

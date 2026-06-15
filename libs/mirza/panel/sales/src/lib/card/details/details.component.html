@@ -14,9 +14,8 @@
 
   <ng-template #trailing>
     @if (data.action() === 'view' && data.item()) {
-      <button matButton="tonal" (click)="printReceipt()">
+      <button matIconButton (click)="printReceipt()">
         <mat-icon>print</mat-icon>
-        <span>{{ t('printReceipt') }}</span>
       </button>
     }
     <button matIconButton (click)="editMode()">
@@ -30,10 +29,6 @@
     </button>
   </ng-template>
 </msk-dialog>
-
-@if (receiptData(); as printData) {
-  <mz-sale-receipt-print class="hidden" [data]="printData"></mz-sale-receipt-print>
-}
 
 <ng-template #viewTemplate let-t="t">
   <div class="msk-group-list">
@@ -112,6 +107,14 @@
   <div class="mt-6" *transloco="let t">
     <div class="text-title-small mb-4">{{ t('settings') }}</div>
     <div class="msk-group-list elevated">
+      <div class="msk-list-item cursor-pointer" matRipple (click)="printReceipt()" aria-hidden="true">
+        <div class="msk-list-item-icon">
+          <mat-icon>print</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          {{ t('sales.print-receipt') }}
+        </div>
+      </div>
       <div class="msk-list-item cursor-pointer" matRipple (click)="deleteInvoice()" aria-hidden="true">
         <div class="msk-list-item-icon">
           <mat-icon class="text-error">delete</mat-icon>
@@ -332,3 +335,7 @@
     </mat-form-field>
   </form>
 </ng-template>
+
+@if (receiptData()) {
+  <mz-sale-receipt-print class="hidden" [data]="receiptData()"></mz-sale-receipt-print>
+}
