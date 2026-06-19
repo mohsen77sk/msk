@@ -41,26 +41,6 @@ export class SaleReceiptPrintComponent {
     return this._receiptElement()?.nativeElement.outerHTML ?? '';
   }
 
-  get currencyLabel(): string {
-    const config = CURRENCY_BY_CODE[this._currencyCode];
-    let symbol =
-      new Intl.NumberFormat(this._localeId, {
-        style: 'currency',
-        currency: config.intlCode,
-      })
-        .formatToParts()
-        .find((part) => part.type === 'currency')?.value ?? this._currencyCode;
-
-    if (this._currencyCode === 'IRT') {
-      symbol = symbol
-        .replace(/\s*IRR\s*$/u, ` IRT`)
-        .replace(/\s*ریال(?:\s*ایران)?\s*$/u, ` تومان`)
-        .replace(/\s*﷼\s*$/u, ` تومان`);
-    }
-
-    return symbol.trim();
-  }
-
   normalizeCurrencyAmount(value: number): number {
     const config = CURRENCY_BY_CODE[this._currencyCode];
     return config.multiplier ? value / config.multiplier : value;

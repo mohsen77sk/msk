@@ -42,12 +42,11 @@ export class ReceiptPrintData {
   }
 
   private _getCustomerName(customer?: ReceiptCustomer): string | undefined {
-    const fullName = [customer?.firstName, customer?.lastName].filter(Boolean).join(' ').trim();
-    return fullName || customer?.name;
+    return customer?.name;
   }
 
   private _getCustomerPhone(customer?: ReceiptCustomer): string | undefined {
-    return customer?.phone ?? customer?.phoneNumber ?? customer?.contactNumber;
+    return customer?.contactNumber;
   }
 }
 
