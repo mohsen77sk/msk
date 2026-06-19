@@ -14,56 +14,76 @@
 
   <div class="sale-receipt-print__separator"></div>
 
-  <div class="sale-receipt-print__row">
-    <span class="sale-receipt-print__label">{{ 'sales.receipt.sale' | transloco }}</span>
-    <span class="sale-receipt-print__value" dir="auto">{{ data()?.saleNumber }}</span>
-  </div>
-  @if (data()?.saleDate) {
+  <div class="sale-receipt-print__meta">
     <div class="sale-receipt-print__row">
-      <span class="sale-receipt-print__label">{{ 'sales.receipt.date' | transloco }}</span>
-      <span class="sale-receipt-print__value" dir="auto">{{ data()?.saleDate | mskDateTime: 'short' }}</span>
+      <span class="sale-receipt-print__label">شماره فاکتور</span>
+      <span class="sale-receipt-print__value" dir="auto">{{ data()?.saleNumber }}</span>
     </div>
-  }
-  @if (data()?.customerName) {
-    <div class="sale-receipt-print__row">
-      <span class="sale-receipt-print__label">{{ 'sales.receipt.customer' | transloco }}</span>
-      <span class="sale-receipt-print__value" dir="auto">{{ data()?.customerName }}</span>
-    </div>
-  }
-
-  <div class="sale-receipt-print__separator"></div>
-
-  <div class="sale-receipt-print__section-title">{{ 'sales.receipt.items' | transloco }}</div>
-  @for (item of data()?.items; track $index) {
-    <div class="sale-receipt-print__item">
-      <div class="sale-receipt-print__item-name">{{ item.productName }}</div>
+    @if (data()?.saleDate) {
       <div class="sale-receipt-print__row">
-        <span class="sale-receipt-print__label" dir="auto">{{ item.quantity }} {{ translateUnit(item.unit) }}</span>
-        <span class="sale-receipt-print__value" dir="auto">{{ item.total | mskCurrency }}</span>
+        <span class="sale-receipt-print__label">تاریخ فروش</span>
+        <span class="sale-receipt-print__value" dir="auto">{{ data()?.saleDate | mskDateTime: 'd/M/yyyy, HH:mm' }}</span>
       </div>
+    }
+  </div>
+
+  @if (data()?.customerName || data()?.customerPhone) {
+    <div class="sale-receipt-print__separator"></div>
+
+    <div class="sale-receipt-print__section">
+      <div class="sale-receipt-print__section-title">مشتری</div>
+      @if (data()?.customerName) {
+        <div class="sale-receipt-print__row">
+          <span class="sale-receipt-print__label">نام</span>
+          <span class="sale-receipt-print__value" dir="auto">{{ data()?.customerName }}</span>
+        </div>
+      }
+      @if (data()?.customerPhone) {
+        <div class="sale-receipt-print__row">
+          <span class="sale-receipt-print__label">شماره/تلفن</span>
+          <span class="sale-receipt-print__value" dir="auto">{{ data()?.customerPhone }}</span>
+        </div>
+      }
     </div>
   }
 
   <div class="sale-receipt-print__separator"></div>
 
-  <div class="sale-receipt-print__row">
-    <span class="sale-receipt-print__label">{{ 'sales.receipt.discount' | transloco }}</span>
-    <span class="sale-receipt-print__value" dir="auto">{{ data()?.discount | mskCurrency }}</span>
-  </div>
-  <div class="sale-receipt-print__row sale-receipt-print__total">
-    <span class="sale-receipt-print__label">{{ 'sales.receipt.total' | transloco }}</span>
-    <span class="sale-receipt-print__value" dir="auto">{{ data()?.total | mskCurrency }}</span>
-  </div>
+  <table class="sale-receipt-print__items">
+    <thead>
+      <tr>
+        <th>نام کالا</th>
+        <th>فی ({{ currencyLabel }})</th>
+        <th>تعداد</th>
+        <th>قیمت</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of data()?.items; track $index) {
+        <tr>
+          <td class="sale-receipt-print__product">{{ item.productName }}</td>
+          <td dir="auto">{{ normalizeCurrencyAmount(item.price) | number }}</td>
+          <td dir="auto">{{ item.quantity }}</td>
+          <td dir="auto">{{ normalizeCurrencyAmount(item.total) | number }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
 
   <div class="sale-receipt-print__separator"></div>
 
-  <div class="sale-receipt-print__section-title">{{ 'sales.receipt.payments' | transloco }}</div>
-  @for (payment of data()?.payments; track $index) {
+  <div class="sale-receipt-print__totals">
     <div class="sale-receipt-print__row">
-      <span class="sale-receipt-print__label">{{ payment.name }}</span>
-      <span class="sale-receipt-print__value" dir="auto">{{ payment.value | mskCurrency }}</span>
+      <span class="sale-receipt-print__label">جمع کل</span>
+      <span class="sale-receipt-print__value" dir="auto">{{ data()?.subtotal | mskCurrency }}</span>
     </div>
-  }
-
-  <div class="sale-receipt-print__footer">{{ 'sales.receipt.thankYou' | transloco }}</div>
+    <div class="sale-receipt-print__row">
+      <span class="sale-receipt-print__label">تخفیف</span>
+      <span class="sale-receipt-print__value" dir="auto">{{ data()?.discount | mskCurrency }}</span>
+    </div>
+    <div class="sale-receipt-print__row sale-receipt-print__total">
+      <span class="sale-receipt-print__label">قابل پرداخت</span>
+      <span class="sale-receipt-print__value" dir="auto">{{ data()?.total | mskCurrency }}</span>
+    </div>
+  </div>
 </div>
