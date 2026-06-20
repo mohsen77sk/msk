@@ -2,7 +2,6 @@ import { ProductItem } from '@msk/mirza/panel/products';
 import { SaleInvoice } from '../sales.types';
 import { Store } from '@msk/mirza/shell/core/store';
 import { PaymentTypeDetail } from '@msk/mirza/panel/payment-types';
-import { Customer } from '@msk/mirza/panel/customers';
 
 export interface PrintDocumentOptions {
   html: string;
@@ -31,22 +30,14 @@ export class ReceiptPrintData {
     this.storeLogoUrl = store?.logoUrl;
     this.saleNumber = input.number;
     this.saleDate = input.saleDate;
-    this.customerName = this._getCustomerName(input.customer);
-    this.customerPhone = this._getCustomerPhone(input.customer);
+    this.customerName = input.customer?.name;
+    this.customerPhone = input.customer?.contactNumber;
     this.items = (input.saleItems ?? []).map((item) => new ReceiptPrintItem(item));
     this.subtotal = this.items.reduce((sum, item) => sum + item.total, 0);
     this.discount = input.discount ?? 0;
     this.total = input.total ?? 0;
     this.payments = (input.paymentTypes ?? []).map((item) => new ReceiptPrintPayment(item));
     this.footerText = 'Thank you';
-  }
-
-  private _getCustomerName(customer?: ReceiptCustomer): string | undefined {
-    return customer?.name;
-  }
-
-  private _getCustomerPhone(customer?: ReceiptCustomer): string | undefined {
-    return customer?.contactNumber;
   }
 }
 
@@ -75,10 +66,3 @@ export class ReceiptPrintPayment {
     this.value = input.value;
   }
 }
-
-type ReceiptCustomer = Customer & {
-  firstName?: string;
-  lastName?: string;
-  phone?: string;
-  phoneNumber?: string;
-};

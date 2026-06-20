@@ -54,12 +54,6 @@ export const SALE_RECEIPT_PRINT_STYLES = `
     font-weight: 700;
   }
 
-  .sale-receipt-print__title {
-    margin-top: 1mm;
-    font-size: 13px;
-    font-weight: 700;
-  }
-
   .sale-receipt-print__separator {
     border-top: 1px dashed #000;
     margin: 3mm 0;

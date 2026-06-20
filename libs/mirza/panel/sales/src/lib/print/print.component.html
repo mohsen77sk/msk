@@ -1,9 +1,7 @@
 <div
   #receipt
-  class="sale-receipt-print"
-  [class.sale-receipt-print--rtl]="direction === 'rtl'"
-  [class.sale-receipt-print--ltr]="direction === 'ltr'"
-  [attr.dir]="direction"
+  class="sale-receipt-print sale-receipt-print--rtl"
+  dir="rtl"
 >
   <div class="sale-receipt-print__header">
     @if (data()?.storeLogoUrl) {
