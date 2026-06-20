@@ -36,7 +36,11 @@ export class MskCurrencyPipe implements PipeTransform {
    * @param format A string to format from value
    * @returns
    */
-  transform(value: string | number | null | undefined, currencyCode?: MskAvailableCurrencyCodes): string | null {
+  transform(
+    value: string | number | null | undefined,
+    currencyCode?: MskAvailableCurrencyCodes,
+    showCode = true,
+  ): string | null {
     if (value === '' || value == null || value !== value) return null;
 
     const amount = typeof value === 'string' ? Number(value) : value;
@@ -65,7 +69,7 @@ export class MskCurrencyPipe implements PipeTransform {
         .join('');
       const currencyPart = parts.find((p) => p.type === 'currency')?.value || '';
 
-      output = `${numberPart} ${currencyPart}`;
+      output = showCode ? `${numberPart} ${currencyPart}` : `${numberPart}`;
     }
 
     // Replace IRT

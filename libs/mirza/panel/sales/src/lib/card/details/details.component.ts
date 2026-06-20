@@ -316,7 +316,7 @@ export class SalesCardDetailsComponent implements OnInit {
 
     const opened = this._printService.print({
       html: receiptHtml,
-      title: this._translocoService.translate('sales.details.printReceipt'),
+      title: this._translocoService.translate('sales.print-receipt'),
       styles: SALE_RECEIPT_PRINT_STYLES,
       windowFeatures: 'width=360,height=640',
     });

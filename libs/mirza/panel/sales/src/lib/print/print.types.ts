@@ -17,7 +17,9 @@ export class ReceiptPrintData {
   saleNumber: string;
   saleDate?: Date;
   customerName?: string;
+  customerPhone?: string;
   items: ReceiptPrintItem[];
+  subtotal: number;
   discount: number;
   total: number;
   payments: ReceiptPrintPayment[];
@@ -29,7 +31,9 @@ export class ReceiptPrintData {
     this.saleNumber = input.number;
     this.saleDate = input.saleDate;
     this.customerName = input.customer?.name;
+    this.customerPhone = input.customer?.contactNumber;
     this.items = (input.saleItems ?? []).map((item) => new ReceiptPrintItem(item));
+    this.subtotal = this.items.reduce((sum, item) => sum + item.total, 0);
     this.discount = input.discount ?? 0;
     this.total = input.total ?? 0;
     this.payments = (input.paymentTypes ?? []).map((item) => new ReceiptPrintPayment(item));
@@ -39,6 +43,7 @@ export class ReceiptPrintData {
 
 export class ReceiptPrintItem {
   productName: string;
+  price: number;
   quantity: number;
   unit?: string;
   total: number;
@@ -48,6 +53,7 @@ export class ReceiptPrintItem {
     this.quantity = input.quantity;
     this.unit = input.product?.unit;
     this.total = input.total;
+    this.price = input.product?.sellPrice ?? (this.quantity ? this.total / this.quantity : 0);
   }
 }
 
