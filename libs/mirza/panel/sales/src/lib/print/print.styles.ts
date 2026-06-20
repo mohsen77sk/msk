@@ -1,8 +1,4 @@
 export const SALE_RECEIPT_PRINT_STYLES = `
-  :root {
-    --default-font-family: 'IRANSansX', 'sans-serif';
-  }
-
   @page {
     size: 80mm auto;
     margin: 0;
@@ -15,7 +11,7 @@ export const SALE_RECEIPT_PRINT_STYLES = `
     padding: 0;
     color: #000;
     background: #fff;
-    font-family: var(--default-font-family);
+    font-family: system-ui;
     font-size: 11px;
     line-height: 1.45;
   }
@@ -29,7 +25,7 @@ export const SALE_RECEIPT_PRINT_STYLES = `
     padding: 4mm;
     color: #000;
     background: #fff;
-    font-family: var(--default-font-family);
+    font-family: system-ui;
   }
 
   .sale-receipt-print--rtl {
@@ -129,6 +125,7 @@ export const SALE_RECEIPT_PRINT_STYLES = `
     width: 22%;
   }
 
+  .sale-receipt-print__items th:not(:first-child),
   .sale-receipt-print__items td:not(:first-child) {
     text-align: left;
   }
