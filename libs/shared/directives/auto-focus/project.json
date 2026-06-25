@@ -1,0 +1,21 @@
+{
+  "name": "shared-directives-auto-focus",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/directives/auto-focus/src",
+  "prefix": "msk",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:ui"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/shared/directives/auto-focus/jest.config.cts",
+        "tsConfig": "libs/shared/directives/auto-focus/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

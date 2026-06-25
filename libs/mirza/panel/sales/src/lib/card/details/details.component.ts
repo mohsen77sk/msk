@@ -33,6 +33,7 @@ import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
+import { MskAutoFocusDirective } from '@msk/shared/directives/autoFocus';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
 import { LockupPaymentTypeSortData, PaymentType, PaymentTypesService } from '@msk/mirza/panel/payment-types';
@@ -82,6 +83,7 @@ import { SALE_RECEIPT_PRINT_STYLES } from '../../print/print.styles';
     MskDialogComponent,
     MskMaskDirective,
     MskSpinnerDirective,
+    MskAutoFocusDirective,
     MskCurrencySymbolDirective,
     MskDatepickerTouchUiDirective,
     SaleReceiptPrintComponent,
@@ -106,6 +108,8 @@ export class SalesCardDetailsComponent implements OnInit {
   @ViewChild(SaleReceiptPrintComponent)
   private _receiptPrint?: SaleReceiptPrintComponent;
 
+  isNew = computed(() => this.data.action() === 'new');
+
   form!: FormGroup<ISalesForm>;
   formErrors: FormError = {};
   paymentTypeDSList: MskDataSource<PaymentType>[] = [];
@@ -116,8 +120,12 @@ export class SalesCardDetailsComponent implements OnInit {
     show: false,
     message: '',
   });
+  showCustomer = signal(!this.isNew());
+  showDate = signal(!this.isNew());
+  showNote = signal(!this.isNew());
 
-  receiptData = computed<ReceiptPrintData>(() => {
+  receiptData = computed<ReceiptPrintData | null>(() => {
+    if (this.isNew()) return null;
     return new ReceiptPrintData(this.data.item() as SaleInvoice, this._storeService.currentStore as Store);
   });
 
@@ -288,7 +296,17 @@ export class SalesCardDetailsComponent implements OnInit {
     // Create a new DataSource for this row
     this.paymentTypeDSList.push(
       new MskDataSource<PaymentType>(
-        (params) => this._paymentTypeService.getPaymentTypes(params),
+        (params) =>
+          this._paymentTypeService.getPaymentTypes(params).pipe(
+            tap((res) => {
+              if (this.isNew() && this.paymentTypes.length === 1) {
+                this.paymentTypes
+                  .at(0)
+                  .get('paymentType')
+                  ?.setValue(res.items.find((x) => x.isDefault === true) ?? null);
+              }
+            }),
+          ),
         new MskSort(LockupPaymentTypeSortData),
         group.controls.paymentType.valueChanges,
       ),
@@ -437,7 +455,7 @@ export class SalesCardDetailsComponent implements OnInit {
   /**
    * Computed total calculation: sum of all saleItems.total - discount
    */
-  _computedTotal(): number {
+  private _computedTotal(): number {
     if (!this.form) return 0;
 
     const saleItemsTotal = this.saleItems.controls.reduce((sum, item) => {
@@ -452,7 +470,7 @@ export class SalesCardDetailsComponent implements OnInit {
   /**
    * Check paymentTypesValue is equal by total value in form
    */
-  _isPaymentTypesValueEqualByTotal(): boolean {
+  private _isPaymentTypesValueEqualByTotal(): boolean {
     if (!this.form) return false;
 
     const paymentTypesTotal = this.paymentTypes.controls.reduce((sum, item) => {

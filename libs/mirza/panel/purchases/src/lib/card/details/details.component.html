@@ -123,58 +123,80 @@
       </msk-alert>
     }
 
-    <div class="flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
-      <!-- Vendor -->
-      <mat-form-field>
-        <mat-label>{{ t('vendor') }}</mat-label>
-        <input type="text" matInput formControlName="vendor" [matAutocomplete]="autoVendor" />
-        @if (form.get('vendor')?.value) {
-          <button
-            type="button"
-            matIconButton
-            matSuffix
-            [disabled]="form.disabled"
-            (click)="form.get('vendor')?.reset()"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-        }
-        <mat-autocomplete #autoVendor="matAutocomplete" [displayWith]="vendorDisplayFn">
-          <cdk-virtual-scroll-viewport
-            itemSize="48"
-            minBufferPx="240"
-            maxBufferPx="240"
-            [style.height.px]="(autoVendor?.options?.length || 0) > 5 ? 240 : (autoVendor?.options?.length || 0) * 48"
-          >
-            <mat-option *cdkVirtualFor="let vendor of vendorDS" [value]="vendor">
-              {{ vendor?.name || ('loading' | transloco) }}
-            </mat-option>
-          </cdk-virtual-scroll-viewport>
-        </mat-autocomplete>
-        <mat-error>{{ formErrors['vendor'] }}</mat-error>
-      </mat-form-field>
+    @if (showVendor()) {
+      <div class="mb-6 flex gap-2">
+        <mat-icon class="flex size-10 items-center justify-center">person</mat-icon>
+        <mat-form-field subscriptSizing="dynamic" class="flex-1">
+          <mat-label>{{ t('vendor') }}</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="vendor"
+            [matAutocomplete]="autoVendor"
+            [mskAutoFocus]="isNew()"
+          />
+          @if (form.get('vendor')?.value) {
+            <button
+              type="button"
+              matIconButton
+              matSuffix
+              [disabled]="form.disabled"
+              (click)="form.get('vendor')?.reset()"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+          <mat-autocomplete #autoVendor="matAutocomplete" [displayWith]="vendorDisplayFn">
+            <cdk-virtual-scroll-viewport
+              itemSize="48"
+              minBufferPx="240"
+              maxBufferPx="480"
+              [style.height.px]="(autoVendor?.options?.length || 0) > 5 ? 240 : (autoVendor?.options?.length || 0) * 48"
+            >
+              <mat-option *cdkVirtualFor="let vendor of vendorDS" [value]="vendor">
+                {{ vendor?.name || ('loading' | transloco) }}
+              </mat-option>
+            </cdk-virtual-scroll-viewport>
+          </mat-autocomplete>
+          <mat-error>{{ formErrors['vendor'] }}</mat-error>
+        </mat-form-field>
+      </div>
+    }
 
-      <!-- Sale date -->
-      <mat-form-field>
-        <mat-label>{{ t('date') }}</mat-label>
-        <input matInput formControlName="date" [matDatepicker]="picker" />
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker mskDatepickerTouchUi></mat-datepicker>
-        <mat-error>{{ formErrors['date'] }}</mat-error>
-      </mat-form-field>
-    </div>
+    @if (showDate()) {
+      <div class="mb-6 flex gap-2">
+        <mat-icon class="flex size-10 items-center justify-center">calendar_today</mat-icon>
+        <mat-form-field subscriptSizing="dynamic" class="flex-1">
+          <mat-label>{{ t('date') }}</mat-label>
+          <input matInput formControlName="date" [matDatepicker]="picker" [mskAutoFocus]="isNew()" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker mskDatepickerTouchUi></mat-datepicker>
+          <mat-error>{{ formErrors['date'] }}</mat-error>
+        </mat-form-field>
+      </div>
+    }
 
-    <!-- Products -->
-    <div formArrayName="purchaseItems">
-      <div class="text-secondary text-title-small">{{ t('products') }}</div>
-      <div class="mt-2 mb-4 border-t"></div>
+    <div class="mb-6 flex flex-col gap-2" formArrayName="purchaseItems">
       @for (product of purchaseItems.controls; track i; let i = $index; let c = $count) {
-        <div class="flex flex-row gap-2">
-          <div class="mb-4 flex flex-1 flex-col gap-2 *:flex-1 sm:flex-row sm:gap-x-4" [formGroupName]="i">
+        <div class="flex flex-1 gap-2" [formGroupName]="i">
+          @if (i === 0) {
+            <mat-icon class="flex size-10 items-center justify-center">coffee</mat-icon>
+          } @else {
+            <button type="button" mat-icon-button (click)="removePurchaseItem(i)">
+              <mat-icon class="text-error">do_not_disturb_on</mat-icon>
+            </button>
+          }
+          <div class="flex flex-1 flex-col gap-3 *:block *:flex-1 md:flex-row">
             <!-- Product -->
-            <mat-form-field class="sm:max-w-64">
+            <mat-form-field subscriptSizing="dynamic">
               <mat-label>{{ t('product') }}</mat-label>
-              <input type="text" matInput formControlName="product" [matAutocomplete]="autoProduct" />
+              <input
+                type="text"
+                matInput
+                formControlName="product"
+                [matAutocomplete]="autoProduct"
+                [mskAutoFocus]="i !== 0 && !product.value.product"
+              />
               @if (product.get('product')?.value) {
                 <button
                   type="button"
@@ -210,42 +232,36 @@
               </mat-hint>
             </mat-form-field>
           </div>
-          @if (c > 1) {
-            <button
-              type="button"
-              class="mt-2 grow-0"
-              matIconButton
-              [disabled]="form.disabled"
-              (click)="removePurchaseItem(i)"
-            >
+        </div>
+      }
+      <div class="ms-12">
+        <button type="button" matButton="text" [disabled]="form.disabled" (click)="addPurchaseItem()">
+          {{ t('addProduct') }}
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-6 flex flex-col gap-2" formArrayName="paymentTypes">
+      @for (paymentType of paymentTypes.controls; track i; let i = $index; let c = $count) {
+        <div class="flex flex-1 gap-2" [formGroupName]="i">
+          @if (i === 0) {
+            <mat-icon class="flex size-10 items-center justify-center">payments</mat-icon>
+          } @else {
+            <button type="button" mat-icon-button (click)="removePaymentType(i)">
               <mat-icon class="text-error">do_not_disturb_on</mat-icon>
             </button>
           }
-        </div>
-      }
-      <button
-        type="button"
-        class="mb-4 w-full"
-        matButton="tonal"
-        [disabled]="form.disabled"
-        (click)="addPurchaseItem()"
-      >
-        <mat-icon>add</mat-icon>
-        {{ t('addProduct') }}
-      </button>
-    </div>
-
-    <!-- Payment Types -->
-    <div formArrayName="paymentTypes">
-      <div class="text-secondary text-title-small">{{ t('paymentTypes') }}</div>
-      <div class="mt-2 mb-4 border-t"></div>
-      @for (paymentType of paymentTypes.controls; track i; let i = $index; let c = $count) {
-        <div class="flex flex-row gap-2">
-          <div class="mb-4 flex flex-1 flex-col gap-4 *:flex-1 sm:flex-row" [formGroupName]="i">
+          <div class="flex flex-1 flex-col gap-3 *:block *:flex-1 md:flex-row">
             <!-- paymentType -->
-            <mat-form-field subscriptSizing="dynamic" class="sm:max-w-64">
+            <mat-form-field subscriptSizing="dynamic">
               <mat-label>{{ t('paymentType') }}</mat-label>
-              <input type="text" matInput formControlName="paymentType" [matAutocomplete]="autoPaymentType" />
+              <input
+                type="text"
+                matInput
+                formControlName="paymentType"
+                [matAutocomplete]="autoPaymentType"
+                [mskAutoFocus]="i !== 0 && !paymentType.value.paymentType"
+              />
               @if (paymentType.get('paymentType')?.value) {
                 <button
                   type="button"
@@ -273,56 +289,73 @@
               </mat-autocomplete>
             </mat-form-field>
             <!-- Value -->
-            <mat-form-field subscriptSizing="dynamic">
+            <mat-form-field>
               <mat-label>{{ t('paymentTypeValue') }}</mat-label>
               <input matInput formControlName="value" mskMask="decimal" autocomplete="off" inputmode="numeric" />
               <span matTextSuffix mskCurrencySymbol></span>
             </mat-form-field>
           </div>
-          @if (c > 1) {
-            <button
-              type="button"
-              class="mt-2 grow-0"
-              matIconButton
-              [disabled]="form.disabled"
-              (click)="removePaymentType(i)"
-            >
-              <mat-icon class="text-error">do_not_disturb_on</mat-icon>
-            </button>
-          }
         </div>
       }
-      <button type="button" class="mb-4 w-full" matButton="tonal" [disabled]="form.disabled" (click)="addPaymentType()">
-        <mat-icon>add</mat-icon>
-        {{ t('addPaymentType') }}
-      </button>
+      <div class="ms-12">
+        <button type="button" matButton="text" [disabled]="form.disabled" (click)="addPaymentType()">
+          {{ t('addPaymentType') }}
+        </button>
+      </div>
     </div>
 
-    <div class="mt-2 flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
-      <!-- Discount -->
-      <mat-form-field>
+    <div class="mb-6 flex gap-2">
+      <mat-icon class="flex size-10 items-center justify-center">redeem</mat-icon>
+      <mat-form-field subscriptSizing="dynamic" class="flex-1">
         <mat-label>{{ t('discount') }}</mat-label>
         <input matInput formControlName="discount" mskMask="currency" autocomplete="off" inputmode="numeric" />
         <span matTextSuffix mskCurrencySymbol></span>
+        <mat-hint align="end">
+          <span>{{ t('totalPrice') }}: {{ form.get('total')?.value | mskCurrency }}</span>
+        </mat-hint>
         <mat-error>{{ formErrors['discount'] }}</mat-error>
-      </mat-form-field>
-
-      <!-- Total -->
-      <mat-form-field>
-        <mat-label>{{ t('total') }}</mat-label>
-        <input matInput formControlName="total" mskMask="currency" autocomplete="off" readonly />
-        <span matTextSuffix mskCurrencySymbol></span>
-        <mat-error>{{ formErrors['total'] }}</mat-error>
       </mat-form-field>
     </div>
 
-    <div class="text-secondary text-title-small">{{ t('other') }}</div>
-    <div class="mt-2 mb-4 border-t"></div>
+    @if (showNote()) {
+      <div class="mb-6 flex gap-2">
+        <mat-icon class="flex size-10 items-center justify-center">draft</mat-icon>
+        <mat-form-field subscriptSizing="dynamic" class="flex-1">
+          <textarea
+            matInput
+            formControlName="note"
+            [placeholder]="t('note')"
+            [rows]="2"
+            [mskAutoFocus]="isNew()"
+          ></textarea>
+          <mat-error>{{ formErrors['note'] }}</mat-error>
+        </mat-form-field>
+      </div>
+    }
 
-    <!-- Note -->
-    <mat-form-field>
-      <textarea matInput formControlName="note" [placeholder]="t('note')" [rows]="2"></textarea>
-      <mat-error>{{ formErrors['note'] }}</mat-error>
-    </mat-form-field>
+    @if (!showVendor() || !showDate() || !showNote()) {
+      <span class="text-secondary text-title-small mb-3 text-center">{{ t('addMoreInfo') }}</span>
+    }
+
+    <div class="grid grid-cols-2 gap-4">
+      @if (!showVendor()) {
+        <button type="button" matButton="tonal" (click)="showVendor.set(true)">
+          <mat-icon>person</mat-icon>
+          {{ t('vendor') }}
+        </button>
+      }
+      @if (!showDate()) {
+        <button type="button" matButton="tonal" (click)="showDate.set(true)">
+          <mat-icon>calendar_today</mat-icon>
+          {{ t('date') }}
+        </button>
+      }
+      @if (!showNote()) {
+        <button type="button" matButton="tonal" (click)="showNote.set(true)">
+          <mat-icon>draft</mat-icon>
+          {{ t('note') }}
+        </button>
+      }
+    </div>
   </form>
 </ng-template>

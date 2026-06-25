@@ -8,6 +8,7 @@ import {
   inject,
   signal,
   DestroyRef,
+  computed,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -31,6 +32,7 @@ import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
 import { MskMaskDirective } from '@msk/shared/directives/mask';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
+import { MskAutoFocusDirective } from '@msk/shared/directives/autoFocus';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
 import { LockupPaymentTypeSortData, PaymentType, PaymentTypesService } from '@msk/mirza/panel/payment-types';
@@ -81,6 +83,7 @@ import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/pa
     MskDialogComponent,
     MskMaskDirective,
     MskSpinnerDirective,
+    MskAutoFocusDirective,
     MskCurrencySymbolDirective,
     MskDatepickerTouchUiDirective,
   ],
@@ -98,6 +101,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
 
+  isNew = computed(() => this.data.action() === 'new');
+
   form!: FormGroup<IPurchaseForm>;
   formErrors: FormError = {};
   paymentTypeDSList: MskDataSource<PaymentType>[] = [];
@@ -108,6 +113,9 @@ export class PurchasesCardDetailsComponent implements OnInit {
     show: false,
     message: '',
   });
+  showVendor = signal(!this.isNew());
+  showDate = signal(!this.isNew());
+  showNote = signal(!this.isNew());
 
   /**
    * Get the purchase items form array
@@ -276,7 +284,17 @@ export class PurchasesCardDetailsComponent implements OnInit {
     // Create a new DataSource for this row
     this.paymentTypeDSList.push(
       new MskDataSource<PaymentType>(
-        (params) => this._paymentTypeService.getPaymentTypes(params).pipe(),
+        (params) =>
+          this._paymentTypeService.getPaymentTypes(params).pipe(
+            tap((res) => {
+              if (this.isNew() && this.paymentTypes.length === 1) {
+                this.paymentTypes
+                  .at(0)
+                  .get('paymentType')
+                  ?.setValue(res.items.find((x) => x.isDefault === true) ?? null);
+              }
+            }),
+          ),
         new MskSort(LockupPaymentTypeSortData),
         group.controls.paymentType.valueChanges,
       ),
@@ -342,7 +360,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
     if (!this._isPaymentTypesValueEqualByTotal()) {
       this.alert.set({
         show: true,
-        message: this._translocoService.translate('sales.errors.paymentTypesValueMustEqualByTotal'),
+        message: this._translocoService.translate('purchases.errors.paymentTypesValueMustEqualByTotal'),
       });
       return;
     }
@@ -402,7 +420,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
   /**
    * Computed total calculation: sum of all purchaseItems.total - discount
    */
-  _computedTotal(): number {
+  private _computedTotal(): number {
     if (!this.form) return 0;
 
     const purchaseItemsTotal = this.purchaseItems.controls.reduce((sum, item) => {
@@ -417,7 +435,7 @@ export class PurchasesCardDetailsComponent implements OnInit {
   /**
    * Check paymentTypesValue is equal by total value in form
    */
-  _isPaymentTypesValueEqualByTotal(): boolean {
+  private _isPaymentTypesValueEqualByTotal(): boolean {
     if (!this.form) return false;
 
     const paymentTypesTotal = this.paymentTypes.controls.reduce((sum, item) => {

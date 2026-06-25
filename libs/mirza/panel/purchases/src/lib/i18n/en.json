@@ -19,7 +19,7 @@
     "addProduct": "Add product",
     "paymentTypes": "Payments",
     "addPaymentType": "Add payment type",
-    "other": "Other"
+    "addMoreInfo": "Add more info"
   },
   "sort": {
     "number": "Number",

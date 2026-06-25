@@ -14,7 +14,7 @@ export interface PrintDocumentOptions {
 export class ReceiptPrintData {
   storeName: string;
   storeLogoUrl?: string;
-  saleNumber: string;
+  saleNumber?: string;
   saleDate?: Date;
   customerName?: string;
   customerPhone?: string;
@@ -28,8 +28,8 @@ export class ReceiptPrintData {
   constructor(input: SaleInvoice, store: Store) {
     this.storeName = store?.name ?? '';
     this.storeLogoUrl = store?.logoUrl;
-    this.saleNumber = input.number;
-    this.saleDate = input.saleDate;
+    this.saleNumber = input?.number;
+    this.saleDate = input?.saleDate;
     this.customerName = input.customer?.name;
     this.customerPhone = input.customer?.contactNumber;
     this.items = (input.saleItems ?? []).map((item) => new ReceiptPrintItem(item));
