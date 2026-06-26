@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import { MskUtilsService } from '@msk/shared/services/utils';
 import { merge } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MSK_LAYOUT_CONFIG } from './layout-config.constants';
@@ -6,6 +7,7 @@ import { LayoutConfig } from './layout-config.types';
 
 @Injectable({ providedIn: 'root' })
 export class MskLayoutConfigService {
+  private _mskUtilsService = inject(MskUtilsService);
   private _defaultConfig: LayoutConfig = inject(MSK_LAYOUT_CONFIG);
 
   private _config: BehaviorSubject<LayoutConfig>;
@@ -72,7 +74,7 @@ export class MskLayoutConfigService {
    * @private
    */
   private _setToStorage(config: LayoutConfig): void {
-    localStorage.setItem('layoutConfigToken', btoa(JSON.stringify(config)));
+    localStorage.setItem('layoutConfigToken', this._mskUtilsService.encodeBase64Json(config));
   }
 
   /**
@@ -83,7 +85,7 @@ export class MskLayoutConfigService {
   private _getFromStorage(): LayoutConfig | null {
     const data = localStorage.getItem('layoutConfigToken');
     try {
-      return JSON.parse(atob(data ?? ''));
+      return this._mskUtilsService.decodeBase64Json(data ?? '');
     } catch {
       return null;
     }

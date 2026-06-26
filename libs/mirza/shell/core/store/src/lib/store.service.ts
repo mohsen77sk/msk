@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
+import { MskUtilsService } from '@msk/shared/services/utils';
 import { BehaviorSubject, map, Observable, ReplaySubject, startWith, tap, withLatestFrom } from 'rxjs';
 import { IStoreResponse, Store } from './store.types';
 
@@ -8,6 +9,7 @@ import { IStoreResponse, Store } from './store.types';
 export class StoreService {
   private _httpClient = inject(HttpClient);
   private _appConfig = inject(MSK_APP_CONFIG);
+  private _mskUtilsService = inject(MskUtilsService);
 
   private _stores: ReplaySubject<Store[]> = new ReplaySubject<Store[]>(1);
   private _currentStore: BehaviorSubject<Store | null>;
@@ -118,7 +120,7 @@ export class StoreService {
    */
   private _setToStorage(value: Store | null): void {
     if (value) {
-      localStorage.setItem('currentStoreToken', btoa(JSON.stringify(value)));
+      localStorage.setItem('currentStoreToken', this._mskUtilsService.encodeBase64Json(value));
     } else {
       localStorage.removeItem('currentStoreToken');
     }
@@ -132,7 +134,7 @@ export class StoreService {
   private _getFromStorage(): Store | null {
     const data = localStorage.getItem('currentStoreToken');
     try {
-      return JSON.parse(atob(data ?? ''));
+      return this._mskUtilsService.decodeBase64Json(data ?? '');
     } catch {
       return null;
     }

@@ -68,4 +68,36 @@ export class MskUtilsService {
     }
     return value.toString();
   }
+
+  /**
+   * Convert Json to encode string
+   * @param value
+   */
+  encodeBase64Json(value: object) {
+    const json = JSON.stringify(value);
+    const bytes = new TextEncoder().encode(json);
+
+    let binary = '';
+    for (const byte of bytes) {
+      binary += String.fromCharCode(byte);
+    }
+
+    return btoa(binary);
+  }
+
+  /**
+   * Convert encode string to Json
+   * @param value
+   */
+  decodeBase64Json(value: string) {
+    const binary = atob(value ?? '');
+    const bytes = new Uint8Array(binary.length);
+
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+
+    const json = new TextDecoder().decode(bytes);
+    return JSON.parse(json);
+  }
 }
