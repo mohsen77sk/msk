@@ -14,6 +14,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
+import { MskStateChipComponent } from '@msk/shared/ui/state-chip';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
@@ -47,6 +48,7 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
     MatDialogModule,
     TranslocoDirective,
     MskAlertComponent,
+    MskStateChipComponent,
     MskDialogComponent,
     MskSpinnerDirective,
   ],

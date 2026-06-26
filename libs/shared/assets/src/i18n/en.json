@@ -8,6 +8,8 @@
   "deposit": "Deposit",
   "withdraw": "Withdraw",
   "transfer": "Transfer",
+  "on": "On",
+  "off": "Off",
   "sum": "Sum",
   "open": "Open",
   "close": "Close",

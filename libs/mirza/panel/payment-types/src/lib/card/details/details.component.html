@@ -37,14 +37,13 @@
       </div>
     </div>
     <!-- Default -->
-    @if (data.item()?.isDefault) {
-      <div class="msk-list-item h-16">
-        <mat-icon class="msk-list-item-icon">check_circle</mat-icon>
-        <div class="msk-list-item-content">
-          <span>{{ t('isDefault') }}</span>
-        </div>
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">check_circle</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ t('isDefault') }}</span>
+        <msk-state-chip class="mt-2" [checked]="data.item()?.isDefault"></msk-state-chip>
       </div>
-    }
+    </div>
   </div>
   <div class="mt-6" *transloco="let t">
     <div class="text-title-small mb-4">{{ t('settings') }}</div>
