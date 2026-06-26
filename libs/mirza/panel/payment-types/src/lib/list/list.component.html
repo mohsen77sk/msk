@@ -29,7 +29,12 @@
           </div>
           <!-- Content -->
           <div class="content-grid-item-content">
-            <div class="truncate">{{ paymentType.name }}</div>
+            <div class="truncate">
+              {{ paymentType.name }}
+              @if (paymentType.isDefault) {
+                <span *transloco="let t">({{ t('paymentTypes.details.isDefault') }})</span>
+              }
+            </div>
           </div>
           <!-- End -->
           <div class="content-grid-item-end"></div>
