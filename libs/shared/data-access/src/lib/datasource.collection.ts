@@ -219,7 +219,6 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
       // If the page has already been fetched, return EMPTY observable
       return EMPTY;
     }
-    this._fetchedPages.add(pageIndex);
 
     // Set loading state to true
     this._loadingStream.next(true);
@@ -237,6 +236,8 @@ export class MskDataSource<T> extends DataSource<T | undefined> {
       }),
     ).pipe(
       tap((pageData) => {
+        this._fetchedPages.add(pageIndex);
+
         // If the total number of items has changed, update the cache size
         if (this._total !== pageData.total) {
           this._total = pageData.total;
