@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, forkJoin, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
+import { MskHttpCacheService } from '@msk/shared/services/http-cache';
 import {
   MskPagingResponse,
   MskLookupResponse,
@@ -27,9 +28,24 @@ import {
 export class AccountService {
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
+  private _httpCache = inject(MskHttpCacheService);
 
   // Private
+  private _cacheKey = '/account';
   private _changesAccounts = new Subject<MskChangeEvent<Account>>();
+
+  /**
+   * Constructor
+   */
+  constructor() {
+    this.changesAccounts$
+      .pipe(
+        tap(() => {
+          this._httpCache.invalidatePrefix(this._cacheKey);
+        }),
+      )
+      .subscribe();
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -74,9 +90,12 @@ export class AccountService {
    * Get lookup accounts
    */
   getLookupAccounts(): Observable<MskLookupResponse> {
-    return this._httpClient
-      .get<MskLookupResponse>(`${this._appConfig.apiEndpoint}/api/account/lookup`)
-      .pipe(map((response) => response));
+    const cacheKey = this._httpCache.buildCacheKey(this._cacheKey, {});
+    return this._httpCache.get(cacheKey, () =>
+      this._httpClient
+        .get<MskLookupResponse>(`${this._appConfig.apiEndpoint}/api/account/lookup`)
+        .pipe(map((response) => response)),
+    );
   }
 
   /**

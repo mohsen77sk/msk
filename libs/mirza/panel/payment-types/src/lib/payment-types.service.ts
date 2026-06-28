@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
+import { MskHttpCacheService } from '@msk/shared/services/http-cache';
 import {
   MskPageData,
   MskPagingRequest,
@@ -16,8 +17,28 @@ import { DefaultPaymentTypeSortData, PaymentType } from './payment-types.types';
 export class PaymentTypesService {
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
+  private _httpCache = inject(MskHttpCacheService);
 
+  // Private
+  private _cacheKey = '/payment-types';
   private _changes = new Subject<MskChangeEvent<PaymentType>>();
+
+  /**
+   * Constructor
+   */
+  constructor() {
+    this.changes$
+      .pipe(
+        tap(() => {
+          this._httpCache.invalidatePrefix(this._cacheKey);
+        }),
+      )
+      .subscribe();
+  }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Accessors
+  // -----------------------------------------------------------------------------------------------------
 
   /**
    * Stream of CRUD changes for in-place list updates
@@ -64,20 +85,23 @@ export class PaymentTypesService {
       sortBy: `${DefaultPaymentTypeSortData.active} ${DefaultPaymentTypeSortData.direction}`,
     },
   ): Observable<MskPageData<MskLookupItem>> {
-    return this._httpClient
-      .get<MskPagingResponse<PaymentType>>(`${this._appConfig.apiEndpoint}/payment-types`, {
-        params: convertToMirzaPagingRequest(params),
-      })
-      .pipe(
-        map((response) => {
-          return new MskPageData({
-            ...response,
-            items: response.items
-              .sort((a, b) => Number(b.isDefault) - Number(a.isDefault))
-              .map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
-          });
-        }),
-      );
+    const cacheKey = this._httpCache.buildCacheKey(this._cacheKey, params);
+    return this._httpCache.get(cacheKey, () =>
+      this._httpClient
+        .get<MskPagingResponse<PaymentType>>(`${this._appConfig.apiEndpoint}/payment-types`, {
+          params: convertToMirzaPagingRequest(params),
+        })
+        .pipe(
+          map((response) => {
+            return new MskPageData({
+              ...response,
+              items: response.items
+                .sort((a, b) => Number(b.isDefault) - Number(a.isDefault))
+                .map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
+            });
+          }),
+        ),
+    );
   }
 
   /**

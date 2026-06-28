@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
+import { MskHttpCacheService } from '@msk/shared/services/http-cache';
 import {
   MskPagingResponse,
   MskLookupResponse,
@@ -15,9 +16,24 @@ import { DefaultLoansSortData, Loan, ICreateLoan, IUpdateLoan } from './loans.ty
 export class LoanService {
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
+  private _httpCache = inject(MskHttpCacheService);
 
   // Private
+  private _cacheKey = '/loan';
   private _changesLoans = new Subject<MskChangeEvent<Loan>>();
+
+  /**
+   * Constructor
+   */
+  constructor() {
+    this.changesLoans$
+      .pipe(
+        tap(() => {
+          this._httpCache.invalidatePrefix(this._cacheKey);
+        }),
+      )
+      .subscribe();
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -62,9 +78,12 @@ export class LoanService {
    * Get lookup loan types
    */
   getLookupLoanTypes(): Observable<MskLookupResponse> {
-    return this._httpClient
-      .get<MskLookupResponse>(`${this._appConfig.apiEndpoint}/api/loanType/lookup`)
-      .pipe(map((response) => response));
+    const cacheKey = this._httpCache.buildCacheKey(this._cacheKey, {});
+    return this._httpCache.get(cacheKey, () =>
+      this._httpClient
+        .get<MskLookupResponse>(`${this._appConfig.apiEndpoint}/api/loanType/lookup`)
+        .pipe(map((response) => response)),
+    );
   }
 
   /**
