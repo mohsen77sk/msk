@@ -7,5 +7,8 @@
   "max-order": "Highest number",
   "min-order": "Lowest number",
   "date-range": "Date Range",
-  "total-sales": "Total sales"
+  "total-sales": "Total sales",
+  "first-sale-cta-title": "No sales yet",
+  "first-sale-cta-subtitle": "Create your first sale when your catalog and payments are ready.",
+  "create-first-sale": "Create your first sale"
 }

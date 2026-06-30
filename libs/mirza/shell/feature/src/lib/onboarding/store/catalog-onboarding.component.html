@@ -1,0 +1,134 @@
+<div
+  class="flex min-w-0 flex-auto flex-col items-center justify-center px-4 py-8"
+  *transloco="let t; prefix: 'onboarding'"
+>
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full max-w-5xl px-0 py-0 sm:p-8">
+    <div class="flex flex-col gap-6">
+      <div>
+        <div class="w-12">
+          <img src="assets/images/logo/logo.svg" alt="logo" />
+        </div>
+        <div class="text-headline-medium mt-8 font-extrabold">
+          {{ t('catalog-title') }}
+        </div>
+        <div class="mt-0.5 font-medium">
+          {{ t('catalog-subtitle') }}
+        </div>
+      </div>
+
+      @if (alert()) {
+        <msk-alert
+          [appearance]="'outline'"
+          [showIcon]="false"
+          [type]="alert()?.type ?? 'error'"
+          [class.msk-shake]="alert()?.type === 'error'"
+        >
+          {{ alert()?.message }}
+        </msk-alert>
+      }
+
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+        <section>
+          <div class="text-title-medium font-semibold">{{ t('starter-categories') }}</div>
+          <div class="mt-3 flex flex-col gap-3">
+            @for (category of categories(); track $index; let index = $index) {
+              <div class="border-outline-variant rounded-small flex items-center gap-3 border p-3">
+                <mat-checkbox
+                  [checked]="category.selected"
+                  [disabled]="creating()"
+                  (change)="updateCategory(index, { selected: $event.checked })"
+                ></mat-checkbox>
+                <mat-form-field class="min-w-0 flex-1" subscriptSizing="dynamic">
+                  <mat-label>{{ t('category-name') }}</mat-label>
+                  <input
+                    matInput
+                    [ngModel]="category.name"
+                    [disabled]="creating()"
+                    (ngModelChange)="updateCategory(index, { name: $event })"
+                  />
+                </mat-form-field>
+              </div>
+            }
+          </div>
+        </section>
+
+        <section>
+          <div class="text-title-medium font-semibold">{{ t('starter-products') }}</div>
+          <div class="mt-3 flex flex-col gap-3">
+            @for (product of products(); track $index; let index = $index) {
+              <div class="border-outline-variant rounded-small border p-3">
+                <div class="flex items-center gap-3">
+                  <mat-checkbox
+                    [checked]="product.selected"
+                    [disabled]="creating()"
+                    (change)="updateProduct(index, { selected: $event.checked })"
+                  ></mat-checkbox>
+                  <mat-form-field class="min-w-0 flex-1" subscriptSizing="dynamic">
+                    <mat-label>{{ t('product-name') }}</mat-label>
+                    <input
+                      matInput
+                      [ngModel]="product.name"
+                      [disabled]="creating()"
+                      (ngModelChange)="updateProduct(index, { name: $event })"
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  <mat-form-field subscriptSizing="dynamic">
+                    <mat-label>{{ t('sell-price') }}</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      min="0"
+                      [ngModel]="product.sellPrice"
+                      [disabled]="creating()"
+                      (ngModelChange)="updateProduct(index, { sellPrice: $event === '' ? null : +$event })"
+                    />
+                  </mat-form-field>
+                  <mat-form-field subscriptSizing="dynamic">
+                    <mat-label>{{ t('cost') }}</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      min="0"
+                      [ngModel]="product.cost"
+                      [disabled]="creating()"
+                      (ngModelChange)="updateProduct(index, { cost: $event === '' ? null : +$event })"
+                    />
+                  </mat-form-field>
+                  <mat-form-field subscriptSizing="dynamic">
+                    <mat-label>{{ t('initial-quantity') }}</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      min="0"
+                      [ngModel]="product.quantity"
+                      [disabled]="creating()"
+                      (ngModelChange)="updateProduct(index, { quantity: $event === '' ? null : +$event })"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      </div>
+
+      <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+        <button type="button" matButton="text" [disabled]="creating()" (click)="skip()">
+          {{ t('skip-for-now') }}
+        </button>
+        <button
+          type="button"
+          matButton="filled"
+          [disabled]="creating()"
+          [mskSpinner]="creating()"
+          (click)="createCatalog()"
+        >
+          {{ creating() ? '' : t('add-starter-items', { count: selectedCount() }) }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

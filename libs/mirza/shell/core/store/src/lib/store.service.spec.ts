@@ -57,4 +57,22 @@ describe('StoreService', () => {
     expect(service.storesLoaded).toBe(true);
     expect(service.hasStores).toBe(true);
   });
+
+  it('updates a store and refreshes the current store', async () => {
+    service.currentStore = { id: 1, name: 'Old name', isActive: true };
+
+    const response = firstValueFrom(service.update(1, { name: 'Cafe Mirza' }));
+
+    const patchRequest = httpTestingController.expectOne('/store/1');
+    expect(patchRequest.request.method).toBe('PATCH');
+    expect(patchRequest.request.body).toEqual({ name: 'Cafe Mirza' });
+    patchRequest.flush({ affected: 1 });
+
+    const getRequest = httpTestingController.expectOne('/store');
+    expect(getRequest.request.method).toBe('GET');
+    getRequest.flush({ items: [{ id: 1, name: 'Cafe Mirza', status: true }] });
+
+    await expect(response).resolves.toEqual(expect.objectContaining({ id: 1, name: 'Cafe Mirza' }));
+    expect(service.currentStore).toEqual(expect.objectContaining({ id: 1, name: 'Cafe Mirza' }));
+  });
 });

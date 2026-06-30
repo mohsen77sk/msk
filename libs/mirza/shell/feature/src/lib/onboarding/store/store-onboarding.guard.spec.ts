@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { CanActivateFn, Router, UrlTree, provideRouter } from '@angular/router';
 import { firstValueFrom, of } from 'rxjs';
 import { StoreService } from '@msk/mirza/shell/core/store';
-import { OnboardingStoreGuard, StoreRequiredGuard } from './store-onboarding.guard';
+import { OnboardingStoreGuard, StoreProfileOnboardingGuard, StoreRequiredGuard } from './store-onboarding.guard';
 
 describe('store onboarding guards', () => {
   let storeService: {
@@ -55,5 +55,22 @@ describe('store onboarding guards', () => {
 
     await expect(runGuard(StoreRequiredGuard as CanActivateFn, '/panel/dashboard')).resolves.toBe(true);
     expect(storeService.getAll).toHaveBeenCalled();
+  });
+
+  it('redirects store profile onboarding to store creation when no store exists', async () => {
+    const result = (await runGuard(
+      StoreProfileOnboardingGuard as CanActivateFn,
+      '/onboarding/store-profile',
+    )) as UrlTree;
+
+    expect(router.serializeUrl(result)).toBe('/onboarding/store');
+  });
+
+  it('allows store profile onboarding when a store exists', async () => {
+    storeService.hasStores = true;
+
+    await expect(runGuard(StoreProfileOnboardingGuard as CanActivateFn, '/onboarding/store-profile')).resolves.toBe(
+      true,
+    );
   });
 });

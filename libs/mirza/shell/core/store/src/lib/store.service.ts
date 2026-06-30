@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskUtilsService } from '@msk/shared/services/utils';
-import { BehaviorSubject, map, Observable, startWith, tap, withLatestFrom } from 'rxjs';
-import { CreateStoreRequest, IStoreResponse, Store } from './store.types';
+import { BehaviorSubject, map, Observable, startWith, switchMap, tap, withLatestFrom } from 'rxjs';
+import { CreateStoreRequest, IStoreResponse, Store, UpdateStoreRequest } from './store.types';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
@@ -108,6 +108,31 @@ export class StoreService {
 
         this._stores.next(stores);
         this.currentStore = store;
+      }),
+    );
+  }
+
+  /**
+   * Update a store
+   *
+   * @param storeId
+   * @param payload
+   */
+  update(storeId: number, payload: UpdateStoreRequest): Observable<Store> {
+    return this._httpClient.patch(`${this._appConfig.apiEndpoint}/store/${storeId}`, payload).pipe(
+      switchMap(() => this.getAll()),
+      map((stores) => stores.find((store) => store.id === storeId)),
+      tap((store) => {
+        if (store) {
+          this.currentStore = store;
+        }
+      }),
+      map((store) => {
+        if (!store) {
+          throw new Error('Updated store was not found');
+        }
+
+        return store;
       }),
     );
   }

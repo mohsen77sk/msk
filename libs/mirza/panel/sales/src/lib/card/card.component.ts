@@ -25,6 +25,8 @@ export class SalesCardComponent implements OnInit {
    */
   ngOnInit(): void {
     const action = this._activatedRoute.snapshot.url[1].path as MskDialogDataAction;
+    const onboardingMode = this._activatedRoute.snapshot.queryParamMap.get('onboarding') === 'true';
+    const returnTo = this._activatedRoute.snapshot.queryParamMap.get('returnTo');
 
     // Launch the modal
     this._matDialog
@@ -37,7 +39,12 @@ export class SalesCardComponent implements OnInit {
         },
       })
       .afterClosed()
-      .subscribe(() => {
+      .subscribe((result) => {
+        if (action === 'new' && onboardingMode && returnTo && result) {
+          this._router.navigateByUrl(returnTo);
+          return;
+        }
+
         // Go back to list page
         this._router.navigate([this._activatedRoute.snapshot.url.map(() => '../').join('')], {
           relativeTo: this._activatedRoute,

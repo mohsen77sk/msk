@@ -33,3 +33,10 @@ export const OnboardingStoreGuard: CanActivateFn | CanActivateChildFn = () => {
 
   return resolveStoreAccess(storeService, router.parseUrl('/panel/dashboard'), true);
 };
+
+export const StoreProfileOnboardingGuard: CanActivateFn | CanActivateChildFn = () => {
+  const router = inject(Router);
+  const storeService = inject(StoreService);
+
+  return resolveStoreAccess(storeService, true, router.parseUrl('/onboarding/store'));
+};

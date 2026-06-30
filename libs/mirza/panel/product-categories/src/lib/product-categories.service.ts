@@ -10,7 +10,7 @@ import {
   MskChangeEvent,
   MskLookupItem,
 } from '@msk/shared/data-access';
-import { ProductCategory, DefaultProductCategorySortData } from './product-categories.types';
+import { ProductCategory, DefaultProductCategorySortData, CreateProductCategory } from './product-categories.types';
 
 @Injectable({ providedIn: 'root' })
 export class ProductCategoriesService {
@@ -101,7 +101,7 @@ export class ProductCategoriesService {
    *
    * @param productCategory
    */
-  createProductCategory(productCategory: ProductCategory): Observable<ProductCategory> {
+  createProductCategory(productCategory: CreateProductCategory): Observable<ProductCategory> {
     return this._httpClient.post<ProductCategory>(`${this._appConfig.apiEndpoint}/category`, productCategory).pipe(
       map((response) => new ProductCategory(response)),
       tap((productCategory) => this._changes.next({ type: 'create', item: productCategory })),

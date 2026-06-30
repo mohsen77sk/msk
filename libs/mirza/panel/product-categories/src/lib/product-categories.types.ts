@@ -1,6 +1,12 @@
 import { MskSortable } from '@msk/shared/data-access';
 
 export const DefaultProductCategorySortData: MskSortable = { active: 'name', direction: 'asc' };
+
+export interface CreateProductCategory {
+  name: string;
+  note?: string;
+}
+
 export class ProductCategory {
   id: number;
   name: string;

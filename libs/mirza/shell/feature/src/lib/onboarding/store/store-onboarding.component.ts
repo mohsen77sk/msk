@@ -69,7 +69,7 @@ export class StoreOnboardingComponent {
 
     try {
       await firstValueFrom(this._storeService.create({ name }));
-      await this._router.navigateByUrl('/panel/dashboard');
+      await this._router.navigateByUrl('/onboarding/store-profile');
     } catch (error) {
       const result = parseSubmissionError(error, fieldTree);
       this.alert.set({ type: 'error', message: result.alertMessage });

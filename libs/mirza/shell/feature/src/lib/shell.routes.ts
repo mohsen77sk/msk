@@ -3,7 +3,11 @@ import { AuthGuard, NoAuthGuard } from '@msk/mirza/shell/core/auth';
 import { LayoutComponent } from '@msk/mirza/shell/ui/layout';
 import { initialDataResolver } from './shell.resolvers';
 import { createRedirectComponent } from './common/dynamic-redirect.component';
-import { OnboardingStoreGuard, StoreRequiredGuard } from './onboarding/store/store-onboarding.guard';
+import {
+  OnboardingStoreGuard,
+  StoreProfileOnboardingGuard,
+  StoreRequiredGuard,
+} from './onboarding/store/store-onboarding.guard';
 import { scopeLoader } from '@msk/shared/utils/transloco';
 import { provideTranslocoScope } from '@jsverse/transloco';
 
@@ -73,6 +77,56 @@ export const routes: Route[] = [
         ],
         loadComponent: () =>
           import('./onboarding/store/store-onboarding.component').then((r) => r.StoreOnboardingComponent),
+      },
+      {
+        path: 'onboarding/store-profile',
+        canActivate: [StoreProfileOnboardingGuard],
+        providers: [
+          provideTranslocoScope({
+            scope: 'onboarding',
+            loader: scopeLoader((lang: string, root: string) => import(`./onboarding/store/${root}/${lang}.json`)),
+          }),
+        ],
+        loadComponent: () =>
+          import('./onboarding/store/store-profile-onboarding.component').then(
+            (r) => r.StoreProfileOnboardingComponent,
+          ),
+      },
+      {
+        path: 'onboarding/catalog',
+        canActivate: [StoreProfileOnboardingGuard],
+        providers: [
+          provideTranslocoScope({
+            scope: 'onboarding',
+            loader: scopeLoader((lang: string, root: string) => import(`./onboarding/store/${root}/${lang}.json`)),
+          }),
+        ],
+        loadComponent: () =>
+          import('./onboarding/store/catalog-onboarding.component').then((r) => r.CatalogOnboardingComponent),
+      },
+      {
+        path: 'onboarding/first-sale',
+        canActivate: [StoreProfileOnboardingGuard],
+        providers: [
+          provideTranslocoScope({
+            scope: 'onboarding',
+            loader: scopeLoader((lang: string, root: string) => import(`./onboarding/store/${root}/${lang}.json`)),
+          }),
+        ],
+        loadComponent: () =>
+          import('./onboarding/store/first-sale-onboarding.component').then((r) => r.FirstSaleOnboardingComponent),
+      },
+      {
+        path: 'onboarding/first-sale/success',
+        canActivate: [StoreProfileOnboardingGuard],
+        providers: [
+          provideTranslocoScope({
+            scope: 'onboarding',
+            loader: scopeLoader((lang: string, root: string) => import(`./onboarding/store/${root}/${lang}.json`)),
+          }),
+        ],
+        loadComponent: () =>
+          import('./onboarding/store/first-sale-success.component').then((r) => r.FirstSaleSuccessComponent),
       },
     ],
   },

@@ -1,0 +1,29 @@
+<div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t; prefix: 'onboarding'">
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
+    <div class="mx-auto w-full max-w-96 sm:mx-0 sm:w-96">
+      <div class="w-12">
+        <img src="assets/images/logo/logo.svg" alt="logo" />
+      </div>
+
+      <div class="text-headline-medium mt-8 font-extrabold">
+        {{ t('first-sale-title') }}
+      </div>
+      <div class="mt-0.5 font-medium">
+        {{ t('first-sale-subtitle') }}
+      </div>
+
+      <div class="text-body-medium text-on-surface-variant mt-6">
+        {{ t('first-sale-products-help') }}
+      </div>
+
+      <button type="button" class="mt-8 w-full" matButton="filled" (click)="createFirstSale()">
+        <mat-icon>receipt_long</mat-icon>
+        <span>{{ t('create-first-sale') }}</span>
+      </button>
+
+      <button type="button" class="mt-3 w-full" matButton="text" (click)="skip()">
+        {{ t('skip-for-now') }}
+      </button>
+    </div>
+  </div>
+</div>

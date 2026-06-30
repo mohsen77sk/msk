@@ -1,0 +1,26 @@
+<div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t; prefix: 'onboarding'">
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
+    <div class="mx-auto w-full max-w-96 text-center sm:mx-0 sm:w-96">
+      <div
+        class="bg-primary-container text-on-primary-container mx-auto flex size-14 items-center justify-center rounded-full"
+      >
+        <mat-icon>check</mat-icon>
+      </div>
+
+      <div class="text-headline-medium mt-8 font-extrabold">
+        {{ t('first-sale-success-title') }}
+      </div>
+      <div class="text-on-surface-variant mt-2 font-medium">
+        {{ t('first-sale-success-subtitle') }}
+      </div>
+
+      <button type="button" class="mt-8 w-full" matButton="filled" (click)="goToDashboard()">
+        {{ t('go-to-dashboard') }}
+      </button>
+
+      <button type="button" class="mt-3 w-full" matButton="outlined" (click)="createAnotherSale()">
+        {{ t('create-another-sale') }}
+      </button>
+    </div>
+  </div>
+</div>

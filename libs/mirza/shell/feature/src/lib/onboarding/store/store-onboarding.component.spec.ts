@@ -31,7 +31,7 @@ describe('StoreOnboardingComponent', () => {
     fixture.destroy();
   });
 
-  it('creates the first store and redirects to the dashboard', async () => {
+  it('creates the first store and redirects to store profile onboarding', async () => {
     const router = TestBed.inject(Router);
     const navigateByUrl = jest.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
     component.storeForm().value.set({ name: ' Cafe Mirza ' });
@@ -39,7 +39,7 @@ describe('StoreOnboardingComponent', () => {
     await component.createStore();
 
     expect(storeService.create).toHaveBeenCalledWith({ name: 'Cafe Mirza' });
-    expect(navigateByUrl).toHaveBeenCalledWith('/panel/dashboard');
+    expect(navigateByUrl).toHaveBeenCalledWith('/onboarding/store-profile');
   });
 
   it('requires a store name before submitting', async () => {

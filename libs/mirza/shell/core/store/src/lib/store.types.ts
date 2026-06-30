@@ -9,6 +9,10 @@ export interface CreateStoreRequest {
   name: string;
 }
 
+export interface UpdateStoreRequest {
+  name?: string;
+}
+
 export class Store {
   id: number;
   name: string;

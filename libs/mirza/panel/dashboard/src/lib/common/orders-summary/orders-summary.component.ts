@@ -9,6 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,6 +35,7 @@ import { SalesDailyReport } from '../../dashboard.types';
     DecimalPipe,
     FormsModule,
     ReactiveFormsModule,
+    RouterLink,
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
@@ -65,6 +67,7 @@ export class DashboardOrdersSummaryComponent implements OnInit {
   averageCount = signal(0);
   maxCount = signal(0);
   minCount = signal(0);
+  hasSales = signal(false);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -89,6 +92,7 @@ export class DashboardOrdersSummaryComponent implements OnInit {
         tap((res) => {
           this.generateChartData(res);
           const salesNumbers = res.map((item) => item.numberOfSales);
+          this.hasSales.set(salesNumbers.some((count) => count > 0));
           if (salesNumbers.length > 0) {
             this.averageCount.set(
               Math.round(salesNumbers.reduce((sum, current) => sum + current, 0) / salesNumbers.length),
