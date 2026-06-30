@@ -23,7 +23,9 @@ import { parseSubmissionError } from '@msk/shared/utils/error-handler';
 import { MskAlertComponent, MskAlertType } from '@msk/shared/ui/alert';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskFormFieldErrorDirective } from '@msk/shared/directives/form-field-error';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, forkJoin } from 'rxjs';
+import { StoreService } from '@msk/mirza/shell/core/store';
+import { UserService } from '@msk/mirza/shell/core/user';
 
 @Component({
   selector: 'mz-sign-up',
@@ -48,6 +50,8 @@ import { firstValueFrom } from 'rxjs';
 export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
   private _router = inject(Router);
   private _authService = inject(AuthService);
+  private _storeService = inject(StoreService);
+  private _userService = inject(UserService);
   private _translocoService = inject(TranslocoService);
 
   @ViewChild('otpInput') private _otpInput?: ElementRef<HTMLInputElement>;
@@ -167,6 +171,12 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       if ('accessToken' in response && 'refreshToken' in response) {
         const redirectURL =
           this._router.routerState.snapshot.root.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+        const [, stores] = await firstValueFrom(forkJoin([this._userService.get(), this._storeService.getAll()]));
+        if (!stores.some((store) => store.isActive)) {
+          await this._router.navigateByUrl('/onboarding/store');
+          return;
+        }
+
         await this._router.navigateByUrl(redirectURL);
         return;
       }

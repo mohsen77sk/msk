@@ -3,6 +3,9 @@ import { AuthGuard, NoAuthGuard } from '@msk/mirza/shell/core/auth';
 import { LayoutComponent } from '@msk/mirza/shell/ui/layout';
 import { initialDataResolver } from './shell.resolvers';
 import { createRedirectComponent } from './common/dynamic-redirect.component';
+import { OnboardingStoreGuard, StoreRequiredGuard } from './onboarding/store/store-onboarding.guard';
+import { scopeLoader } from '@msk/shared/utils/transloco';
+import { provideTranslocoScope } from '@jsverse/transloco';
 
 export const routes: Route[] = [
   // Redirect empty path to '/panel/dashboard'
@@ -59,14 +62,26 @@ export const routes: Route[] = [
         path: 'sign-out',
         loadChildren: () => import('@msk/mirza/auth/sign-out').then((r) => r.routes),
       },
+      {
+        path: 'onboarding/store',
+        canActivate: [OnboardingStoreGuard],
+        providers: [
+          provideTranslocoScope({
+            scope: 'onboarding',
+            loader: scopeLoader((lang: string, root: string) => import(`./onboarding/store/${root}/${lang}.json`)),
+          }),
+        ],
+        loadComponent: () =>
+          import('./onboarding/store/store-onboarding.component').then((r) => r.StoreOnboardingComponent),
+      },
     ],
   },
 
   // Admin routes
   {
     path: '',
-    canActivate: [AuthGuard],
-    canActivateChild: [AuthGuard],
+    canActivate: [AuthGuard, StoreRequiredGuard],
+    canActivateChild: [AuthGuard, StoreRequiredGuard],
     component: LayoutComponent,
     resolve: {
       initial: initialDataResolver,

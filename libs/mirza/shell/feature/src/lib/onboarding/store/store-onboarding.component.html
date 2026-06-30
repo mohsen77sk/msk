@@ -1,0 +1,46 @@
+<div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t; prefix: 'onboarding'">
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
+    <div class="mx-auto w-full max-w-96 sm:mx-0 sm:w-96">
+      <div class="w-12">
+        <img src="assets/images/logo/logo.svg" alt="logo" />
+      </div>
+
+      <div class="text-headline-medium mt-8 font-extrabold">
+        {{ t('store-title') }}
+      </div>
+      <div class="mt-0.5 font-medium">
+        {{ t('store-subtitle') }}
+      </div>
+
+      @if (alert()) {
+        <msk-alert
+          class="mt-8"
+          [appearance]="'outline'"
+          [showIcon]="false"
+          [type]="alert()?.type ?? 'error'"
+          [class.msk-shake]="alert()?.type === 'error'"
+        >
+          {{ alert()?.message }}
+        </msk-alert>
+      }
+
+      <form class="mt-6" [formRoot]="storeForm">
+        <mat-form-field class="w-full">
+          <mat-label>{{ t('store-name') }}</mat-label>
+          <input id="storeName" matInput autocomplete="organization" [formField]="storeForm.name" />
+          <mat-error [mskFormFieldError]="storeForm.name"></mat-error>
+        </mat-form-field>
+
+        <button
+          type="submit"
+          class="mt-6 w-full"
+          matButton="filled"
+          [disabled]="storeForm().submitting()"
+          [mskSpinner]="storeForm().submitting()"
+        >
+          {{ storeForm().submitting() ? '' : t('create-store') }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
