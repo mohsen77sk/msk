@@ -1,0 +1,132 @@
+<div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t">
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
+    <div class="mx-auto w-full max-w-96 sm:mx-0 sm:w-96">
+      <div class="w-12">
+        <img src="assets/images/logo/logo.svg" alt="logo" />
+      </div>
+
+      <div class="text-headline-medium mt-8 font-extrabold">
+        {{ currentStep() === 'details' ? t('signIn.sign-up') : t('signIn.verify-account') }}
+      </div>
+      <div class="mt-0.5 flex items-baseline font-medium">
+        <span>
+          {{ currentStep() === 'details' ? t('signIn.already-have-an-account') : t('signIn.enter-otp') }}
+        </span>
+        <a class="text-primary ms-1 hover:underline" [routerLink]="['/sign-in']">
+          {{ currentStep() === 'details' ? t('signIn.sign-in') : t('signIn.back-to-login') }}
+        </a>
+      </div>
+
+      @if (alert()) {
+        <msk-alert
+          class="mt-8"
+          [appearance]="'outline'"
+          [showIcon]="false"
+          [type]="alert()?.type ?? 'error'"
+          [class.msk-shake]="alert()?.type === 'error'"
+        >
+          {{ alert()?.message }}
+        </msk-alert>
+      }
+
+      @if (currentStep() === 'details') {
+        <form class="mt-6" [formRoot]="registerForm">
+          <div class="grid gap-3 md:grid-cols-2">
+            <mat-form-field class="w-full">
+              <mat-label>{{ t('signIn.first-name') }}</mat-label>
+              <input id="firstName" matInput [formField]="registerForm.firstName" />
+              <mat-error [mskFormFieldError]="registerForm.firstName"></mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+              <mat-label>{{ t('signIn.last-name') }}</mat-label>
+              <input id="lastName" matInput [formField]="registerForm.lastName" />
+              <mat-error [mskFormFieldError]="registerForm.lastName"></mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field class="mt-2 w-full">
+            <mat-label>{{ t('signIn.username') }}</mat-label>
+            <input id="username" matInput [formField]="registerForm.username" />
+            <mat-error [mskFormFieldError]="registerForm.username"></mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="mt-2 w-full">
+            <mat-label>{{ t('signIn.phone') }}</mat-label>
+            <input id="phone" matInput [formField]="registerForm.phone" />
+            <mat-error [mskFormFieldError]="registerForm.phone"></mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="mt-2 w-full">
+            <mat-label>{{ t('signIn.email') }}</mat-label>
+            <input id="email" matInput [formField]="registerForm.email" />
+            <mat-error [mskFormFieldError]="registerForm.email"></mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="mt-2 w-full">
+            <mat-label>{{ t('signIn.password') }}</mat-label>
+            <input id="password" matInput type="password" [formField]="registerForm.password" />
+            <mat-error [mskFormFieldError]="registerForm.password"></mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="mt-2 w-full">
+            <mat-label>{{ t('signIn.confirm-password') }}</mat-label>
+            <input id="confirmPassword" matInput type="password" [formField]="registerForm.confirmPassword" />
+            <mat-error [mskFormFieldError]="registerForm.confirmPassword"></mat-error>
+          </mat-form-field>
+
+          <button
+            type="submit"
+            class="mt-6 w-full"
+            matButton="filled"
+            [disabled]="isSubmitting()"
+            [mskSpinner]="isSubmitting()"
+          >
+            {{ isSubmitting() ? '' : t('signIn.send-verification-code') }}
+          </button>
+        </form>
+      } @else {
+        <div class="mt-6 space-y-4">
+          <mat-form-field class="w-full">
+            <mat-label>{{ t('signIn.otp-code') }}</mat-label>
+            <input
+              #otpInput
+              id="otp"
+              matInput
+              maxlength="6"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              [value]="otpCode()"
+              (input)="otpCode.set($any($event.target).value.replace(/\\D/g, '').slice(0, 6))"
+              (paste)="handleOtpPaste($event)"
+              (keydown.enter)="verifyOtp()"
+            />
+          </mat-form-field>
+
+          <div class="text-muted-foreground flex items-center justify-between text-sm">
+            <span>{{ t('signIn.resend-in') }} {{ resendCountdown() }}s</span>
+            <button type="button" matButton="text" [disabled]="!canResend() || isResending()" (click)="resendCode()">
+              {{ t('signIn.resend-code') }}
+            </button>
+          </div>
+
+          <div class="flex gap-3">
+            <button type="button" class="flex-1" matButton="outlined" (click)="goBack()">
+              {{ t('signIn.back') }}
+            </button>
+            <button
+              type="button"
+              class="flex-1"
+              matButton="filled"
+              [disabled]="isSubmitting()"
+              [mskSpinner]="isSubmitting()"
+              (click)="verifyOtp()"
+            >
+              {{ isSubmitting() ? '' : t('signIn.verify') }}
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
