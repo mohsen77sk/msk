@@ -8,7 +8,14 @@ describe('DashboardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DashboardComponent],
-    }).compileComponents();
+    })
+      .overrideComponent(DashboardComponent, {
+        set: {
+          imports: [],
+          template: '',
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;

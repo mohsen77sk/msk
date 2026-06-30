@@ -36,7 +36,7 @@
       <form class="mt-6" [formRoot]="signInForm">
         <!-- Username field -->
         <mat-form-field class="mt-2 w-full">
-          <mat-label> {{ t('signIn.username') }} </mat-label>
+          <mat-label> {{ t('signIn.username-or-phone') }} </mat-label>
           <input id="username" matInput [formField]="signInForm.username" />
           <mat-error [mskFormFieldError]="signInForm.username"></mat-error>
         </mat-form-field>

@@ -2,7 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { Observable, of, switchMap, throwError } from 'rxjs';
-import { AUTH_TOKEN, LoginRequest, LoginResponse, REFRESH_TOKEN } from './auth.types';
+import {
+  AUTH_TOKEN,
+  ForgotPasswordRequest,
+  LoginRequest,
+  LoginResponse,
+  OtpActionResponse,
+  PasswordResetRequest,
+  REFRESH_TOKEN,
+  RegistrationOtpRequest,
+  RegistrationRequest,
+} from './auth.types';
 import { AuthUtils } from './auth.utils';
 
 @Injectable({ providedIn: 'root' })
@@ -67,6 +77,46 @@ export class AuthService {
     );
   }
 
+  requestRegistrationOtp(payload: RegistrationRequest): Observable<OtpActionResponse> {
+    return this._httpClient.post<OtpActionResponse>(`${this._appConfig.apiEndpoint}/auth/register/request-otp`, {
+      phone: this._normalizePhone(payload.phone),
+    });
+  }
+
+  verifyRegistrationOtp(payload: RegistrationOtpRequest): Observable<LoginResponse> {
+    return this._httpClient
+      .post<LoginResponse>(`${this._appConfig.apiEndpoint}/auth/register/verify`, {
+        phone: this._normalizePhone(payload.phone),
+        code: payload.otp,
+        username: payload.username,
+        password: payload.password,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+      })
+      .pipe(
+        switchMap((response) => {
+          this.accessToken = response.accessToken;
+          this.refreshToken = response.refreshToken;
+          this._authenticated = true;
+          return of(response);
+        }),
+      );
+  }
+
+  requestPasswordResetOtp(payload: ForgotPasswordRequest): Observable<OtpActionResponse> {
+    return this._httpClient.post<OtpActionResponse>(`${this._appConfig.apiEndpoint}/auth/forgot-password/request-otp`, {
+      phone: this._normalizePhone(payload.phone),
+    });
+  }
+
+  resetPassword(payload: PasswordResetRequest): Observable<OtpActionResponse> {
+    return this._httpClient.post<OtpActionResponse>(`${this._appConfig.apiEndpoint}/auth/forgot-password/reset`, {
+      phone: this._normalizePhone(payload.phone),
+      code: payload.otp,
+      newPassword: payload.password,
+    });
+  }
+
   /**
    * Sign out
    */
@@ -99,5 +149,23 @@ export class AuthService {
     }
 
     return of(true);
+  }
+
+  private _normalizePhone(phone: string): string {
+    const value = String(phone ?? '').trim();
+
+    if (/^09\d{9}$/.test(value)) {
+      return value;
+    }
+
+    if (/^\+989\d{9}$/.test(value)) {
+      return `0${value.slice(3)}`;
+    }
+
+    if (/^989\d{9}$/.test(value)) {
+      return `0${value.slice(2)}`;
+    }
+
+    return value;
   }
 }

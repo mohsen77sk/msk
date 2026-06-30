@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskUtilsService } from '@msk/shared/services/utils';
-import { BehaviorSubject, map, Observable, ReplaySubject, startWith, tap, withLatestFrom } from 'rxjs';
-import { IStoreResponse, Store } from './store.types';
+import { BehaviorSubject, map, Observable, startWith, switchMap, tap, withLatestFrom } from 'rxjs';
+import { CreateStoreRequest, IStoreResponse, Store, UpdateStoreRequest } from './store.types';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
@@ -11,8 +11,9 @@ export class StoreService {
   private _appConfig = inject(MSK_APP_CONFIG);
   private _mskUtilsService = inject(MskUtilsService);
 
-  private _stores: ReplaySubject<Store[]> = new ReplaySubject<Store[]>(1);
+  private _stores = new BehaviorSubject<Store[]>([]);
   private _currentStore: BehaviorSubject<Store | null>;
+  private _storesLoaded = false;
 
   /**
    * Constructor
@@ -56,6 +57,18 @@ export class StoreService {
     return this._stores.asObservable();
   }
 
+  get storesSnapshot(): Store[] {
+    return this._stores.value;
+  }
+
+  get storesLoaded(): boolean {
+    return this._storesLoaded;
+  }
+
+  get hasStores(): boolean {
+    return this._stores.value.some((store) => store.isActive);
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
@@ -73,7 +86,53 @@ export class StoreService {
           (this.currentStore ? filteredStore.find((x) => x.id === this.currentStore?.id) : filteredStore[0]) ?? null;
       }),
       tap((stores) => {
+        this._storesLoaded = true;
         this._stores.next(stores);
+      }),
+    );
+  }
+
+  /**
+   * Create a store
+   *
+   * @param payload
+   */
+  create(payload: CreateStoreRequest): Observable<Store> {
+    return this._httpClient.post<IStoreResponse>(`${this._appConfig.apiEndpoint}/store`, payload).pipe(
+      map((response) => new Store(response)),
+      tap((store) => {
+        this._storesLoaded = true;
+        const stores = this._stores.value.some((item) => item.id === store.id)
+          ? this._stores.value.map((item) => (item.id === store.id ? store : item))
+          : [...this._stores.value, store];
+
+        this._stores.next(stores);
+        this.currentStore = store;
+      }),
+    );
+  }
+
+  /**
+   * Update a store
+   *
+   * @param storeId
+   * @param payload
+   */
+  update(storeId: number, payload: UpdateStoreRequest): Observable<Store> {
+    return this._httpClient.patch(`${this._appConfig.apiEndpoint}/store/${storeId}`, payload).pipe(
+      switchMap(() => this.getAll()),
+      map((stores) => stores.find((store) => store.id === storeId)),
+      tap((store) => {
+        if (store) {
+          this.currentStore = store;
+        }
+      }),
+      map((store) => {
+        if (!store) {
+          throw new Error('Updated store was not found');
+        }
+
+        return store;
       }),
     );
   }

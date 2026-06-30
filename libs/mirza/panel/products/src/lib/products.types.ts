@@ -32,14 +32,14 @@ export class Product {
 }
 
 export interface ICreateProduct {
-  id: number;
+  id?: number;
   name: string;
-  categoryId: number;
+  categoryId?: number;
   unit: string;
   quantity: number;
   cost: number;
   sellPrice: number;
-  note: string;
+  note?: string;
 }
 
 export class ProductItem {
