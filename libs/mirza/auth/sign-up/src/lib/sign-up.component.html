@@ -1,0 +1,190 @@
+<div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t">
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
+    <div class="mx-auto w-full max-w-80 sm:mx-0 sm:w-80">
+      <!-- Logo -->
+      <div class="w-12">
+        <img src="assets/images/logo/logo.svg" alt="logo" />
+      </div>
+
+      <!-- Title -->
+      <div class="text-headline-medium mt-8 font-extrabold">
+        {{ t('signUp.sign-up') }}
+      </div>
+      <div class="mt-0.5 flex items-baseline font-medium">
+        @if (sendedOtp()) {
+          <span>{{ t('signUp.sended-code-description', { phone: signUpForm().value().phone }) }}</span>
+        } @else {
+          <span>
+            {{ t('signUp.already-have-an-account') }}
+          </span>
+          <a class="text-primary ms-1 hover:underline" [routerLink]="['/sign-in']">
+            {{ t('signUp.sign-in') }}
+          </a>
+        }
+      </div>
+
+      <!-- Alert -->
+      @if (alert()) {
+        <msk-alert
+          class="mt-8"
+          [appearance]="'outline'"
+          [showIcon]="false"
+          [type]="alert()?.type ?? 'error'"
+          [class.msk-shake]="alert()?.type === 'error'"
+        >
+          {{ alert()?.message }}
+        </msk-alert>
+      }
+
+      <!-- Sign in form -->
+      <form class="mt-6" [formRoot]="signUpForm">
+        <!-- FirstName field -->
+        @if (!signUpForm.firstName().hidden()) {
+          <mat-form-field class="mt-2 w-full">
+            <mat-label> {{ t('signUp.first-name') }} </mat-label>
+            <input id="firstName" matInput [formField]="signUpForm.firstName" />
+            <mat-error [mskFormFieldError]="signUpForm.firstName"></mat-error>
+          </mat-form-field>
+        }
+
+        <!-- LastName field -->
+        @if (!signUpForm.lastName().hidden()) {
+          <mat-form-field class="mt-2 w-full">
+            <mat-label> {{ t('signUp.last-name') }} </mat-label>
+            <input id="lastName" matInput [formField]="signUpForm.lastName" />
+            <mat-error [mskFormFieldError]="signUpForm.lastName"></mat-error>
+          </mat-form-field>
+        }
+
+        <!-- Username field -->
+        @if (!signUpForm.username().hidden()) {
+          <mat-form-field class="mt-2 w-full">
+            <mat-label> {{ t('signUp.username') }} </mat-label>
+            <input id="username" matInput [formField]="signUpForm.username" />
+            <mat-error [mskFormFieldError]="signUpForm.username"></mat-error>
+          </mat-form-field>
+        }
+
+        <!-- Phone field -->
+        @if (!signUpForm.phone().hidden()) {
+          <mat-form-field class="mt-2 w-full">
+            <mat-label> {{ t('signUp.phone') }} </mat-label>
+            <input id="phone" matInput [formField]="signUpForm.phone" />
+            <mat-error [mskFormFieldError]="signUpForm.phone"></mat-error>
+          </mat-form-field>
+        }
+
+        <!-- Code field -->
+        @if (!signUpForm.code().hidden()) {
+          <mat-form-field class="mt-2 w-full">
+            <mat-label> {{ t('signUp.code') }} </mat-label>
+            <input id="code" matInput [formField]="signUpForm.code" />
+            <div class="me-2" matSuffix>
+              <button
+                class="rounded-extra-small px-3"
+                matButton="tonal"
+                [disabled]="!canResendOtp()"
+                (click)="resendOtp()"
+              >
+                {{ canResendOtp() ? t('signUp.resend-code') : otpCountdown() }}
+              </button>
+            </div>
+            <mat-error [mskFormFieldError]="signUpForm.code"></mat-error>
+          </mat-form-field>
+        }
+
+        <!-- Password field -->
+        @if (!signUpForm.password().hidden()) {
+          <mat-form-field class="mt-2 w-full">
+            <mat-label> {{ t('signUp.password') }} </mat-label>
+            <input
+              id="password"
+              matInput
+              type="password"
+              [formField]="signUpForm.password"
+              autocomplete="new-password"
+              ngxTouchKeyboard
+              #passwordVirtualKeyboard="ngxTouchKeyboard"
+              #passwordField
+            />
+            <div matSuffix>
+              <button
+                type="button"
+                matIconButton
+                (click)="
+                  passwordField.type === 'password' ? (passwordField.type = 'text') : (passwordField.type = 'password')
+                "
+                [disabled]="passwordField.disabled"
+              >
+                <mat-icon class="icon-size-5">
+                  {{ passwordField.type === 'password' ? 'visibility' : 'visibility_off' }}
+                </mat-icon>
+              </button>
+              <button
+                type="button"
+                matIconButton
+                (click)="passwordVirtualKeyboard.togglePanel()"
+                [disabled]="passwordField.disabled"
+              >
+                <mat-icon class="icon-size-5">keyboard</mat-icon>
+              </button>
+            </div>
+            <mat-error [mskFormFieldError]="signUpForm.password"></mat-error>
+          </mat-form-field>
+        }
+
+        <!-- ConfirmPassword field -->
+        @if (!signUpForm.confirmPassword().hidden()) {
+          <mat-form-field class="mt-2 w-full">
+            <mat-label> {{ t('signUp.confirm-password') }} </mat-label>
+            <input
+              id="confirmPassword"
+              matInput
+              type="password"
+              [formField]="signUpForm.confirmPassword"
+              ngxTouchKeyboard
+              #confirmPasswordVirtualKeyboard="ngxTouchKeyboard"
+              #confirmPasswordField
+            />
+            <div matSuffix>
+              <button
+                type="button"
+                matIconButton
+                (click)="
+                  confirmPasswordField.type === 'password'
+                    ? (confirmPasswordField.type = 'text')
+                    : (confirmPasswordField.type = 'password')
+                "
+                [disabled]="confirmPasswordField.disabled"
+              >
+                <mat-icon class="icon-size-5">
+                  {{ confirmPasswordField.type === 'password' ? 'visibility' : 'visibility_off' }}
+                </mat-icon>
+              </button>
+              <button
+                type="button"
+                matIconButton
+                (click)="confirmPasswordVirtualKeyboard.togglePanel()"
+                [disabled]="confirmPasswordField.disabled"
+              >
+                <mat-icon class="icon-size-5">keyboard</mat-icon>
+              </button>
+            </div>
+            <mat-error [mskFormFieldError]="signUpForm.confirmPassword"></mat-error>
+          </mat-form-field>
+        }
+
+        <!-- Submit button -->
+        <button
+          type="submit"
+          class="mt-6 w-full"
+          matButton="filled"
+          [disabled]="signUpForm().submitting()"
+          [mskSpinner]="signUpForm().submitting()"
+        >
+          {{ signUpForm().submitting() ? '' : sendedOtp() ? t('signUp.sign-up') : t('signUp.send-verification-code') }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

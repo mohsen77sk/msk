@@ -34,6 +34,10 @@ export const routes: Route[] = [
         path: 'sign-in',
         loadChildren: () => import('@msk/mirza/auth/sign-in').then((r) => r.routes),
       },
+      {
+        path: 'sign-up',
+        loadChildren: () => import('@msk/mirza/auth/sign-up').then((r) => r.routes),
+      },
     ],
   },
 

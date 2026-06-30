@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FormRoot, FormField, form, required, FieldTree } from '@angular/forms/signals';
+import { FormRoot, FormField, form, required, FieldTree, disabled } from '@angular/forms/signals';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { NgxTouchKeyboardModule } from 'ngx-touch-keyboard';
 import { MatIconModule } from '@angular/material/icon';
@@ -51,6 +51,8 @@ export class SignInComponent implements AfterViewInit {
     (schemaPath) => {
       required(schemaPath.username);
       required(schemaPath.password);
+      disabled(schemaPath.username, () => this.signInForm().submitting());
+      disabled(schemaPath.password, () => this.signInForm().submitting());
     },
     {
       submission: {
@@ -75,7 +77,7 @@ export class SignInComponent implements AfterViewInit {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   *
+   * Handle submit api call
    * @param form
    */
   private async _handleSubmit(form: FieldTree<LoginRequest>) {

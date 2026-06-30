@@ -10,3 +10,13 @@ export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface RegistrationRequest {
+  firstName: string;
+  lastName: string;
+  username: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+  code: string;
+}
