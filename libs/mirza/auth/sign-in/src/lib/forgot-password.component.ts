@@ -108,11 +108,13 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit, OnDestroy
     this.isSubmitting.set(true);
 
     const payload = this._buildPhonePayload(form);
-    if (!payload.phone || !/^09\d{9}$/.test(payload.phone)) {
+    const normalizedPhone = this._normalizePhone(payload.phone);
+    if (!normalizedPhone) {
       this.alert.set({ type: 'error', message: this._translocoService.translate('signIn.phone-validation') });
       this.isSubmitting.set(false);
       return;
     }
+    payload.phone = normalizedPhone;
 
     try {
       await firstValueFrom(this._authService.requestPasswordResetOtp(payload));
@@ -205,6 +207,24 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit, OnDestroy
     return {
       phone: values.phone?.trim() ?? '',
     };
+  }
+
+  private _normalizePhone(phone: string): string | null {
+    const value = String(phone ?? '').trim();
+
+    if (/^09\d{9}$/.test(value)) {
+      return value;
+    }
+
+    if (/^\+989\d{9}$/.test(value)) {
+      return `0${value.slice(3)}`;
+    }
+
+    if (/^989\d{9}$/.test(value)) {
+      return `0${value.slice(2)}`;
+    }
+
+    return null;
   }
 
   private _buildResetPayload(form?: FieldTree<PasswordResetRequest>): PasswordResetRequest {

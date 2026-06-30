@@ -73,7 +73,6 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       phone: '',
       password: '',
       confirmPassword: '',
-      email: '',
     }),
     (schemaPath) => {
       required(schemaPath.firstName);
@@ -182,7 +181,8 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async resendCode(): Promise<void> {
-    if (!this.canResend() || !this.pendingRegistration()) {
+    const pendingRegistration = this.pendingRegistration();
+    if (!this.canResend() || !pendingRegistration) {
       return;
     }
 
@@ -190,7 +190,7 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
     this.alert.set(null);
 
     try {
-      await firstValueFrom(this._authService.requestRegistrationOtp(this.pendingRegistration()!));
+      await firstValueFrom(this._authService.requestRegistrationOtp(pendingRegistration));
       this.otpCode.set('');
       this.alert.set({ type: 'success', message: this._translocoService.translate('signIn.verification-code-sent') });
       this._startCountdown();
@@ -224,7 +224,6 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       phone: values.phone?.trim() ?? '',
       password: values.password?.trim() ?? '',
       confirmPassword: values.confirmPassword?.trim() ?? '',
-      email: values.email?.trim() ?? '',
     };
   }
 
@@ -241,22 +240,37 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
       return false;
     }
 
-    if (!/^09\d{9}$/.test(payload.phone)) {
+    const normalizedPhone = this._normalizePhone(payload.phone);
+    if (!normalizedPhone) {
       this.alert.set({ type: 'error', message: this._translocoService.translate('signIn.phone-validation') });
       return false;
     }
+    payload.phone = normalizedPhone;
 
     if (payload.password !== payload.confirmPassword) {
       this.alert.set({ type: 'error', message: this._translocoService.translate('signIn.passwords-do-not-match') });
       return false;
     }
 
-    if (payload.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
-      this.alert.set({ type: 'error', message: this._translocoService.translate('signIn.email-validation') });
-      return false;
+    return true;
+  }
+
+  private _normalizePhone(phone: string): string | null {
+    const value = String(phone ?? '').trim();
+
+    if (/^09\d{9}$/.test(value)) {
+      return value;
     }
 
-    return true;
+    if (/^\+989\d{9}$/.test(value)) {
+      return `0${value.slice(3)}`;
+    }
+
+    if (/^989\d{9}$/.test(value)) {
+      return `0${value.slice(2)}`;
+    }
+
+    return null;
   }
 
   private _startCountdown(): void {

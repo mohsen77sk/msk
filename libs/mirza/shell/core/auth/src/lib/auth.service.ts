@@ -7,6 +7,7 @@ import {
   ForgotPasswordRequest,
   LoginRequest,
   LoginResponse,
+  OtpActionResponse,
   PasswordResetRequest,
   REFRESH_TOKEN,
   RegistrationOtpRequest,
@@ -76,16 +77,16 @@ export class AuthService {
     );
   }
 
-  requestRegistrationOtp(payload: RegistrationRequest): Observable<{ message: string }> {
-    return this._httpClient.post<{ message: string }>(`${this._appConfig.apiEndpoint}/auth/register/request-otp`, {
-      phone: payload.phone,
+  requestRegistrationOtp(payload: RegistrationRequest): Observable<OtpActionResponse> {
+    return this._httpClient.post<OtpActionResponse>(`${this._appConfig.apiEndpoint}/auth/register/request-otp`, {
+      phone: this._normalizePhone(payload.phone),
     });
   }
 
   verifyRegistrationOtp(payload: RegistrationOtpRequest): Observable<LoginResponse> {
     return this._httpClient
       .post<LoginResponse>(`${this._appConfig.apiEndpoint}/auth/register/verify`, {
-        phone: payload.phone,
+        phone: this._normalizePhone(payload.phone),
         code: payload.otp,
         username: payload.username,
         password: payload.password,
@@ -102,18 +103,15 @@ export class AuthService {
       );
   }
 
-  requestPasswordResetOtp(payload: ForgotPasswordRequest): Observable<{ message: string }> {
-    return this._httpClient.post<{ message: string }>(
-      `${this._appConfig.apiEndpoint}/auth/forgot-password/request-otp`,
-      {
-        phone: payload.phone,
-      },
-    );
+  requestPasswordResetOtp(payload: ForgotPasswordRequest): Observable<OtpActionResponse> {
+    return this._httpClient.post<OtpActionResponse>(`${this._appConfig.apiEndpoint}/auth/forgot-password/request-otp`, {
+      phone: this._normalizePhone(payload.phone),
+    });
   }
 
-  resetPassword(payload: PasswordResetRequest): Observable<{ message: string }> {
-    return this._httpClient.post<{ message: string }>(`${this._appConfig.apiEndpoint}/auth/forgot-password/reset`, {
-      phone: payload.phone,
+  resetPassword(payload: PasswordResetRequest): Observable<OtpActionResponse> {
+    return this._httpClient.post<OtpActionResponse>(`${this._appConfig.apiEndpoint}/auth/forgot-password/reset`, {
+      phone: this._normalizePhone(payload.phone),
       code: payload.otp,
       newPassword: payload.password,
     });
@@ -151,5 +149,23 @@ export class AuthService {
     }
 
     return of(true);
+  }
+
+  private _normalizePhone(phone: string): string {
+    const value = String(phone ?? '').trim();
+
+    if (/^09\d{9}$/.test(value)) {
+      return value;
+    }
+
+    if (/^\+989\d{9}$/.test(value)) {
+      return `0${value.slice(3)}`;
+    }
+
+    if (/^989\d{9}$/.test(value)) {
+      return `0${value.slice(2)}`;
+    }
+
+    return value;
   }
 }

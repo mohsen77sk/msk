@@ -7,8 +7,14 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
+  user?: unknown;
   accessToken: string;
   refreshToken: string;
+  expires?: number;
+}
+
+export interface OtpActionResponse {
+  success: boolean;
 }
 
 export interface RegistrationRequest {
@@ -18,7 +24,6 @@ export interface RegistrationRequest {
   phone: string;
   password: string;
   confirmPassword: string;
-  email: string;
 }
 
 export interface RegistrationOtpRequest {

@@ -58,12 +58,6 @@
           </mat-form-field>
 
           <mat-form-field class="mt-2 w-full">
-            <mat-label>{{ t('signIn.email') }}</mat-label>
-            <input id="email" matInput [formField]="registerForm.email" />
-            <mat-error [mskFormFieldError]="registerForm.email"></mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="mt-2 w-full">
             <mat-label>{{ t('signIn.password') }}</mat-label>
             <input id="password" matInput type="password" [formField]="registerForm.password" />
             <mat-error [mskFormFieldError]="registerForm.password"></mat-error>
