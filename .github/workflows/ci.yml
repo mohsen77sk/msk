@@ -50,7 +50,13 @@ jobs:
           fi
 
       - name: Build projects
+        env:
+          MSK_SENTRY_DSN_PRODUCTION: ${{ github.ref == 'refs/heads/master' && secrets.MSK_SENTRY_DSN_PRODUCTION || '' }}
         run: |
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            node tools/generate-mirza-production-env.mjs
+          fi
+
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             npx nx affected:build --base=${{ github.event.pull_request.base.ref }} --head=HEAD --parallel --max-parallel=3 --skip-nx-cache
           else
@@ -161,8 +167,10 @@ jobs:
           password: ${{ secrets.MIRZA_DOCKER_PASSWORD }}
 
       - name: Build Docker image
+        env:
+          MSK_SENTRY_DSN_PRODUCTION: ${{ secrets.MSK_SENTRY_DSN_PRODUCTION }}
         run: |
-          docker build -f Dockerfile.mirza.production -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
+          docker build --build-arg MSK_SENTRY_DSN_PRODUCTION -f Dockerfile.mirza.production -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
           docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:latest
 
       - name: Push Docker images

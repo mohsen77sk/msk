@@ -27,7 +27,9 @@ jobs:
         run: npm ci
 
       - name: Build mirza
-        run: npx nx build mirza-write --skip-nx-cache
+        env:
+          MSK_SENTRY_DSN_PRODUCTION: ${{ secrets.MSK_SENTRY_DSN_PRODUCTION }}
+        run: npm run build-mirza-production -- --skip-nx-cache
 
       - name: Define Docker TAG
         id: vars
@@ -43,8 +45,10 @@ jobs:
           password: ${{ secrets.MIRZA_DOCKER_PASSWORD }}
 
       - name: Build Docker image
+        env:
+          MSK_SENTRY_DSN_PRODUCTION: ${{ secrets.MSK_SENTRY_DSN_PRODUCTION }}
         run: |
-          docker build -f Dockerfile.mirza -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
+          docker build --build-arg MSK_SENTRY_DSN_PRODUCTION -f Dockerfile.mirza.production -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
           docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:${GITHUB_REF##*/}
 
       - name: Push Docker images

@@ -6,6 +6,7 @@ import { provideShell } from '@msk/mirza/shell/feature';
 import { provideMskAppConfig } from '@msk/shared/utils/app-config';
 
 import { environment } from '../environments/environment';
+import { provideSentry } from './sentry';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(),
     provideMskAppConfig(environment),
+    provideSentry(),
     provideShell({
       lang: LANG_BY_ID['fa'].id,
       direction: LANG_BY_ID['fa'].direction,

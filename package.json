@@ -6,6 +6,7 @@
     "lint": "npx nx run-many --target=lint --all=true",
     "build-docs": "npx nx run docs:build --configuration=production --base-Href=/msk/",
     "build-sahebzaman": "npx nx run sahebzaman:build --configuration=production",
+    "prebuild-mirza-production": "node tools/generate-mirza-production-env.mjs",
     "build-mirza-production": "npx nx run mirza-write:build --configuration=production",
     "build-mirza-stage": "npx nx run mirza-write:build --configuration=stage"
   },
@@ -23,6 +24,7 @@
     "@angular/router": "21.2.9",
     "@angular/service-worker": "21.2.9",
     "@jsverse/transloco": "^8.2.0",
+    "@sentry/angular": "^10.63.0",
     "apexcharts": "^5.3.5",
     "date-fns": "^4.1.0",
     "date-fns-jalali": "^4.1.0-0",
