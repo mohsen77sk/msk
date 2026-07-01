@@ -63,18 +63,21 @@ export class ProductsService {
       sortBy: `${DefaultProductsSortData.active} ${DefaultProductsSortData.direction}`,
     },
   ): Observable<MskPageData<Product>> {
-    return this._httpClient
-      .get<MskPagingResponse<Product>>(`${this._appConfig.apiEndpoint}/product`, {
-        params: convertToMirzaPagingRequest(params),
-      })
-      .pipe(
-        map((response) => {
-          return new MskPageData({
-            ...response,
-            items: response.items.map((item) => new Product(item)),
-          });
-        }),
-      );
+    const cacheKey = this._httpCache.buildCacheKey(this._cacheKey, params);
+    return this._httpCache.get(cacheKey, () =>
+      this._httpClient
+        .get<MskPagingResponse<Product>>(`${this._appConfig.apiEndpoint}/product`, {
+          params: convertToMirzaPagingRequest(params),
+        })
+        .pipe(
+          map((response) => {
+            return new MskPageData({
+              ...response,
+              items: response.items.map((item) => new Product(item)),
+            });
+          }),
+        ),
+    );
   }
 
   /**

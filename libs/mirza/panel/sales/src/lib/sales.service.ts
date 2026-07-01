@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
+import { MskHttpCacheService } from '@msk/shared/services/http-cache';
 import {
   MskPagingResponse,
   MskPageData,
@@ -15,9 +16,24 @@ import { SaleInvoice, DefaultSalesSortData, ICreateSaleInvoice, ISaleInvoiceSumm
 export class SalesService {
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
+  private _httpCache = inject(MskHttpCacheService);
 
   // Private
+  private _cacheKey = '/sale';
   private _changes = new Subject<MskChangeEvent<SaleInvoice>>();
+
+  /**
+   * Constructor
+   */
+  constructor() {
+    this.changes$
+      .pipe(
+        tap(() => {
+          this._httpCache.invalidatePrefix(this._cacheKey);
+        }),
+      )
+      .subscribe();
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -46,19 +62,22 @@ export class SalesService {
       sortBy: `${DefaultSalesSortData.active} ${DefaultSalesSortData.direction}`,
     },
   ): Observable<MskPageData<SaleInvoice, ISaleInvoiceSummery>> {
-    return this._httpClient
-      .get<MskPagingResponse<SaleInvoice>>(`${this._appConfig.apiEndpoint}/sale`, {
-        params: convertToMirzaPagingRequest(params),
-      })
-      .pipe(
-        map((response) => {
-          return new MskPageData({
-            ...response,
-            items: response.items.map((item) => new SaleInvoice(item)),
-            data: response['summary'] as ISaleInvoiceSummery,
-          });
-        }),
-      );
+    const cacheKey = this._httpCache.buildCacheKey(this._cacheKey, params);
+    return this._httpCache.get(cacheKey, () =>
+      this._httpClient
+        .get<MskPagingResponse<SaleInvoice>>(`${this._appConfig.apiEndpoint}/sale`, {
+          params: convertToMirzaPagingRequest(params),
+        })
+        .pipe(
+          map((response) => {
+            return new MskPageData({
+              ...response,
+              items: response.items.map((item) => new SaleInvoice(item)),
+              data: response['summary'] as ISaleInvoiceSummery,
+            });
+          }),
+        ),
+    );
   }
 
   /**

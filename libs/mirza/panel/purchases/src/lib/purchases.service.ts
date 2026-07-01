@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
+import { MskHttpCacheService } from '@msk/shared/services/http-cache';
 import {
   MskPagingResponse,
   MskPageData,
@@ -20,9 +21,24 @@ import {
 export class PurchasesService {
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
+  private _httpCache = inject(MskHttpCacheService);
 
   // Private
+  private _cacheKey = '/purchase';
   private _changes = new Subject<MskChangeEvent<PurchaseInvoice>>();
+
+  /**
+   * Constructor
+   */
+  constructor() {
+    this.changes$
+      .pipe(
+        tap(() => {
+          this._httpCache.invalidatePrefix(this._cacheKey);
+        }),
+      )
+      .subscribe();
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -51,19 +67,22 @@ export class PurchasesService {
       sortBy: `${DefaultPurchasesSortData.active} ${DefaultPurchasesSortData.direction}`,
     },
   ): Observable<MskPageData<PurchaseInvoice, IPurchaseInvoiceSummery>> {
-    return this._httpClient
-      .get<MskPagingResponse<PurchaseInvoice>>(`${this._appConfig.apiEndpoint}/purchase`, {
-        params: convertToMirzaPagingRequest(params),
-      })
-      .pipe(
-        map((response) => {
-          return new MskPageData({
-            ...response,
-            items: response.items.map((item) => new PurchaseInvoice(item)),
-            data: response['summary'] as IPurchaseInvoiceSummery,
-          });
-        }),
-      );
+    const cacheKey = this._httpCache.buildCacheKey(this._cacheKey, params);
+    return this._httpCache.get(cacheKey, () =>
+      this._httpClient
+        .get<MskPagingResponse<PurchaseInvoice>>(`${this._appConfig.apiEndpoint}/purchase`, {
+          params: convertToMirzaPagingRequest(params),
+        })
+        .pipe(
+          map((response) => {
+            return new MskPageData({
+              ...response,
+              items: response.items.map((item) => new PurchaseInvoice(item)),
+              data: response['summary'] as IPurchaseInvoiceSummery,
+            });
+          }),
+        ),
+    );
   }
 
   /**
