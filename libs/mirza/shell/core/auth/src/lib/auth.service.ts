@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { Observable, of, switchMap, throwError } from 'rxjs';
-import { AUTH_TOKEN, LoginRequest, LoginResponse, REFRESH_TOKEN } from './auth.types';
+import { AUTH_TOKEN, LoginRequest, LoginResponse, REFRESH_TOKEN, RegistrationRequest } from './auth.types';
 import { AuthUtils } from './auth.utils';
 
 @Injectable({ providedIn: 'root' })
@@ -40,6 +40,47 @@ export class AuthService {
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Send otp for registration
+   *
+   * @param phone
+   */
+  registrationOtp(phone: string): Observable<boolean> {
+    return this._httpClient
+      .post<{ success: boolean }>(`${this._appConfig.apiEndpoint}/auth/register/request-otp`, {
+        phone,
+      })
+      .pipe(switchMap((response) => of(response.success)));
+  }
+
+  /**
+   * Registration
+   *
+   * @param credentials
+   */
+  registrationVerify(credentials: RegistrationRequest): Observable<LoginResponse> {
+    // Throw error, if the user is already logged in
+    if (this._authenticated) {
+      return throwError(() => 'User is already logged in.');
+    }
+
+    return this._httpClient
+      .post<LoginResponse>(`${this._appConfig.apiEndpoint}/auth/register/verify`, credentials)
+      .pipe(
+        switchMap((response) => {
+          // Store the access token in the local storage
+          this.accessToken = response.accessToken;
+          this.refreshToken = response.refreshToken;
+
+          // Set the authenticated flag to true
+          this._authenticated = true;
+
+          // Return a new observable with the response
+          return of(response);
+        }),
+      );
+  }
 
   /**
    * Sign in

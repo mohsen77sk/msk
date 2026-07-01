@@ -33,6 +33,7 @@
       "@msk/docs/shell/ui/layout": ["libs/docs/shell/ui/layout/src/index.ts"],
       "@msk/mirza/auth/sign-in": ["libs/mirza/auth/sign-in/src/index.ts"],
       "@msk/mirza/auth/sign-out": ["libs/mirza/auth/sign-out/src/index.ts"],
+      "@msk/mirza/auth/sign-up": ["./libs/mirza/auth/sign-up/src/index.ts"],
       "@msk/mirza/panel/customers": ["libs/mirza/panel/customers/src/index.ts"],
       "@msk/mirza/panel/dashboard": ["libs/mirza/panel/dashboard/src/index.ts"],
       "@msk/mirza/panel/product-categories": ["libs/mirza/panel/product-categories/src/index.ts"],
