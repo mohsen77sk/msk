@@ -38,6 +38,10 @@ export const routes: Route[] = [
         path: 'sign-up',
         loadChildren: () => import('@msk/mirza/auth/sign-up').then((r) => r.routes),
       },
+      {
+        path: 'forgot-password',
+        loadChildren: () => import('@msk/mirza/auth/forgot-password').then((r) => r.routes),
+      },
     ],
   },
 

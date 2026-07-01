@@ -20,3 +20,10 @@ export interface RegistrationRequest {
   confirmPassword: string;
   code: string;
 }
+
+export interface ResetPasswordRequest {
+  phone: string;
+  code: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}

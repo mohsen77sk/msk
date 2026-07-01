@@ -2,7 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { Observable, of, switchMap, throwError } from 'rxjs';
-import { AUTH_TOKEN, LoginRequest, LoginResponse, REFRESH_TOKEN, RegistrationRequest } from './auth.types';
+import {
+  AUTH_TOKEN,
+  LoginRequest,
+  LoginResponse,
+  REFRESH_TOKEN,
+  RegistrationRequest,
+  ResetPasswordRequest,
+} from './auth.types';
 import { AuthUtils } from './auth.utils';
 
 @Injectable({ providedIn: 'root' })
@@ -80,6 +87,30 @@ export class AuthService {
           return of(response);
         }),
       );
+  }
+
+  /**
+   * Send otp for reset password
+   *
+   * @param phone
+   */
+  resetPasswordOtp(phone: string): Observable<boolean> {
+    return this._httpClient
+      .post<{ success: boolean }>(`${this._appConfig.apiEndpoint}/auth/forgot-password/request-otp`, {
+        phone,
+      })
+      .pipe(switchMap((response) => of(response.success)));
+  }
+
+  /**
+   * Reset password
+   *
+   * @param credentials
+   */
+  resetPasswordVerify(credentials: ResetPasswordRequest): Observable<boolean> {
+    return this._httpClient
+      .post<{ success: boolean }>(`${this._appConfig.apiEndpoint}/auth/forgot-password/reset`, credentials)
+      .pipe(switchMap((response) => of(response.success)));
   }
 
   /**

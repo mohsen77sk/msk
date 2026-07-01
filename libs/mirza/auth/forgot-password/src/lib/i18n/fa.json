@@ -1,0 +1,12 @@
+{
+  "forgot-password": "فراموشی رمز عبور",
+  "fill-form-to-reset": "فرم را جهت ارسال کد تأیید تکمیل کنید",
+  "sended-code-description": "کد تأیید به شماره {{phone}} ارسال شده.",
+  "phone": "شماره همراه",
+  "code": "کد تأیید",
+  "password": "رمز عبور جدید",
+  "confirm-password": "تکرار رمز عبور جدید",
+  "send-verification-code": "ارسال کد تأیید",
+  "resend-code": "ارسال مجدد کد",
+  "reset-password": "بازنشانی رمز عبور"
+}

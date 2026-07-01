@@ -1,0 +1,12 @@
+{
+  "forgot-password": "Forgot password",
+  "fill-form-to-reset": "Fill the form to send verification code",
+  "sended-code-description": "Verification code sended to {{phone}}.",
+  "phone": "Phone Number",
+  "code": "Verification code",
+  "password": "New password",
+  "confirm-password": "Confirm new password",
+  "send-verification-code": "Send verification code",
+  "resend-code": "Resend code",
+  "reset-password": "Reset password"
+}
