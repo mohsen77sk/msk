@@ -90,20 +90,13 @@ export class ProductCategoriesService {
       sortBy: `${DefaultProductCategorySortData.active} ${DefaultProductCategorySortData.direction}`,
     },
   ): Observable<MskPageData<MskLookupItem>> {
-    const cacheKey = this._httpCache.buildCacheKey(this._cacheKey, params);
-    return this._httpCache.get(cacheKey, () =>
-      this._httpClient
-        .get<MskPagingResponse<ProductCategory>>(`${this._appConfig.apiEndpoint}/category`, {
-          params: convertToMirzaPagingRequest(params),
-        })
-        .pipe(
-          map((response) => {
-            return new MskPageData({
-              ...response,
-              items: response.items.map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
-            });
-          }),
-        ),
+    return this.getProductCategories(params).pipe(
+      map((response) => {
+        return {
+          ...response,
+          items: response.items.map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
+        };
+      }),
     );
   }
 

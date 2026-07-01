@@ -88,22 +88,15 @@ export class PaymentTypesService {
       sortBy: `${DefaultPaymentTypeSortData.active} ${DefaultPaymentTypeSortData.direction}`,
     },
   ): Observable<MskPageData<MskLookupItem>> {
-    const cacheKey = this._httpCache.buildCacheKey(this._cacheKey, params);
-    return this._httpCache.get(cacheKey, () =>
-      this._httpClient
-        .get<MskPagingResponse<PaymentType>>(`${this._appConfig.apiEndpoint}/payment-types`, {
-          params: convertToMirzaPagingRequest(params),
-        })
-        .pipe(
-          map((response) => {
-            return new MskPageData({
-              ...response,
-              items: response.items
-                .sort((a, b) => Number(b.isDefault) - Number(a.isDefault))
-                .map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
-            });
-          }),
-        ),
+    return this.getPaymentTypes(params).pipe(
+      map((response) => {
+        return {
+          ...response,
+          items: response.items
+            .sort((a, b) => Number(b.isDefault) - Number(a.isDefault))
+            .map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
+        };
+      }),
     );
   }
 

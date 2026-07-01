@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, map, tap } from 'rxjs';
+import { Observable, Subject, map, switchMap, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
 import {
@@ -90,20 +90,13 @@ export class ProductsService {
       sortBy: `${DefaultProductsSortData.active} ${DefaultProductsSortData.direction}`,
     },
   ): Observable<MskPageData<MskLookupItem>> {
-    const cacheKey = this._httpCache.buildCacheKey(this._cacheKey, params);
-    return this._httpCache.get(cacheKey, () =>
-      this._httpClient
-        .get<MskPagingResponse<Product>>(`${this._appConfig.apiEndpoint}/product`, {
-          params: convertToMirzaPagingRequest(params),
-        })
-        .pipe(
-          map((response) => {
-            return new MskPageData({
-              ...response,
-              items: response.items.map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
-            });
-          }),
-        ),
+    return this.getProducts(params).pipe(
+      map((response) => {
+        return {
+          ...response,
+          items: response.items.map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
+        };
+      }),
     );
   }
 

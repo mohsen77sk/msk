@@ -90,20 +90,13 @@ export class CustomersService {
       sortBy: `${DefaultCustomersSortData.active} ${DefaultCustomersSortData.direction}`,
     },
   ): Observable<MskPageData<MskLookupItem>> {
-    const cacheKey = this._httpCache.buildCacheKey(this._cacheKey, params);
-    return this._httpCache.get(cacheKey, () =>
-      this._httpClient
-        .get<MskPagingResponse<Customer>>(`${this._appConfig.apiEndpoint}/customer`, {
-          params: convertToMirzaPagingRequest(params),
-        })
-        .pipe(
-          map((response) => {
-            return new MskPageData({
-              ...response,
-              items: response.items.map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
-            });
-          }),
-        ),
+    return this.getCustomers(params).pipe(
+      map((response) => {
+        return {
+          ...response,
+          items: response.items.map((item) => ({ id: item.id, name: item.name }) as MskLookupItem),
+        };
+      }),
     );
   }
 
