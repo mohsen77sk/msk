@@ -56,15 +56,6 @@
           </mat-form-field>
         }
 
-        <!-- Username field -->
-        @if (!signUpForm.username().hidden()) {
-          <mat-form-field class="mt-2 w-full">
-            <mat-label> {{ t('signUp.username') }} </mat-label>
-            <input id="username" matInput [formField]="signUpForm.username" />
-            <mat-error [mskFormFieldError]="signUpForm.username"></mat-error>
-          </mat-form-field>
-        }
-
         <!-- Phone field -->
         @if (!signUpForm.phone().hidden()) {
           <mat-form-field class="mt-2 w-full">

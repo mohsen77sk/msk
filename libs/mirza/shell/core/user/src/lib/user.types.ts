@@ -3,7 +3,6 @@ export class User {
   firstName: string;
   lastName: string;
   phoneNumber?: string;
-  username?: string;
   avatar?: string;
 
   constructor(input: User) {
@@ -11,7 +10,6 @@ export class User {
     this.firstName = input.firstName;
     this.lastName = input.lastName;
     this.phoneNumber = input.phoneNumber;
-    this.username = input.username;
     this.avatar = input.avatar;
   }
 

@@ -69,7 +69,6 @@ export class SignUpComponent implements AfterViewInit, OnDestroy {
     signal<RegistrationRequest>({
       firstName: '',
       lastName: '',
-      username: '',
       phone: '',
       code: '',
       password: '',
@@ -78,7 +77,6 @@ export class SignUpComponent implements AfterViewInit, OnDestroy {
     (schemaPath) => {
       required(schemaPath.firstName);
       required(schemaPath.lastName);
-      required(schemaPath.username);
       required(schemaPath.phone);
       maxLength(schemaPath.phone, 11);
       pattern(schemaPath.phone, /^09\d{9}$/);
@@ -97,14 +95,12 @@ export class SignUpComponent implements AfterViewInit, OnDestroy {
       });
       hidden(schemaPath.firstName, () => this.sendedOtp());
       hidden(schemaPath.lastName, () => this.sendedOtp());
-      hidden(schemaPath.username, () => this.sendedOtp());
       hidden(schemaPath.phone, () => this.sendedOtp());
       hidden(schemaPath.code, () => !this.sendedOtp());
       hidden(schemaPath.password, () => !this.sendedOtp());
       hidden(schemaPath.confirmPassword, () => !this.sendedOtp());
       disabled(schemaPath.firstName, () => this.signUpForm().submitting());
       disabled(schemaPath.lastName, () => this.signUpForm().submitting());
-      disabled(schemaPath.username, () => this.signUpForm().submitting());
       disabled(schemaPath.phone, () => this.signUpForm().submitting());
       disabled(schemaPath.code, () => this.signUpForm().submitting());
       disabled(schemaPath.password, () => this.signUpForm().submitting());

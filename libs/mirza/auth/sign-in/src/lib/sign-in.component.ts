@@ -45,13 +45,13 @@ export class SignInComponent implements AfterViewInit {
 
   signInForm = form(
     signal<LoginRequest>({
-      username: '',
+      phone: '',
       password: '',
     }),
     (schemaPath) => {
-      required(schemaPath.username);
+      required(schemaPath.phone);
       required(schemaPath.password);
-      disabled(schemaPath.username, () => this.signInForm().submitting());
+      disabled(schemaPath.phone, () => this.signInForm().submitting());
       disabled(schemaPath.password, () => this.signInForm().submitting());
     },
     {
