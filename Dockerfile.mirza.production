@@ -4,6 +4,8 @@ FROM node:24 AS builder
 WORKDIR /app
 COPY . .
 
+ARG MSK_SENTRY_DSN_PRODUCTION=""
+
 RUN npm ci
 RUN npm run build-mirza-production
 
