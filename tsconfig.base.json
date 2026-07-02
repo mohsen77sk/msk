@@ -32,6 +32,7 @@
       "@msk/docs/shell/feature": ["libs/docs/shell/feature/src/index.ts"],
       "@msk/docs/shell/ui/layout": ["libs/docs/shell/ui/layout/src/index.ts"],
       "@msk/mirza/auth/forgot-password": ["./libs/mirza/auth/forgot-password/src/index.ts"],
+      "@msk/mirza/auth/onboarding": ["./libs/mirza/auth/onboarding/src/index.ts"],
       "@msk/mirza/auth/sign-in": ["libs/mirza/auth/sign-in/src/index.ts"],
       "@msk/mirza/auth/sign-out": ["libs/mirza/auth/sign-out/src/index.ts"],
       "@msk/mirza/auth/sign-up": ["./libs/mirza/auth/sign-up/src/index.ts"],

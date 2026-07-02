@@ -1,0 +1,54 @@
+<div class="flex min-w-0 flex-auto flex-col items-center justify-center" *transloco="let t">
+  <div class="sm:shadow-level-1 sm:rounded-medium sm:bg-surface-container-low w-full px-4 py-8 sm:w-auto sm:p-12">
+    <div class="mx-auto w-full max-w-80 sm:mx-0 sm:w-80">
+      <!-- Logo -->
+      <div class="w-12">
+        <img src="assets/images/logo/logo.svg" alt="logo" />
+      </div>
+
+      <!-- Title -->
+      <div class="text-headline-medium mt-8 font-extrabold">
+        {{ t('onboarding.welcome') }}
+      </div>
+      <div class="mt-0.5 flex items-baseline font-medium">
+        <span>
+          {{ t('onboarding.description') }}
+        </span>
+      </div>
+
+      <!-- Alert -->
+      @if (alert()) {
+        <msk-alert
+          class="mt-8"
+          [appearance]="'outline'"
+          [showIcon]="false"
+          [type]="alert()?.type ?? 'error'"
+          [class.msk-shake]="alert()?.type === 'error'"
+        >
+          {{ alert()?.message }}
+        </msk-alert>
+      }
+
+      <!-- Sign in form -->
+      <form class="mt-6" [formRoot]="onboardingForm">
+        <!-- Name field -->
+        <mat-form-field class="mt-2 w-full">
+          <mat-label> {{ t('onboarding.name') }} </mat-label>
+          <input id="name" matInput [formField]="onboardingForm.name" />
+          <mat-error [mskFormFieldError]="onboardingForm.name"></mat-error>
+        </mat-form-field>
+
+        <!-- Submit button -->
+        <button
+          type="submit"
+          class="mt-6 w-full"
+          matButton="filled"
+          [disabled]="onboardingForm().submitting()"
+          [mskSpinner]="onboardingForm().submitting()"
+        >
+          {{ onboardingForm().submitting() ? '' : t('onboarding.create') }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

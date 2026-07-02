@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskUtilsService } from '@msk/shared/services/utils';
 import { BehaviorSubject, map, Observable, ReplaySubject, startWith, tap, withLatestFrom } from 'rxjs';
-import { IStoreResponse, Store } from './store.types';
+import { CreateStoreRequest, IStoreResponse, Store } from './store.types';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
@@ -75,6 +75,27 @@ export class StoreService {
       tap((stores) => {
         this._stores.next(stores);
       }),
+    );
+  }
+
+  /**
+   * Create a store
+   *
+   * @param payload
+   */
+  create(payload: CreateStoreRequest): Observable<Store> {
+    return this._httpClient.post<IStoreResponse>(`${this._appConfig.apiEndpoint}/store`, payload).pipe(
+      map((response) => new Store(response)),
+      withLatestFrom(this.stores$.pipe(startWith([] as Store[]))),
+      tap(([store, stores]) => {
+        const updatedStores = stores.some((item) => item.id === store.id)
+          ? stores.map((item) => (item.id === store.id ? store : item))
+          : [...stores, store];
+
+        this._stores.next(updatedStores);
+        this.currentStore = store;
+      }),
+      map(([store]) => store),
     );
   }
 

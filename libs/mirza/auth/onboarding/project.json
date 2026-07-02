@@ -1,0 +1,21 @@
+{
+  "name": "mirza-auth-onboarding",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mirza/auth/onboarding/src",
+  "prefix": "mz",
+  "projectType": "library",
+  "tags": ["scope:mirza", "type:feature"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/mirza/auth/onboarding/jest.config.cts",
+        "tsConfig": "libs/mirza/auth/onboarding/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

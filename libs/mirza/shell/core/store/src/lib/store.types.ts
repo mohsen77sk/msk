@@ -1,3 +1,7 @@
+export interface CreateStoreRequest {
+  name: string;
+}
+
 export interface IStoreResponse {
   id: number;
   name: string;
