@@ -19,6 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
+import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
@@ -45,6 +46,7 @@ import { PeopleStatusComponent } from '../common/status/status.component';
     MatFormFieldModule,
     TranslocoDirective,
     MskAvatarComponent,
+    MskEmptyStateComponent,
     MskSortMenuComponent,
     PeopleStatusComponent,
     MskFabExtendedCollapseDirective,
