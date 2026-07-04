@@ -17,6 +17,7 @@ import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskSelectSearchDirective } from '@msk/shared/directives/select-search';
 import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symbol';
 import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
+import { MskNumToWordsPipe } from '@msk/shared/pipes/num-to-words';
 import {
   FormError,
   MskHandleFormErrors,
@@ -53,6 +54,7 @@ import { catchError, EMPTY, Observable, tap } from 'rxjs';
     MskSelectSearchDirective,
     MskCurrencySymbolDirective,
     MskDatepickerTouchUiDirective,
+    MskNumToWordsPipe,
   ],
 })
 export class AccountsCreateTransactionComponent implements OnInit {

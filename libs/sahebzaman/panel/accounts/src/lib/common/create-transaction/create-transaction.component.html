@@ -47,8 +47,11 @@
       <!-- Amount -->
       <mat-form-field>
         <mat-label>{{ t('amount') }}</mat-label>
-        <input matInput formControlName="amount" mskMask="currency" autocomplete="off" inputmode="numeric" />
+        <input matInput formControlName="amount" mskMask="currency" autocomplete="off" inputmode="numeric" #amount />
         <span matTextSuffix mskCurrencySymbol></span>
+        <mat-hint class="truncate">
+          <small>{{ amount.value | mskNumToWords }} <span mskCurrencySymbol></span></small>
+        </mat-hint>
         <mat-error>{{ formErrors['amount'] }}</mat-error>
       </mat-form-field>
 
