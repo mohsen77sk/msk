@@ -1,4 +1,18 @@
 {
+  "details": {
+    "new": "New loan",
+    "edit": "Edit loan",
+    "view": "Loan #{{code}}",
+    "about": "About Loan",
+    "account": "Account",
+    "loanType": "Loan type",
+    "createDate": "Create date",
+    "amount": "Amount",
+    "installmentCount": "Installment Count",
+    "installmentInterval": "Installment Interval",
+    "interestRates": "Interest Rates",
+    "note": "Note"
+  },
   "sort": {
     "code": "Code"
   },

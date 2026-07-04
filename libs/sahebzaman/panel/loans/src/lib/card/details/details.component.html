@@ -1,0 +1,142 @@
+<msk-dialog
+  *transloco="let t; prefix: 'loans.details'"
+  [title]="t(data.action(), { code: data.item()?.code })"
+  [hasAction]="data.action() !== 'view'"
+  [primaryAction]="primaryAction"
+  [trailing]="trailing"
+>
+  <!-- Content -->
+  <ng-container
+    [ngTemplateOutlet]="data.action() === 'view' ? viewTemplate : formTemplate"
+    [ngTemplateOutletContext]="{ t: t }"
+    msk-dialog-content
+  ></ng-container>
+
+  <ng-template #trailing>
+    @if (data.item()?.isActive) {
+      <button matIconButton (click)="editMode()">
+        <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+      </button>
+    }
+  </ng-template>
+
+  <ng-template #primaryAction>
+    <button matButton [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+      <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
+    </button>
+  </ng-template>
+</msk-dialog>
+
+<ng-template #viewTemplate let-t="t"> </ng-template>
+
+<ng-template #formTemplate let-t="t">
+  <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
+    <!-- Alert -->
+    @if (alert().show) {
+      <msk-alert class="msk-shake mb-4" appearance="outline" type="error">
+        {{ alert().message }}
+      </msk-alert>
+    }
+
+    <!-- LoanType and CreateDate -->
+    <div class="flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
+      <!-- LoanType -->
+      <mat-form-field>
+        <mat-label>{{ t('loanType') }}</mat-label>
+        @let loanTypeList = loanTypeList$ | async;
+        <mat-select
+          formControlName="loanTypeId"
+          mskSelectSearch
+          [searchList]="loanTypeList"
+          [searchItems]="'name'"
+          [searchPlaceholder]="'search' | transloco"
+          #searchLoanTypes="mskSelectSearch"
+        >
+          @for (item of searchLoanTypes.filteredList | async; track item) {
+            <mat-option [value]="item.id">{{ item.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-error>{{ formErrors['loanTypeId'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- CreateDate -->
+      <mat-form-field>
+        <mat-label>{{ t('createDate') }}</mat-label>
+        <input matInput formControlName="createDate" [matDatepicker]="picker" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker mskDatepickerTouchUi></mat-datepicker>
+        <mat-error>{{ formErrors['createDate'] }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- AccountId -->
+    <mat-form-field>
+      <mat-label>{{ t('account') }}</mat-label>
+      @let accountList = accountList$ | async;
+      <mat-select
+        formControlName="accountId"
+        mskSelectSearch
+        [searchList]="accountList"
+        [searchItems]="'name'"
+        [searchPlaceholder]="'search' | transloco"
+        #searchAccount="mskSelectSearch"
+      >
+        @for (item of searchAccount.filteredList | async; track item) {
+          <mat-option [value]="item.id">{{ item.name }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>{{ formErrors['accountId'] }}</mat-error>
+    </mat-form-field>
+
+    <div class="flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
+      <!-- Amount -->
+      <mat-form-field>
+        <mat-label>{{ t('amount') }}</mat-label>
+        <input matInput formControlName="amount" mskMask="currency" autocomplete="off" inputmode="numeric" #amount />
+        <span matTextSuffix mskCurrencySymbol></span>
+        <mat-hint class="truncate">
+          <small>{{ amount.value | mskNumToWords }} <span mskCurrencySymbol></span></small>
+        </mat-hint>
+        <mat-error>{{ formErrors['amount'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- InterestRates -->
+      <mat-form-field>
+        <mat-label>{{ t('interestRates') }}</mat-label>
+        <input matInput formControlName="interestRates" mskMask="decimal" autocomplete="off" inputmode="numeric" />
+        <span matTextSuffix></span>
+        <mat-error>{{ formErrors['interestRates'] }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
+      <!-- InstallmentCount -->
+      <mat-form-field>
+        <mat-label>{{ t('installmentCount') }}</mat-label>
+        <input matInput formControlName="installmentCount" mskMask="decimal" autocomplete="off" inputmode="numeric" />
+        <span matTextSuffix></span>
+        <mat-error>{{ formErrors['installmentCount'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- InstallmentInterval -->
+      <mat-form-field>
+        <mat-label>{{ t('installmentInterval') }}</mat-label>
+        <input
+          matInput
+          formControlName="installmentInterval"
+          mskMask="decimal"
+          autocomplete="off"
+          inputmode="numeric"
+        />
+        <span matTextSuffix></span>
+        <mat-error>{{ formErrors['installmentInterval'] }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Note -->
+    <mat-form-field>
+      <textarea matInput formControlName="note" [placeholder]="t('note')" [rows]="2"></textarea>
+      <mat-error>{{ formErrors['note'] }}</mat-error>
+    </mat-form-field>
+  </form>
+</ng-template>

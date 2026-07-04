@@ -1,4 +1,18 @@
 {
+  "details": {
+    "new": "وام جدید",
+    "edit": "ویرایش وام",
+    "view": "وام #{{code}}",
+    "about": "درباره وام",
+    "account": "حساب",
+    "loanType": "نوع وام",
+    "createDate": "تاریخ ایجاد",
+    "amount": "مبلغ",
+    "installmentCount": "تعداد اقساط",
+    "installmentInterval": "فاصله اقساط",
+    "interestRates": "نرخ بهره",
+    "note": "توضیحات"
+  },
   "sort": {
     "code": "کد"
   },
