@@ -232,8 +232,18 @@
     @if (data.action() === 'new') {
       <mat-form-field>
         <mat-label>{{ t('initCredit') }}</mat-label>
-        <input matInput formControlName="initCredit" mskMask="currency" autocomplete="off" inputmode="numeric" />
+        <input
+          matInput
+          formControlName="initCredit"
+          mskMask="currency"
+          autocomplete="off"
+          inputmode="numeric"
+          #credit
+        />
         <span matTextSuffix mskCurrencySymbol></span>
+        <mat-hint class="truncate">
+          <small>{{ credit.value | mskNumToWords }} <span mskCurrencySymbol></span></small>
+        </mat-hint>
         <mat-error>{{ formErrors['initCredit'] }}</mat-error>
       </mat-form-field>
     }

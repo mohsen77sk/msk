@@ -25,6 +25,7 @@ import { MskCurrencySymbolDirective } from '@msk/shared/directives/currency-symb
 import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker-touch-ui';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
+import { MskNumToWordsPipe } from '@msk/shared/pipes/num-to-words';
 import {
   MskHandleFormErrors,
   MskValidateFormFields,
@@ -44,7 +45,7 @@ import {
   IUpdateAccount,
 } from '../../accounts.types';
 import { AccountsCreateTransactionComponent } from '../../common/create-transaction/create-transaction.component';
-import { catchError, combineLatest, EMPTY, finalize, forkJoin, map, Observable, switchMap, tap } from 'rxjs';
+import { catchError, combineLatest, EMPTY, finalize, map, Observable, switchMap, tap } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -79,6 +80,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
     MskDatepickerTouchUiDirective,
     MskCurrencyPipe,
     MskDateTimePipe,
+    MskNumToWordsPipe,
   ],
 })
 export class AccountsCardDetailsComponent implements OnInit {

@@ -1,0 +1,21 @@
+{
+  "name": "shared-pipes-num-to-words",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/pipes/num-to-words/src",
+  "prefix": "msk",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:ui"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/shared/pipes/num-to-words/jest.config.cts",
+        "tsConfig": "libs/shared/pipes/num-to-words/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -79,12 +79,14 @@
       "@msk/shared/pipes/currency": ["libs/shared/pipes/currency/src/index.ts"],
       "@msk/shared/pipes/date-time": ["libs/shared/pipes/date-time/src/index.ts"],
       "@msk/shared/pipes/find-by-key": ["libs/shared/pipes/find-by-key/src/index.ts"],
+      "@msk/shared/pipes/num-to-words": ["./libs/shared/pipes/num-to-words/src/index.ts"],
       "@msk/shared/services/config": ["libs/shared/services/config/src/index.ts"],
       "@msk/shared/services/confirmation": ["libs/shared/services/confirmation/src/index.ts"],
       "@msk/shared/services/http-cache": ["./libs/shared/services/http-cache/src/index.ts"],
       "@msk/shared/services/iranian-banks": ["libs/shared/services/iranian-banks/src/index.ts"],
       "@msk/shared/services/media-watcher": ["libs/shared/services/media-watcher/src/index.ts"],
       "@msk/shared/services/platform": ["libs/shared/services/platform/src/index.ts"],
+      "@msk/shared/services/number-to-words": ["./libs/shared/services/number-to-words/src/index.ts"],
       "@msk/shared/services/snack-bar": ["libs/shared/services/snack-bar/src/index.ts"],
       "@msk/shared/services/splash-screen": ["libs/shared/services/splash-screen/src/index.ts"],
       "@msk/shared/services/utils": ["libs/shared/services/utils/src/index.ts"],
@@ -106,6 +108,7 @@
       "@msk/shared/utils/icons": ["libs/shared/utils/icons/src/index.ts"],
       "@msk/shared/utils/loading": ["libs/shared/utils/loading/src/index.ts"],
       "@msk/shared/utils/material-intl": ["libs/shared/utils/material-intl/src/index.ts"],
+      "@msk/shared/utils/number": ["./libs/shared/utils/number/src/index.ts"],
       "@msk/shared/utils/service-worker": ["libs/shared/utils/service-worker/src/index.ts"],
       "@msk/shared/utils/transloco": ["libs/shared/utils/transloco/src/index.ts"]
     }
