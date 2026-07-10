@@ -164,6 +164,10 @@ jobs:
         env:
           MSK_SENTRY_DSN_PRODUCTION: ${{ secrets.MSK_SENTRY_DSN_PRODUCTION }}
         run: |
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            node tools/generate-mirza-production-env.mjs
+          fi
+
           docker build --build-arg MSK_SENTRY_DSN_PRODUCTION -f Dockerfile.mirza.production -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
           docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:latest
 
