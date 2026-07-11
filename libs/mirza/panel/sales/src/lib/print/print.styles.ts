@@ -22,7 +22,7 @@ export const SALE_RECEIPT_PRINT_STYLES = `
 
   .sale-receipt-print {
     width: 80mm;
-    padding: 4mm;
+    padding: 2mm 4mm 4mm 10mm;
     color: #000;
     background: #fff;
     font-family: system-ui;
