@@ -29,10 +29,10 @@ jobs:
 
       - name: Build Docker image
         env:
-          MSK_SENTRY_DSN_PRODUCTION: ${{ secrets.MSK_SENTRY_DSN_PRODUCTION }}
+          MIRZA_SENTRY_DSN_PRODUCTION: ${{ secrets.MIRZA_SENTRY_DSN_PRODUCTION }}
         run: |
           node tools/generate-mirza-production-env.mjs
-          docker build --build-arg MSK_SENTRY_DSN_PRODUCTION -f Dockerfile.mirza.production -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
+          docker build -f Dockerfile.mirza.production -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
           docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:latest
 
       - name: Push Docker images
