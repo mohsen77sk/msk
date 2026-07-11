@@ -161,7 +161,13 @@ jobs:
           password: ${{ secrets.MIRZA_DOCKER_PASSWORD }}
 
       - name: Build Docker image
+        env:
+          MIRZA_SENTRY_DSN_PRODUCTION: ${{ secrets.MIRZA_SENTRY_DSN_PRODUCTION }}
         run: |
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            node tools/generate-mirza-production-env.mjs
+          fi
+
           docker build -f Dockerfile.mirza.production -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
           docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:latest
 

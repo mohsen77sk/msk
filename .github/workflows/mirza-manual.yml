@@ -8,33 +8,18 @@ env:
 
 jobs:
   build-and-deploy-mirza:
+    name: Deploy mirza (Production - Master)
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [24.16]
 
     steps:
       - uses: actions/checkout@v7
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build mirza
-        run: npx nx build mirza-write --skip-nx-cache
-
       - name: Define Docker TAG
         id: vars
         run: |
-          BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
           SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
-          echo "TAG=${BRANCH_NAME}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "TAG=prod-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "Docker tag will be: prod-${SHORT_SHA}"
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v4
@@ -43,14 +28,17 @@ jobs:
           password: ${{ secrets.MIRZA_DOCKER_PASSWORD }}
 
       - name: Build Docker image
+        env:
+          MIRZA_SENTRY_DSN_PRODUCTION: ${{ secrets.MIRZA_SENTRY_DSN_PRODUCTION }}
         run: |
-          docker build -f Dockerfile.mirza -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
-          docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:${GITHUB_REF##*/}
+          node tools/generate-mirza-production-env.mjs
+          docker build -f Dockerfile.mirza.production -t $IMAGE_NAME:${{ steps.vars.outputs.TAG }} .
+          docker tag $IMAGE_NAME:${{ steps.vars.outputs.TAG }} $IMAGE_NAME:latest
 
       - name: Push Docker images
         run: |
           docker push $IMAGE_NAME:${{ steps.vars.outputs.TAG }}
-          docker push $IMAGE_NAME:${GITHUB_REF##*/}
+          docker push $IMAGE_NAME:latest
 
       - name: Set up kubeconfig
         run: |
@@ -60,8 +48,7 @@ jobs:
 
       - name: Deploy to K3s
         run: |
-          BRANCH_NAME=$(echo "${GITHUB_REF##*/}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
           SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
-          TAG=${BRANCH_NAME}-${SHORT_SHA}
-          kubectl set image deployment/angular-app angular-app=$IMAGE_NAME:$TAG
+          TAG=prod-${SHORT_SHA}
+          kubectl set image deployment/angular-app angular-app=${{ secrets.MIRZA_DOCKER_USERNAME }}/mirza:$TAG
           kubectl rollout status deployment/angular-app
