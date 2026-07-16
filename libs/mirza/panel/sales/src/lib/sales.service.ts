@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, map, tap } from 'rxjs';
+import { Observable, Subject, map, of, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
 import {
@@ -89,6 +89,23 @@ export class SalesService {
     return this._httpClient
       .get<SaleInvoice>(`${this._appConfig.apiEndpoint}/sale/${id}`)
       .pipe(map((response) => new SaleInvoice(response)));
+  }
+
+  /**
+   * Test local Mellat POS bridge payment in development builds only.
+   */
+  testDevelopmentMellatPosConnection(saleTotal: number): Observable<unknown> {
+    if (this._appConfig.production) {
+      return of(null);
+    }
+
+    return this._httpClient.post('http://localhost:5283/Payment', {
+      amount: saleTotal,
+      billNumber: 'SALE-123',
+      ip: '192.168.1.109',
+      port: 1024,
+      provider: 'MELLAT',
+    });
   }
 
   /**

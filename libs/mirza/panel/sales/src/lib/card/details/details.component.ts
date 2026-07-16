@@ -47,13 +47,15 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { catchError, combineLatest, distinctUntilChanged, EMPTY, map, startWith, tap } from 'rxjs';
+import { catchError, combineLatest, distinctUntilChanged, EMPTY, map, startWith, switchMap, tap } from 'rxjs';
 import { SalesService } from '../../sales.service';
 import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleInvoice } from '../../sales.types';
 import { SaleReceiptPrintService } from '../../print/print.service';
 import { ReceiptPrintData } from '../../print/print.types';
 import { SaleReceiptPrintComponent } from '../../print/print.component';
 import { SALE_RECEIPT_PRINT_STYLES } from '../../print/print.styles';
+
+const MELLAT_POS_PAYMENT_TYPE_NAME = 'دستگاه POS ملت';
 
 @Component({
   selector: 'mz-sales-details',
@@ -424,10 +426,13 @@ export class SalesCardDetailsComponent implements OnInit {
       note: this.form.controls.note.value ?? '',
     };
 
-    const result =
+    const saveRequest =
       this.data.action() === 'edit'
         ? this._salesService.updateSaleInvoice(model)
         : this._salesService.createSaleInvoice(model);
+    const result = this._shouldTestMellatPosConnection()
+      ? this._salesService.testDevelopmentMellatPosConnection(model.total).pipe(switchMap(() => saveRequest))
+      : saveRequest;
 
     result
       .pipe(
@@ -436,9 +441,9 @@ export class SalesCardDetailsComponent implements OnInit {
           // Re-enable the form
           this.form.enable();
           // Set the alert
-          this.alert.set({ show: true, message: response.error.message });
+          this.alert.set({ show: true, message: response.error?.message || response.message });
           // Set validation error message
-          if (response.error.errors) {
+          if (response.error?.errors) {
             MskSetServerErrorsFormFields(response.error.errors, this.form);
           }
           // Return
@@ -480,5 +485,14 @@ export class SalesCardDetailsComponent implements OnInit {
     const total = this.form.controls.total.value || 0;
 
     return paymentTypesTotal === total;
+  }
+
+  /**
+   * Check whether any selected payment type should trigger the local Mellat POS bridge.
+   */
+  private _shouldTestMellatPosConnection(): boolean {
+    return this.paymentTypes.controls.some(
+      (paymentType) => paymentType.controls.paymentType.value?.name === MELLAT_POS_PAYMENT_TYPE_NAME,
+    );
   }
 }
