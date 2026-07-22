@@ -1,6 +1,6 @@
 <msk-dialog
   *transloco="let t; prefix: 'accounts.details'"
-  [title]="t(data.action(), { code: data.item()?.code })"
+  [title]="t(data.action(), { code: $safeNavigationMigration(data.item()?.code) })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
@@ -35,7 +35,7 @@
         @if (isLoadingBalance()) {
           <mat-spinner diameter="24"></mat-spinner>
         } @else {
-          {{ data.item()?.balance | mskCurrency }}
+          {{ $safeNavigationMigration(data.item()?.balance) | mskCurrency }}
         }
       </span>
     </div>
@@ -112,7 +112,7 @@
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">calendar_add_on</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ (data.item()?.createDate | mskDateTime: 'longDate') || '-' }}</span>
+          <span>{{ ($safeNavigationMigration(data.item()?.createDate) | mskDateTime: 'longDate') || '-' }}</span>
           <span>{{ t('createDate') }}</span>
         </div>
       </div>
@@ -122,7 +122,7 @@
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">event_busy</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ (data.item()?.closeDate | mskDateTime: 'longDate') || '-' }}</span>
+          <span>{{ ($safeNavigationMigration(data.item()?.closeDate) | mskDateTime: 'longDate') || '-' }}</span>
           <span>{{ t('closeDate') }}</span>
         </div>
       </div>

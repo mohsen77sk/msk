@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, Renderer2, ViewEncapsulation, inject, DOCUMENT } from '@angular/core';
+import { Component, DestroyRef, OnInit, Renderer2, ViewEncapsulation, inject, DOCUMENT, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { DocsLayoutMaterialComponent } from './layouts/material/material.compone
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [BidiModule, MskLoadingBarComponent, DocsLayoutEmptyComponent, DocsLayoutMaterialComponent],
 })
 export class DocsLayoutComponent implements OnInit {

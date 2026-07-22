@@ -19,7 +19,7 @@
         class="content-grid-item tow-line"
         [class.pointer-events-none]="!paymentType"
         *cdkVirtualFor="let paymentType of dataSource; trackBy: trackById"
-        [routerLink]="['card', 'view', paymentType?.id]"
+        [routerLink]="['card', 'view', $safeNavigationMigration(paymentType?.id)]"
         matRipple
       >
         @if (paymentType) {

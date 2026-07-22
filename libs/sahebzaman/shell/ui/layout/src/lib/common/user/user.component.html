@@ -2,7 +2,7 @@
 <button matIconButton [matMenuTriggerFor]="userActions">
   <span class="relative size-6">
     @if (showAvatar() && user()?.avatar) {
-      <img class="relative h-full w-full rounded-full" [src]="user()?.avatar" alt="user-image" />
+      <img class="relative h-full w-full rounded-full" [src]="$safeNavigationMigration(user()?.avatar)" alt="user-image" />
     } @else {
       <mat-icon>account_circle</mat-icon>
     }
@@ -23,7 +23,7 @@
   </div>
   <div class="sz-user-panel-profile-container" #container (scroll)="(null)">
     <div class="mt-4 flex justify-center">
-      <msk-avatar [name]="user()?.name ?? ''" [imageUrl]="user()?.avatar" size="big"></msk-avatar>
+      <msk-avatar [name]="user()?.name ?? ''" [imageUrl]="$safeNavigationMigration(user()?.avatar)" size="big"></msk-avatar>
     </div>
     <div class="my-2">
       <span class="text-title-medium">{{ user()?.name }}</span>

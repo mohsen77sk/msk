@@ -1,6 +1,6 @@
 <msk-dialog
   *transloco="let t; prefix: 'loans.details'"
-  [title]="t(data.action(), { code: data.item()?.code })"
+  [title]="t(data.action(), { code: $safeNavigationMigration(data.item()?.code) })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"

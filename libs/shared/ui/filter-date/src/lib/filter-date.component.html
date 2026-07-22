@@ -43,7 +43,7 @@
       (click)="updateValue(item.id)"
     >
       <mat-icon>{{ value()?.key === item.id ? 'check' : '' }}</mat-icon>
-      <span>{{ item?.name | transloco }}</span>
+      <span>{{ $safeNavigationMigration(item?.name) | transloco }}</span>
     </button>
   }
   <button mat-menu-item (click)="openCustomDatePicker(picker)">

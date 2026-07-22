@@ -19,7 +19,7 @@
         class="content-grid-item tow-line"
         [class.pointer-events-none]="!loan"
         *cdkVirtualFor="let loan of dataSource; trackBy: trackById"
-        [routerLink]="['card', 'view', loan?.id]"
+        [routerLink]="['card', 'view', $safeNavigationMigration(loan?.id)]"
         matRipple
       >
         @if (loan) {

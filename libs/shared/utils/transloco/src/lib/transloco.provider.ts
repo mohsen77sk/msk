@@ -1,5 +1,5 @@
 import { EnvironmentProviders, inject, isDevMode, LOCALE_ID, Provider, provideAppInitializer } from '@angular/core';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import {
   provideTransloco,
   TranslocoService,
@@ -13,7 +13,7 @@ import { firstValueFrom } from 'rxjs';
 
 export const provideMskTransloco = (): Array<Provider | EnvironmentProviders> => {
   return [
-    provideHttpClient(withInterceptors([translocoInterceptor])),
+    provideHttpClient(withXhr(), withInterceptors([translocoInterceptor])),
     provideTransloco({
       config: {
         availableLangs: availableLangs.map((x) => x.id),

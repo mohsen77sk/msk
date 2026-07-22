@@ -18,7 +18,7 @@
         class="content-grid-item tow-line"
         [class.pointer-events-none]="!person"
         *cdkVirtualFor="let person of dataSource; trackBy: trackById"
-        [routerLink]="['card', 'view', person?.id]"
+        [routerLink]="['card', 'view', $safeNavigationMigration(person?.id)]"
         matRipple
       >
         @if (person) {

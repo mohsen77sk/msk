@@ -1,7 +1,7 @@
 <!-- Button -->
 <button matIconButton [matMenuTriggerFor]="userActions">
   <span class="relative size-6">
-    <msk-avatar [name]="currentStore()?.name ?? ''" [imageUrl]="currentStore()?.logoUrl" size="small"></msk-avatar>
+    <msk-avatar [name]="currentStore()?.name ?? ''" [imageUrl]="$safeNavigationMigration(currentStore()?.logoUrl)" size="small"></msk-avatar>
   </span>
 </button>
 <!-- Menu -->
@@ -23,7 +23,7 @@
         <msk-avatar
           [class.opacity-20]="isLogoUploading()"
           [name]="currentStore()?.name ?? ''"
-          [imageUrl]="currentStore()?.logoUrl"
+          [imageUrl]="$safeNavigationMigration(currentStore()?.logoUrl)"
           size="big"
         ></msk-avatar>
         <button

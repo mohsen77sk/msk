@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { provideTestMskAppConfig } from '@msk/shared/utils/app-config';
 import { MskTranslocoTestingModule } from '@msk/shared/utils/transloco';
@@ -12,7 +12,7 @@ describe('SignOutComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MskTranslocoTestingModule(), SignOutComponent],
-      providers: [provideTestMskAppConfig(), provideHttpClient(), provideRouter([])],
+      providers: [provideTestMskAppConfig(), provideHttpClient(withXhr()), provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignOutComponent);

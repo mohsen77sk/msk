@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -10,6 +10,7 @@ import { MskHighlightComponent } from '@msk/shared/ui/highlight';
   templateUrl: './animations.component.html',
   styleUrl: './animations.component.css',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MskHighlightComponent, MatTabsModule, MatButtonModule, MatSelectModule, MatFormFieldModule],
 })
 export class DocsAnimationsComponent {

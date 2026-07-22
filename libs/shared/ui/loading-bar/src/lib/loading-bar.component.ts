@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, ViewEncapsulation, booleanAttribute, inject, input } from '@angular/core';
+import { Component, DestroyRef, OnInit, ViewEncapsulation, booleanAttribute, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progress-bar';
 import { MskLoadingBarService } from './loading-bar.service';
@@ -10,6 +10,7 @@ import { map } from 'rxjs';
   styleUrls: ['./loading-bar.component.css'],
   exportAs: 'mskLoadingBar',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatProgressBarModule],
 })
 export class MskLoadingBarComponent implements OnInit {

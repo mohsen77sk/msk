@@ -1,7 +1,7 @@
 <div #receipt class="sale-receipt-print sale-receipt-print--rtl" dir="rtl">
   <div class="sale-receipt-print__header">
     @if (data()?.storeLogoUrl) {
-      <img class="sale-receipt-print__logo" [src]="data()?.storeLogoUrl" [alt]="data()?.storeName" />
+      <img class="sale-receipt-print__logo" [src]="$safeNavigationMigration(data()?.storeLogoUrl)" [alt]="$safeNavigationMigration(data()?.storeName)" />
     }
     <div class="sale-receipt-print__store">{{ data()?.storeName }}</div>
   </div>
@@ -17,7 +17,7 @@
       <div class="sale-receipt-print__row">
         <span class="sale-receipt-print__label">تاریخ فروش</span>
         <span class="sale-receipt-print__value" dir="auto">
-          {{ data()?.saleDate | mskDateTime: 'shortDate' }} {{ data()?.saleDate | mskDateTime: 'HH:mm' }}
+          {{ $safeNavigationMigration(data()?.saleDate) | mskDateTime: 'shortDate' }} {{ $safeNavigationMigration(data()?.saleDate) | mskDateTime: 'HH:mm' }}
         </span>
       </div>
     }
@@ -71,15 +71,15 @@
   <div class="sale-receipt-print__totals">
     <div class="sale-receipt-print__row">
       <span class="sale-receipt-print__label">جمع کل</span>
-      <span class="sale-receipt-print__value" dir="auto">{{ data()?.subtotal | mskCurrency: 'IRT' }}</span>
+      <span class="sale-receipt-print__value" dir="auto">{{ $safeNavigationMigration(data()?.subtotal) | mskCurrency: 'IRT' }}</span>
     </div>
     <div class="sale-receipt-print__row">
       <span class="sale-receipt-print__label">تخفیف</span>
-      <span class="sale-receipt-print__value" dir="auto">{{ data()?.discount | mskCurrency: 'IRT' }}</span>
+      <span class="sale-receipt-print__value" dir="auto">{{ $safeNavigationMigration(data()?.discount) | mskCurrency: 'IRT' }}</span>
     </div>
     <div class="sale-receipt-print__row sale-receipt-print__total">
       <span class="sale-receipt-print__label">قابل پرداخت</span>
-      <span class="sale-receipt-print__value" dir="auto">{{ data()?.total | mskCurrency: 'IRT' }}</span>
+      <span class="sale-receipt-print__value" dir="auto">{{ $safeNavigationMigration(data()?.total) | mskCurrency: 'IRT' }}</span>
     </div>
   </div>
 </div>

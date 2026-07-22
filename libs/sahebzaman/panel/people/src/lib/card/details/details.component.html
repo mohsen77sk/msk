@@ -1,6 +1,6 @@
 <msk-dialog
   *transloco="let t; prefix: 'people.details'"
-  [title]="t(data.action(), { code: data.item()?.code })"
+  [title]="t(data.action(), { code: $safeNavigationMigration(data.item()?.code) })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
@@ -34,7 +34,7 @@
   </div>
   <div class="msk-group-list">
     <div class="msk-list-item subtitle">
-      {{ t('about', { name: data.item()?.fullName }) }}
+      {{ t('about', { name: $safeNavigationMigration(data.item()?.fullName) }) }}
     </div>
     <!-- National Code -->
     @if (data.item()?.nationalCode) {
@@ -51,7 +51,7 @@
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">cake</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ (data.item()?.birthday | mskDateTime: 'longDate') || '-' }}</span>
+          <span>{{ ($safeNavigationMigration(data.item()?.birthday) | mskDateTime: 'longDate') || '-' }}</span>
           <span>{{ t('birthday') }}</span>
         </div>
       </div>

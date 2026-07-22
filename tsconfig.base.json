@@ -111,7 +111,12 @@
       "@msk/shared/utils/number": ["./libs/shared/utils/number/src/index.ts"],
       "@msk/shared/utils/service-worker": ["libs/shared/utils/service-worker/src/index.ts"],
       "@msk/shared/utils/transloco": ["libs/shared/utils/transloco/src/index.ts"]
-    }
+    },
+    "strict": false,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "esModuleInterop": false,
+    "ignoreDeprecations": "6.0"
   },
   "exclude": ["node_modules", "tmp"]
 }
