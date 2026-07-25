@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  DestroyRef,
-  OnInit,
-  ViewEncapsulation,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, OnInit, ViewEncapsulation, inject, input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgTemplateOutlet } from '@angular/common';
 import { IsActiveMatchOptions, RouterLink, RouterLinkActive } from '@angular/router';
@@ -22,7 +13,6 @@ import { MskNavigationItem } from '../../../navigation.types';
   selector: 'msk-vertical-navigation-basic-item',
   templateUrl: './basic.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, RouterLink, RouterLinkActive, MatTooltipModule, MatIconModule],
 })
 export class MskVerticalNavigationBasicItemComponent implements OnInit {

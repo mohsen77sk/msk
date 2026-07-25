@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, ViewEncapsulation, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, DestroyRef, OnInit, ViewEncapsulation, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -15,7 +15,6 @@ import { UserComponent } from '../../common/user/user.component';
   selector: 'mz-layout-material',
   templateUrl: './material.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterOutlet,
     MatIconModule,
@@ -32,8 +31,8 @@ export class LayoutMaterialComponent implements OnInit {
   private _mskNavigationService = inject(MskNavigationService);
   private _mskMediaWatcherService = inject(MskMediaWatcherService);
 
-  navigation!: Navigation;
-  isScreenSmall!: boolean;
+  navigation = signal<Navigation>([]);
+  isScreenSmall = signal(false);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -47,7 +46,7 @@ export class LayoutMaterialComponent implements OnInit {
     this._navigationService.navigation$
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe((navigation: Navigation) => {
-        this.navigation = cloneDeep(navigation);
+        this.navigation.set(cloneDeep(navigation));
       });
 
     // Subscribe to media changes
@@ -55,7 +54,7 @@ export class LayoutMaterialComponent implements OnInit {
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe(({ matchingAliases }) => {
         // Check if the screen is small
-        this.isScreenSmall = !matchingAliases.includes('md');
+        this.isScreenSmall.set(!matchingAliases.includes('md'));
       });
   }
 

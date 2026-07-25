@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  DestroyRef,
-  inject,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, DestroyRef, inject, ViewEncapsulation } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
@@ -18,7 +10,6 @@ import { filter } from 'rxjs';
   selector: 'sz-breadcrumb',
   templateUrl: './breadcrumb.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIcon],
 })
 export class BreadcrumbComponent implements AfterViewInit {

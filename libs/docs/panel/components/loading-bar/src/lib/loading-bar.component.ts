@@ -1,4 +1,4 @@
-import { Component, inject, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MskHighlightComponent } from '@msk/shared/ui/highlight';
@@ -8,7 +8,6 @@ import { MskLoadingBarService } from '@msk/shared/ui/loading-bar';
   selector: 'doc-loading-bar',
   templateUrl: './loading-bar.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MskHighlightComponent, MatTabsModule, MatButtonModule],
 })
 export class DocLoadingBarComponent {

@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   HostBinding,
@@ -26,7 +25,6 @@ import { filter } from 'rxjs';
   styleUrl: './alert.component.css',
   exportAs: 'mskAlert',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatButtonModule],
 })
 export class MskAlertComponent implements OnInit {

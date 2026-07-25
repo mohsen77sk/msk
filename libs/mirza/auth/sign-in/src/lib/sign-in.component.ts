@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, ViewEncapsulation, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormRoot, FormField, form, required, FieldTree, disabled } from '@angular/forms/signals';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -19,7 +19,6 @@ import { firstValueFrom } from 'rxjs';
   selector: 'mz-sign-in',
   templateUrl: './sign-in.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FormRoot,
     FormField,

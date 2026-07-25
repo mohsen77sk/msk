@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
@@ -12,7 +12,6 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
   selector: 'sz-layout-language-dialog',
   templateUrl: './layout-language-dialog.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [FormsModule, MatRadioModule, MatDialogModule, TranslocoDirective],
 })
 export class LayoutLanguageDialogComponent implements OnInit {

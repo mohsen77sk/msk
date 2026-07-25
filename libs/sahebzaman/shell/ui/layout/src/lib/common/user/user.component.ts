@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   OnInit,
@@ -31,7 +30,6 @@ import { availableCurrencies, availableLangs } from '@msk/shared/constants';
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatMenuModule, MatIconModule, MatButtonModule, MatDialogModule, TranslocoDirective, MskAvatarComponent],
 })
 export class UserComponent implements OnInit {

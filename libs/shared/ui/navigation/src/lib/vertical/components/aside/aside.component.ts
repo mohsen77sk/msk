@@ -1,6 +1,4 @@
-
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -27,15 +25,14 @@ import { MskNavigationItem } from '../../../navigation.types';
   selector: 'msk-vertical-navigation-aside-item',
   templateUrl: './aside.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatIconModule,
     MatTooltipModule,
     MskVerticalNavigationBasicItemComponent,
     MskVerticalNavigationCollapsableItemComponent,
     MskVerticalNavigationDividerItemComponent,
-    MskVerticalNavigationGroupItemComponent
-],
+    MskVerticalNavigationGroupItemComponent,
+  ],
 })
 export class MskVerticalNavigationAsideItemComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

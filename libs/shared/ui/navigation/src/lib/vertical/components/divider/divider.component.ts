@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  DestroyRef,
-  OnInit,
-  ViewEncapsulation,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, OnInit, ViewEncapsulation, inject, input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MskVerticalNavigationComponent } from '../../vertical-navigation.component';
 import { MskNavigationService } from '../../../navigation.service';
@@ -17,7 +8,6 @@ import { MskNavigationItem } from '../../../navigation.types';
   selector: 'msk-vertical-navigation-divider-item',
   templateUrl: './divider.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MskVerticalNavigationDividerItemComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);

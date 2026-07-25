@@ -1,13 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  inject,
-  OnInit,
-  signal,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
@@ -28,7 +20,6 @@ import { SalesPaymentTypeReport } from '../../dashboard.types';
   selector: 'mz-payment-summary',
   templateUrl: './payment-summary.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DecimalPipe,
     FormsModule,

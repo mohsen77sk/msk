@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, input, viewChild } from '@angular/core';
+import { Component, ElementRef, input, viewChild } from '@angular/core';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { ReceiptPrintData } from './print.types';
@@ -7,7 +7,6 @@ import { ReceiptPrintData } from './print.types';
   selector: 'mz-sale-receipt-print',
   templateUrl: './print.component.html',
   styleUrl: './print.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MskCurrencyPipe, MskDateTimePipe],
 })
 export class SaleReceiptPrintComponent {

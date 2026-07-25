@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, ViewEncapsulation } from '@angular/core';
+import { Component, input, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,7 +10,6 @@ import { SortMenuItem } from './sort-menu.types';
   selector: 'msk-sort-menu',
   templateUrl: './sort-menu.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslocoDirective, MatIconModule, MatMenuModule, MatButtonModule],
 })
 export class MskSortMenuComponent {

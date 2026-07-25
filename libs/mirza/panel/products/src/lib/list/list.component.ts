@@ -1,13 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  OnInit,
-  ViewEncapsulation,
-  inject,
-  viewChild,
-} from '@angular/core';
+import { Component, DestroyRef, OnInit, ViewEncapsulation, inject, viewChild } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { startWith } from 'rxjs';
@@ -35,7 +27,6 @@ import { ProductsService } from '../products.service';
   selector: 'mz-products-list',
   templateUrl: './list.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DecimalPipe,
     FormsModule,

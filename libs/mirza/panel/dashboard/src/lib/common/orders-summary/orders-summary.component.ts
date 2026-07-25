@@ -1,13 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  inject,
-  OnInit,
-  signal,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
@@ -29,7 +21,6 @@ import { SalesDailyReport } from '../../dashboard.types';
   selector: 'mz-orders-summary',
   templateUrl: './orders-summary.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DecimalPipe,
     FormsModule,

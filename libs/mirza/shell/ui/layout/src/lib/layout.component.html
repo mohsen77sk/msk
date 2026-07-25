@@ -2,11 +2,11 @@
 <msk-loading-bar></msk-loading-bar>
 
 <!-- Empty layout -->
-@if (layoutType === 'empty') {
-  <mz-layout-empty [dir]="layoutDirection"></mz-layout-empty>
+@if (layoutType() === 'empty') {
+  <mz-layout-empty [dir]="layoutConfig().direction"></mz-layout-empty>
 }
 
 <!-- Material layout -->
-@if (layoutType === 'material') {
-  <mz-layout-material [dir]="layoutDirection"></mz-layout-material>
+@if (layoutType() === 'material') {
+  <mz-layout-material [dir]="layoutConfig().direction"></mz-layout-material>
 }

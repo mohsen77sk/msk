@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -45,7 +44,6 @@ import {
   styleUrls: ['./styles/default.css', './styles/rail.css'],
   exportAs: 'mskVerticalNavigation',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MskScrollbarDirective,
     MskVerticalNavigationAsideItemComponent,

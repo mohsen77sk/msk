@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   OnInit,
@@ -34,7 +33,6 @@ import { finalize, tap } from 'rxjs';
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatMenuModule,
     MatIconModule,

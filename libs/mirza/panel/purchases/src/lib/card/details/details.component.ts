@@ -1,15 +1,6 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  ChangeDetectionStrategy,
-  inject,
-  signal,
-  DestroyRef,
-  computed,
-} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject, signal, DestroyRef, computed } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
@@ -59,7 +50,6 @@ import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/pa
   selector: 'mz-purchases-details',
   templateUrl: './details.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
     FormsModule,

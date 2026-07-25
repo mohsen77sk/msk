@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -26,7 +25,6 @@ import { MskNavigationItem } from '../../../navigation.types';
   selector: 'msk-vertical-navigation-collapsable-item',
   templateUrl: './collapsable.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatIconModule,
     MatTooltipModule,

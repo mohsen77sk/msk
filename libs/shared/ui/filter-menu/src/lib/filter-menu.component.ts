@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, forwardRef, input, signal, ViewEncapsulation } from '@angular/core';
+import { Component, forwardRef, input, signal, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -11,7 +11,6 @@ import { MskDataSource, MskLookupItem } from '@msk/shared/data-access';
   selector: 'msk-filter-menu',
   templateUrl: './filter-menu.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ScrollingModule, TranslocoPipe, MatIconModule, MatMenuModule, MatButtonModule],
   providers: [
     {

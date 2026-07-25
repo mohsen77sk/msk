@@ -3,7 +3,6 @@ import {
   Component,
   OnInit,
   ViewEncapsulation,
-  ChangeDetectionStrategy,
   inject,
   signal,
   viewChild,
@@ -42,7 +41,6 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
   selector: 'mz-customers-details',
   templateUrl: './details.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
     FormsModule,

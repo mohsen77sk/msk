@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, HostBinding, input, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, input, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'msk-avatar',
   templateUrl: './avatar.component.html',
   exportAs: 'mskAvatar',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MskAvatarComponent {
   name = input.required<string>();

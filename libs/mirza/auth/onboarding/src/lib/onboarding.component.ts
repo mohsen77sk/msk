@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, ViewEncapsulation, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormRoot, FormField, form, required, FieldTree, disabled } from '@angular/forms/signals';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -17,7 +17,6 @@ import { CreateStoreRequest, StoreService } from '@msk/mirza/shell/core/store';
   selector: 'mz-onboarding',
   templateUrl: './onboarding.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     FormRoot,
     FormField,

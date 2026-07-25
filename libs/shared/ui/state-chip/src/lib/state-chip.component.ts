@@ -1,12 +1,4 @@
-import {
-  booleanAttribute,
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-  ViewEncapsulation,
-} from '@angular/core';
+import { booleanAttribute, Component, computed, inject, input, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslocoService } from '@jsverse/transloco';
 
@@ -14,7 +6,6 @@ import { TranslocoService } from '@jsverse/transloco';
   selector: 'msk-state-chip',
   templateUrl: './state-chip.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule],
 })
 export class MskStateChipComponent {

@@ -1,16 +1,6 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  ChangeDetectionStrategy,
-  inject,
-  signal,
-  DestroyRef,
-  ViewChild,
-  computed,
-} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject, signal, DestroyRef, ViewChild, computed } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
@@ -61,7 +51,6 @@ const MELLAT_POS_PAYMENT_TYPE_NAME = 'دستگاه POS ملت';
   selector: 'mz-sales-details',
   templateUrl: './details.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
     FormsModule,

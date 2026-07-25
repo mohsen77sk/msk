@@ -1,7 +1,6 @@
 /* eslint-disable @angular-eslint/component-selector */
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EmbeddedViewRef,
@@ -29,7 +28,6 @@ import { MskHighlightService } from './highlight.service';
   styleUrl: './highlight.component.css',
   exportAs: 'mskHighlight',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ClipboardModule, MatIconModule, MatButtonModule],
 })
 export class MskHighlightComponent implements AfterViewInit {

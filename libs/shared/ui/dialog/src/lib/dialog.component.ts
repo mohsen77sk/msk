@@ -1,7 +1,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   effect,
@@ -29,7 +28,6 @@ import { filter, map } from 'rxjs';
   templateUrl: './dialog.component.html',
   exportAs: 'mskDialog',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
     DragDropModule,

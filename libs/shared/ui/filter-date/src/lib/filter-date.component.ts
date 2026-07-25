@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  signal,
-  ViewEncapsulation,
-  effect,
-  computed,
-} from '@angular/core';
+import { Component, inject, input, signal, ViewEncapsulation, effect, computed } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
@@ -27,7 +18,6 @@ import { DateRange, DateRangeItem, DateRangeKey } from './filter-date.types';
   selector: 'msk-filter-date',
   templateUrl: './filter-date.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ScrollingModule,
     MatIconModule,

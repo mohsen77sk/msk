@@ -1,4 +1,13 @@
-import { Component, DestroyRef, OnInit, ViewEncapsulation, booleanAttribute, inject, input, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  OnInit,
+  ViewEncapsulation,
+  booleanAttribute,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progress-bar';
 import { MskLoadingBarService } from './loading-bar.service';
@@ -10,7 +19,6 @@ import { map } from 'rxjs';
   styleUrls: ['./loading-bar.component.css'],
   exportAs: 'mskLoadingBar',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatProgressBarModule],
 })
 export class MskLoadingBarComponent implements OnInit {
@@ -18,9 +26,9 @@ export class MskLoadingBarComponent implements OnInit {
   private _mskLoadingBarService = inject(MskLoadingBarService);
 
   autoMode = input(true, { transform: booleanAttribute });
-  mode!: ProgressBarMode;
-  progress = 0;
-  show = false;
+  mode = signal<ProgressBarMode>('indeterminate');
+  progress = signal(0);
+  show = signal(false);
 
   /**
    * Constructor
@@ -44,21 +52,21 @@ export class MskLoadingBarComponent implements OnInit {
     this._mskLoadingBarService.mode$
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        map((value) => (this.mode = value)),
+        map((value) => this.mode.set(value)),
       )
       .subscribe();
 
     this._mskLoadingBarService.progress$
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        map((value) => (this.progress = value)),
+        map((value) => this.progress.set(value)),
       )
       .subscribe();
 
     this._mskLoadingBarService.show$
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        map((value) => (this.show = value)),
+        map((value) => this.show.set(value)),
       )
       .subscribe();
   }

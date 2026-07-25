@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -22,7 +21,6 @@ import { MskNavigationItem } from '../../../navigation.types';
   selector: 'msk-vertical-navigation-group-item',
   templateUrl: './group.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatIconModule,
     MskVerticalNavigationBasicItemComponent,

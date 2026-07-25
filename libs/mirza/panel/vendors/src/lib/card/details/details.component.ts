@@ -3,7 +3,6 @@ import {
   Component,
   OnInit,
   ViewEncapsulation,
-  ChangeDetectionStrategy,
   inject,
   signal,
   DestroyRef,
@@ -43,7 +42,6 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
   selector: 'mz-vendors-details',
   templateUrl: './details.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgTemplateOutlet,
     FormsModule,

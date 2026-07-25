@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  TemplateRef,
-  ViewEncapsulation,
-  inject,
-  input,
-  DOCUMENT,
-} from '@angular/core';
+import { Component, TemplateRef, ViewEncapsulation, inject, input, DOCUMENT } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +9,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './fullscreen.component.html',
   exportAs: 'mskFullscreen',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatIconModule, MatButtonModule, MatTooltipModule, NgTemplateOutlet],
 })
 export class MskFullscreenComponent {

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, ViewEncapsulation, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, DestroyRef, OnInit, ViewEncapsulation, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 
@@ -17,7 +17,6 @@ import { DocsPageTitleComponent } from '../../common/page-title/page-title.compo
   selector: 'doc-layout-material',
   templateUrl: './material.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterOutlet,
     MatIconModule,
@@ -26,8 +25,8 @@ import { DocsPageTitleComponent } from '../../common/page-title/page-title.compo
     MskVerticalNavigationComponent,
     DocsLanguagesComponent,
     DocsPageTitleComponent,
-    TranslocoDirective
-],
+    TranslocoDirective,
+  ],
 })
 export class DocsLayoutMaterialComponent implements OnInit {
   private _destroyRef = inject(DestroyRef);
@@ -35,8 +34,8 @@ export class DocsLayoutMaterialComponent implements OnInit {
   private _mskNavigationService = inject(MskNavigationService);
   private _mskMediaWatcherService = inject(MskMediaWatcherService);
 
-  navigation!: Navigation;
-  isScreenSmall!: boolean;
+  navigation = signal<Navigation>([]);
+  isScreenSmall = signal(false);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -50,7 +49,7 @@ export class DocsLayoutMaterialComponent implements OnInit {
     this._navigationService.navigation$
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe((navigation: Navigation) => {
-        this.navigation = cloneDeep(navigation);
+        this.navigation.set(cloneDeep(navigation));
       });
 
     // Subscribe to media changes
@@ -58,7 +57,7 @@ export class DocsLayoutMaterialComponent implements OnInit {
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe(({ matchingAliases }) => {
         // Check if the screen is small
-        this.isScreenSmall = !matchingAliases.includes('md');
+        this.isScreenSmall.set(!matchingAliases.includes('md'));
       });
   }
 

@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  inject,
-  signal,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, inject, signal, ViewEncapsulation } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MskNavigationService, MskVerticalNavigationComponent } from '@msk/shared/ui/navigation';
@@ -16,7 +8,6 @@ import { filter } from 'rxjs';
   selector: 'doc-page-title',
   templateUrl: './page-title.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocsPageTitleComponent implements AfterViewInit {
   private _destroyRef = inject(DestroyRef);
