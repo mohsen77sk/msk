@@ -186,13 +186,13 @@ export class AccountService {
       accountId: 0,
       page: 1,
       pageSize: 10,
-      sortBy: `${DefaultAccountTransactionsSortData.active} ${DefaultAccountTransactionsSortData.direction}`,
+      sortBy: DefaultAccountTransactionsSortData,
     },
   ): Observable<MskPageData<AccountTransaction>> {
     return this._httpClient
-      .get<
-        MskPagingResponse<AccountTransaction>
-      >(`${this._appConfig.apiEndpoint}/api/accountTransaction/all`, { params })
+      .get<MskPagingResponse<AccountTransaction>>(`${this._appConfig.apiEndpoint}/api/accountTransaction/all`, {
+        params,
+      })
       .pipe(
         map((response) => {
           return new MskPageData({

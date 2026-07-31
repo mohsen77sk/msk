@@ -1,7 +1,7 @@
 import { MskSortable } from '@msk/shared/data-access';
 
 export const DefaultAccountsSortData: MskSortable = { active: 'code', direction: 'asc' };
-export const DefaultAccountTransactionsSortData: MskSortable = { active: 'date', direction: 'desc' };
+export const DefaultAccountTransactionsSortData = 'date desc, code desc';
 export interface ICreateAccount {
   accountTypeId: number;
   initCredit: number;
@@ -92,6 +92,8 @@ export interface IReverseAccountTransaction {
 export class AccountTransaction {
   id: number;
   code: string;
+  typeCode: string;
+  typeTitle: string;
   credit: number;
   debit: number;
   date: Date;
@@ -100,6 +102,8 @@ export class AccountTransaction {
   constructor(input: AccountTransaction) {
     this.id = input.id;
     this.code = input.code;
+    this.typeCode = input.typeCode;
+    this.typeTitle = input.typeTitle;
     this.credit = input.credit;
     this.debit = input.debit;
     this.date = new Date(input.date);

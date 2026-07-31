@@ -324,7 +324,7 @@ export class AccountsCardDetailsComponent implements OnInit {
         accountId: this.data.item()?.id ?? 0,
         page: 1,
         pageSize: 3,
-        sortBy: `${DefaultAccountTransactionsSortData.active} ${DefaultAccountTransactionsSortData.direction}`,
+        sortBy: DefaultAccountTransactionsSortData,
       })
       .pipe(
         map((response) => response.items),
