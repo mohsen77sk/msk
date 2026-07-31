@@ -222,18 +222,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
     });
     this.purchaseItems.push(group);
 
-    combineLatest([
-      group.controls.product.valueChanges.pipe(startWith(group.controls.product.value)),
-      group.controls.quantity.valueChanges.pipe(startWith(group.controls.quantity.value)),
-    ])
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        map(([product, quantity]) => {
-          group.controls.total.setValue((product?.sellPrice ?? 0) * (quantity ?? 0));
-        }),
-      )
-      .subscribe();
-
+    // Purchase row totals are entered manually and must not be derived from
+    // product.sellPrice or recalculated from quantity (unlike sale items).
     group.controls.product.valueChanges
       .pipe(
         takeUntilDestroyed(this._destroyRef),

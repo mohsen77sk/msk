@@ -15,6 +15,7 @@
     "products": "Products",
     "product": "Product",
     "quantity": "Quantity",
+    "itemTotal": "Row total",
     "totalPrice": "Total price",
     "addProduct": "Add product",
     "paymentTypes": "Payments",
