@@ -125,7 +125,7 @@
 
     @if (showVendor()) {
       <div class="mb-6 flex gap-2">
-        <mat-icon class="flex size-10 items-center justify-center">person</mat-icon>
+        <mat-icon class="flex size-10 shrink-0 items-center justify-center">person</mat-icon>
         <mat-form-field subscriptSizing="dynamic" class="flex-1">
           <mat-label>{{ t('vendor') }}</mat-label>
           <input
@@ -165,7 +165,7 @@
 
     @if (showDate()) {
       <div class="mb-6 flex gap-2">
-        <mat-icon class="flex size-10 items-center justify-center">calendar_today</mat-icon>
+        <mat-icon class="flex size-10 shrink-0 items-center justify-center">calendar_today</mat-icon>
         <mat-form-field subscriptSizing="dynamic" class="flex-1">
           <mat-label>{{ t('date') }}</mat-label>
           <input matInput formControlName="date" [matDatepicker]="picker" [mskAutoFocus]="isNew()" />
@@ -180,7 +180,7 @@
       @for (product of purchaseItems.controls; track i; let i = $index; let c = $count) {
         <div class="flex flex-1 gap-2" [formGroupName]="i">
           @if (i === 0) {
-            <mat-icon class="flex size-10 items-center justify-center">coffee</mat-icon>
+            <mat-icon class="flex size-10 shrink-0 items-center justify-center">coffee</mat-icon>
           } @else {
             <button type="button" mat-icon-button (click)="removePurchaseItem(i)">
               <mat-icon class="text-error">do_not_disturb_on</mat-icon>
@@ -224,12 +224,12 @@
               </mat-autocomplete>
             </mat-form-field>
             <!-- Quantity -->
-            <mat-form-field subscriptSizing="dynamic" class="md:w-20 md:flex-none">
+            <mat-form-field subscriptSizing="dynamic" class="md:w-24 md:flex-none">
               <mat-label>{{ t('quantity') }}</mat-label>
               <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
             </mat-form-field>
             <!-- Row total (manually entered, not derived from product.sellPrice) -->
-            <mat-form-field subscriptSizing="dynamic" class="md:flex-[1.6]">
+            <mat-form-field>
               <mat-label>{{ t('itemTotal') }}</mat-label>
               <input matInput formControlName="total" mskMask="decimal" autocomplete="off" inputmode="numeric" />
               <span matTextSuffix mskCurrencySymbol></span>
@@ -249,7 +249,7 @@
       @for (paymentType of paymentTypes.controls; track i; let i = $index; let c = $count) {
         <div class="flex flex-1 gap-2" [formGroupName]="i">
           @if (i === 0) {
-            <mat-icon class="flex size-10 items-center justify-center">payments</mat-icon>
+            <mat-icon class="flex size-10 shrink-0 items-center justify-center">payments</mat-icon>
           } @else {
             <button type="button" mat-icon-button (click)="removePaymentType(i)">
               <mat-icon class="text-error">do_not_disturb_on</mat-icon>
@@ -293,7 +293,7 @@
               </mat-autocomplete>
             </mat-form-field>
             <!-- Value -->
-            <mat-form-field subscriptSizing="dynamic">
+            <mat-form-field>
               <mat-label>{{ t('paymentTypeValue') }}</mat-label>
               <input matInput formControlName="value" mskMask="decimal" autocomplete="off" inputmode="numeric" />
               <span matTextSuffix mskCurrencySymbol></span>
@@ -309,7 +309,7 @@
     </div>
 
     <div class="mb-6 flex gap-2">
-      <mat-icon class="flex size-10 items-center justify-center">redeem</mat-icon>
+      <mat-icon class="flex size-10 shrink-0 items-center justify-center">redeem</mat-icon>
       <mat-form-field subscriptSizing="dynamic" class="flex-1">
         <mat-label>{{ t('discount') }}</mat-label>
         <input matInput formControlName="discount" mskMask="currency" autocomplete="off" inputmode="numeric" />
@@ -323,7 +323,7 @@
 
     @if (showNote()) {
       <div class="mb-6 flex gap-2">
-        <mat-icon class="flex size-10 items-center justify-center">draft</mat-icon>
+        <mat-icon class="flex size-10 shrink-0 items-center justify-center">draft</mat-icon>
         <mat-form-field subscriptSizing="dynamic" class="flex-1">
           <textarea
             matInput
