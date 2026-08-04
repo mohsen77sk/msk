@@ -6,6 +6,7 @@
     "specs": "مشخصات",
     "number": "شماره",
     "customer": "مشتری",
+    "contactNumber": "شماره تماس",
     "date": "تاریخ",
     "paymentType": "نوع پرداخت",
     "paymentTypeValue": "مقدار",

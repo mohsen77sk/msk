@@ -66,6 +66,28 @@
       </div>
     </div>
   </div>
+  @if (data.item()?.customer) {
+    <div class="msk-group-list">
+      <div class="msk-list-item subtitle">{{ t('customer') }}</div>
+      <!-- Name -->
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">person</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.customer?.name || '-' }}</span>
+        </div>
+      </div>
+      <!-- Contact Number -->
+      @if (data.item()?.customer?.contactNumber) {
+        <div class="msk-list-item">
+          <mat-icon class="msk-list-item-icon">call</mat-icon>
+          <div class="msk-list-item-content">
+            <span>{{ data.item()?.customer?.contactNumber }}</span>
+            <span>{{ t('contactNumber') }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
   <div class="msk-group-list">
     <div class="msk-list-item subtitle">{{ t('products') }}</div>
     @for (item of data.item()?.saleItems; track $index) {

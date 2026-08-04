@@ -6,6 +6,7 @@
     "specs": "specification",
     "number": "Number",
     "customer": "Customer",
+    "contactNumber": "Phone Number",
     "date": "Date",
     "paymentType": "Payment type",
     "paymentTypeValue": "Value",
