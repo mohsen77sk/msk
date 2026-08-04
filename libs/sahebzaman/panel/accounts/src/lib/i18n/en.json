@@ -2,7 +2,7 @@
   "details": {
     "new": "New account",
     "edit": "Edit account",
-    "view": "Account #{{code}}",
+    "view": "{{name}}",
     "about": "About Account",
     "accountType": "Account type",
     "accountNumber": "َAccount Number",

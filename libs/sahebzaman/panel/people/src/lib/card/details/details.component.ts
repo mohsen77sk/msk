@@ -1,6 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation, inject, signal } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
@@ -28,7 +29,7 @@ import {
 } from '@msk/shared/utils/error-handler';
 import { Person } from '../../people.types';
 import { PeopleService } from '../../people.service';
-import { catchError, EMPTY, map, tap } from 'rxjs';
+import { catchError, distinctUntilChanged, EMPTY, filter, map, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'sz-people-details',
@@ -64,6 +65,23 @@ export class PeopleCardDetailsComponent implements OnInit {
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
+
+  private _dialogContent = viewChild(MskDialogComponent);
+  readonly isShowNameHeader = toSignal(
+    toObservable(this._dialogContent).pipe(
+      filter((dialogContent): dialogContent is MskDialogComponent => dialogContent !== undefined),
+      switchMap((dialogContent) =>
+        dialogContent
+          .dialogContent()
+          .elementScrolled()
+          .pipe(
+            map(({ target }) => (target as HTMLElement).scrollTop > 180),
+            distinctUntilChanged(),
+          ),
+      ),
+    ),
+    { initialValue: false },
+  );
 
   form!: FormGroup;
   formErrors: FormError = {};

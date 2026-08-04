@@ -20,7 +20,7 @@
       @if (isFullScreen()) {
         <ng-container [ngTemplateOutlet]="closeIconButton"></ng-container>
       }
-      <span [class.mt-1]="isFullScreen()"> {{ title() }} </span>
+      <span class="truncate" [class.mt-1]="isFullScreen()"> {{ title() }} </span>
     </div>
     <div class="flex items-center">
       @if (!hasAction()) {

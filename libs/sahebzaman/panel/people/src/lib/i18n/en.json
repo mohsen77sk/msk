@@ -2,7 +2,7 @@
   "details": {
     "new": "New person",
     "edit": "Edit person",
-    "view": "Person #{{code}}",
+    "view": "{{name}}",
     "about": "About {{name}}",
     "name": "Name",
     "firstName": "First Name",

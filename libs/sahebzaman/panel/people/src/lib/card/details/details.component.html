@@ -1,6 +1,10 @@
 <msk-dialog
   *transloco="let t; prefix: 'people.details'"
-  [title]="t(data.action(), { code: $safeNavigationMigration(data.item()?.code) })"
+  [title]="
+    data.action() !== 'view' || isShowNameHeader()
+      ? t(data.action(), { name: $safeNavigationMigration(data.item()?.fullName) })
+      : ''
+  "
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"

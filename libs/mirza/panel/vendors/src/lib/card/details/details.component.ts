@@ -1,16 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  inject,
-  signal,
-  DestroyRef,
-  viewChild,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
@@ -36,7 +27,7 @@ import {
 import { GenderEnum } from '@msk/mirza/panel/customers';
 import { Vendor } from '../../vendors.types';
 import { VendorsService } from '../../vendors.service';
-import { catchError, EMPTY, map, tap } from 'rxjs';
+import { catchError, distinctUntilChanged, EMPTY, filter, map, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'mz-vendors-details',
@@ -61,18 +52,31 @@ import { catchError, EMPTY, map, tap } from 'rxjs';
     MskSpinnerDirective,
   ],
 })
-export class VendorsCardDetailsComponent implements OnInit, AfterViewInit {
+export class VendorsCardDetailsComponent implements OnInit {
   readonly data = inject<MskDialogData<Vendor | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<VendorsCardDetailsComponent>);
-  private _destroyRef = inject(DestroyRef);
   private _formBuilder = inject(FormBuilder);
   private _vendorService = inject(VendorsService);
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
 
-  private _dialogContent = viewChild.required(MskDialogComponent);
-  isShowNameHeader = signal(false);
+  private _dialogContent = viewChild(MskDialogComponent);
+  readonly isShowNameHeader = toSignal(
+    toObservable(this._dialogContent).pipe(
+      filter((dialogContent): dialogContent is MskDialogComponent => dialogContent !== undefined),
+      switchMap((dialogContent) =>
+        dialogContent
+          .dialogContent()
+          .elementScrolled()
+          .pipe(
+            map(({ target }) => (target as HTMLElement).scrollTop > 180),
+            distinctUntilChanged(),
+          ),
+      ),
+    ),
+    { initialValue: false },
+  );
 
   form!: FormGroup;
   formErrors: FormError = {};
@@ -104,28 +108,6 @@ export class VendorsCardDetailsComponent implements OnInit, AfterViewInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     this.form.patchValue(this.data.item() || {});
-  }
-
-  /**
-   * After view init
-   */
-  ngAfterViewInit(): void {
-    // Get the scrolling
-    this._dialogContent()
-      .dialogContent()
-      .elementScrolled()
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        map((data) => (data.target as HTMLElement).scrollTop || 0),
-        tap((scrollTop) => {
-          const isShowNameHeader = scrollTop > 180;
-          // if changed value
-          if (this.isShowNameHeader() !== isShowNameHeader) {
-            this.isShowNameHeader.set(isShowNameHeader);
-          }
-        }),
-      )
-      .subscribe();
   }
 
   // -----------------------------------------------------------------------------------------------------

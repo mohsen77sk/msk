@@ -1,6 +1,6 @@
 <msk-dialog
   *transloco="let t; prefix: 'accounts.details'"
-  [title]="t(data.action(), { code: $safeNavigationMigration(data.item()?.code) })"
+  [title]="t(data.action(), { name: $safeNavigationMigration(data.item()?.fullName) })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
@@ -97,6 +97,16 @@
   </div>
   <div class="msk-group-list">
     <div class="msk-list-item subtitle">{{ t('about') }}</div>
+    <!-- AccountNumber -->
+    @if (data.item()?.code) {
+      <div class="msk-list-item">
+        <mat-icon class="msk-list-item-icon">numbers</mat-icon>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.code }}</span>
+          <span>{{ t('accountNumber') }}</span>
+        </div>
+      </div>
+    }
     <!-- TypeName -->
     @if (data.item()?.accountTypeName) {
       <div class="msk-list-item">

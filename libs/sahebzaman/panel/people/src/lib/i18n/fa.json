@@ -2,7 +2,7 @@
   "details": {
     "new": "کاربر جدید",
     "edit": "ویرایش کاربر",
-    "view": "کاربر #{{code}}",
+    "view": "{{name}}",
     "about": "درباره {{name}}",
     "name": "نام",
     "firstName": "نام",

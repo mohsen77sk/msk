@@ -2,7 +2,7 @@
   "details": {
     "new": "حساب جدید",
     "edit": "ویرایش حساب",
-    "view": "حساب #{{code}}",
+    "view": "{{name}}",
     "about": "درباره حساب",
     "accountType": "نوع حساب",
     "accountNumber": "شماره حساب",
