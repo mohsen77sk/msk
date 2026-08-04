@@ -78,6 +78,74 @@
       </div>
     </div>
   }
+  @if (summary(); as s) {
+    <div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+      <div class="msk-mat-card-filled px-4 py-3">
+        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('orderCount') }}</div>
+        <div class="text-label-large">{{ s.summary.orderCount }}</div>
+      </div>
+      <div class="msk-mat-card-filled px-4 py-3">
+        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('totalSales') }}</div>
+        <div class="text-label-large">{{ s.summary.totalSales | mskCurrency }}</div>
+      </div>
+      <div class="msk-mat-card-filled px-4 py-3">
+        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('totalDiscount') }}</div>
+        <div class="text-label-large">{{ s.summary.totalDiscount | mskCurrency }}</div>
+      </div>
+      <div class="msk-mat-card-filled px-4 py-3">
+        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('averageOrderValue') }}</div>
+        <div class="text-label-large">{{ s.summary.averageOrderValue | mskCurrency }}</div>
+      </div>
+      <div class="msk-mat-card-filled px-4 py-3">
+        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('firstOrderDate') }}</div>
+        <div class="text-label-large">{{ (s.summary.firstOrderDate | mskDateTime: 'longDate') || '-' }}</div>
+      </div>
+      <div class="msk-mat-card-filled px-4 py-3">
+        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('lastOrderDate') }}</div>
+        <div class="text-label-large">{{ (s.summary.lastOrderDate | mskDateTime: 'longDate') || '-' }}</div>
+      </div>
+    </div>
+
+    <div class="msk-group-list mb-6">
+      <div class="msk-list-item subtitle">{{ t('orderHistory') }}</div>
+      <div class="relative h-72">
+        <cdk-virtual-scroll-viewport class="h-full" [itemSize]="72">
+          <div class="msk-list-item" *cdkVirtualFor="let order of ordersDataSource; trackBy: trackById">
+            @if (order) {
+              <div class="msk-list-item-content">
+                <span>{{ orderTitle(order) }}</span>
+                <span class="dot-separated">
+                  <span>
+                    @for (pt of order.paymentTypes; track pt.id; let last = $last) {
+                      {{ pt.paymentType?.name }}
+                      @if (!last) {
+                        -
+                      }
+                    }
+                  </span>
+                  <span>{{ order.total | mskCurrency }}</span>
+                </span>
+              </div>
+              <div class="msk-list-item-secondary">
+                <div>{{ order.saleDate | mskDateTime: 'relative' }}</div>
+              </div>
+            } @else {
+              <div class="msk-list-item-content">
+                <div class="skeleton skeleton-text skeleton-text-lg"></div>
+                <div class="skeleton skeleton-text skeleton-text-sm"></div>
+              </div>
+              <div class="msk-list-item-secondary">
+                <div class="skeleton skeleton-status"></div>
+              </div>
+            }
+          </div>
+        </cdk-virtual-scroll-viewport>
+        @if (ordersDataSource.length === 0) {
+          <msk-empty-state class="inset-0 h-full w-full"></msk-empty-state>
+        }
+      </div>
+    </div>
+  }
   <div class="mt-6" *transloco="let t">
     <div class="text-title-small mb-4">{{ t('settings') }}</div>
     <div class="msk-group-list elevated">

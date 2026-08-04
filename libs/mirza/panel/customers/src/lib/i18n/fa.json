@@ -8,7 +8,14 @@
     "gender": "جنسیت",
     "contactNumber": "شماره تماس",
     "address": "آدرس",
-    "note": "توضیحات"
+    "note": "توضیحات",
+    "orderCount": "تعداد کل سفارش‌ها",
+    "totalSales": "مجموع خرید",
+    "totalDiscount": "مجموع تخفیف‌ها",
+    "averageOrderValue": "میانگین سفارش",
+    "firstOrderDate": "اولین خرید",
+    "lastOrderDate": "آخرین خرید",
+    "orderHistory": "تاریخچه سفارش‌ها"
   },
   "genders": {
     "male": "مرد",

@@ -8,7 +8,14 @@
     "gender": "Gender",
     "contactNumber": "Phone Number",
     "address": "Address",
-    "note": "Note"
+    "note": "Note",
+    "orderCount": "Total Orders",
+    "totalSales": "Total Purchased",
+    "totalDiscount": "Total Discounts",
+    "averageOrderValue": "Average Order",
+    "firstOrderDate": "First Purchase",
+    "lastOrderDate": "Last Purchase",
+    "orderHistory": "Order History"
   },
   "genders": {
     "male": "Male",

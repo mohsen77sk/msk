@@ -2,6 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
@@ -11,10 +12,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { MskDialogData, MskHttpErrorResponse } from '@msk/shared/data-access';
+import { MskDataSource, MskDialogData, MskHttpErrorResponse, MskSort } from '@msk/shared/data-access';
+import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
+import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
+import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
@@ -24,9 +28,9 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { Customer, GenderEnum } from '../../customers.types';
+import { Customer, CustomerSummary, GenderEnum, ICustomerOrderRow } from '../../customers.types';
 import { CustomersService } from '../../customers.service';
-import { catchError, distinctUntilChanged, EMPTY, filter, map, switchMap, tap } from 'rxjs';
+import { catchError, distinctUntilChanged, EMPTY, filter, map, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'mz-customers-details',
@@ -36,6 +40,7 @@ import { catchError, distinctUntilChanged, EMPTY, filter, map, switchMap, tap } 
     NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
+    ScrollingModule,
     MatIconModule,
     MatInputModule,
     MatRippleModule,
@@ -45,9 +50,12 @@ import { catchError, distinctUntilChanged, EMPTY, filter, map, switchMap, tap } 
     MatFormFieldModule,
     MatDialogModule,
     TranslocoDirective,
+    MskCurrencyPipe,
+    MskDateTimePipe,
     MskAlertComponent,
     MskAvatarComponent,
     MskDialogComponent,
+    MskEmptyStateComponent,
     MskSpinnerDirective,
   ],
 })
@@ -86,6 +94,20 @@ export class CustomersCardDetailsComponent implements OnInit {
     message: '',
   });
 
+  summary = signal<CustomerSummary | undefined>(undefined);
+  ordersDataSource!: MskDataSource<ICustomerOrderRow>;
+
+  trackById = (i: number, item: ICustomerOrderRow | undefined) => item?.id ?? i;
+
+  /**
+   * Sale number + product names, mirroring SaleInvoice.title in the sales feature
+   * (kept as a local mirror, not a shared import, to avoid a circular dependency
+   * between the sales and customers feature libraries).
+   */
+  orderTitle(order: ICustomerOrderRow): string {
+    return order.number + ' - ' + order.saleItems.map((i) => i.product?.name).join('/');
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
   // -----------------------------------------------------------------------------------------------------
@@ -107,6 +129,19 @@ export class CustomersCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     this.form.patchValue(this.data.item() || {});
+
+    // Load the order summary and history only in view mode for an existing customer
+    const customerId = this.data.item()?.id;
+    if (this.data.action() === 'view' && customerId) {
+      this._customerService.getCustomerSummary(customerId).subscribe((summary) => this.summary.set(summary));
+
+      this.ordersDataSource = new MskDataSource<ICustomerOrderRow>(
+        (params) => this._customerService.getCustomerOrders(params),
+        new MskSort({ active: 'saleDate', direction: 'desc' }),
+        undefined,
+        of({ customerId }),
+      );
+    }
   }
 
   // -----------------------------------------------------------------------------------------------------
