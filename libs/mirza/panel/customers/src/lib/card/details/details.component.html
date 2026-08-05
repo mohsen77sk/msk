@@ -1,6 +1,10 @@
 <msk-dialog
   *transloco="let t; prefix: 'customers.details'"
-  [title]="data.action() !== 'view' || isShowNameHeader() ? t(data.action(), { name: $safeNavigationMigration(data.item()?.name) }) : ''"
+  [title]="
+    data.action() !== 'view' || isShowNameHeader()
+      ? t(data.action(), { name: $safeNavigationMigration(data.item()?.customer?.name) })
+      : ''
+  "
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
@@ -27,93 +31,105 @@
 
 <ng-template #viewTemplate let-t="t">
   <div class="flex flex-col items-center gap-5 p-4">
-    <msk-avatar [name]="data.item()?.name ?? ''" size="big"></msk-avatar>
+    <msk-avatar [name]="data.item()?.customer?.name ?? ''" size="big"></msk-avatar>
     <div class="text-headline-small text-on-surface">
-      {{ data.item()?.name }}
+      {{ data.item()?.customer?.name }}
     </div>
   </div>
   <div class="msk-group-list">
     <div class="msk-list-item subtitle">
-      {{ t('about', { name: $safeNavigationMigration(data.item()?.name) }) }}
+      {{ t('about', { name: $safeNavigationMigration(data.item()?.customer?.name) }) }}
     </div>
     <!-- Gender -->
-    @if (data.item()?.gender) {
+    @if (data.item()?.customer?.gender) {
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">male</mat-icon>
         <div class="msk-list-item-content">
-          <span *transloco="let t; prefix: 'customers.genders'">{{ t(data.item()?.gender ?? '') }}</span>
+          <span *transloco="let t; prefix: 'customers.genders'">{{ t(data.item()?.customer?.gender ?? '') }}</span>
           <span>{{ t('gender') }}</span>
         </div>
       </div>
     }
     <!-- Contact Number -->
-    @if (data.item()?.contactNumber) {
+    @if (data.item()?.customer?.contactNumber) {
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">call</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ data.item()?.contactNumber || '-' }}</span>
+          <span>{{ data.item()?.customer?.contactNumber || '-' }}</span>
           <span>{{ t('contactNumber') }}</span>
         </div>
       </div>
     }
     <!-- Address -->
-    @if (data.item()?.address) {
+    @if (data.item()?.customer?.address) {
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">location_on</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ data.item()?.address || '-' }}</span>
+          <span>{{ data.item()?.customer?.address || '-' }}</span>
           <span>{{ t('address') }}</span>
         </div>
       </div>
     }
   </div>
-  @if (data.item()?.note) {
+  @if (data.item()?.customer?.note) {
     <div class="msk-group-list">
       <div class="msk-list-item subtitle">{{ t('note') }}</div>
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ data.item()?.note }}</span>
+          <span>{{ data.item()?.customer?.note }}</span>
         </div>
       </div>
     </div>
   }
-  @if (summary(); as s) {
+
+  @if (data.item()?.summery; as summery) {
     <div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
-      <div class="msk-mat-card-filled px-4 py-3">
-        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('orderCount') }}</div>
-        <div class="text-label-large">{{ s.summary.orderCount }}</div>
+      <div class="msk-mat-card-filled bg-surface-bright px-4 py-3">
+        <div class="text-label-medium mb-2">{{ t('orderCount') }}</div>
+        <div class="text-on-surface text-label-large">{{ summery?.orderCount | number }}</div>
       </div>
-      <div class="msk-mat-card-filled px-4 py-3">
-        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('totalSales') }}</div>
-        <div class="text-label-large">{{ s.summary.totalSales | mskCurrency }}</div>
+      <div class="msk-mat-card-filled bg-surface-bright px-4 py-3">
+        <div class="text-label-medium mb-2">{{ t('totalSales') }}</div>
+        <div class="text-on-surface text-label-large">{{ summery?.totalSales | mskCurrency }}</div>
       </div>
-      <div class="msk-mat-card-filled px-4 py-3">
-        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('totalDiscount') }}</div>
-        <div class="text-label-large">{{ s.summary.totalDiscount | mskCurrency }}</div>
+      <div class="msk-mat-card-filled bg-surface-bright px-4 py-3">
+        <div class="text-label-medium mb-2">{{ t('totalDiscount') }}</div>
+        <div class="text-on-surface text-label-large">{{ summery?.totalDiscount | mskCurrency }}</div>
       </div>
-      <div class="msk-mat-card-filled px-4 py-3">
-        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('averageOrderValue') }}</div>
-        <div class="text-label-large">{{ s.summary.averageOrderValue | mskCurrency }}</div>
+      <div class="msk-mat-card-filled bg-surface-bright px-4 py-3">
+        <div class="text-label-medium mb-2">{{ t('averageOrderValue') }}</div>
+        <div class="text-on-surface text-label-large">{{ summery?.averageOrderValue | mskCurrency }}</div>
       </div>
-      <div class="msk-mat-card-filled px-4 py-3">
-        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('firstOrderDate') }}</div>
-        <div class="text-label-large">{{ (s.summary.firstOrderDate | mskDateTime: 'longDate') || '-' }}</div>
+      <div class="msk-mat-card-filled bg-surface-bright px-4 py-3">
+        <div class="text-label-medium mb-2">{{ t('firstOrderDate') }}</div>
+        <div class="text-on-surface text-label-large">
+          {{ (summery?.firstOrderDate | mskDateTime: 'longDate') || '-' }}
+        </div>
       </div>
-      <div class="msk-mat-card-filled px-4 py-3">
-        <div class="text-on-surface-variant text-label-medium mb-2">{{ t('lastOrderDate') }}</div>
-        <div class="text-label-large">{{ (s.summary.lastOrderDate | mskDateTime: 'longDate') || '-' }}</div>
+      <div class="msk-mat-card-filled bg-surface-bright px-4 py-3">
+        <div class="text-label-medium mb-2">{{ t('lastOrderDate') }}</div>
+        <div class="text-on-surface text-label-large">
+          {{ (summery?.lastOrderDate | mskDateTime: 'longDate') || '-' }}
+        </div>
       </div>
     </div>
+  }
 
+  @if ((data.item()?.summery?.orderCount ?? 0) > 0) {
     <div class="msk-group-list mb-6">
       <div class="msk-list-item subtitle">{{ t('orderHistory') }}</div>
-      <div class="relative h-72">
-        <cdk-virtual-scroll-viewport class="h-full" [itemSize]="72">
-          <div class="msk-list-item" *cdkVirtualFor="let order of ordersDataSource; trackBy: trackById">
+      <div class="relative max-h-[385px]">
+        <cdk-virtual-scroll-viewport
+          [itemSize]="77"
+          minBufferPx="385"
+          maxBufferPx="770"
+          [style.height.px]="(ordersDataSource.length || 0) > 5 ? 385 : (ordersDataSource.length || 0) * 77"
+        >
+          <div class="msk-list-item mb-0.5" *cdkVirtualFor="let order of ordersDataSource; trackBy: trackById">
             @if (order) {
               <div class="msk-list-item-content">
-                <span>{{ orderTitle(order) }}</span>
+                <span>{{ order.title }}</span>
                 <span class="dot-separated">
                   <span>
                     @for (pt of order.paymentTypes; track pt.id; let last = $last) {
@@ -140,12 +156,10 @@
             }
           </div>
         </cdk-virtual-scroll-viewport>
-        @if (ordersDataSource.length === 0) {
-          <msk-empty-state class="inset-0 h-full w-full"></msk-empty-state>
-        }
       </div>
     </div>
   }
+
   <div class="mt-6" *transloco="let t">
     <div class="text-title-small mb-4">{{ t('settings') }}</div>
     <div class="msk-group-list elevated">

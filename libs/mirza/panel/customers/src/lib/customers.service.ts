@@ -11,7 +11,7 @@ import {
   MskChangeEvent,
   MskLookupItem,
 } from '@msk/shared/data-access';
-import { Customer, CustomerSummary, ICustomerOrderRow, DefaultCustomersSortData } from './customers.types';
+import { Customer, CustomerSummary, DefaultCustomersSortData, CustomerOrderRow } from './customers.types';
 
 @Injectable({ providedIn: 'root' })
 export class CustomersService {
@@ -112,27 +112,24 @@ export class CustomersService {
   }
 
   /**
-   * Get the customer profile summary (customer info + aggregated order summary)
+   * Get the customer profile summary
    *
    * @param id
    */
   getCustomerSummary(id: number | string): Observable<CustomerSummary> {
     return this._httpClient
-      .get<CustomerSummary>(`${this._appConfig.apiEndpoint}/customer/${id}/summary`)
-      .pipe(map((response) => new CustomerSummary(response)));
+      .get<{ summary: CustomerSummary }>(`${this._appConfig.apiEndpoint}/customer/${id}/summary`)
+      .pipe(map((response) => new CustomerSummary(response.summary)));
   }
 
   /**
-   * Get this customer's order history - reuses the existing GET /sale?customerId=:id
-   * endpoint (paging/sorting handled the same way as the sales list) without importing
-   * the sales feature library, to avoid a circular dependency (sales already depends on
-   * customers for the customer selector/model).
+   * Get this customer's order history
    *
    * @param params
    */
-  getCustomerOrders(params: MskPagingRequest): Observable<MskPageData<ICustomerOrderRow>> {
+  getCustomerOrders(params: MskPagingRequest): Observable<MskPageData<CustomerOrderRow>> {
     return this._httpClient
-      .get<MskPagingResponse<ICustomerOrderRow>>(`${this._appConfig.apiEndpoint}/sale`, {
+      .get<MskPagingResponse<CustomerOrderRow>>(`${this._appConfig.apiEndpoint}/sale`, {
         params: convertToMirzaPagingRequest(params),
       })
       .pipe(
@@ -140,14 +137,7 @@ export class CustomersService {
           (response) =>
             new MskPageData({
               ...response,
-              items: response.items.map((item) => ({
-                id: item.id,
-                number: item.number,
-                saleDate: item.saleDate ? new Date(item.saleDate) : undefined,
-                total: item.total,
-                saleItems: item.saleItems ?? [],
-                paymentTypes: item.paymentTypes ?? [],
-              })),
+              items: response.items.map((item) => new CustomerOrderRow(item)),
             }),
         ),
       );

@@ -8,7 +8,7 @@ import { CustomersCardComponent } from './card/card.component';
 import { scopeLoader } from '@msk/shared/utils/transloco';
 import { provideTranslocoScope } from '@jsverse/transloco';
 import { MskErrorResponse } from '@msk/shared/data-access';
-import { catchError, throwError } from 'rxjs';
+import { catchError, forkJoin, map, throwError } from 'rxjs';
 
 /**
  * Customer resolver
@@ -20,7 +20,10 @@ const customerResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnaps
   const customersService = inject(CustomersService);
   const router = inject(Router);
 
-  return customersService.getCustomer(route.paramMap.get('id') ?? 0).pipe(
+  const id = route.paramMap.get('id') ?? 0;
+
+  return forkJoin([customersService.getCustomer(id), customersService.getCustomerSummary(id)]).pipe(
+    map((response) => Object({ customer: response[0], summery: response[1] })),
     // Error here means the requested contact is not available
     catchError((error: MskErrorResponse) => {
       // Log the error

@@ -1,4 +1,4 @@
-import { NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet, DecimalPipe } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
@@ -18,7 +18,6 @@ import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
-import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskConfirmationService } from '@msk/shared/services/confirmation';
@@ -28,7 +27,7 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { Customer, CustomerSummary, GenderEnum, ICustomerOrderRow } from '../../customers.types';
+import { Customer, CustomerSummary, GenderEnum, CustomerOrderRow } from '../../customers.types';
 import { CustomersService } from '../../customers.service';
 import { catchError, distinctUntilChanged, EMPTY, filter, map, of, switchMap, tap } from 'rxjs';
 
@@ -38,6 +37,7 @@ import { catchError, distinctUntilChanged, EMPTY, filter, map, of, switchMap, ta
   encapsulation: ViewEncapsulation.None,
   imports: [
     NgTemplateOutlet,
+    DecimalPipe,
     FormsModule,
     ReactiveFormsModule,
     ScrollingModule,
@@ -55,12 +55,11 @@ import { catchError, distinctUntilChanged, EMPTY, filter, map, of, switchMap, ta
     MskAlertComponent,
     MskAvatarComponent,
     MskDialogComponent,
-    MskEmptyStateComponent,
     MskSpinnerDirective,
   ],
 })
 export class CustomersCardDetailsComponent implements OnInit {
-  readonly data = inject<MskDialogData<Customer | undefined>>(MAT_DIALOG_DATA);
+  readonly data = inject<MskDialogData<{ customer: Customer; summery: CustomerSummary } | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<CustomersCardDetailsComponent>);
   private _formBuilder = inject(FormBuilder);
   private _customerService = inject(CustomersService);
@@ -88,25 +87,19 @@ export class CustomersCardDetailsComponent implements OnInit {
   form!: FormGroup;
   formErrors: FormError = {};
   genderKeys = Object.keys(GenderEnum).filter((v) => isNaN(Number(v)));
+  ordersDataSource: MskDataSource<CustomerOrderRow> = new MskDataSource<CustomerOrderRow>(
+    (params) => this._customerService.getCustomerOrders(params),
+    new MskSort({ active: 'saleDate', direction: 'desc' }),
+    undefined,
+    of({ customerId: this.data.item()?.customer?.id }),
+  );
 
   alert = signal({
     show: false,
     message: '',
   });
 
-  summary = signal<CustomerSummary | undefined>(undefined);
-  ordersDataSource!: MskDataSource<ICustomerOrderRow>;
-
-  trackById = (i: number, item: ICustomerOrderRow | undefined) => item?.id ?? i;
-
-  /**
-   * Sale number + product names, mirroring SaleInvoice.title in the sales feature
-   * (kept as a local mirror, not a shared import, to avoid a circular dependency
-   * between the sales and customers feature libraries).
-   */
-  orderTitle(order: ICustomerOrderRow): string {
-    return order.number + ' - ' + order.saleItems.map((i) => i.product?.name).join('/');
-  }
+  trackById = (i: number, item: CustomerOrderRow | undefined) => item?.id ?? i;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -129,19 +122,6 @@ export class CustomersCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     this.form.patchValue(this.data.item() || {});
-
-    // Load the order summary and history only in view mode for an existing customer
-    const customerId = this.data.item()?.id;
-    if (this.data.action() === 'view' && customerId) {
-      this._customerService.getCustomerSummary(customerId).subscribe((summary) => this.summary.set(summary));
-
-      this.ordersDataSource = new MskDataSource<ICustomerOrderRow>(
-        (params) => this._customerService.getCustomerOrders(params),
-        new MskSort({ active: 'saleDate', direction: 'desc' }),
-        undefined,
-        of({ customerId }),
-      );
-    }
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -163,7 +143,7 @@ export class CustomersCardDetailsComponent implements OnInit {
     const confirmation = this._mskConfirmationService.open({
       title: this._translocoService.translate('customers.delete'),
       message: this._translocoService.translate('customers.delete-message', {
-        name: this.data.item()?.name,
+        name: this.data.item()?.customer?.name,
       }),
       actions: {
         confirm: { label: this._translocoService.translate('delete') },
@@ -176,7 +156,7 @@ export class CustomersCardDetailsComponent implements OnInit {
       if (result !== 'confirmed') return;
 
       this._customerService
-        .deleteCustomer(this.data.item() as Customer)
+        .deleteCustomer(this.data.item()?.customer as Customer)
         .pipe(
           map((response) => this.dialogRef.close(response)),
           catchError((response) => {
