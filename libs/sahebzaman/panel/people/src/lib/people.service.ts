@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
@@ -9,12 +10,15 @@ import {
   MskPageData,
   MskPagingRequest,
   MskChangeEvent,
+  MskDialogData,
 } from '@msk/shared/data-access';
 import { DefaultPeopleSortData, Person } from './people.types';
+import { PeopleCardDetailsComponent } from './card/details/details.component';
 
 @Injectable({ providedIn: 'root' })
 export class PeopleService {
   private _appConfig = inject(MSK_APP_CONFIG);
+  private _matDialog = inject(MatDialog);
   private _httpClient = inject(HttpClient);
   private _httpCache = inject(MskHttpCacheService);
 
@@ -131,5 +135,21 @@ export class PeopleService {
       map((response) => new Person(response)),
       tap((person) => this._changes.next({ type: 'update', item: person })),
     );
+  }
+
+  /**
+   * Open person dialog
+   *
+   * @param data
+   */
+  openPersonDialog(data: MskDialogData<Person | undefined>): MatDialogRef<PeopleCardDetailsComponent> {
+    return this._matDialog.open(PeopleCardDetailsComponent, {
+      autoFocus: data.action() !== 'view',
+      disableClose: data.action() !== 'view',
+      data: {
+        action: data.action,
+        item: data.item,
+      },
+    });
   }
 }

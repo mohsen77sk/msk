@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
@@ -9,12 +10,15 @@ import {
   MskPageData,
   MskPagingRequest,
   MskChangeEvent,
+  MskDialogData,
 } from '@msk/shared/data-access';
 import { DefaultLoansSortData, Loan, ICreateLoan, IUpdateLoan } from './loans.types';
+import { LoansCardDetailsComponent } from './card/details/details.component';
 
 @Injectable({ providedIn: 'root' })
 export class LoanService {
   private _appConfig = inject(MSK_APP_CONFIG);
+  private _matDialog = inject(MatDialog);
   private _httpClient = inject(HttpClient);
   private _httpCache = inject(MskHttpCacheService);
 
@@ -119,5 +123,21 @@ export class LoanService {
       map((response) => new Loan(response)),
       tap((loan) => this._changesLoans.next({ type: 'update', item: loan })),
     );
+  }
+
+  /**
+   * Open loan dialog
+   *
+   * @param data
+   */
+  openLoanDialog(data: MskDialogData<Loan | undefined>): MatDialogRef<LoansCardDetailsComponent> {
+    return this._matDialog.open(LoansCardDetailsComponent, {
+      autoFocus: data.action() !== 'view',
+      disableClose: data.action() !== 'view',
+      data: {
+        action: data.action,
+        item: data.item,
+      },
+    });
   }
 }

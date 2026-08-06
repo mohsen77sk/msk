@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import { MskDialogDataAction } from '@msk/shared/data-access';
-import { LoansCardDetailsComponent } from './details/details.component';
+import { LoanService } from '../loans.service';
 
 @Component({
   selector: 'sz-loans-card',
@@ -12,7 +11,7 @@ import { LoansCardDetailsComponent } from './details/details.component';
 })
 export class LoansCardComponent implements OnInit {
   private _router = inject(Router);
-  private _matDialog = inject(MatDialog);
+  private _loanService = inject(LoanService);
   private _activatedRoute = inject(ActivatedRoute);
 
   // -----------------------------------------------------------------------------------------------------
@@ -26,14 +25,10 @@ export class LoansCardComponent implements OnInit {
     const action = this._activatedRoute.snapshot.url[1].path as MskDialogDataAction;
 
     // Launch the modal
-    this._matDialog
-      .open(LoansCardDetailsComponent, {
-        autoFocus: action !== 'view',
-        disableClose: action !== 'view',
-        data: {
-          action: signal(action),
-          item: signal(this._activatedRoute.snapshot.data['card']),
-        },
+    this._loanService
+      .openLoanDialog({
+        action: signal(action),
+        item: signal(this._activatedRoute.snapshot.data['card']),
       })
       .afterClosed()
       .subscribe(() => {

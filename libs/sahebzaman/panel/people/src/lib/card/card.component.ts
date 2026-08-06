@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import { MskDialogDataAction } from '@msk/shared/data-access';
-import { PeopleCardDetailsComponent } from './details/details.component';
+import { PeopleService } from '../people.service';
 
 @Component({
   selector: 'sz-people-card',
@@ -12,8 +11,8 @@ import { PeopleCardDetailsComponent } from './details/details.component';
 })
 export class PeopleCardComponent implements OnInit {
   private _router = inject(Router);
-  private _matDialog = inject(MatDialog);
   private _activatedRoute = inject(ActivatedRoute);
+  private _peopleService = inject(PeopleService);
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -26,14 +25,10 @@ export class PeopleCardComponent implements OnInit {
     const action = this._activatedRoute.snapshot.url[1].path as MskDialogDataAction;
 
     // Launch the modal
-    this._matDialog
-      .open(PeopleCardDetailsComponent, {
-        autoFocus: action !== 'view',
-        disableClose: action !== 'view',
-        data: {
-          action: signal(action),
-          item: signal(this._activatedRoute.snapshot.data['card']),
-        },
+    this._peopleService
+      .openPersonDialog({
+        action: signal(action),
+        item: signal(this._activatedRoute.snapshot.data['card']),
       })
       .afterClosed()
       .subscribe(() => {

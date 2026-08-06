@@ -83,7 +83,13 @@
   <div class="msk-group-list">
     <div class="msk-list-item subtitle">{{ t('owners') }}</div>
     @for (person of data.item()?.persons; track person.id) {
-      <div class="msk-list-item cursor-pointer" matRipple>
+      <div
+        class="msk-list-item cursor-pointer"
+        (click)="openPersonDetails(person.id)"
+        role="button"
+        tabindex="0"
+        matRipple
+      >
         <msk-avatar class="msk-list-item-icon" [name]="person.name"></msk-avatar>
         <div class="msk-list-item-content">
           <span>{{ person.name }}</span>

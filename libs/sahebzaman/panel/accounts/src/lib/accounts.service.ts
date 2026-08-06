@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, forkJoin, map, tap } from 'rxjs';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
 import {
@@ -9,6 +10,7 @@ import {
   MskPageData,
   MskPagingRequest,
   MskChangeEvent,
+  MskDialogData,
 } from '@msk/shared/data-access';
 import {
   DefaultAccountsSortData,
@@ -23,10 +25,12 @@ import {
   IReverseAccountTransaction,
   DefaultAccountTransactionsSortData,
 } from './accounts.types';
+import { AccountsCardDetailsComponent } from './card/details/details.component';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
   private _appConfig = inject(MSK_APP_CONFIG);
+  private _matDialog = inject(MatDialog);
   private _httpClient = inject(HttpClient);
   private _httpCache = inject(MskHttpCacheService);
 
@@ -223,5 +227,21 @@ export class AccountService {
     return this._httpClient
       .put<AccountTransaction>(`${this._appConfig.apiEndpoint}/api/accountTransaction/reverse`, transaction)
       .pipe(map((response) => new AccountTransaction(response)));
+  }
+
+  /**
+   * Open account dialog
+   *
+   * @param data
+   */
+  openAccountDialog(data: MskDialogData<Account | undefined>): MatDialogRef<AccountsCardDetailsComponent> {
+    return this._matDialog.open(AccountsCardDetailsComponent, {
+      autoFocus: data.action() !== 'view',
+      disableClose: data.action() !== 'view',
+      data: {
+        action: data.action,
+        item: data.item,
+      },
+    });
   }
 }

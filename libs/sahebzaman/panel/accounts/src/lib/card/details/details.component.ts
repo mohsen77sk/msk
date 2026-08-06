@@ -149,6 +149,27 @@ export class AccountsCardDetailsComponent implements OnInit {
   }
 
   /**
+   * Open the person details dialog
+   *
+   * @param personId
+   */
+  openPersonDetails(personId: number): void {
+    this._peopleService
+      .getPerson(personId)
+      .pipe(
+        switchMap((person) => {
+          return this._peopleService
+            .openPersonDialog({
+              action: signal('view'),
+              item: signal(person),
+            })
+            .afterClosed();
+        }),
+      )
+      .subscribe();
+  }
+
+  /**
    * Go to edit mode
    */
   editMode(): void {
