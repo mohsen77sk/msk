@@ -1,4 +1,4 @@
-import { MskSortable } from '@msk/shared/data-access';
+import { MskLookupItem, MskSortable } from '@msk/shared/data-access';
 
 export const DefaultLoansSortData: MskSortable = { active: 'code', direction: 'asc' };
 
@@ -22,8 +22,7 @@ export interface IUpdateLoan {
 export class Loan {
   id: number;
   code: string;
-  accountId: number;
-  accountCode: string;
+  account: MskLookupItem;
   loanTypeId: number;
   loanTypeName: string;
   createDate: Date;
@@ -39,8 +38,7 @@ export class Loan {
   constructor(input: Loan) {
     this.id = input.id;
     this.code = input.code;
-    this.accountId = input.accountId;
-    this.accountCode = input.accountCode;
+    this.account = input.account;
     this.loanTypeId = input.loanTypeId;
     this.loanTypeName = input.loanTypeName;
     this.createDate = new Date(input.createDate);

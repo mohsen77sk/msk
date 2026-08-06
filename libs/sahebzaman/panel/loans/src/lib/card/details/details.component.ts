@@ -112,6 +112,7 @@ export class LoansCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     this.form.patchValue(this.data.item() || {});
+    this.form.get('accountId')?.patchValue(this.data.item()?.account?.id || '');
   }
 
   // -----------------------------------------------------------------------------------------------------
