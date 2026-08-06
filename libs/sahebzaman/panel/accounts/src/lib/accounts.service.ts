@@ -130,17 +130,6 @@ export class AccountService {
   }
 
   /**
-   * Get account
-   *
-   * @param id
-   */
-  getAccountWithBalance(id: number | string): Observable<Account> {
-    return forkJoin([this.getAccount(id), this.getBalanceAccount(id)]).pipe(
-      map((value) => new Account({ ...value[0], ...value[1] } as Account)),
-    );
-  }
-
-  /**
    * Create account
    *
    * @param account
