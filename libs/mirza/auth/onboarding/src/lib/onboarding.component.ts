@@ -43,7 +43,7 @@ export class OnboardingComponent implements AfterViewInit {
     }),
     (schemaPath) => {
       required(schemaPath.name);
-      disabled(schemaPath.name, () => this.onboardingForm().submitting());
+      disabled(schemaPath.name, { when: () => this.onboardingForm().submitting() });
     },
     {
       submission: {

@@ -78,14 +78,14 @@ export class ForgotPasswordComponent implements AfterViewInit, OnDestroy {
         }
         return null;
       });
-      hidden(schemaPath.phone, () => this.sendedOtp());
-      hidden(schemaPath.code, () => !this.sendedOtp());
-      hidden(schemaPath.newPassword, () => !this.sendedOtp());
-      hidden(schemaPath.confirmNewPassword, () => !this.sendedOtp());
-      disabled(schemaPath.phone, () => this.resetPasswordForm().submitting());
-      disabled(schemaPath.code, () => this.resetPasswordForm().submitting());
-      disabled(schemaPath.newPassword, () => this.resetPasswordForm().submitting());
-      disabled(schemaPath.confirmNewPassword, () => this.resetPasswordForm().submitting());
+      hidden(schemaPath.phone, { when: () => this.sendedOtp() });
+      hidden(schemaPath.code, { when: () => !this.sendedOtp() });
+      hidden(schemaPath.newPassword, { when: () => !this.sendedOtp() });
+      hidden(schemaPath.confirmNewPassword, { when: () => !this.sendedOtp() });
+      disabled(schemaPath.phone, { when: () => this.resetPasswordForm().submitting() });
+      disabled(schemaPath.code, { when: () => this.resetPasswordForm().submitting() });
+      disabled(schemaPath.newPassword, { when: () => this.resetPasswordForm().submitting() });
+      disabled(schemaPath.confirmNewPassword, { when: () => this.resetPasswordForm().submitting() });
     },
     {
       submission: {

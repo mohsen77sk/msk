@@ -83,18 +83,18 @@ export class SignUpComponent implements AfterViewInit, OnDestroy {
         }
         return null;
       });
-      hidden(schemaPath.firstName, () => this.sendedOtp());
-      hidden(schemaPath.lastName, () => this.sendedOtp());
-      hidden(schemaPath.phone, () => this.sendedOtp());
-      hidden(schemaPath.code, () => !this.sendedOtp());
-      hidden(schemaPath.password, () => !this.sendedOtp());
-      hidden(schemaPath.confirmPassword, () => !this.sendedOtp());
-      disabled(schemaPath.firstName, () => this.signUpForm().submitting());
-      disabled(schemaPath.lastName, () => this.signUpForm().submitting());
-      disabled(schemaPath.phone, () => this.signUpForm().submitting());
-      disabled(schemaPath.code, () => this.signUpForm().submitting());
-      disabled(schemaPath.password, () => this.signUpForm().submitting());
-      disabled(schemaPath.confirmPassword, () => this.signUpForm().submitting());
+      hidden(schemaPath.firstName, { when: () => this.sendedOtp() });
+      hidden(schemaPath.lastName, { when: () => this.sendedOtp() });
+      hidden(schemaPath.phone, { when: () => this.sendedOtp() });
+      hidden(schemaPath.code, { when: () => !this.sendedOtp() });
+      hidden(schemaPath.password, { when: () => !this.sendedOtp() });
+      hidden(schemaPath.confirmPassword, { when: () => !this.sendedOtp() });
+      disabled(schemaPath.firstName, { when: () => this.signUpForm().submitting() });
+      disabled(schemaPath.lastName, { when: () => this.signUpForm().submitting() });
+      disabled(schemaPath.phone, { when: () => this.signUpForm().submitting() });
+      disabled(schemaPath.code, { when: () => this.signUpForm().submitting() });
+      disabled(schemaPath.password, { when: () => this.signUpForm().submitting() });
+      disabled(schemaPath.confirmPassword, { when: () => this.signUpForm().submitting() });
     },
     {
       submission: {

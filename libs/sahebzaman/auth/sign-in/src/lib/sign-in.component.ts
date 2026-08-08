@@ -51,8 +51,8 @@ export class SignInComponent implements AfterViewInit {
     (schemaPath) => {
       required(schemaPath.username);
       required(schemaPath.password);
-      disabled(schemaPath.username, () => this.signInForm().submitting());
-      disabled(schemaPath.password, () => this.signInForm().submitting());
+      disabled(schemaPath.username, { when: () => this.signInForm().submitting() });
+      disabled(schemaPath.password, { when: () => this.signInForm().submitting() });
     },
     {
       submission: {
