@@ -121,7 +121,7 @@ export class CustomersCardDetailsComponent implements OnInit {
     // Handling errors
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
-    this.form.patchValue(this.data.item() || {});
+    this.form.patchValue(this.data.item()?.customer || {});
   }
 
   // -----------------------------------------------------------------------------------------------------
