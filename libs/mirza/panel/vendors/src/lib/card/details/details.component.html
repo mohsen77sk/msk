@@ -1,6 +1,10 @@
 <msk-dialog
   *transloco="let t; prefix: 'vendors.details'"
-  [title]="data.action() !== 'view' || isShowNameHeader() ? t(data.action(), { name: $safeNavigationMigration(data.item()?.name) }) : ''"
+  [title]="
+    data.action() !== 'view' || isShowNameHeader()
+      ? t(data.action(), { name: $safeNavigationMigration(data.item()?.name) })
+      : ''
+  "
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
@@ -51,7 +55,7 @@
       <div class="msk-list-item">
         <mat-icon class="msk-list-item-icon">call</mat-icon>
         <div class="msk-list-item-content">
-          <span>{{ data.item()?.contactNumber || '-' }}</span>
+          <span class="bidi-isolate-ltr">{{ data.item()?.contactNumber || '-' }}</span>
           <span>{{ t('contactNumber') }}</span>
         </div>
       </div>
@@ -125,7 +129,7 @@
     <!-- Contact Number -->
     <mat-form-field>
       <mat-label>{{ t('contactNumber') }}</mat-label>
-      <input matInput formControlName="contactNumber" maxlength="11" autocomplete="off" inputmode="tel" />
+      <input matInput formControlName="contactNumber" maxlength="13" autocomplete="off" inputmode="tel" dir="ltr" />
       <mat-error>{{ formErrors['contactNumber'] }}</mat-error>
     </mat-form-field>
 

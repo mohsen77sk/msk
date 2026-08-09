@@ -48,6 +48,7 @@
 @import './tailwind/components/skeleton.css';
 
 /* Utils */
+@import './tailwind/utilities/other.css';
 @import './tailwind/utilities/avatar-color.css';
 @import './tailwind/utilities/icon-size.css';
 @import './tailwind/utilities/material-text.css';

@@ -114,7 +114,7 @@ export class CustomersCardDetailsComponent implements OnInit {
       id: [0, Validators.required],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
       gender: ['', Validators.required],
-      contactNumber: ['', Validators.pattern(/^\d{8,11}$/)],
+      contactNumber: ['', Validators.pattern(/^(?:\+98|0)?9\d{9}$/)],
       address: '',
       note: '',
     });
