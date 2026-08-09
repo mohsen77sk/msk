@@ -69,7 +69,7 @@
           </div>
           <div class="msk-list-item-content">
             <span>{{ item.typeTitle }}</span>
-            <span>{{ item.date | mskDateTime: 'P hh:mm' }}</span>
+            <span class="bidi-isolate-ltr">{{ item.date | mskDateTime: 'P hh:mm' }}</span>
           </div>
           <div class="msk-list-item-secondary">
             <div class="font-medium">{{ item.credit || item.debit | mskCurrency }}</div>
@@ -93,7 +93,7 @@
         <msk-avatar class="msk-list-item-icon" [name]="person.name"></msk-avatar>
         <div class="msk-list-item-content">
           <span>{{ person.name }}</span>
-          <span>#{{ person.code }}</span>
+          <span>{{ t('code') }} {{ person.code }}</span>
         </div>
         <div class="msk-list-item-icon">
           <mat-icon>open_in_new</mat-icon>
@@ -232,13 +232,13 @@
         multiple
         mskSelectSearch
         [searchList]="personList"
-        [searchItems]="'name'"
+        [searchItems]="['code', 'name']"
         [searchPlaceholder]="'search' | transloco"
         #searchPersons="mskSelectSearch"
       >
         <mat-select-trigger>{{ personIdTitles(personList) }}</mat-select-trigger>
         @for (item of searchPersons.filteredList | async; track item) {
-          <mat-option [value]="item.id">{{ item.name }}</mat-option>
+          <mat-option [value]="item.id">{{ item.code }} - {{ item.name }}</mat-option>
         }
       </mat-select>
       <mat-error>{{ formErrors['personId'] }}</mat-error>

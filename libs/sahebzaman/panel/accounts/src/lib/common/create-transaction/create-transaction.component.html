@@ -23,12 +23,12 @@
             formControlName="destinationAccountId"
             mskSelectSearch
             [searchList]="accountList"
-            [searchItems]="'name'"
+            [searchItems]="['code', 'name']"
             [searchPlaceholder]="'search' | transloco"
             #searchAccounts="mskSelectSearch"
           >
             @for (item of searchAccounts.filteredList | async; track item) {
-              <mat-option [value]="item.id">{{ item.name }}</mat-option>
+              <mat-option [value]="item.id">{{ item.code }} - {{ item.name }}</mat-option>
             }
           </mat-select>
           <mat-error>{{ formErrors['destinationAccountId'] }}</mat-error>

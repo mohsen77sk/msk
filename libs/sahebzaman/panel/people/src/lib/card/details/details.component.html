@@ -40,6 +40,13 @@
     <div class="msk-list-item subtitle">
       {{ t('about', { name: $safeNavigationMigration(data.item()?.fullName) }) }}
     </div>
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">numbers</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.code }}</span>
+        <span>{{ t('code') }}</span>
+      </div>
+    </div>
     <!-- National Code -->
     @if (data.item()?.nationalCode) {
       <div class="msk-list-item">

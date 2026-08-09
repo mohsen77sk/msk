@@ -52,7 +52,7 @@ export class Account {
   }
 
   get fullName(): string {
-    return this.accountTypeName + ' ' + this.persons.map((p) => p.name).join('/');
+    return this.accountTypeName + ' - ' + this.persons.map((p) => p.name).join('/');
   }
 }
 

@@ -5,6 +5,7 @@
     "view": "{{name}}",
     "about": "درباره {{name}}",
     "name": "نام",
+    "code": "شماره",
     "firstName": "نام",
     "lastName": "نام خانوادگی",
     "nationalCode": "کد ملی",

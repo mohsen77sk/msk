@@ -5,6 +5,7 @@
     "view": "{{name}}",
     "about": "About {{name}}",
     "name": "Name",
+    "code": "Code",
     "firstName": "First Name",
     "lastName": "Last Name",
     "nationalCode": "National Id",

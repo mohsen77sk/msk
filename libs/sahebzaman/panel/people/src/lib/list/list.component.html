@@ -30,7 +30,7 @@
           <div class="content-grid-item-content">
             <div class="truncate">{{ person.fullName }}</div>
             <div class="truncate">
-              <span>#{{ person.code }}</span>
+              <span *transloco="let t">{{ t('code') }} {{ person.code }}</span>
             </div>
           </div>
           <!-- End -->

@@ -33,7 +33,7 @@
               {{ account.fullName }}
             </div>
             <div class="flex items-center gap-2 truncate">
-              <span>#{{ account.code }}</span>
+              <span *transloco="let t">{{ t('code') }} {{ account.code }}</span>
             </div>
           </div>
           <!-- End -->
