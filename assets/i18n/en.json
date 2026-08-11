@@ -8,6 +8,9 @@
   "deposit": "Deposit",
   "withdraw": "Withdraw",
   "transfer": "Transfer",
+  "code": "Code",
+  "on": "On",
+  "off": "Off",
   "sum": "Sum",
   "open": "Open",
   "close": "Close",
@@ -55,6 +58,11 @@
     "select-currency": "Select currency",
     "show-more-stores": "Show more stores",
     "hide-more-stores": "Hide more stores"
+  },
+  "upload-image": {
+    "ext-error": "Only images are allowed.",
+    "size-error": "Image must be smaller than 2MB.",
+    "upload-error": "Image upload failed. Please try again."
   },
   "error-validation": {
     "required": "This is required",

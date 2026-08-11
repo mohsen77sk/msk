@@ -1,1 +1,0 @@
-import"./chunk-2R6CW7ES.js";var i="We are under scheduled maintenance.",r="Sorry for the inconvenience, we will be back shortly!",c={title:i,description:r};export{c as default,r as description,i as title};
