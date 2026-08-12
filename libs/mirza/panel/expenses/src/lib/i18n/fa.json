@@ -1,0 +1,23 @@
+{
+  "details": {
+    "new": "هزینه جدید",
+    "edit": "ویرایش هزینه",
+    "view": "{{description}}",
+    "no-description": "هزینه",
+    "specs": "مشخصات",
+    "cost": "مبلغ",
+    "description": "توضیحات",
+    "category": "دسته‌بندی",
+    "date": "تاریخ"
+  },
+  "sort": {
+    "date": "تاریخ",
+    "cost": "مبلغ",
+    "createdAt": "جدیدترین"
+  },
+  "search": "جستجوی هزینه‌ها",
+  "empty-list": "هیچ هزینه‌ای وجود ندارد!",
+  "no-category": "بدون دسته‌بندی",
+  "delete": "حذف هزینه",
+  "delete-message": "آیا مطمئن هستید که می‌خواهید <b>{{description}}</b> را حذف کنید؟"
+}
