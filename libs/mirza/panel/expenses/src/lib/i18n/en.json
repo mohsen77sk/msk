@@ -1,0 +1,23 @@
+{
+  "details": {
+    "new": "New expense",
+    "edit": "Edit expense",
+    "view": "{{description}}",
+    "no-description": "Expense",
+    "specs": "Specification",
+    "cost": "Cost",
+    "description": "Description",
+    "category": "Category",
+    "date": "Date"
+  },
+  "sort": {
+    "date": "Date",
+    "cost": "Cost",
+    "createdAt": "Most recent"
+  },
+  "search": "Search expenses",
+  "empty-list": "There are no expenses!",
+  "no-category": "No category",
+  "delete": "Delete expense",
+  "delete-message": "Are you sure you want to delete <b>{{description}}</b>?"
+}

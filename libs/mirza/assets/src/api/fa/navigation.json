@@ -35,6 +35,13 @@
         "link": "/panel/payment-types"
       },
       {
+        "id": "panel.expenses",
+        "title": "هزینه‌ها",
+        "type": "basic",
+        "icon": "receipt_long",
+        "link": "/panel/expenses"
+      },
+      {
         "id": "panel.product-categories",
         "title": "دسته بندی محصولات",
         "type": "basic",

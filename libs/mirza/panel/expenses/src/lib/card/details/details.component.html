@@ -1,0 +1,138 @@
+<msk-dialog
+  *transloco="let t; prefix: 'expenses.details'"
+  [title]="t(data.action(), { description: $safeNavigationMigration(data.item()?.description) || t('no-description') })"
+  [hasAction]="data.action() !== 'view'"
+  [primaryAction]="primaryAction"
+  [trailing]="trailing"
+>
+  <!-- Content -->
+  <ng-container
+    [ngTemplateOutlet]="data.action() === 'view' ? viewTemplate : formTemplate"
+    [ngTemplateOutletContext]="{ t: t }"
+    msk-dialog-content
+  ></ng-container>
+
+  <ng-template #trailing>
+    <button matIconButton (click)="editMode()">
+      <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+    </button>
+  </ng-template>
+
+  <ng-template #primaryAction>
+    <button matButton [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+      <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
+    </button>
+  </ng-template>
+</msk-dialog>
+
+<ng-template #viewTemplate let-t="t">
+  <div class="msk-group-list">
+    <div class="msk-list-item subtitle">{{ t('specs') }}</div>
+    <!-- Cost -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">payments</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.cost | mskCurrency }}</span>
+        <span>{{ t('cost') }}</span>
+      </div>
+    </div>
+    <!-- Description -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">description</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.description || '-' }}</span>
+        <span>{{ t('description') }}</span>
+      </div>
+    </div>
+    <!-- Category -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">category</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.category?.name || '-' }}</span>
+        <span>{{ t('category') }}</span>
+      </div>
+    </div>
+    <!-- Date -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">event</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ ($safeNavigationMigration(data.item()?.date) | mskDateTime: 'longDate') || '-' }}</span>
+        <span>{{ t('date') }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="mt-6" *transloco="let t">
+    <div class="text-title-small mb-4">{{ t('settings') }}</div>
+    <div class="msk-group-list elevated">
+      <div class="msk-list-item cursor-pointer" matRipple (click)="deleteExpense()" aria-hidden="true">
+        <div class="msk-list-item-icon">
+          <mat-icon class="text-error">delete</mat-icon>
+        </div>
+        <div class="msk-list-item-content text-error">
+          {{ t('expenses.delete') }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #formTemplate let-t="t">
+  <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
+    <!-- Alert -->
+    @if (alert().show) {
+      <msk-alert class="mb-4" appearance="outline" type="error">
+        {{ alert().message }}
+      </msk-alert>
+    }
+
+    <!-- Cost -->
+    <mat-form-field>
+      <mat-label>{{ t('cost') }}</mat-label>
+      <input matInput formControlName="cost" mskMask="currency" autocomplete="off" inputmode="numeric" />
+      <span matTextSuffix mskCurrencySymbol></span>
+      <mat-error>{{ formErrors['cost'] }}</mat-error>
+    </mat-form-field>
+
+    <!-- Description -->
+    <mat-form-field>
+      <mat-label>{{ t('description') }}</mat-label>
+      <input matInput formControlName="description" maxlength="255" autocomplete="off" />
+      <mat-error>{{ formErrors['description'] }}</mat-error>
+    </mat-form-field>
+
+    <!-- Category -->
+    <mat-form-field>
+      <mat-label>{{ t('category') }}</mat-label>
+      <input type="text" matInput formControlName="category" [matAutocomplete]="autoCategory" />
+      @if (form.get('category')?.value) {
+        <button type="button" matIconButton matSuffix (click)="form.get('category')?.reset()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+      <mat-autocomplete #autoCategory="matAutocomplete" [displayWith]="categoryDisplayFn">
+        <cdk-virtual-scroll-viewport
+          itemSize="48"
+          minBufferPx="240"
+          maxBufferPx="480"
+          [style.height.px]="
+            (autoCategory?.options?.length || 0) > 5 ? 240 : (autoCategory?.options?.length || 0) * 48
+          "
+        >
+          <mat-option *cdkVirtualFor="let category of categoryDS" [value]="category">
+            {{ category?.name || ('loading' | transloco) }}
+          </mat-option>
+        </cdk-virtual-scroll-viewport>
+      </mat-autocomplete>
+      <mat-error>{{ formErrors['category'] }}</mat-error>
+    </mat-form-field>
+
+    <!-- Date -->
+    <mat-form-field>
+      <mat-label>{{ t('date') }}</mat-label>
+      <input matInput formControlName="date" [matDatepicker]="picker" />
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker mskDatepickerTouchUi></mat-datepicker>
+      <mat-error>{{ formErrors['date'] }}</mat-error>
+    </mat-form-field>
+  </form>
+</ng-template>
