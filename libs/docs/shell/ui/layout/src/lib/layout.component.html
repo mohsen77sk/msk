@@ -3,10 +3,10 @@
 
 <!-- Empty layout -->
 @if (layoutType() === 'empty') {
-  <mz-layout-empty [dir]="layoutConfig().direction"></mz-layout-empty>
+  <doc-layout-empty [dir]="layoutConfig().direction"></doc-layout-empty>
 }
 
 <!-- Material layout -->
 @if (layoutType() === 'material') {
-  <mz-layout-material [dir]="layoutConfig().direction"></mz-layout-material>
+  <doc-layout-material [dir]="layoutConfig().direction"></doc-layout-material>
 }
