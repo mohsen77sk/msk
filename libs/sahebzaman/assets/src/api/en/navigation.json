@@ -24,7 +24,7 @@
         "id": "panel.accounts",
         "title": "Accounts",
         "type": "basic",
-        "icon": "account_balance",
+        "icon": "account_balance_wallet",
         "link": "/panel/accounts"
       },
       {

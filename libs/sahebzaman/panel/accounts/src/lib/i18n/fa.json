@@ -1,27 +1,27 @@
 {
   "details": {
-    "new": "حساب جدید",
-    "edit": "ویرایش حساب",
+    "new": "سپرده جدید",
+    "edit": "ویرایش سپرده",
     "view": "{{name}}",
-    "about": "درباره حساب",
+    "about": "درباره سپرده",
     "code": "شماره",
-    "accountType": "نوع حساب",
-    "accountNumber": "شماره حساب",
+    "accountType": "نوع سپرده",
+    "accountNumber": "شماره سپرده",
     "createDate": "تاریخ ایجاد",
     "closeDate": "تاریخ بستن",
     "initCredit": "موجودی اولیه",
     "credit": "موجودی",
     "transactions": "تراکنش ها",
     "lastTransactions": "آخرین تراکنش ها",
-    "owners": "صاحبان حساب",
+    "owners": "صاحبان سپرده",
     "note": "توضیحات",
     "status": "وضعیت"
   },
   "transaction": {
-    "new-1": "سپرده گذاری در حساب",
-    "new-2": "برداشت از حساب",
-    "new-3": "انتقال از حساب",
-    "destination": "حساب مقصد",
+    "new-1": "سپرده گذاری",
+    "new-2": "برداشت از سپرده",
+    "new-3": "انتقال از سپرده",
+    "destination": "سپرده مقصد",
     "amount": "مبلغ",
     "date": "تاریخ",
     "note": "توضیحات"
@@ -29,12 +29,12 @@
   "sort": {
     "code": "کد"
   },
-  "search": "جستجوی حساب ها",
-  "empty-list": "هیچ حسابی وجود ندارد!",
+  "search": "جستجوی سپرده ها",
+  "empty-list": "هیچ سپرده ای وجود ندارد!",
   "info-edit-title": "اطلاعات",
   "info-edit-description": "توضیحات",
-  "activate": "باز کردن حساب",
-  "activate-message": "آیا مطمئن هستید که می خواهید حساب <b>{{name}}</b> را باز کنید؟",
-  "deactivate": "بستن حساب",
-  "deactivate-message": "آیا مطمئن هستید که می خواهید حساب <b>{{name}}</b> را ببندید؟"
+  "activate": "باز کردن سپرده",
+  "activate-message": "آیا مطمئن هستید که می خواهید سپرده <b>{{name}}</b> را باز کنید؟",
+  "deactivate": "بستن سپرده",
+  "deactivate-message": "آیا مطمئن هستید که می خواهید سپرده <b>{{name}}</b> را ببندید؟"
 }

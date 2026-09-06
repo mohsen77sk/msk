@@ -22,14 +22,14 @@
       },
       {
         "id": "panel.accounts",
-        "title": "حساب ها",
+        "title": "سپرده",
         "type": "basic",
-        "icon": "account_balance",
+        "icon": "account_balance_wallet",
         "link": "/panel/accounts"
       },
       {
         "id": "panel.loans",
-        "title": "وام ها",
+        "title": "تسهیلات",
         "type": "basic",
         "icon": "payments",
         "link": "/panel/loans"

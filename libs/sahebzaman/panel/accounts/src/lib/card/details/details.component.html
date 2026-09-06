@@ -55,32 +55,6 @@
     </div>
   }
   <div class="msk-group-list">
-    <div class="msk-list-item subtitle">{{ t('lastTransactions') }}</div>
-    @for (item of lastTransactionList$ | async; track item.id) {
-      @if (isLoadingLastTransaction()) {
-        <ng-container *ngTemplateOutlet="loadingTransactionItem"></ng-container>
-      } @else {
-        <div class="msk-list-item">
-          <div
-            class="msk-list-item-icon bg-surface-variant size-10 rounded-full"
-            [class]="item.credit > 0 ? 'text-green-700 dark:text-green-300' : item.debit > 0 ? 'text-error' : ''"
-          >
-            <mat-icon>{{ item.credit > 0 ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
-          </div>
-          <div class="msk-list-item-content">
-            <span>{{ item.typeTitle }}</span>
-            <span class="bidi-isolate-ltr">{{ item.date | mskDateTime: 'P hh:mm' }}</span>
-          </div>
-          <div class="msk-list-item-secondary">
-            <div class="font-medium">{{ item.credit || item.debit | mskCurrency }}</div>
-          </div>
-        </div>
-      }
-    } @empty {
-      <ng-container *ngTemplateOutlet="loadingTransactionItem"></ng-container>
-    }
-  </div>
-  <div class="msk-group-list">
     <div class="msk-list-item subtitle">{{ t('owners') }}</div>
     @for (person of data.item()?.persons; track person.id) {
       <div
@@ -155,6 +129,32 @@
       </div>
     </div>
   }
+  <div class="msk-group-list">
+    <div class="msk-list-item subtitle">{{ t('lastTransactions') }}</div>
+    @for (item of lastTransactionList$ | async; track item.id) {
+      @if (isLoadingLastTransaction()) {
+        <ng-container *ngTemplateOutlet="loadingTransactionItem"></ng-container>
+      } @else {
+        <div class="msk-list-item">
+          <div
+            class="msk-list-item-icon bg-surface-variant size-10 rounded-full"
+            [class]="item.credit > 0 ? 'text-green-700 dark:text-green-300' : item.debit > 0 ? 'text-error' : ''"
+          >
+            <mat-icon>{{ item.credit > 0 ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ item.typeTitle }}</span>
+            <span class="bidi-isolate-ltr">{{ item.date | mskDateTime: 'P hh:mm' }}</span>
+          </div>
+          <div class="msk-list-item-secondary">
+            <div class="font-medium">{{ item.credit || item.debit | mskCurrency }}</div>
+          </div>
+        </div>
+      }
+    } @empty {
+      <ng-container *ngTemplateOutlet="loadingTransactionItem"></ng-container>
+    }
+  </div>
   <!-- Settings -->
   @if (data.item()?.isActive) {
     <div class="mt-6" *transloco="let t">
