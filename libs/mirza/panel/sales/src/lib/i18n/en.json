@@ -12,6 +12,8 @@
     "paymentType": "Payment type",
     "paymentTypeValue": "Value",
     "discount": "Discount",
+    "tax": "Tax",
+    "deliveryFee": "Delivery fee",
     "total": "Final amount",
     "note": "Note",
     "products": "Products",

@@ -57,6 +57,22 @@
         <span>{{ t('discount') }}</span>
       </div>
     </div>
+    <!-- Tax -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">receipt_long</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ $safeNavigationMigration(data.item()?.tax) | mskCurrency }}</span>
+        <span>{{ t('tax') }}</span>
+      </div>
+    </div>
+    <!-- Delivery Fee -->
+    <div class="msk-list-item">
+      <mat-icon class="msk-list-item-icon">local_shipping</mat-icon>
+      <div class="msk-list-item-content">
+        <span>{{ $safeNavigationMigration(data.item()?.deliveryFee) | mskCurrency }}</span>
+        <span>{{ t('deliveryFee') }}</span>
+      </div>
+    </div>
     <!-- Total -->
     <div class="msk-list-item">
       <mat-icon class="msk-list-item-icon">payments</mat-icon>
@@ -70,7 +86,12 @@
     <div class="msk-group-list">
       <div class="msk-list-item subtitle">{{ t('customer') }}</div>
       <!-- Name -->
-      <div class="msk-list-item">
+      <div
+        class="msk-list-item cursor-pointer"
+        matRipple
+        (click)="viewCustomer(data.item()?.customer?.id)"
+        aria-hidden="true"
+      >
         <mat-icon class="msk-list-item-icon">person</mat-icon>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.customer?.name || '-' }}</span>
