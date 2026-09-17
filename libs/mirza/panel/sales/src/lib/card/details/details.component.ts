@@ -13,7 +13,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MskDataSource, MskDialogData, MskHttpErrorResponse, MskSort } from '@msk/shared/data-access';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
@@ -40,7 +39,14 @@ import {
 } from '@msk/shared/utils/error-handler';
 import { catchError, combineLatest, distinctUntilChanged, EMPTY, map, startWith, switchMap, tap } from 'rxjs';
 import { SalesService } from '../../sales.service';
-import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleInvoice } from '../../sales.types';
+import {
+  ICreateSaleInvoice,
+  IPaymentTypeForm,
+  ISaleItemForm,
+  ISalesForm,
+  SaleInvoice,
+  SalesDetailsCloseResult,
+} from '../../sales.types';
 import { SaleReceiptPrintService } from '../../print/print.service';
 import { ReceiptPrintData } from '../../print/print.types';
 import { SaleReceiptPrintComponent } from '../../print/print.component';
@@ -85,7 +91,6 @@ const MELLAT_POS_PAYMENT_TYPE_NAME = 'دستگاه POS ملت';
 export class SalesCardDetailsComponent implements OnInit {
   readonly data = inject<MskDialogData<SaleInvoice | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<SalesCardDetailsComponent>);
-  private _router = inject(Router);
   private _destroyRef = inject(DestroyRef);
   private _formBuilder = inject(FormBuilder);
   private _salesService = inject(SalesService);
@@ -108,16 +113,6 @@ export class SalesCardDetailsComponent implements OnInit {
   paymentTypeDSList: MskDataSource<PaymentType>[] = [];
   productDSList: MskDataSource<Product>[] = [];
   customerDS!: MskDataSource<Customer>;
-
-  // Set by viewCustomer() right before closing this dialog, then read once
-  // dialogRef.afterClosed() actually fires (see ngOnInit) - the parent
-  // SalesCardComponent also subscribes to the same afterClosed() (it
-  // navigates back to the sales list unconditionally on every close,
-  // regardless of reason), and it subscribed first since it opened this
-  // dialog before this component even existed. Subscribing again here
-  // guarantees this callback runs after that one, so this navigation - not
-  // the sales-list one - is the last one issued and wins.
-  private _navigateToCustomerId: number | null = null;
 
   alert = signal({
     show: false,
@@ -154,19 +149,6 @@ export class SalesCardDetailsComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    // Navigate to the customer's own detail dialog once this dialog has
-    // actually closed - see _navigateToCustomerId's comment for why this
-    // has to be sequenced through afterClosed() rather than just calling
-    // dialogRef.close() + router.navigate() back to back.
-    this.dialogRef
-      .afterClosed()
-      .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe(() => {
-        if (this._navigateToCustomerId !== null) {
-          this._router.navigate(['/panel/customers/card/view', this._navigateToCustomerId]);
-        }
-      });
-
     // Create the form
     this.form = this._formBuilder.group<ISalesForm>({
       id: this._formBuilder.control(0, Validators.required),
@@ -226,13 +208,16 @@ export class SalesCardDetailsComponent implements OnInit {
   }
 
   /**
-   * Navigate to the customer's own detail dialog
+   * Close this dialog with an intent to navigate to the customer's own
+   * detail dialog - SalesCardComponent's afterClosed() subscriber is what
+   * actually navigates, based on this result (single navigation decision,
+   * made in one place).
    * @param customerId id of the customer to open
    */
   viewCustomer(customerId: number | undefined): void {
     if (!customerId) return;
-    this._navigateToCustomerId = customerId;
-    this.dialogRef.close();
+    const result: SalesDetailsCloseResult = { navigateToCustomerId: customerId };
+    this.dialogRef.close(result);
   }
 
   /**
