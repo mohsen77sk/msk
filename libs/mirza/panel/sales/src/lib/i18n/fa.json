@@ -12,6 +12,8 @@
     "paymentType": "نوع پرداخت",
     "paymentTypeValue": "مقدار",
     "discount": "تخفیف",
+    "tax": "مالیات",
+    "deliveryFee": "هزینه ارسال",
     "total": "مبلغ نهایی",
     "note": "توضیحات",
     "products": "محصولات",

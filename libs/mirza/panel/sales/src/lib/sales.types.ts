@@ -14,6 +14,8 @@ export class SaleInvoice {
   paymentTypes: PaymentTypeDetail[];
   saleItems: ProductItem[];
   discount: number;
+  tax: number;
+  deliveryFee: number;
   total: number;
   user?: User;
   customer?: Customer;
@@ -26,6 +28,8 @@ export class SaleInvoice {
     this.paymentTypes = input.paymentTypes?.map((pt) => new PaymentTypeDetail(pt));
     this.saleItems = input.saleItems?.map((si) => new ProductItem(si));
     this.discount = input.discount;
+    this.tax = input.tax;
+    this.deliveryFee = input.deliveryFee;
     this.total = input.total;
     this.user = input.user ? new User(input.user) : undefined;
     this.customer = input.customer ? new Customer(input.customer) : undefined;
