@@ -7,5 +7,14 @@
   "max-order": "Highest number",
   "min-order": "Lowest number",
   "date-range": "Date Range",
-  "total-sales": "Total sales"
+  "total-sales": "Total sales",
+  "sales-revenue-summary": "Sales revenue summary",
+  "average-revenue": "Average revenue",
+  "max-revenue": "Highest revenue",
+  "min-revenue": "Lowest revenue",
+  "top-products": "Top products",
+  "top-categories": "Top categories",
+  "top-customers": "Top customers",
+  "quantity-sold": "Quantity sold",
+  "total-revenue": "Total revenue"
 }

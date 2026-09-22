@@ -7,5 +7,14 @@
   "max-order": "بیشترین تعداد",
   "min-order": "کمترین تعداد",
   "date-range": "بازه تاریخی",
-  "total-sales": "مجموع فروش"
+  "total-sales": "مجموع فروش",
+  "sales-revenue-summary": "خلاصه درآمد فروش",
+  "average-revenue": "میانگین درآمد",
+  "max-revenue": "بیشترین درآمد",
+  "min-revenue": "کمترین درآمد",
+  "top-products": "پرفروش‌ترین محصولات",
+  "top-categories": "پرفروش‌ترین دسته‌بندی‌ها",
+  "top-customers": "برترین مشتریان",
+  "quantity-sold": "تعداد فروخته شده",
+  "total-revenue": "مجموع درآمد"
 }

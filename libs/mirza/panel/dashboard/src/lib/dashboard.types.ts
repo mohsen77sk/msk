@@ -22,3 +22,53 @@ export class SalesPaymentTypeReport {
     this.totalAmount = Number(input.totalamount);
   }
 }
+
+export class TopProductReport {
+  productId: number;
+  productName: string;
+  totalQuantitySold: number;
+  totalRevenue: number;
+
+  constructor(input: {
+    productId: number;
+    productName: string;
+    totalQuantitySold: number;
+    totalRevenue: number;
+  }) {
+    this.productId = input.productId;
+    this.productName = input.productName;
+    this.totalQuantitySold = input.totalQuantitySold;
+    this.totalRevenue = input.totalRevenue;
+  }
+}
+
+export class TopCategoryReport {
+  categoryId: number;
+  categoryName: string;
+  totalQuantitySold: number;
+  totalRevenue: number;
+
+  constructor(input: {
+    categoryId: number;
+    categoryName: string;
+    totalQuantitySold: number;
+    totalRevenue: number;
+  }) {
+    this.categoryId = input.categoryId;
+    this.categoryName = input.categoryName;
+    this.totalQuantitySold = input.totalQuantitySold;
+    this.totalRevenue = input.totalRevenue;
+  }
+}
+
+export class TopCustomerReport {
+  customerId: number;
+  customerName: string;
+  totalSales: number;
+
+  constructor(input: { customerId: number; customerName: string; totalSales: number }) {
+    this.customerId = input.customerId;
+    this.customerName = input.customerName;
+    this.totalSales = input.totalSales;
+  }
+}
