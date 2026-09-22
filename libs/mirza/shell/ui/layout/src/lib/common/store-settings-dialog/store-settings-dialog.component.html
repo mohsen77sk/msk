@@ -1,0 +1,60 @@
+<msk-dialog *transloco="let t; prefix: 'store-settings'" [title]="t('title')" [hasAction]="true" [primaryAction]="primaryAction">
+  <div msk-dialog-content>
+    <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form" *transloco="let t; prefix: 'store-settings'">
+      <!-- Alert -->
+      @if (alert().show) {
+        <msk-alert class="mb-4" appearance="outline" type="error">
+          {{ alert().message }}
+        </msk-alert>
+      }
+
+      <!-- Name -->
+      <mat-form-field>
+        <mat-label>{{ t('name') }}</mat-label>
+        <input matInput formControlName="name" maxlength="255" autocomplete="off" />
+        <mat-error>{{ formErrors['name'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Phone -->
+      <mat-form-field>
+        <mat-label>{{ t('phone') }}</mat-label>
+        <input matInput formControlName="phone" maxlength="15" autocomplete="off" inputmode="tel" dir="ltr" />
+        <mat-error>{{ formErrors['phone'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Postal code -->
+      <mat-form-field>
+        <mat-label>{{ t('postal-code') }}</mat-label>
+        <input matInput formControlName="postalCode" maxlength="10" autocomplete="off" inputmode="numeric" dir="ltr" />
+        <mat-error>{{ formErrors['postalCode'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Economic code -->
+      <mat-form-field>
+        <mat-label>{{ t('economic-code') }}</mat-label>
+        <input matInput formControlName="economicCode" maxlength="14" autocomplete="off" inputmode="numeric" dir="ltr" />
+        <mat-error>{{ formErrors['economicCode'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- National ID -->
+      <mat-form-field>
+        <mat-label>{{ t('national-id') }}</mat-label>
+        <input matInput formControlName="nationalId" maxlength="11" autocomplete="off" inputmode="numeric" dir="ltr" />
+        <mat-error>{{ formErrors['nationalId'] }}</mat-error>
+      </mat-form-field>
+
+      <!-- Address -->
+      <mat-form-field>
+        <mat-label>{{ t('address') }}</mat-label>
+        <textarea matInput formControlName="address" rows="3" autocomplete="off"></textarea>
+        <mat-error>{{ formErrors['address'] }}</mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <ng-template #primaryAction>
+    <button matButton [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+      <span *transloco="let t; prefix: 'store-settings'">{{ form.enabled ? t('save') : '' }}</span>
+    </button>
+  </ng-template>
+</msk-dialog>

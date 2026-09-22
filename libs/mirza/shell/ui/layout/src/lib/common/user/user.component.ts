@@ -26,6 +26,7 @@ import { StoreService, Store } from '@msk/mirza/shell/core/store';
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
 import { LayoutCurrencyDialogComponent } from '../layout-currency-dialog/layout-currency-dialog.component';
+import { StoreSettingsDialogComponent } from '../store-settings-dialog/store-settings-dialog.component';
 import { finalize, tap } from 'rxjs';
 
 @Component({
@@ -155,6 +156,20 @@ export class UserComponent implements OnInit {
 
     this._storeService.currentStore = store;
     this._router.navigate(['/panel/redirect']);
+  }
+
+  /**
+   * Open store settings dialog
+   *
+   * @param store
+   */
+  openStoreSettings(store: Store): void {
+    this._dialog
+      .open(StoreSettingsDialogComponent, {
+        data: { store },
+      })
+      .afterClosed()
+      .subscribe();
   }
 
   /**

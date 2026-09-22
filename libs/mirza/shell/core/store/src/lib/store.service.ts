@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskUtilsService } from '@msk/shared/services/utils';
 import { BehaviorSubject, map, Observable, ReplaySubject, startWith, tap, withLatestFrom } from 'rxjs';
-import { CreateStoreRequest, IStoreResponse, Store } from './store.types';
+import { CreateStoreRequest, IStoreResponse, Store, UpdateStoreRequest } from './store.types';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
@@ -94,6 +94,31 @@ export class StoreService {
 
         this._stores.next(updatedStores);
         this.currentStore = store;
+      }),
+      map(([store]) => store),
+    );
+  }
+
+  /**
+   * Update a store
+   *
+   * @param storeId
+   * @param payload
+   */
+  update(storeId: number, payload: UpdateStoreRequest): Observable<Store> {
+    return this._httpClient.patch<IStoreResponse>(`${this._appConfig.apiEndpoint}/store/${storeId}`, payload).pipe(
+      map((response) => new Store(response)),
+      withLatestFrom(this.stores$.pipe(startWith([] as Store[]))),
+      tap(([store, stores]) => {
+        const updatedStores = stores.some((item) => item.id === store.id)
+          ? stores.map((item) => (item.id === store.id ? store : item))
+          : [...stores, store];
+
+        this._stores.next(updatedStores);
+
+        if (this.currentStore?.id === store.id) {
+          this.currentStore = store;
+        }
       }),
       map(([store]) => store),
     );

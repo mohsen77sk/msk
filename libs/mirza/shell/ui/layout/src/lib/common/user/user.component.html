@@ -74,9 +74,14 @@
                 <msk-avatar [name]="store.name" [imageUrl]="store.logoUrl ?? undefined" size="small"></msk-avatar>
                 <span class="ms-3 font-medium">{{ store.name }}</span>
               </div>
-              @if (currentStore() === store) {
-                <div class="msk-chips">{{ t('active') }}</div>
-              }
+              <div class="flex items-center gap-1">
+                @if (currentStore() === store) {
+                  <div class="msk-chips">{{ t('active') }}</div>
+                }
+                <button matIconButton (click)="$event.stopPropagation(); openStoreSettings(store)">
+                  <mat-icon class="icon-size-4 text-on-surface-variant">settings</mat-icon>
+                </button>
+              </div>
             </div>
           }
         </div>
