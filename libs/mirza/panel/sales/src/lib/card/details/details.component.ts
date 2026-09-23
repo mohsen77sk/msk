@@ -12,7 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MskDataSource, MskDialogData, MskHttpErrorResponse, MskSort } from '@msk/shared/data-access';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
@@ -44,6 +44,8 @@ import { SaleReceiptPrintService } from '../../print/print.service';
 import { ReceiptPrintData } from '../../print/print.types';
 import { SaleReceiptPrintComponent } from '../../print/print.component';
 import { SALE_RECEIPT_PRINT_STYLES } from '../../print/print.styles';
+import { InvoicePrintData } from '../../print/invoice-print.types';
+import { InvoicePdfPreviewDialogComponent } from '../../print/invoice-pdf-preview-dialog/invoice-pdf-preview-dialog.component';
 
 const MELLAT_POS_PAYMENT_TYPE_NAME = 'دستگاه POS ملت';
 
@@ -84,6 +86,7 @@ const MELLAT_POS_PAYMENT_TYPE_NAME = 'دستگاه POS ملت';
 export class SalesCardDetailsComponent implements OnInit {
   readonly data = inject<MskDialogData<SaleInvoice | undefined>>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<SalesCardDetailsComponent>);
+  private _dialog = inject(MatDialog);
   private _destroyRef = inject(DestroyRef);
   private _formBuilder = inject(FormBuilder);
   private _salesService = inject(SalesService);
@@ -118,6 +121,11 @@ export class SalesCardDetailsComponent implements OnInit {
   receiptData = computed<ReceiptPrintData | null>(() => {
     if (this.isNew()) return null;
     return new ReceiptPrintData(this.data.item() as SaleInvoice, this._storeService.currentStore as Store);
+  });
+
+  invoiceData = computed<InvoicePrintData | null>(() => {
+    if (this.isNew()) return null;
+    return new InvoicePrintData(this.data.item() as SaleInvoice, this._storeService.currentStore);
   });
 
   /**
@@ -352,6 +360,26 @@ export class SalesCardDetailsComponent implements OnInit {
     if (!opened) {
       this._mskSnackbarService.error(this._translocoService.translate('sales.errors.printWindowBlocked'));
     }
+  }
+
+  /**
+   * Export the current sale as an A4 PDF invoice (فاکتور فروش), previewed
+   * in a dialog before download - see InvoicePdfPreviewDialogComponent.
+   */
+  printInvoice(): void {
+    const invoiceData = this.invoiceData();
+
+    if (!invoiceData) {
+      this._mskSnackbarService.error(this._translocoService.translate('sales.errors.printWindowBlocked'));
+      return;
+    }
+
+    this._dialog
+      .open(InvoicePdfPreviewDialogComponent, {
+        data: { invoiceData },
+      })
+      .afterClosed()
+      .subscribe();
   }
 
   /**

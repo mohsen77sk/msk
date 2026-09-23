@@ -48,9 +48,18 @@
       "gram": "gram"
     }
   },
+  "invoicePdf": {
+    "title": "Invoice preview",
+    "error": "Failed to generate the PDF. Please try again.",
+    "retry": "Retry",
+    "page": "Page {{number}}",
+    "print": "Print",
+    "download": "Download PDF"
+  },
   "search": "Search sale invoice",
   "empty-list": "There are no sale invoices!",
   "delete": "Delete sale invoice",
   "delete-message": "Are you sure you want to delete invoice <b>{{number}}</b>?",
-  "print-receipt": "Print receipt"
+  "print-receipt": "Print receipt",
+  "print-invoice": "Export invoice (PDF)"
 }

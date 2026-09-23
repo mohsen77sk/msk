@@ -1,0 +1,45 @@
+<msk-dialog
+  *transloco="let t; prefix: 'sales.invoicePdf'"
+  [title]="t('title')"
+  [hasAction]="true"
+  [isLoading]="isLoading()"
+  [primaryAction]="primaryAction"
+>
+  <div msk-dialog-content>
+    @if (hasError()) {
+      <msk-alert appearance="outline" type="error">
+        {{ t('error') }}
+      </msk-alert>
+      <div class="mt-4 flex justify-center">
+        <button matButton="tonal" (click)="retry()">
+          <mat-icon>refresh</mat-icon>
+          {{ t('retry') }}
+        </button>
+      </div>
+    } @else {
+      <div class="flex flex-col items-center gap-4">
+        @for (pageUrl of pageImageUrls(); track pageUrl; let i = $index) {
+          <img
+            class="w-full max-w-[720px] rounded shadow-md"
+            [src]="pageUrl"
+            [alt]="t('page', { number: i + 1 })"
+          />
+        }
+      </div>
+    }
+  </div>
+
+  <ng-template #primaryAction>
+    <button matButton [disabled]="isLoading() || hasError()" (click)="print()">
+      <mat-icon>print</mat-icon>
+      {{ t('print') }}
+    </button>
+    <button matButton="filled" [disabled]="isLoading() || hasError()" (click)="download()">
+      <mat-icon>download</mat-icon>
+      {{ t('download') }}
+    </button>
+  </ng-template>
+</msk-dialog>
+
+<!-- Hidden, full (non-paginated) instance backing the "چاپ" fallback button only -->
+<mz-sale-invoice-print class="hidden" [data]="data.invoiceData"></mz-sale-invoice-print>
