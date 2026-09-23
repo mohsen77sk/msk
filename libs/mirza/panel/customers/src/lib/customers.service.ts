@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
@@ -10,12 +11,15 @@ import {
   convertToMirzaPagingRequest,
   MskChangeEvent,
   MskLookupItem,
+  MskDialogData,
 } from '@msk/shared/data-access';
 import { Customer, CustomerSummary, DefaultCustomersSortData, CustomerOrderRow } from './customers.types';
+import { CustomersCardDetailsComponent } from './card/details/details.component';
 
 @Injectable({ providedIn: 'root' })
 export class CustomersService {
   private _appConfig = inject(MSK_APP_CONFIG);
+  private _matDialog = inject(MatDialog);
   private _httpClient = inject(HttpClient);
   private _httpCache = inject(MskHttpCacheService);
 
@@ -177,5 +181,21 @@ export class CustomersService {
       map((response) => response),
       tap(() => this._changes.next({ type: 'delete', id: customer.id })),
     );
+  }
+
+  /**
+   * Open customer dialog
+   *
+   * @param data
+   */
+  openCustomerDialog(data: MskDialogData<Customer | undefined>): MatDialogRef<CustomersCardDetailsComponent> {
+    return this._matDialog.open(CustomersCardDetailsComponent, {
+      autoFocus: data.action() !== 'view',
+      disableClose: data.action() !== 'view',
+      data: {
+        action: data.action,
+        item: data.item,
+      },
+    });
   }
 }

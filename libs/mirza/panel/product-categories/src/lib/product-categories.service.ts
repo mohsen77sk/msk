@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
@@ -10,12 +11,15 @@ import {
   convertToMirzaPagingRequest,
   MskChangeEvent,
   MskLookupItem,
+  MskDialogData,
 } from '@msk/shared/data-access';
 import { ProductCategory, DefaultProductCategorySortData } from './product-categories.types';
+import { ProductCategoriesCardDetailsComponent } from './card/details/details.component';
 
 @Injectable({ providedIn: 'root' })
 export class ProductCategoriesService {
   private _appConfig = inject(MSK_APP_CONFIG);
+  private _matDialog = inject(MatDialog);
   private _httpClient = inject(HttpClient);
   private _httpCache = inject(MskHttpCacheService);
 
@@ -147,5 +151,23 @@ export class ProductCategoriesService {
       map((response) => response),
       tap(() => this._changes.next({ type: 'delete', id: productCategory.id })),
     );
+  }
+
+  /**
+   * Open product category dialog
+   *
+   * @param data
+   */
+  openProductCategoryDialog(
+    data: MskDialogData<ProductCategory | undefined>,
+  ): MatDialogRef<ProductCategoriesCardDetailsComponent> {
+    return this._matDialog.open(ProductCategoriesCardDetailsComponent, {
+      autoFocus: data.action() !== 'view',
+      disableClose: data.action() !== 'view',
+      data: {
+        action: data.action,
+        item: data.item,
+      },
+    });
   }
 }

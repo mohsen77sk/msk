@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
@@ -9,12 +10,21 @@ import {
   MskPagingResponse,
   convertToMirzaPagingRequest,
   MskChangeEvent,
+  MskDialogData,
 } from '@msk/shared/data-access';
-import { DefaultExpenseSortData, DefaultExpenseCategorySortData, Expense, ExpenseCategory, ICreateExpense } from './expenses.types';
+import {
+  DefaultExpenseSortData,
+  DefaultExpenseCategorySortData,
+  Expense,
+  ExpenseCategory,
+  ICreateExpense,
+} from './expenses.types';
+import { ExpensesCardDetailsComponent } from './card/details/details.component';
 
 @Injectable({ providedIn: 'root' })
 export class ExpensesService {
   private _appConfig = inject(MSK_APP_CONFIG);
+  private _matDialog = inject(MatDialog);
   private _httpClient = inject(HttpClient);
   private _httpCache = inject(MskHttpCacheService);
 
@@ -130,12 +140,10 @@ export class ExpensesService {
    * @param expense
    */
   updateExpense(expense: ICreateExpense): Observable<Expense> {
-    return this._httpClient
-      .patch<Expense>(`${this._appConfig.apiEndpoint}/expenses/${expense.id}`, expense)
-      .pipe(
-        map((response) => new Expense(response)),
-        tap((expense) => this._changes.next({ type: 'update', item: expense })),
-      );
+    return this._httpClient.patch<Expense>(`${this._appConfig.apiEndpoint}/expenses/${expense.id}`, expense).pipe(
+      map((response) => new Expense(response)),
+      tap((expense) => this._changes.next({ type: 'update', item: expense })),
+    );
   }
 
   /**
@@ -148,5 +156,21 @@ export class ExpensesService {
       map((response) => response),
       tap(() => this._changes.next({ type: 'delete', id: expense.id })),
     );
+  }
+
+  /**
+   * Open expense dialog
+   *
+   * @param data
+   */
+  openExpenseDialog(data: MskDialogData<Expense | undefined>): MatDialogRef<ExpensesCardDetailsComponent> {
+    return this._matDialog.open(ExpensesCardDetailsComponent, {
+      autoFocus: data.action() !== 'view',
+      disableClose: data.action() !== 'view',
+      data: {
+        action: data.action,
+        item: data.item,
+      },
+    });
   }
 }
