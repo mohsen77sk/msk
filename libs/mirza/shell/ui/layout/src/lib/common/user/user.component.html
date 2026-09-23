@@ -1,7 +1,11 @@
 <!-- Button -->
 <button matIconButton [matMenuTriggerFor]="userActions">
   <span class="relative size-6">
-    <msk-avatar [name]="currentStore()?.name ?? ''" [imageUrl]="$safeNavigationMigration(currentStore()?.logoUrl)" size="small"></msk-avatar>
+    <msk-avatar
+      [name]="currentStore()?.name ?? ''"
+      [imageUrl]="$safeNavigationMigration(currentStore()?.logoUrl)"
+      size="small"
+    ></msk-avatar>
   </span>
 </button>
 <!-- Menu -->
@@ -40,7 +44,7 @@
       <span class="text-title-large">{{ currentStore()?.name }}</span>
     </div>
     <div class="pt-2 pb-6" *transloco="let t">
-      <button matButton="outlined">
+      <button matButton="outlined" (click)="openStoreSettings(currentStore())">
         <span>{{ t('layout.settings') }}</span>
       </button>
     </div>
@@ -74,14 +78,9 @@
                 <msk-avatar [name]="store.name" [imageUrl]="store.logoUrl ?? undefined" size="small"></msk-avatar>
                 <span class="ms-3 font-medium">{{ store.name }}</span>
               </div>
-              <div class="flex items-center gap-1">
-                @if (currentStore() === store) {
-                  <div class="msk-chips">{{ t('active') }}</div>
-                }
-                <button matIconButton (click)="$event.stopPropagation(); openStoreSettings(store)">
-                  <mat-icon class="icon-size-4 text-on-surface-variant">settings</mat-icon>
-                </button>
-              </div>
+              @if (currentStore() === store) {
+                <div class="msk-chips">{{ t('active') }}</div>
+              }
             </div>
           }
         </div>

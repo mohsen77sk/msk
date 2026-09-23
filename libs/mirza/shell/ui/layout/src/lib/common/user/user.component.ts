@@ -163,7 +163,7 @@ export class UserComponent implements OnInit {
    *
    * @param store
    */
-  openStoreSettings(store: Store): void {
+  openStoreSettings(store: Store | null): void {
     this._dialog
       .open(StoreSettingsDialogComponent, {
         data: { store },
