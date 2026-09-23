@@ -188,7 +188,9 @@ export class CustomersService {
    *
    * @param data
    */
-  openCustomerDialog(data: MskDialogData<Customer | undefined>): MatDialogRef<CustomersCardDetailsComponent> {
+  openCustomerDialog(
+    data: MskDialogData<{ customer: Customer; summery: CustomerSummary } | undefined>,
+  ): MatDialogRef<CustomersCardDetailsComponent> {
     return this._matDialog.open(CustomersCardDetailsComponent, {
       autoFocus: data.action() !== 'view',
       disableClose: data.action() !== 'view',

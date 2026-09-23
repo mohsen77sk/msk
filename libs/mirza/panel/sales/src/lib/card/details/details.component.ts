@@ -37,7 +37,7 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { catchError, combineLatest, distinctUntilChanged, EMPTY, map, startWith, switchMap, tap } from 'rxjs';
+import { catchError, combineLatest, distinctUntilChanged, EMPTY, forkJoin, map, startWith, switchMap, tap } from 'rxjs';
 import { SalesService } from '../../sales.service';
 import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleInvoice } from '../../sales.types';
 import { SaleReceiptPrintService } from '../../print/print.service';
@@ -201,12 +201,24 @@ export class SalesCardDetailsComponent implements OnInit {
   }
 
   /**
-   * Open this customer dialog
+   * Open this customer detail dialog
    * @param customerId customerId
    */
   viewCustomer(customerId: number | undefined): void {
-    if (!customerId) return;
-    //
+    if (customerId === undefined) return;
+
+    forkJoin([this._customersService.getCustomer(customerId), this._customersService.getCustomerSummary(customerId)])
+      .pipe(
+        switchMap((response) => {
+          return this._customersService
+            .openCustomerDialog({
+              action: signal('view'),
+              item: signal({ customer: response[0], summery: response[1] }),
+            })
+            .afterClosed();
+        }),
+      )
+      .subscribe();
   }
 
   /**
