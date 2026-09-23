@@ -158,12 +158,10 @@ export class AccountsCardDetailsComponent implements OnInit {
       .getPerson(personId)
       .pipe(
         switchMap((person) => {
-          return this._peopleService
-            .openPersonDialog({
-              action: signal('view'),
-              item: signal(person),
-            })
-            .afterClosed();
+          return this._peopleService.openPersonDialog({
+            action: signal('view'),
+            item: signal(person),
+          });
         }),
       )
       .subscribe();

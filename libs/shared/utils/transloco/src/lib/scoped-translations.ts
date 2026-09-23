@@ -11,9 +11,9 @@ import { availableLangs } from '@msk/shared/constants';
  * }),
  * ```
  */
-export const scopeLoader = (importer: any, root = 'i18n') => {
+export const scopeLoader = (importer: any, root = 'i18n', scope?: string) => {
   return availableLangs.reduce((acc: any, lang) => {
-    acc[lang.id] = () => importer(lang.id, root);
+    acc[scope ? `${scope}/${lang.id}` : lang.id] = () => importer(lang.id, root);
     return acc;
   }, {});
 };

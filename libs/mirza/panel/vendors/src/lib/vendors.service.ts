@@ -4,6 +4,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
+import { scopeLoader } from '@msk/shared/utils/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 import {
   MskPagingResponse,
   MskPageData,
@@ -22,6 +24,7 @@ export class VendorsService {
   private _matDialog = inject(MatDialog);
   private _httpClient = inject(HttpClient);
   private _httpCache = inject(MskHttpCacheService);
+  private _translocoService = inject(TranslocoService);
 
   // Private
   private _cacheKey = '/vendor';
@@ -156,14 +159,24 @@ export class VendorsService {
    *
    * @param data
    */
-  openVendorDialog(data: MskDialogData<Vendor | undefined>): MatDialogRef<VendorsCardDetailsComponent> {
-    return this._matDialog.open(VendorsCardDetailsComponent, {
-      autoFocus: data.action() !== 'view',
-      disableClose: data.action() !== 'view',
-      data: {
-        action: data.action,
-        item: data.item,
-      },
-    });
+  openVendorDialog(data: MskDialogData<Vendor | undefined>): Observable<MatDialogRef<VendorsCardDetailsComponent>> {
+    const activeLang = this._translocoService.getActiveLang();
+
+    return this._translocoService
+      .load(`vendors/${activeLang}`, {
+        inlineLoader: scopeLoader((lang: string, root: string) => import(`./${root}/${lang}.json`), 'i18n', 'vendors'),
+      })
+      .pipe(
+        map(() =>
+          this._matDialog.open(VendorsCardDetailsComponent, {
+            autoFocus: data.action() !== 'view',
+            disableClose: data.action() !== 'view',
+            data: {
+              action: data.action,
+              item: data.item,
+            },
+          }),
+        ),
+      );
   }
 }

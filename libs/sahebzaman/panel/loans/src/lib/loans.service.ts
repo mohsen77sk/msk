@@ -1,9 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { TranslocoService } from '@jsverse/transloco';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
+import { scopeLoader } from '@msk/shared/utils/transloco';
 import {
   MskPagingResponse,
   MskLookupResponse,
@@ -21,6 +23,7 @@ export class LoanService {
   private _matDialog = inject(MatDialog);
   private _httpClient = inject(HttpClient);
   private _httpCache = inject(MskHttpCacheService);
+  private _translocoService = inject(TranslocoService);
 
   // Private
   private _cacheKey = '/loan';
@@ -130,14 +133,24 @@ export class LoanService {
    *
    * @param data
    */
-  openLoanDialog(data: MskDialogData<Loan | undefined>): MatDialogRef<LoansCardDetailsComponent> {
-    return this._matDialog.open(LoansCardDetailsComponent, {
-      autoFocus: data.action() !== 'view',
-      disableClose: data.action() !== 'view',
-      data: {
-        action: data.action,
-        item: data.item,
-      },
-    });
+  openLoanDialog(data: MskDialogData<Loan | undefined>): Observable<MatDialogRef<LoansCardDetailsComponent>> {
+    const activeLang = this._translocoService.getActiveLang();
+
+    return this._translocoService
+      .load(`loans/${activeLang}`, {
+        inlineLoader: scopeLoader((lang: string, root: string) => import(`./${root}/${lang}.json`), 'i18n', 'loans'),
+      })
+      .pipe(
+        map(() =>
+          this._matDialog.open(LoansCardDetailsComponent, {
+            autoFocus: data.action() !== 'view',
+            disableClose: data.action() !== 'view',
+            data: {
+              action: data.action,
+              item: data.item,
+            },
+          }),
+        ),
+      );
   }
 }

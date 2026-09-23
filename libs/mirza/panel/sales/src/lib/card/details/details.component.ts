@@ -210,12 +210,10 @@ export class SalesCardDetailsComponent implements OnInit {
     forkJoin([this._customersService.getCustomer(customerId), this._customersService.getCustomerSummary(customerId)])
       .pipe(
         switchMap((response) => {
-          return this._customersService
-            .openCustomerDialog({
-              action: signal('view'),
-              item: signal({ customer: response[0], summery: response[1] }),
-            })
-            .afterClosed();
+          return this._customersService.openCustomerDialog({
+            action: signal('view'),
+            item: signal({ customer: response[0], summery: response[1] }),
+          });
         }),
       )
       .subscribe();

@@ -30,7 +30,6 @@ export class ProductCardComponent implements OnInit {
         action: signal(action),
         item: signal(this._activatedRoute.snapshot.data['card']),
       })
-      .afterClosed()
       .subscribe(() => {
         // Go back to list page
         this._router.navigate([this._activatedRoute.snapshot.url.map(() => '../').join('')], {

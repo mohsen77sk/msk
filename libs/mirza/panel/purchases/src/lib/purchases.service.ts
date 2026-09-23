@@ -4,6 +4,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject, map, tap } from 'rxjs';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskHttpCacheService } from '@msk/shared/services/http-cache';
+import { scopeLoader } from '@msk/shared/utils/transloco';
+import { TranslocoService } from '@jsverse/transloco';
 import {
   MskPagingResponse,
   MskPageData,
@@ -26,6 +28,7 @@ export class PurchasesService {
   private _matDialog = inject(MatDialog);
   private _httpClient = inject(HttpClient);
   private _httpCache = inject(MskHttpCacheService);
+  private _translocoService = inject(TranslocoService);
 
   // Private
   private _cacheKey = '/purchase';
@@ -143,14 +146,30 @@ export class PurchasesService {
    *
    * @param data
    */
-  openPurchaseDialog(data: MskDialogData<PurchaseInvoice | undefined>): MatDialogRef<PurchasesCardDetailsComponent> {
-    return this._matDialog.open(PurchasesCardDetailsComponent, {
-      autoFocus: data.action() !== 'view',
-      disableClose: data.action() !== 'view',
-      data: {
-        action: data.action,
-        item: data.item,
-      },
-    });
+  openPurchaseDialog(
+    data: MskDialogData<PurchaseInvoice | undefined>,
+  ): Observable<MatDialogRef<PurchasesCardDetailsComponent>> {
+    const activeLang = this._translocoService.getActiveLang();
+
+    return this._translocoService
+      .load(`purchases/${activeLang}`, {
+        inlineLoader: scopeLoader(
+          (lang: string, root: string) => import(`./${root}/${lang}.json`),
+          'i18n',
+          'purchases',
+        ),
+      })
+      .pipe(
+        map(() =>
+          this._matDialog.open(PurchasesCardDetailsComponent, {
+            autoFocus: data.action() !== 'view',
+            disableClose: data.action() !== 'view',
+            data: {
+              action: data.action,
+              item: data.item,
+            },
+          }),
+        ),
+      );
   }
 }
