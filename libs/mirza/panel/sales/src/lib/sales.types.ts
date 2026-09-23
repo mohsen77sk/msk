@@ -7,14 +7,6 @@ import { User } from '@msk/mirza/shell/core/user';
 
 export const DefaultSalesSortData: MskSortable = { active: 'number', direction: 'desc' };
 
-// One possible shape SalesCardDetailsComponent's dialogRef can close with -
-// distinguished from the SaleInvoice save/delete result via the `in`
-// operator (see SalesCardComponent's afterClosed() subscriber, which is the
-// single place that decides where to navigate next based on this).
-export interface SalesDetailsCloseResult {
-  navigateToCustomerId: number;
-}
-
 export class SaleInvoice {
   id: number;
   number: string;

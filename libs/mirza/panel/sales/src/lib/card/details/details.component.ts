@@ -39,14 +39,7 @@ import {
 } from '@msk/shared/utils/error-handler';
 import { catchError, combineLatest, distinctUntilChanged, EMPTY, map, startWith, switchMap, tap } from 'rxjs';
 import { SalesService } from '../../sales.service';
-import {
-  ICreateSaleInvoice,
-  IPaymentTypeForm,
-  ISaleItemForm,
-  ISalesForm,
-  SaleInvoice,
-  SalesDetailsCloseResult,
-} from '../../sales.types';
+import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleInvoice } from '../../sales.types';
 import { SaleReceiptPrintService } from '../../print/print.service';
 import { ReceiptPrintData } from '../../print/print.types';
 import { SaleReceiptPrintComponent } from '../../print/print.component';
@@ -208,16 +201,12 @@ export class SalesCardDetailsComponent implements OnInit {
   }
 
   /**
-   * Close this dialog with an intent to navigate to the customer's own
-   * detail dialog - SalesCardComponent's afterClosed() subscriber is what
-   * actually navigates, based on this result (single navigation decision,
-   * made in one place).
-   * @param customerId id of the customer to open
+   * Open this customer dialog
+   * @param customerId customerId
    */
   viewCustomer(customerId: number | undefined): void {
     if (!customerId) return;
-    const result: SalesDetailsCloseResult = { navigateToCustomerId: customerId };
-    this.dialogRef.close(result);
+    //
   }
 
   /**
