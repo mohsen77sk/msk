@@ -1,0 +1,159 @@
+<div #invoice class="sale-invoice-print" dir="rtl">
+  @if (showPartyBoxes()) {
+    <!-- Header -->
+    <div class="sale-invoice-print__header">
+      <div class="sale-invoice-print__header-side">
+        @if (data()?.storeLogoUrl) {
+          <img class="sale-invoice-print__logo" [src]="$safeNavigationMigration(data()?.storeLogoUrl)" [alt]="$safeNavigationMigration(data()?.storeName)" />
+        }
+      </div>
+      <div class="sale-invoice-print__header-center">
+        <div class="sale-invoice-print__title">فاکتور فروش</div>
+        <div class="sale-invoice-print__store-name">{{ data()?.storeName }}</div>
+      </div>
+      <div class="sale-invoice-print__header-side sale-invoice-print__header-meta">
+        <div class="sale-invoice-print__meta-row">شماره : {{ data()?.saleNumber | mzPersianDigits }}</div>
+        @if (data()?.saleDate) {
+          <div class="sale-invoice-print__meta-row">
+            {{ $safeNavigationMigration(data()?.saleDate) | mskDateTime: 'yyyy/MM/dd' | mzPersianDigits }}
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Seller -->
+    <div class="sale-invoice-print__party-box">
+      <div class="sale-invoice-print__party-tab">
+        <span>فروشنده</span>
+      </div>
+      <div class="sale-invoice-print__party-content">
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">نام</span>
+          <span class="sale-invoice-print__party-value">{{ data()?.storeName || '----------' }}</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">ش.اقتصادی</span>
+          <span class="sale-invoice-print__party-value" dir="ltr">{{ (data()?.storeEconomicCode | mzPersianDigits) || '----------' }}</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">شماره ملی</span>
+          <span class="sale-invoice-print__party-value" dir="ltr">{{ (data()?.storeNationalId | mzPersianDigits) || '----------' }}</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">نشانی</span>
+          <span class="sale-invoice-print__party-value">{{ data()?.storeAddress || '----------' }}</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">کد پستی</span>
+          <span class="sale-invoice-print__party-value" dir="ltr">{{ (data()?.storePostalCode | mzPersianDigits) || '----------' }}</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">تلفن</span>
+          <span class="sale-invoice-print__party-value" dir="ltr">{{ (data()?.storePhone | mzPersianDigits) || '----------' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer -->
+    <div class="sale-invoice-print__party-box">
+      <div class="sale-invoice-print__party-tab">
+        <span>مشتری</span>
+      </div>
+      <div class="sale-invoice-print__party-content">
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">نام</span>
+          <span class="sale-invoice-print__party-value">{{ data()?.customerName || '----------' }}</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">ش.اقتصادی</span>
+          <span class="sale-invoice-print__party-value" dir="ltr">----------</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">شماره ملی</span>
+          <span class="sale-invoice-print__party-value" dir="ltr">----------</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">نشانی</span>
+          <span class="sale-invoice-print__party-value">{{ data()?.customerAddress || '----------' }}</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">کد پستی</span>
+          <span class="sale-invoice-print__party-value" dir="ltr">----------</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">موبایل</span>
+          <span class="sale-invoice-print__party-value" dir="ltr">{{ (data()?.customerContactNumber | mzPersianDigits) || '----------' }}</span>
+        </div>
+        <div class="sale-invoice-print__party-row">
+          <span class="sale-invoice-print__party-label">تلفن</span>
+          <span class="sale-invoice-print__party-value" dir="ltr">----------</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Items -->
+  <table class="sale-invoice-print__items">
+    <thead>
+      <tr>
+        <th class="sale-invoice-print__col-row">ردیف</th>
+        <th>شرح کالا</th>
+        <th class="sale-invoice-print__col-num">تعداد/مقدار</th>
+        <th class="sale-invoice-print__col-num">قیمت واحد ({{ currencyLabel }})</th>
+        <th class="sale-invoice-print__col-num">جمع کل ({{ currencyLabel }})</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of renderedItems; track $index) {
+        <tr>
+          <td class="sale-invoice-print__col-row">{{ $index + 1 | mzPersianDigits }}</td>
+          <td>{{ item.productName }}</td>
+          <td class="sale-invoice-print__col-num">{{ item.quantity | mzPersianDigits }}</td>
+          <td class="sale-invoice-print__col-num">{{ item.unitPrice | mskCurrency: undefined : false | mzPersianDigits }}</td>
+          <td class="sale-invoice-print__col-num">{{ item.lineTotal | mskCurrency: undefined : false | mzPersianDigits }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <!-- Totals -->
+  @if (showTotals()) {
+    <div class="sale-invoice-print__totals">
+      @if (data()?.hasAdjustments) {
+        <div class="sale-invoice-print__totals-row">
+          <span>جمع کل اقلام</span>
+          <span dir="ltr">{{ $safeNavigationMigration(data()?.itemsSubtotal) | mskCurrency | mzPersianDigits }}</span>
+        </div>
+        @if ((data()?.discount ?? 0) > 0) {
+          <div class="sale-invoice-print__totals-row">
+            <span>تخفیف</span>
+            <span dir="ltr">{{ $safeNavigationMigration(data()?.discount) | mskCurrency | mzPersianDigits }}</span>
+          </div>
+        }
+        @if ((data()?.tax ?? 0) > 0) {
+          <div class="sale-invoice-print__totals-row">
+            <span>مالیات</span>
+            <span dir="ltr">{{ $safeNavigationMigration(data()?.tax) | mskCurrency | mzPersianDigits }}</span>
+          </div>
+        }
+        @if ((data()?.deliveryFee ?? 0) > 0) {
+          <div class="sale-invoice-print__totals-row">
+            <span>هزینه ارسال</span>
+            <span dir="ltr">{{ $safeNavigationMigration(data()?.deliveryFee) | mskCurrency | mzPersianDigits }}</span>
+          </div>
+        }
+      }
+      <div class="sale-invoice-print__totals-row sale-invoice-print__totals-final">
+        <span>مبلغ نهایی فاکتور</span>
+        <span dir="ltr">{{ $safeNavigationMigration(data()?.total) | mskCurrency | mzPersianDigits }}</span>
+      </div>
+    </div>
+  }
+
+  <!-- Page number (PDF pagination only) -->
+  @if (pageInfo() && pageInfo()!.count > 1) {
+    <div class="sale-invoice-print__page-number">
+      صفحه {{ pageInfo()!.index | mzPersianDigits }} از {{ pageInfo()!.count | mzPersianDigits }}
+    </div>
+  }
+</div>

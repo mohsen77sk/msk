@@ -39,8 +39,16 @@ export class SaleReceiptPrintService {
       }
 
       hasPrinted = true;
-      printWindow.focus();
-      printWindow.print();
+
+      // Wait for any @import/@font-face fonts referenced by the injected styles
+      // to finish loading, so the print/PDF output doesn't silently fall back
+      // to a system font when it opens before the webfont has loaded.
+      const fontsReady = printWindow.document.fonts?.ready ?? Promise.resolve();
+
+      fontsReady.finally(() => {
+        printWindow.focus();
+        printWindow.print();
+      });
     };
 
     if (!images.length) {

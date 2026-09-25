@@ -1,0 +1,205 @@
+// Mirrors the class rules in ./invoice-print.styles.ts (used to inject a
+// <style> into the print-window popup, a separate document). This file is
+// the SAME visual rules as a real component stylesheet, so the component
+// looks right when rendered live in-app too - the PDF pipeline renders it
+// off-screen in the actual app DOM (for html2canvas), not inside a popup,
+// so it needs its own styling rather than relying only on the injected
+// print-window string. Same duplication the receipt feature already has
+// between print.component.scss and print.styles.ts.
+
+$invoice-blue: #1d4ed8;
+$invoice-blue-light: #dbeafe;
+$invoice-blue-zebra: #eff6ff;
+
+.sale-invoice-print {
+  width: 100%;
+  direction: rtl;
+  color: #111827;
+  background: #fff;
+  font-family: IRANSansX, sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 6mm;
+  box-sizing: border-box;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.sale-invoice-print__header {
+  display: flex;
+  direction: rtl;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8mm;
+  padding-bottom: 4mm;
+  margin-bottom: 6mm;
+  border-bottom: 2px solid $invoice-blue;
+}
+
+.sale-invoice-print__header-side {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.sale-invoice-print__header-center {
+  flex: 1.4 1 0;
+  text-align: center;
+}
+
+.sale-invoice-print__header-meta {
+  text-align: left;
+}
+
+.sale-invoice-print__logo {
+  max-width: 34mm;
+  max-height: 18mm;
+  object-fit: contain;
+}
+
+.sale-invoice-print__title {
+  font-size: 11px;
+  font-weight: 600;
+  color: $invoice-blue;
+}
+
+.sale-invoice-print__store-name {
+  margin-top: 1mm;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sale-invoice-print__meta-row {
+  font-size: 12px;
+  margin-bottom: 1mm;
+}
+
+.sale-invoice-print__party-box {
+  display: flex;
+  direction: rtl;
+  border: 1px solid $invoice-blue-light;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 4mm;
+}
+
+.sale-invoice-print__party-tab {
+  flex: none;
+  width: 8mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $invoice-blue;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+
+  span {
+    display: inline-block;
+    white-space: nowrap;
+    transform: rotate(-90deg);
+  }
+}
+
+.sale-invoice-print__party-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2mm;
+  padding: 3mm 4mm;
+}
+
+.sale-invoice-print__party-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 4mm;
+  border-bottom: 1px dotted #e2e8f0;
+  padding-bottom: 1mm;
+
+  &:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+.sale-invoice-print__party-label {
+  flex: none;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.sale-invoice-print__party-value {
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.sale-invoice-print__items {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2mm;
+  margin-bottom: 5mm;
+
+  thead tr {
+    background: $invoice-blue;
+    color: #fff;
+  }
+
+  th {
+    padding: 2.5mm 2mm;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: right;
+  }
+
+  td {
+    padding: 2mm;
+    font-size: 12px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  tbody tr:nth-child(even) {
+    background: $invoice-blue-zebra;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 1px solid $invoice-blue-light;
+  }
+}
+
+.sale-invoice-print__col-row,
+.sale-invoice-print__col-num {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.sale-invoice-print__totals {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+}
+
+.sale-invoice-print__totals-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 4mm;
+  font-size: 12px;
+}
+
+.sale-invoice-print__totals-final {
+  margin-top: 1.5mm;
+  padding: 2.5mm 3mm;
+  background: $invoice-blue-light;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 700;
+  color: $invoice-blue;
+}
+
+.sale-invoice-print__page-number {
+  margin-top: 4mm;
+  text-align: center;
+  font-size: 10px;
+  color: #6b7280;
+}

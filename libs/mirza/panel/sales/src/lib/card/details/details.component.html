@@ -17,6 +17,9 @@
       <button matIconButton (click)="printReceipt()">
         <mat-icon>print</mat-icon>
       </button>
+      <button matIconButton (click)="printInvoice()">
+        <mat-icon>picture_as_pdf</mat-icon>
+      </button>
     }
     <button matIconButton (click)="editMode()">
       <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
@@ -157,6 +160,14 @@
         </div>
         <div class="msk-list-item-content">
           {{ t('sales.print-receipt') }}
+        </div>
+      </div>
+      <div class="msk-list-item cursor-pointer" matRipple (click)="printInvoice()" aria-hidden="true">
+        <div class="msk-list-item-icon">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          {{ t('sales.print-invoice') }}
         </div>
       </div>
       <div class="msk-list-item cursor-pointer" matRipple (click)="deleteInvoice()" aria-hidden="true">
