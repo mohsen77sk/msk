@@ -64,6 +64,16 @@
     "size-error": "Image must be smaller than 2MB.",
     "upload-error": "Image upload failed. Please try again."
   },
+  "store-settings": {
+    "title": "Store settings",
+    "name": "Name",
+    "phone": "Phone",
+    "postal-code": "Postal code",
+    "economic-code": "Economic code",
+    "national-id": "National ID",
+    "address": "Address",
+    "save": "Save"
+  },
   "error-validation": {
     "required": "This is required",
     "pattern": "Invalid value",
