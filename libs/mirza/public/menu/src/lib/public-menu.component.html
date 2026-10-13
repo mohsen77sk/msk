@@ -1,0 +1,92 @@
+<div class="bg-surface-container-low absolute inset-0 overflow-auto" *transloco="let t">
+  @switch (state()) {
+    @case ('loading') {
+      <div class="flex h-full flex-col items-center justify-center gap-4 p-6">
+        <mat-spinner [diameter]="32"></mat-spinner>
+        <span class="text-body-medium text-on-surface-variant">{{ t('loading') }}</span>
+      </div>
+    }
+
+    @case ('unavailable') {
+      <div class="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+        <mat-icon class="icon-size-16 text-on-surface-variant">no_meals</mat-icon>
+        <h1 class="text-title-large">{{ t('public-menu.unavailable.title') }}</h1>
+        <p class="text-body-medium text-on-surface-variant max-w-sm">{{ t('public-menu.unavailable.desc') }}</p>
+      </div>
+    }
+
+    @case ('error') {
+      <div class="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+        <mat-icon class="icon-size-16 text-on-surface-variant">cloud_off</mat-icon>
+        <h1 class="text-title-large">{{ t('public-menu.error.title') }}</h1>
+        <p class="text-body-medium text-on-surface-variant max-w-sm">{{ t('public-menu.error.desc') }}</p>
+        <button matButton="filled" class="mt-2" (click)="retry()">
+          <mat-icon>refresh</mat-icon>
+          <span>{{ t('public-menu.error.retry') }}</span>
+        </button>
+      </div>
+    }
+
+    @case ('ready') {
+      @if (menu(); as menu) {
+        <!-- Header -->
+        <header class="bg-surface border-outline-variant sticky top-0 z-10 border-b">
+          <div class="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">
+            @if (menu.store.logoUrl && !logoFailed()) {
+              <img
+                class="size-12 shrink-0 rounded-full object-cover"
+                [src]="menu.store.logoUrl"
+                [alt]="menu.store.name"
+                loading="lazy"
+                (error)="logoFailed.set(true)"
+              />
+            } @else {
+              <msk-avatar class="size-12 shrink-0" [name]="menu.store.name"></msk-avatar>
+            }
+            <h1 class="text-title-large min-w-0 truncate">{{ menu.store.name }}</h1>
+          </div>
+
+          <!-- Category shortcuts -->
+          @if (menu.categories.length > 1) {
+            <nav class="mx-auto flex max-w-2xl gap-2 overflow-x-auto px-4 pb-3">
+              @for (section of menu.categories; track section.id; let i = $index) {
+                <button matButton="tonal" class="shrink-0" (click)="scrollToSection(i)">
+                  {{ section.name ?? t('public-menu.uncategorized') }}
+                </button>
+              }
+            </nav>
+          }
+        </header>
+
+        <!-- Sections -->
+        <main class="mx-auto flex max-w-2xl flex-col gap-6 px-4 py-4">
+          @for (section of menu.categories; track section.id; let i = $index) {
+            <section class="scroll-mt-36" [id]="'menu-section-' + i">
+              <h2 class="text-title-medium mb-2 px-1">{{ section.name ?? t('public-menu.uncategorized') }}</h2>
+              <ul class="msk-mat-card-outlined divide-outline-variant divide-y overflow-hidden">
+                @for (product of section.products; track product.id) {
+                  <li class="flex items-center justify-between gap-4 px-4 py-3">
+                    <span class="text-body-large min-w-0 break-words">{{ product.name }}</span>
+                    <span class="flex shrink-0 flex-col items-end">
+                      <span class="text-title-small whitespace-nowrap">{{ product.sellPrice | mskCurrency }}</span>
+                      @if (product.unit !== 'piece') {
+                        <span class="text-label-medium text-on-surface-variant whitespace-nowrap">
+                          {{ t('public-menu.per-unit', { unit: t('public-menu.units.' + product.unit) }) }}
+                        </span>
+                      }
+                    </span>
+                  </li>
+                }
+              </ul>
+            </section>
+          } @empty {
+            <div class="flex flex-col items-center gap-3 py-16 text-center">
+              <mat-icon class="icon-size-16 text-on-surface-variant">restaurant_menu</mat-icon>
+              <p class="text-body-medium text-on-surface-variant">{{ t('public-menu.empty') }}</p>
+            </div>
+          }
+        </main>
+      }
+    }
+  }
+</div>

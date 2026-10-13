@@ -56,6 +56,13 @@
         "link": "/panel/products"
       },
       {
+        "id": "panel.menu",
+        "title": "Digital menu",
+        "type": "basic",
+        "icon": "qr_code_2",
+        "link": "/panel/menu"
+      },
+      {
         "id": "panel.purchases",
         "title": "Purchases",
         "type": "basic",

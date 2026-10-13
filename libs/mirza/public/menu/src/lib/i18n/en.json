@@ -1,0 +1,19 @@
+{
+  "uncategorized": "Other",
+  "per-unit": "per {{unit}}",
+  "units": {
+    "piece": "piece",
+    "gram": "gram",
+    "kg": "kg"
+  },
+  "empty": "No products have been added to this menu yet.",
+  "unavailable": {
+    "title": "Menu unavailable",
+    "desc": "This menu does not exist or is currently disabled."
+  },
+  "error": {
+    "title": "Couldn't load the menu",
+    "desc": "Check your internet connection and try again.",
+    "retry": "Try again"
+  }
+}
