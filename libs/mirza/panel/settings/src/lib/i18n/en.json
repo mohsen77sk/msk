@@ -1,1 +1,10 @@
-{}
+{
+  "title": "Store settings",
+  "profile-picture": "Profile picture",
+  "name": "Name",
+  "phone": "Phone",
+  "postal-code": "Postal code",
+  "economic-code": "Economic code",
+  "national-id": "National ID",
+  "address": "Address"
+}

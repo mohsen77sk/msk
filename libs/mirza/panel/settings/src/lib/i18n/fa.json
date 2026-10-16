@@ -1,1 +1,10 @@
-{}
+{
+  "title": "تنظیمات فروشگاه",
+  "profile-picture": "عکس پروفایل",
+  "name": "نام",
+  "phone": "تلفن",
+  "postal-code": "کد پستی",
+  "economic-code": "کد اقتصادی",
+  "national-id": "شناسه ملی",
+  "address": "آدرس"
+}

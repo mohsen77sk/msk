@@ -1,1 +1,73 @@
-<p>Settings works!</p>
+<div class="page-layout content-scroll">
+  <div class="content" *transloco="let t; prefix: 'settings'">
+    <div class="text-headline-medium px-6 py-3">{{ t('title') }}</div>
+
+    <div class="msk-list mt-4">
+      <div class="msk-group-list">
+        <div class="msk-list-item item-hover" matRipple>
+          <div class="msk-list-item-icon">
+            <mat-icon class="mat-icon-rtl-mirror">photo_camera</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ t('profile-picture') }}</span>
+          </div>
+          <msk-avatar [name]="currentStore()?.name ?? ''" [imageUrl]="currentStore()?.logoUrl" size="big"></msk-avatar>
+        </div>
+        <div class="msk-list-item item-hover" matRipple>
+          <div class="msk-list-item-icon">
+            <mat-icon class="mat-icon-rtl-mirror">assignment_ind</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ t('name') }}</span>
+            <span>{{ currentStore()?.name || '-' }}</span>
+          </div>
+        </div>
+        <div class="msk-list-item item-hover" matRipple>
+          <div class="msk-list-item-icon">
+            <mat-icon class="mat-icon-rtl-mirror">id_card</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ t('national-id') }}</span>
+            <span>{{ currentStore()?.nationalId || '-' }}</span>
+          </div>
+        </div>
+        <div class="msk-list-item item-hover" matRipple>
+          <div class="msk-list-item-icon">
+            <mat-icon class="mat-icon-rtl-mirror">medical_information</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ t('economic-code') }}</span>
+            <span>{{ currentStore()?.economicCode || '-' }}</span>
+          </div>
+        </div>
+        <div class="msk-list-item item-hover" matRipple>
+          <div class="msk-list-item-icon">
+            <mat-icon class="mat-icon-rtl-mirror">call</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ t('phone') }}</span>
+            <span>{{ currentStore()?.phone || '-' }}</span>
+          </div>
+        </div>
+        <div class="msk-list-item item-hover" matRipple>
+          <div class="msk-list-item-icon">
+            <mat-icon class="mat-icon-rtl-mirror">home_pin</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ t('postal-code') }}</span>
+            <span>{{ currentStore()?.postalCode || '-' }}</span>
+          </div>
+        </div>
+        <div class="msk-list-item item-hover" matRipple>
+          <div class="msk-list-item-icon">
+            <mat-icon class="mat-icon-rtl-mirror">home</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ t('address') }}</span>
+            <span>{{ currentStore()?.address || '-' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
