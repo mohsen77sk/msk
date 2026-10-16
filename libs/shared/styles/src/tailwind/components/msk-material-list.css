@@ -28,7 +28,12 @@
   }
 
   .msk-list-item {
-    @apply flex gap-4 px-4 py-3;
+    @apply flex gap-3 px-4 py-3;
+
+    &.item-hover:hover {
+      @apply cursor-pointer;
+      background-color: color-mix(in srgb, var(--mat-sys-surface-tint) 16%, transparent);
+    }
 
     .msk-list-item-icon {
       @apply text-on-surface-variant flex size-10 shrink-0 items-center justify-center self-center;
@@ -45,7 +50,7 @@
     }
 
     span:nth-child(1) {
-      @apply text-body-large text-on-surface;
+      @apply text-title-medium text-on-surface;
     }
 
     span:nth-child(2),
