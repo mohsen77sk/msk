@@ -76,11 +76,11 @@
           @apply flex flex-auto flex-col overflow-y-auto;
 
           .cdk-virtual-scroll-content-wrapper {
-            @apply w-full;
+            @apply w-full p-2;
           }
 
           .content-grid-item {
-            @apply text-on-surface flex h-14 flex-[0_0_auto] items-center gap-4 px-4 py-2 transition md:px-8;
+            @apply text-on-surface rounded-medium mb-0.5 flex h-14 flex-[0_0_auto] items-center gap-4 p-2 transition md:px-6;
 
             &.tow-line {
               @apply h-18;
