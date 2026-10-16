@@ -1,6 +1,6 @@
 <msk-dialog
   *transloco="let t; prefix: 'expenses.details'"
-  [title]="t(data.action(), { description: $safeNavigationMigration(data.item()?.description) || t('no-description') })"
+  [title]="t(data.action(), { description: data.item()?.description || t('no-description') })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
@@ -56,7 +56,7 @@
     <div class="msk-list-item">
       <mat-icon class="msk-list-item-icon">event</mat-icon>
       <div class="msk-list-item-content">
-        <span>{{ ($safeNavigationMigration(data.item()?.date) | mskDateTime: 'longDate') || '-' }}</span>
+        <span>{{ (data.item()?.date | mskDateTime: 'longDate') || '-' }}</span>
         <span>{{ t('date') }}</span>
       </div>
     </div>
@@ -114,9 +114,7 @@
           itemSize="48"
           minBufferPx="240"
           maxBufferPx="480"
-          [style.height.px]="
-            (autoCategory?.options?.length || 0) > 5 ? 240 : (autoCategory?.options?.length || 0) * 48
-          "
+          [style.height.px]="(autoCategory?.options?.length || 0) > 5 ? 240 : (autoCategory?.options?.length || 0) * 48"
         >
           <mat-option *cdkVirtualFor="let category of categoryDS" [value]="category">
             {{ category?.name || ('loading' | transloco) }}

@@ -1,9 +1,7 @@
 <msk-dialog
   *transloco="let t; prefix: 'customers.details'"
   [title]="
-    data.action() !== 'view' || isShowNameHeader()
-      ? t(data.action(), { name: $safeNavigationMigration(data.item()?.customer?.name) })
-      : ''
+    data.action() !== 'view' || isShowNameHeader() ? t(data.action(), { name: data.item()?.customer?.name }) : ''
   "
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
@@ -38,7 +36,7 @@
   </div>
   <div class="msk-group-list">
     <div class="msk-list-item subtitle">
-      {{ t('about', { name: $safeNavigationMigration(data.item()?.customer?.name) }) }}
+      {{ t('about', { name: data.item()?.customer?.name }) }}
     </div>
     <!-- Gender -->
     @if (data.item()?.customer?.gender) {

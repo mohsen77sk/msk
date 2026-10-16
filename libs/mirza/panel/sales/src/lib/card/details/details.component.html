@@ -1,6 +1,6 @@
 <msk-dialog
   *transloco="let t; prefix: 'sales.details'"
-  [title]="t(data.action(), { name: $safeNavigationMigration(data.item()?.number) })"
+  [title]="t(data.action(), { name: data.item()?.number })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
@@ -48,7 +48,7 @@
     <div class="msk-list-item">
       <mat-icon class="msk-list-item-icon">event</mat-icon>
       <div class="msk-list-item-content">
-        <span>{{ ($safeNavigationMigration(data.item()?.saleDate) | mskDateTime: 'longDate') || '-' }}</span>
+        <span>{{ (data.item()?.saleDate | mskDateTime: 'longDate') || '-' }}</span>
         <span>{{ t('date') }}</span>
       </div>
     </div>
@@ -56,7 +56,7 @@
     <div class="msk-list-item">
       <mat-icon class="msk-list-item-icon">percent_discount</mat-icon>
       <div class="msk-list-item-content">
-        <span>{{ $safeNavigationMigration(data.item()?.discount) | mskCurrency }}</span>
+        <span>{{ data.item()?.discount | mskCurrency }}</span>
         <span>{{ t('discount') }}</span>
       </div>
     </div>
@@ -64,7 +64,7 @@
     <div class="msk-list-item">
       <mat-icon class="msk-list-item-icon">receipt_long</mat-icon>
       <div class="msk-list-item-content">
-        <span>{{ $safeNavigationMigration(data.item()?.tax) | mskCurrency }}</span>
+        <span>{{ data.item()?.tax | mskCurrency }}</span>
         <span>{{ t('tax') }}</span>
       </div>
     </div>
@@ -72,7 +72,7 @@
     <div class="msk-list-item">
       <mat-icon class="msk-list-item-icon">local_shipping</mat-icon>
       <div class="msk-list-item-content">
-        <span>{{ $safeNavigationMigration(data.item()?.deliveryFee) | mskCurrency }}</span>
+        <span>{{ data.item()?.deliveryFee | mskCurrency }}</span>
         <span>{{ t('deliveryFee') }}</span>
       </div>
     </div>
@@ -80,7 +80,7 @@
     <div class="msk-list-item">
       <mat-icon class="msk-list-item-icon">payments</mat-icon>
       <div class="msk-list-item-content">
-        <span>{{ $safeNavigationMigration(data.item()?.total) | mskCurrency }}</span>
+        <span>{{ data.item()?.total | mskCurrency }}</span>
         <span>{{ t('total') }}</span>
       </div>
     </div>
@@ -298,7 +298,7 @@
               <mat-label>{{ t('quantity') }}</mat-label>
               <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
               <mat-hint align="end">
-                {{ $safeNavigationMigration(product.get('total')?.value) | mskCurrency }}
+                {{ product.get('total')?.value | mskCurrency }}
               </mat-hint>
             </mat-form-field>
           </div>
@@ -381,7 +381,7 @@
         <input matInput formControlName="discount" mskMask="currency" autocomplete="off" inputmode="numeric" />
         <span matTextSuffix mskCurrencySymbol></span>
         <mat-hint align="end">
-          <span>{{ t('totalPrice') }}: {{ $safeNavigationMigration(form.get('total')?.value) | mskCurrency }}</span>
+          <span>{{ t('totalPrice') }}: {{ form.get('total')?.value | mskCurrency }}</span>
         </mat-hint>
         <mat-error>{{ formErrors['discount'] }}</mat-error>
       </mat-form-field>
