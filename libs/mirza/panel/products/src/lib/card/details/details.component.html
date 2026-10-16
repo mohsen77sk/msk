@@ -30,7 +30,9 @@
     <div class="msk-list-item subtitle">{{ t('specs') }}</div>
     <!-- Name -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">label</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>label</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ data.item()?.name || '-' }}</span>
         <span>{{ t('name') }}</span>
@@ -39,7 +41,9 @@
     <!-- Category -->
     @if (data.item()?.category) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">category</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>category</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.category?.name || '-' }}</span>
           <span>{{ t('category') }}</span>
@@ -49,7 +53,9 @@
     <!-- Quantity -->
     @if (data.item()?.quantity) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">pin</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>pin</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span *transloco="let t; prefix: 'products.units'">
             {{ (data.item()?.quantity | number) || '-' }} {{ t(data.item()?.unit ?? '') }}
@@ -61,7 +67,9 @@
     <!-- Cost -->
     @if (data.item()?.cost) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">paid</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>paid</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.cost | mskCurrency }}</span>
           <span>{{ t('cost') }}</span>
@@ -71,7 +79,9 @@
     <!-- SellPrice -->
     @if (data.item()?.sellPrice) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sell</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>sell</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.sellPrice | mskCurrency }}</span>
           <span>{{ t('sell-price') }}</span>
@@ -83,7 +93,9 @@
     <div class="msk-group-list">
       <div class="msk-list-item subtitle">{{ t('note') }}</div>
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>sticky_note_2</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.note }}</span>
         </div>

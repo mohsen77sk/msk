@@ -37,7 +37,9 @@
       {{ t('about', { name: data.item()?.fullName }) }}
     </div>
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">numbers</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>numbers</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ data.item()?.code }}</span>
         <span>{{ t('code') }}</span>
@@ -46,7 +48,9 @@
     <!-- National Code -->
     @if (data.item()?.nationalCode) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">badge</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>badge</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.nationalCode || '-' }}</span>
           <span>{{ t('nationalCode') }}</span>
@@ -56,7 +60,9 @@
     <!-- Birthday -->
     @if (data.item()?.birthday) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">cake</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>cake</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ (data.item()?.birthday | mskDateTime: 'longDate') || '-' }}</span>
           <span>{{ t('birthday') }}</span>
@@ -66,7 +72,9 @@
     <!-- Gender -->
     @if (data.item()?.gender) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">male</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>male</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span *transloco="let t; prefix: 'people.genders'">{{ t(data.item()?.gender?.toString() ?? '') }}</span>
           <span>{{ t('gender') }}</span>
@@ -78,7 +86,9 @@
     <div class="msk-group-list">
       <div class="msk-list-item subtitle">{{ t('note') }}</div>
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>sticky_note_2</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.note }}</span>
         </div>

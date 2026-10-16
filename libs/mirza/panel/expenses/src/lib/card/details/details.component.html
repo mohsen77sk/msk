@@ -30,7 +30,9 @@
     <div class="msk-list-item subtitle">{{ t('specs') }}</div>
     <!-- Cost -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">payments</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>payments</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ data.item()?.cost | mskCurrency }}</span>
         <span>{{ t('cost') }}</span>
@@ -38,7 +40,9 @@
     </div>
     <!-- Description -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">description</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>description</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ data.item()?.description || '-' }}</span>
         <span>{{ t('description') }}</span>
@@ -46,7 +50,9 @@
     </div>
     <!-- Category -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">category</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>category</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ data.item()?.category?.name || '-' }}</span>
         <span>{{ t('category') }}</span>
@@ -54,7 +60,9 @@
     </div>
     <!-- Date -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">event</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>event</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ (data.item()?.date | mskDateTime: 'longDate') || '-' }}</span>
         <span>{{ t('date') }}</span>

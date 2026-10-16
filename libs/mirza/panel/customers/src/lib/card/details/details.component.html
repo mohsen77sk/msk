@@ -41,7 +41,9 @@
     <!-- Gender -->
     @if (data.item()?.customer?.gender) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">male</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>male</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span *transloco="let t; prefix: 'customers.genders'">{{ t(data.item()?.customer?.gender ?? '') }}</span>
           <span>{{ t('gender') }}</span>
@@ -51,7 +53,9 @@
     <!-- Contact Number -->
     @if (data.item()?.customer?.contactNumber) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">call</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>call</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span class="bidi-isolate-ltr">{{ data.item()?.customer?.contactNumber || '-' }}</span>
           <span>{{ t('contactNumber') }}</span>
@@ -61,7 +65,9 @@
     <!-- Address -->
     @if (data.item()?.customer?.address) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">location_on</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>location_on</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.customer?.address || '-' }}</span>
           <span>{{ t('address') }}</span>
@@ -73,7 +79,9 @@
     <div class="msk-group-list">
       <div class="msk-list-item subtitle">{{ t('note') }}</div>
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>sticky_note_2</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.customer?.note }}</span>
         </div>

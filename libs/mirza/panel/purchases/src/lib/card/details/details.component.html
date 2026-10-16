@@ -30,7 +30,9 @@
     <div class="msk-list-item subtitle">{{ t('specs') }}</div>
     <!-- Number -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">label</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>label</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ data.item()?.number || '-' }}</span>
         <span>{{ t('number') }}</span>
@@ -38,7 +40,9 @@
     </div>
     <!-- Date -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">event</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>event</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ (data.item()?.date | mskDateTime: 'longDate') || '-' }}</span>
         <span>{{ t('date') }}</span>
@@ -46,7 +50,9 @@
     </div>
     <!-- Discount -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">percent_discount</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>percent_discount</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ data.item()?.discount | mskCurrency }}</span>
         <span>{{ t('discount') }}</span>
@@ -54,7 +60,9 @@
     </div>
     <!-- Total -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">payments</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>payments</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ data.item()?.total | mskCurrency }}</span>
         <span>{{ t('total') }}</span>
@@ -92,7 +100,9 @@
     <div class="msk-group-list">
       <div class="msk-list-item subtitle">{{ t('note') }}</div>
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>sticky_note_2</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.note }}</span>
         </div>

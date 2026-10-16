@@ -30,7 +30,9 @@
     <div class="msk-list-item subtitle">{{ t('specs') }}</div>
     <!-- Name -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">label</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>label</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ data.item()?.name || '-' }}</span>
         <span>{{ t('name') }}</span>
@@ -41,7 +43,9 @@
     <div class="msk-group-list">
       <div class="msk-list-item subtitle">{{ t('note') }}</div>
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>sticky_note_2</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.note }}</span>
         </div>
