@@ -49,6 +49,13 @@
         "link": "/panel/products"
       },
       {
+        "id": "panel.menu",
+        "title": "منوی دیجیتال",
+        "type": "basic",
+        "icon": "qr_code_2",
+        "link": "/panel/menu"
+      },
+      {
         "id": "panel.purchases",
         "title": "خریدها",
         "type": "basic",

@@ -1,0 +1,43 @@
+{
+  "load-error": "Failed to load the menu settings. Please reload the page.",
+  "settings": {
+    "title": "Digital menu settings",
+    "enabled": "Menu is visible to customers",
+    "slug": "Menu address",
+    "slug-hint": "Lowercase latin letters, digits and hyphens only, e.g. cafe-mirza",
+    "slug-change-warning": "Changing the address breaks previously printed QR codes.",
+    "saved": "Menu settings saved",
+    "errors": {
+      "required": "Menu address is required",
+      "length": "Address must be between {{min}} and {{max}} characters",
+      "pattern": "Only lowercase latin letters, digits and single hyphens between them are allowed",
+      "reserved": "This address is reserved and cannot be used",
+      "taken": "This address is already used by another store"
+    }
+  },
+  "share": {
+    "title": "Share",
+    "no-slug": "Save a menu address first to get the link and QR code.",
+    "disabled-warning": "The menu is disabled; customers scanning the QR code will see a \"menu unavailable\" message.",
+    "copy": "Copy link",
+    "copied": "Menu link copied",
+    "preview": "Preview",
+    "qr-alt": "Menu QR code",
+    "download-png": "Download PNG",
+    "download-svg": "Download SVG"
+  },
+  "products": {
+    "title": "Menu products",
+    "empty": "No products have been added to the menu yet.",
+    "unsaved": "Product changes are not saved yet.",
+    "uncategorized": "Uncategorized",
+    "move-up": "Move up",
+    "move-down": "Move down",
+    "move-category-up": "Move category up",
+    "move-category-down": "Move category down",
+    "remove": "Remove from menu",
+    "add": "Add products",
+    "search": "Search products",
+    "saved": "Menu products saved"
+  }
+}

@@ -1,0 +1,213 @@
+<div class="page-layout page-scroll" *transloco="let t">
+  <div class="content py-6">
+    @if (isLoading()) {
+      <div class="flex justify-center py-16">
+        <mat-spinner [diameter]="32"></mat-spinner>
+      </div>
+    } @else if (loadFailed()) {
+      <msk-alert appearance="outline" type="error">{{ t('menu.load-error') }}</msk-alert>
+    } @else {
+      @if (alert().show) {
+        <msk-alert class="mb-6 block" appearance="outline" type="error">
+          <span class="whitespace-pre-line">{{ alert().message }}</span>
+        </msk-alert>
+      }
+
+      <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
+        <div class="flex flex-col gap-6">
+          <!-- Settings -->
+          <section class="msk-mat-card-outlined flex flex-col gap-4 p-6">
+            <h2 class="text-title-medium">{{ t('menu.settings.title') }}</h2>
+            <form class="flex flex-col gap-2" [formGroup]="settingsForm" (ngSubmit)="saveSettings()">
+              <mat-slide-toggle class="mb-4" formControlName="enabled">{{ t('menu.settings.enabled') }}</mat-slide-toggle>
+
+              <mat-form-field>
+                <mat-label>{{ t('menu.settings.slug') }}</mat-label>
+                <input
+                  matInput
+                  formControlName="slug"
+                  dir="ltr"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  [maxlength]="slugMaxLength"
+                  (blur)="normalizeSlug()"
+                />
+                <mat-hint>{{ t('menu.settings.slug-hint') }}</mat-hint>
+                <mat-error>
+                  @if (slugControl.hasError('required')) {
+                    {{ t('menu.settings.errors.required') }}
+                  } @else if (slugControl.hasError('minlength') || slugControl.hasError('maxlength')) {
+                    {{ t('menu.settings.errors.length', { min: slugMinLength, max: slugMaxLength }) }}
+                  } @else if (slugControl.hasError('pattern')) {
+                    {{ t('menu.settings.errors.pattern') }}
+                  } @else if (slugControl.hasError('reserved')) {
+                    {{ t('menu.settings.errors.reserved') }}
+                  } @else if (slugControl.hasError('taken')) {
+                    {{ t('menu.settings.errors.taken') }}
+                  }
+                </mat-error>
+              </mat-form-field>
+
+              @if (savedSlug() && slugControl.value !== savedSlug()) {
+                <msk-alert appearance="soft" type="warning">{{ t('menu.settings.slug-change-warning') }}</msk-alert>
+              }
+
+              <div class="mt-2 flex justify-end">
+                <button matButton="filled" type="submit" [disabled]="savingSettings()" [mskSpinner]="savingSettings()">
+                  {{ savingSettings() ? '' : t('save') }}
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- Share -->
+          <section class="msk-mat-card-outlined flex flex-col gap-4 p-6">
+            <h2 class="text-title-medium">{{ t('menu.share.title') }}</h2>
+            @if (publicUrl(); as url) {
+              @if (!savedEnabled()) {
+                <msk-alert appearance="soft" type="warning">{{ t('menu.share.disabled-warning') }}</msk-alert>
+              }
+
+              <div class="bg-surface-container-low rounded-medium flex items-center gap-2 py-1 ps-4 pe-1">
+                <a class="text-primary min-w-0 flex-auto truncate" dir="ltr" [href]="url" target="_blank" rel="noopener">{{ url }}</a>
+                <button matIconButton type="button" [matTooltip]="t('menu.share.copy')" (click)="copyUrl()">
+                  <mat-icon>content_copy</mat-icon>
+                </button>
+              </div>
+
+              <a matButton="outlined" class="self-start" target="_blank" [routerLink]="['/menu', savedSlug()]">
+                <mat-icon>visibility</mat-icon>
+                <span>{{ t('menu.share.preview') }}</span>
+              </a>
+
+              @if (qrCode(); as qr) {
+                <img class="size-56 self-center bg-white" [src]="qr.png" [alt]="t('menu.share.qr-alt')" />
+                <div class="flex flex-wrap justify-center gap-2">
+                  <button matButton="tonal" type="button" (click)="downloadQrCode('png')">
+                    <mat-icon>download</mat-icon>
+                    <span>{{ t('menu.share.download-png') }}</span>
+                  </button>
+                  <button matButton="tonal" type="button" (click)="downloadQrCode('svg')">
+                    <mat-icon>download</mat-icon>
+                    <span>{{ t('menu.share.download-svg') }}</span>
+                  </button>
+                </div>
+              }
+            } @else {
+              <p class="text-body-medium text-on-surface-variant">{{ t('menu.share.no-slug') }}</p>
+            }
+          </section>
+        </div>
+
+        <!-- Products -->
+        <section class="msk-mat-card-outlined flex flex-col gap-4 p-6">
+          <div class="flex items-center justify-between gap-2">
+            <h2 class="text-title-medium">{{ t('menu.products.title') }}</h2>
+            <button
+              matButton="filled"
+              type="button"
+              [disabled]="!productsDirty() || savingProducts()"
+              [mskSpinner]="savingProducts()"
+              (click)="saveProducts()"
+            >
+              {{ savingProducts() ? '' : t('save') }}
+            </button>
+          </div>
+
+          @if (productsDirty()) {
+            <msk-alert appearance="soft" type="info">{{ t('menu.products.unsaved') }}</msk-alert>
+          }
+
+          <!-- Selected products grouped by category -->
+          @for (group of groups(); track group.category?.id ?? 0; let gi = $index, firstGroup = $first, lastGroup = $last) {
+            <div class="rounded-medium border-outline-variant overflow-hidden border">
+              <div class="bg-surface-container-low flex items-center gap-1 py-1 ps-4 pe-1">
+                <span class="text-title-small min-w-0 flex-auto truncate">
+                  {{ group.category?.name ?? t('menu.products.uncategorized') }}
+                </span>
+                <button
+                  matIconButton
+                  type="button"
+                  [disabled]="firstGroup"
+                  [matTooltip]="t('menu.products.move-category-up')"
+                  (click)="moveGroup(gi, -1)"
+                >
+                  <mat-icon>arrow_upward</mat-icon>
+                </button>
+                <button
+                  matIconButton
+                  type="button"
+                  [disabled]="lastGroup"
+                  [matTooltip]="t('menu.products.move-category-down')"
+                  (click)="moveGroup(gi, 1)"
+                >
+                  <mat-icon>arrow_downward</mat-icon>
+                </button>
+              </div>
+              <div cdkDropList cdkDropListLockAxis="y" [cdkDropListData]="group.products" (cdkDropListDropped)="dropProduct(gi, $event)">
+                @for (product of group.products; track product.id; let pi = $index, first = $first, last = $last) {
+                  <div class="bg-surface border-outline-variant flex items-center gap-1 border-t py-1 ps-2 pe-1" cdkDrag>
+                    <mat-icon class="text-on-surface-variant shrink-0 cursor-move" cdkDragHandle>drag_indicator</mat-icon>
+                    <div class="min-w-0 flex-auto px-1">
+                      <div class="truncate">{{ product.name }}</div>
+                      <div class="text-label-medium text-on-surface-variant">{{ product.sellPrice | mskCurrency }}</div>
+                    </div>
+                    <button
+                      matIconButton
+                      type="button"
+                      [disabled]="first"
+                      [matTooltip]="t('menu.products.move-up')"
+                      (click)="moveProduct(gi, pi, -1)"
+                    >
+                      <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                    <button
+                      matIconButton
+                      type="button"
+                      [disabled]="last"
+                      [matTooltip]="t('menu.products.move-down')"
+                      (click)="moveProduct(gi, pi, 1)"
+                    >
+                      <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                    <button matIconButton type="button" [matTooltip]="t('menu.products.remove')" (click)="removeProduct(product)">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+          } @empty {
+            <p class="text-body-medium text-on-surface-variant">{{ t('menu.products.empty') }}</p>
+          }
+
+          <!-- Product picker -->
+          <h3 class="text-title-small mt-2">{{ t('menu.products.add') }}</h3>
+          <div class="bg-surface-container-high text-on-surface flex h-12 items-center gap-4 rounded-full px-4">
+            <mat-icon class="shrink-0">search</mat-icon>
+            <input
+              class="h-full w-full flex-1 bg-transparent outline-none"
+              autocomplete="off"
+              [formControl]="search"
+              [placeholder]="t('menu.products.search')"
+            />
+          </div>
+          <cdk-virtual-scroll-viewport class="rounded-medium border-outline-variant h-80 border" [itemSize]="56">
+            <div class="flex h-14 items-center gap-2 px-2" *cdkVirtualFor="let product of productsDataSource; trackBy: trackById">
+              @if (product) {
+                <mat-checkbox class="min-w-0 flex-auto" [checked]="selectedIds().has(product.id)" (change)="toggleProduct(product)">
+                  {{ product.name }}
+                </mat-checkbox>
+                <span class="text-label-medium text-on-surface-variant hidden shrink-0 truncate sm:block">{{ product.category?.name }}</span>
+                <span class="text-label-medium shrink-0">{{ product.sellPrice | mskCurrency }}</span>
+              } @else {
+                <div class="skeleton skeleton-text skeleton-text-lg"></div>
+              }
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </section>
+      </div>
+    }
+  </div>
+</div>
