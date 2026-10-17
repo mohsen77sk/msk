@@ -6,81 +6,96 @@
 </button>
 <!-- Menu -->
 <mat-menu [xPosition]="'before'" #userActions="matMenu" class="mz-user-panel-profile">
+  <!-- header -->
   <div
     class="sticky z-10 flex h-14 items-center justify-between px-2 transition"
     [class.bg-surface-container-high]="container.scrollTop > 24"
     [class.shadow-level-1]="container.scrollTop > 24"
   >
     <div class="w-10"></div>
-    <span>{{ user()?.phoneNumber }}</span>
+    <div class="gap-2" [class]="container.scrollTop > 24 ? 'flex' : 'hidden'">
+      <msk-avatar [name]="currentStore()?.name ?? ''" [imageUrl]="currentStore()?.logoUrl" size="small"></msk-avatar>
+      <span>{{ currentStore()?.name }}</span>
+    </div>
     <button matIconButton>
       <mat-icon>close</mat-icon>
     </button>
   </div>
+
+  <!-- content -->
   <div class="mz-user-panel-profile-container" #container (scroll)="(null)">
-    <div class="mt-4 flex justify-center">
-      <div class="relative!" [mskSpinner]="isLogoUploading()">
-        <msk-avatar
-          [class.opacity-20]="isLogoUploading()"
-          [name]="currentStore()?.name ?? ''"
-          [imageUrl]="currentStore()?.logoUrl"
-          size="huge"
-        ></msk-avatar>
-        <button
-          class="bg-surface-container-lowest hover:bg-surface-container-highest absolute bottom-1 flex size-6 cursor-pointer items-center justify-center rounded-full ltr:right-1 rtl:left-1"
-          (click)="$event.stopPropagation(); uploadImage.click()"
-          [disabled]="isLogoUploading()"
-        >
-          <mat-icon class="icon-size-3">add_a_photo</mat-icon>
-          <input #uploadImage hidden type="file" accept="image/*" (change)="uploadCurrentStoreLogo($event)" />
-        </button>
+    <div
+      class="mz-user-panel-profile-list"
+      [style.max-height.px]="!showMoreStores() ? 104 : 104 + stores().length * 60"
+      *transloco="let t"
+    >
+      <div
+        class="mz-user-panel-profile-item hover:bg-surface-container-lowest relative h-auto overflow-hidden p-0"
+        [class.rounded-b-extra-large]="!showMoreStores()"
+        [class.delay-0]="showMoreStores()"
+      >
+        <div class="flex w-full">
+          <button
+            class="group hover:bg-surface-container-highest relative h-21 cursor-pointer ps-4 pe-2"
+            [routerLink]="'/panel/settings'"
+          >
+            <div class="relative">
+              <msk-avatar
+                [name]="currentStore()?.name ?? ''"
+                [imageUrl]="currentStore()?.logoUrl"
+                size="big"
+              ></msk-avatar>
+              <div
+                class="bg-surface-container shadow-level-1 group-hover:bg-surface-container-high group-hover:text-primary absolute bottom-0 flex size-6 cursor-pointer items-center justify-center rounded-full ltr:right-0 rtl:left-0"
+              >
+                <mat-icon class="icon-size-4">edit</mat-icon>
+              </div>
+            </div>
+          </button>
+          <button
+            class="hover:bg-surface-container-highest flex h-21 flex-1 cursor-pointer justify-between ps-2 pe-6"
+            (click)="$event.stopPropagation(); toggleMoreStores()"
+          >
+            <div class="flex flex-col items-start justify-center gap-1">
+              <span class="text-title-medium text-on-surface">
+                {{ currentStore()?.name }}
+              </span>
+              <span class="text-body-medium text-on-surface-variant">
+                {{ user()?.phoneNumber }}
+              </span>
+            </div>
+            <div class="flex items-center gap-1">
+              <div
+                class="bg-surface-container-low flex h-9 w-6 items-center rounded-full transition-transform duration-300"
+                [class.rotate-180]="showMoreStores()"
+              >
+                <mat-icon class="text-on-surface-variant">keyboard_arrow_down</mat-icon>
+              </div>
+            </div>
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="my-2">
-      <span class="text-title-large">{{ currentStore()?.name }}</span>
-    </div>
-    <div class="pt-2 pb-6" *transloco="let t">
-      <button matButton="outlined" (click)="openStoreSettings(currentStore())">
-        <span>{{ t('layout.settings') }}</span>
-      </button>
+      <div class="w-full overflow-hidden">
+        @for (store of stores(); track store.id) {
+          <div class="mz-user-panel-profile-item" (click)="selectActiveStore(store)" aria-hidden="true">
+            <div>
+              <msk-avatar [name]="store.name" [imageUrl]="store.logoUrl ?? undefined" size="small"></msk-avatar>
+              <span class="ms-3 font-medium">{{ store.name }}</span>
+            </div>
+            @if (currentStore() === store) {
+              <div class="msk-chips">{{ t('active') }}</div>
+            }
+          </div>
+        }
+      </div>
     </div>
     <div class="mz-user-panel-profile-list" *transloco="let t">
-      <div class="mz-user-panel-profile-item" aria-hidden="true" (click)="$event.stopPropagation(); toggleMoreStores()">
-        <span class="font-medium">
-          {{ showMoreStores() ? t('layout.hide-more-stores') : t('layout.show-more-stores') }}
-        </span>
-        <div class="flex items-center gap-1">
-          <div class="flex flex-row-reverse items-center gap-1" [class.hidden]="showMoreStores()">
-            @for (store of stores().slice(0, 3); track store.id) {
-              <msk-avatar [name]="store.name" [imageUrl]="store.logoUrl" size="small"></msk-avatar>
-            }
-            @if (stores().length > 3) {
-              <msk-avatar [name]="'+'" size="small"></msk-avatar>
-            }
-          </div>
-          <div
-            class="bg-surface-container-low size-6 rounded-full transition-transform duration-300"
-            [class.rotate-180]="showMoreStores()"
-          >
-            <mat-icon class="text-on-surface-variant">keyboard_arrow_down</mat-icon>
-          </div>
+      <div class="mz-user-panel-profile-item" [routerLink]="'/panel/settings'" aria-hidden="true">
+        <div>
+          <mat-icon class="mat-icon-rtl-mirror">settings_account_box</mat-icon>
+          <span class="ms-3 font-medium">{{ t('layout.settings') }}</span>
         </div>
       </div>
-      @if (showMoreStores()) {
-        <div class="w-full overflow-hidden" animate.enter="msk-expanded" animate.leave="msk-collapsed">
-          @for (store of stores(); track store.id) {
-            <div class="mz-user-panel-profile-item" (click)="selectActiveStore(store)" aria-hidden="true">
-              <div>
-                <msk-avatar [name]="store.name" [imageUrl]="store.logoUrl ?? undefined" size="small"></msk-avatar>
-                <span class="ms-3 font-medium">{{ store.name }}</span>
-              </div>
-              @if (currentStore() === store) {
-                <div class="msk-chips">{{ t('active') }}</div>
-              }
-            </div>
-          }
-        </div>
-      }
     </div>
     <div class="mz-user-panel-profile-list" *transloco="let t">
       <div class="mz-user-panel-profile-item" (click)="openLayoutSchemeDialog()" aria-hidden="true">

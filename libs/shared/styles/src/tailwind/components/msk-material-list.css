@@ -40,7 +40,7 @@
     }
 
     .msk-list-item-content {
-      @apply flex flex-col justify-center;
+      @apply flex flex-col justify-center text-start;
       flex: 1 1 0%;
     }
 

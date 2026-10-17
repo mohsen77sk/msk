@@ -4,15 +4,23 @@
 
     <div class="msk-list mt-4">
       <div class="msk-group-list">
-        <div class="msk-list-item item-hover" matRipple>
+        <button class="msk-list-item item-hover" matRipple (click)="$event.stopPropagation(); uploadImage.click()">
           <div class="msk-list-item-icon">
             <mat-icon class="mat-icon-rtl-mirror">photo_camera</mat-icon>
           </div>
           <div class="msk-list-item-content">
             <span>{{ t('profile-picture') }}</span>
           </div>
-          <msk-avatar [name]="currentStore()?.name ?? ''" [imageUrl]="currentStore()?.logoUrl" size="big"></msk-avatar>
-        </div>
+          <div class="relative!" [mskSpinner]="isLogoUploading()">
+            <msk-avatar
+              [class.opacity-20]="isLogoUploading()"
+              [name]="currentStore()?.name ?? ''"
+              [imageUrl]="currentStore()?.logoUrl"
+              size="big"
+            ></msk-avatar>
+            <input #uploadImage hidden type="file" accept="image/*" (change)="uploadCurrentStoreLogo($event)" />
+          </div>
+        </button>
         <div class="msk-list-item item-hover" matRipple>
           <div class="msk-list-item-icon">
             <mat-icon class="mat-icon-rtl-mirror">assignment_ind</mat-icon>

@@ -9,16 +9,14 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
-import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
-import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
 import { availableCurrencies, availableLangs } from '@msk/shared/constants';
 import { UserService, User } from '@msk/mirza/shell/core/user';
@@ -26,8 +24,7 @@ import { StoreService, Store } from '@msk/mirza/shell/core/store';
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
 import { LayoutCurrencyDialogComponent } from '../layout-currency-dialog/layout-currency-dialog.component';
-import { StoreSettingsDialogComponent } from '../store-settings-dialog/store-settings-dialog.component';
-import { finalize, tap } from 'rxjs';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'mz-user',
@@ -35,13 +32,13 @@ import { finalize, tap } from 'rxjs';
   styleUrl: './user.component.css',
   encapsulation: ViewEncapsulation.None,
   imports: [
+    RouterLink,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
     TranslocoDirective,
     MskAvatarComponent,
-    MskSpinnerDirective,
   ],
 })
 export class UserComponent implements OnInit {
@@ -50,8 +47,6 @@ export class UserComponent implements OnInit {
   private _dialog = inject(MatDialog);
   private _userService = inject(UserService);
   private _storeService = inject(StoreService);
-  private _translocoService = inject(TranslocoService);
-  private _mskSnackbarService = inject(MskSnackbarService);
   private _layoutConfigService = inject(MskLayoutConfigService);
 
   showAvatar = input(true, { transform: booleanAttribute });
@@ -63,7 +58,6 @@ export class UserComponent implements OnInit {
   stores = signal<Store[]>([]);
   currentStore = signal<Store | null>(null);
   showMoreStores = signal<boolean>(false);
-  isLogoUploading = signal<boolean>(false);
 
   activeLangLabel = computed(() => availableLangs.find((x) => x.id === this.activeLang())?.label ?? '');
   activeCurrencyLabel = computed(() => availableCurrencies.find((x) => x.code === this.activeCurrency())?.label ?? '');
@@ -156,54 +150,6 @@ export class UserComponent implements OnInit {
 
     this._storeService.currentStore = store;
     this._router.navigate(['/panel/redirect']);
-  }
-
-  /**
-   * Open store settings dialog
-   *
-   * @param store
-   */
-  openStoreSettings(store: Store | null): void {
-    this._dialog
-      .open(StoreSettingsDialogComponent, {
-        data: { store },
-      })
-      .afterClosed()
-      .subscribe();
-  }
-
-  /**
-   * Upload current store logo
-   *
-   * @param event
-   */
-  uploadCurrentStoreLogo(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    input.value = '';
-
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      this._mskSnackbarService.error(this._translocoService.translate('upload-image.ext-error'));
-      return;
-    }
-
-    if (file.size > 2 * 1024 * 1024) {
-      this._mskSnackbarService.error(this._translocoService.translate('upload-image.size-error'));
-      return;
-    }
-
-    this.isLogoUploading.set(true);
-
-    this._storeService
-      .uploadStoreLogo(this.currentStore()?.id ?? 0, file)
-      .pipe(finalize(() => this.isLogoUploading.set(false)))
-      .subscribe({
-        error: () => {
-          this._mskSnackbarService.error(this._translocoService.translate('upload-image.upload-error'));
-        },
-      });
   }
 
   /**
