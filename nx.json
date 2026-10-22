@@ -21,30 +21,40 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
-    "@nx/eslint:lint": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "^default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.mjs",
-        "{workspaceRoot}/tools/eslint-rules/**/*"
-      ]
-    },
-    "@nx/jest:jest": {
-      "cache": true,
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
-      "options": {
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
+    "test": [
+      {
+        "filter": {
+          "plugin": "@nx/jest/plugin"
+        },
+        "configurations": {
+          "ci": {
+            "ci": true,
+            "coverage": true
+          }
+        },
+        "options": {
+          "passWithNoTests": true
         }
       }
-    }
+    ],
+    "lint": [
+      {
+        "filter": {
+          "plugin": "@nx/eslint/plugin"
+        },
+        "inputs": [
+          "default",
+          "^default",
+          "{workspaceRoot}/.eslintrc.json",
+          "{workspaceRoot}/.eslintignore",
+          "{workspaceRoot}/eslint.config.mjs",
+          "{workspaceRoot}/tools/eslint-rules/**/*",
+          {
+            "externalDependencies": ["eslint"]
+          }
+        ]
+      }
+    ]
   },
   "generators": {
     "@nx/angular:application": {
@@ -75,12 +85,6 @@
     },
     "@schematics/angular:service": {
       "type": "service"
-    },
-    "@nx/angular:scam": {
-      "type": "component"
-    },
-    "@nx/angular:scam-directive": {
-      "type": "directive"
     },
     "@nx/angular:guard": {
       "typeSeparator": "."
@@ -113,5 +117,125 @@
       "typeSeparator": "."
     }
   },
-  "analytics": false
+  "analytics": false,
+  "affected": {
+    "legacy": true
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      },
+      "include": [
+        "apps/docs/**/*",
+        "apps/mirza-write/**/*",
+        "apps/sahebzaman/**/*",
+        "libs/docs/panel/animations/**/*",
+        "libs/docs/panel/colors/**/*",
+        "libs/docs/panel/components/alert/**/*",
+        "libs/docs/panel/components/fullscreen/**/*",
+        "libs/docs/panel/components/highlight/**/*",
+        "libs/docs/panel/components/loading-bar/**/*",
+        "libs/docs/panel/components/navigation/**/*",
+        "libs/docs/panel/page-layouts/**/*",
+        "libs/docs/panel/services/confirmation/**/*",
+        "libs/docs/panel/services/media-watcher/**/*",
+        "libs/docs/panel/services/snack-bar/**/*",
+        "libs/docs/panel/services/splash-screen/**/*",
+        "libs/docs/panel/typography/**/*",
+        "libs/docs/shell/core/navigation/**/*",
+        "libs/docs/shell/feature/**/*",
+        "libs/docs/shell/ui/layout/**/*",
+        "libs/mirza/auth/forgot-password/**/*",
+        "libs/mirza/auth/onboarding/**/*",
+        "libs/mirza/auth/sign-in/**/*",
+        "libs/mirza/auth/sign-out/**/*",
+        "libs/mirza/auth/sign-up/**/*",
+        "libs/mirza/panel/customers/**/*",
+        "libs/mirza/panel/dashboard/**/*",
+        "libs/mirza/panel/expenses/**/*",
+        "libs/mirza/panel/payment-types/**/*",
+        "libs/mirza/panel/product-categories/**/*",
+        "libs/mirza/panel/products/**/*",
+        "libs/mirza/panel/purchases/**/*",
+        "libs/mirza/panel/sales/**/*",
+        "libs/mirza/panel/settings/**/*",
+        "libs/mirza/panel/vendors/**/*",
+        "libs/mirza/shell/core/auth/**/*",
+        "libs/mirza/shell/core/navigation/**/*",
+        "libs/mirza/shell/core/store/**/*",
+        "libs/mirza/shell/core/user/**/*",
+        "libs/mirza/shell/feature/**/*",
+        "libs/mirza/shell/ui/layout/**/*",
+        "libs/sahebzaman/auth/sign-in/**/*",
+        "libs/sahebzaman/auth/sign-out/**/*",
+        "libs/sahebzaman/panel/accounts/**/*",
+        "libs/sahebzaman/panel/dashboard/**/*",
+        "libs/sahebzaman/panel/loans/**/*",
+        "libs/sahebzaman/panel/people/**/*",
+        "libs/sahebzaman/shell/core/auth/**/*",
+        "libs/sahebzaman/shell/core/navigation/**/*",
+        "libs/sahebzaman/shell/core/user/**/*",
+        "libs/sahebzaman/shell/feature/**/*",
+        "libs/sahebzaman/shell/ui/layout/**/*",
+        "libs/shared/constants/**/*",
+        "libs/shared/data-access/**/*",
+        "libs/shared/directives/auto-focus/**/*",
+        "libs/shared/directives/currency-symbol/**/*",
+        "libs/shared/directives/datepicker-touch-ui/**/*",
+        "libs/shared/directives/fab-extended-collapse/**/*",
+        "libs/shared/directives/form-field-error/**/*",
+        "libs/shared/directives/mask/**/*",
+        "libs/shared/directives/scroll-reset/**/*",
+        "libs/shared/directives/scrollbar/**/*",
+        "libs/shared/directives/select-search/**/*",
+        "libs/shared/directives/spinner/**/*",
+        "libs/shared/pages/errors/internal-server-error/**/*",
+        "libs/shared/pages/errors/maintenance/**/*",
+        "libs/shared/pages/errors/not-found/**/*",
+        "libs/shared/pipes/currency/**/*",
+        "libs/shared/pipes/date-time/**/*",
+        "libs/shared/pipes/find-by-key/**/*",
+        "libs/shared/pipes/num-to-words/**/*",
+        "libs/shared/services/config/**/*",
+        "libs/shared/services/confirmation/**/*",
+        "libs/shared/services/http-cache/**/*",
+        "libs/shared/services/iranian-banks/**/*",
+        "libs/shared/services/media-watcher/**/*",
+        "libs/shared/services/number-to-words/**/*",
+        "libs/shared/services/platform/**/*",
+        "libs/shared/services/snack-bar/**/*",
+        "libs/shared/services/splash-screen/**/*",
+        "libs/shared/services/utils/**/*",
+        "libs/shared/ui/alert/**/*",
+        "libs/shared/ui/avatar/**/*",
+        "libs/shared/ui/dialog/**/*",
+        "libs/shared/ui/empty-state/**/*",
+        "libs/shared/ui/filter-date/**/*",
+        "libs/shared/ui/filter-menu/**/*",
+        "libs/shared/ui/fullscreen/**/*",
+        "libs/shared/ui/highlight/**/*",
+        "libs/shared/ui/loading-bar/**/*",
+        "libs/shared/ui/navigation/**/*",
+        "libs/shared/ui/sort-menu/**/*",
+        "libs/shared/ui/state-chip/**/*",
+        "libs/shared/utils/app-config/**/*",
+        "libs/shared/utils/datetime/**/*",
+        "libs/shared/utils/error-handler/**/*",
+        "libs/shared/utils/icons/**/*",
+        "libs/shared/utils/loading/**/*",
+        "libs/shared/utils/material-intl/**/*",
+        "libs/shared/utils/number/**/*",
+        "libs/shared/utils/service-worker/**/*",
+        "libs/shared/utils/transloco/**/*"
+      ]
+    }
+  ]
 }

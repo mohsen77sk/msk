@@ -5,17 +5,6 @@
   "prefix": "msk",
   "projectType": "library",
   "tags": ["scope:shared", "type:constants"],
-  "targets": {
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "libs/shared/constants/jest.config.ts",
-        "tsConfig": "libs/shared/constants/tsconfig.spec.json"
-      }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    }
-  }
+  "// targets": "to see all targets run: nx show project shared-constants --web",
+  "targets": {}
 }

@@ -5,17 +5,6 @@
   "prefix": "sz",
   "projectType": "library",
   "tags": ["scope:sahebzaman", "type:feature"],
-  "targets": {
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "libs/sahebzaman/panel/dashboard/jest.config.ts",
-        "tsConfig": "libs/sahebzaman/panel/dashboard/tsconfig.spec.json"
-      }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    }
-  }
+  "// targets": "to see all targets run: nx show project sahebzaman-panel-dashboard --web",
+  "targets": {}
 }
