@@ -1,0 +1,34 @@
+<h2 matDialogTitle *transloco="let t; prefix: 'settings'">{{ t('economic-code') }}</h2>
+
+<div matDialogContent>
+  <form class="flex flex-auto flex-col gap-y-2" [formRoot]="form" #formNode>
+    <!-- Alert -->
+    @if (alert()) {
+      <msk-alert class="mb-4" [appearance]="'outline'" [showIcon]="false" [type]="alert()?.type ?? 'error'">
+        {{ alert()?.message }}
+      </msk-alert>
+    }
+
+    <!-- Economic Code -->
+    <mat-form-field *transloco="let t; prefix: 'settings'">
+      <mat-label>{{ t('economic-code') }}</mat-label>
+      <input matInput [formField]="form.economicCode" autocomplete="off" />
+      <mat-error [mskFormFieldError]="form.economicCode"></mat-error>
+    </mat-form-field>
+  </form>
+</div>
+
+<div matDialogActions *transloco="let t">
+  <button matButton type="button" [disabled]="form().submitting()" matDialogClose="cancelled">
+    {{ t('cancel') }}
+  </button>
+  <button
+    matButton
+    type="submit"
+    [disabled]="form().submitting()"
+    [mskSpinner]="form().submitting()"
+    (click)="formNode.requestSubmit()"
+  >
+    {{ form().submitting() ? '' : t('save') }}
+  </button>
+</div>

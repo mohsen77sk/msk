@@ -3,7 +3,7 @@
     @apply flex min-w-0 flex-auto flex-col;
 
     > .header {
-      @apply flex flex-col gap-2 py-3;
+      @apply flex flex-col justify-center gap-2 py-3;
 
       > * {
         @apply px-4 md:px-6;
