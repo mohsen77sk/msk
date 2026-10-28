@@ -3,6 +3,8 @@ import { ProductCategory } from '@msk/mirza/panel/product-categories';
 
 export const DefaultProductsSortData: MskSortable = { active: 'name', direction: 'asc' };
 
+export type ProductPurpose = 'sale' | 'purchase';
+
 export enum ProductUnit {
   PIECE = 'piece',
   GRAM = 'gram',
@@ -18,6 +20,8 @@ export class Product {
   sellPrice?: number;
   category?: ProductCategory;
   note?: string;
+  isSellable: boolean;
+  isPurchasable: boolean;
 
   constructor(input: Product) {
     this.id = input.id;
@@ -28,6 +32,8 @@ export class Product {
     this.sellPrice = input.sellPrice;
     this.category = input.category ? new ProductCategory(input.category) : undefined;
     this.note = input.note;
+    this.isSellable = input.isSellable ?? true;
+    this.isPurchasable = input.isPurchasable ?? true;
   }
 }
 
@@ -40,6 +46,8 @@ export interface ICreateProduct {
   cost: number;
   sellPrice: number;
   note: string;
+  isSellable: boolean;
+  isPurchasable: boolean;
 }
 
 export class ProductItem {

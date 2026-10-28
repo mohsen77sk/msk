@@ -76,6 +76,25 @@
         </div>
       </div>
     }
+    <!-- Purpose -->
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>storefront</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>{{ t('is-sellable') }}</span>
+        <msk-state-chip class="mt-2" [checked]="data.item()?.isSellable"></msk-state-chip>
+      </div>
+    </div>
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>shopping_cart</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>{{ t('is-purchasable') }}</span>
+        <msk-state-chip class="mt-2" [checked]="data.item()?.isPurchasable"></msk-state-chip>
+      </div>
+    </div>
     <!-- SellPrice -->
     @if (data.item()?.sellPrice) {
       <div class="msk-list-item">
@@ -189,12 +208,25 @@
         <mat-error>{{ formErrors['cost'] }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>{{ t('sell-price') }}</mat-label>
-        <input matInput formControlName="sellPrice" mskMask="currency" autocomplete="off" inputmode="numeric" />
-        <span matTextSuffix mskCurrencySymbol></span>
-        <mat-error>{{ formErrors['sellPrice'] }}</mat-error>
-      </mat-form-field>
+      @if (form.get('isSellable')?.value) {
+        <mat-form-field>
+          <mat-label>{{ t('sell-price') }}</mat-label>
+          <input matInput formControlName="sellPrice" mskMask="currency" autocomplete="off" inputmode="numeric" />
+          <span matTextSuffix mskCurrencySymbol></span>
+          <mat-error>{{ formErrors['sellPrice'] }}</mat-error>
+        </mat-form-field>
+      }
+    </div>
+
+    <!-- Purpose -->
+    <div class="flex flex-col gap-1">
+      <div class="flex gap-4">
+        <mat-checkbox formControlName="isSellable">{{ t('is-sellable') }}</mat-checkbox>
+        <mat-checkbox formControlName="isPurchasable">{{ t('is-purchasable') }}</mat-checkbox>
+      </div>
+      @if (form.hasError('purposeRequired') && form.touched) {
+        <span class="text-error text-body-small px-4">{{ t('purpose-required') }}</span>
+      }
     </div>
 
     <!-- Note -->

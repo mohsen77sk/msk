@@ -285,7 +285,7 @@ export class SalesCardDetailsComponent implements OnInit {
     // Create a new DataSource for this row
     this.productDSList.push(
       new MskDataSource<Product>(
-        (params) => this._productsService.getProducts(params),
+        (params) => this._productsService.getProducts({ ...params, purpose: 'sale' }),
         new MskSort(DefaultProductsSortData),
         group.controls.product.valueChanges,
       ),

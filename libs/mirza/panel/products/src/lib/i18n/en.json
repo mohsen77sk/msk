@@ -10,7 +10,11 @@
     "unit": "Unit",
     "cost": "Cost",
     "sell-price": "Sell price",
-    "note": "Note"
+    "note": "Note",
+    "purpose": "Usage",
+    "is-sellable": "Sellable",
+    "is-purchasable": "Purchasable",
+    "purpose-required": "Select at least one of sellable or purchasable"
   },
   "units": {
     "piece": "Piece",
@@ -24,5 +28,10 @@
   "search": "Search products",
   "empty-list": "There are no products!",
   "delete": "Delete product",
-  "delete-message": "Are you sure you want to delete <b>{{name}}</b>?"
+  "delete-message": "Are you sure you want to delete <b>{{name}}</b>?",
+  "purpose": {
+    "all": "All",
+    "sale": "Sellable",
+    "purchase": "Purchasable"
+  }
 }
