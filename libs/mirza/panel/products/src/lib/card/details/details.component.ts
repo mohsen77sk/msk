@@ -1,8 +1,9 @@
-import { DecimalPipe, NgTemplateOutlet } from '@angular/common';
+import { DecimalPipe, NgTemplateOutlet, PercentPipe } from '@angular/common';
 import { Component, DestroyRef, OnInit, ViewEncapsulation, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   AbstractControl,
+  FormArray,
   FormBuilder,
   FormGroup,
   FormsModule,
@@ -39,9 +40,16 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { catchError, EMPTY, map, tap } from 'rxjs';
+import { catchError, EMPTY, map, startWith, tap } from 'rxjs';
 import { ProductsService } from '../../products.service';
-import { ICreateProduct, Product, ProductUnit } from '../../products.types';
+import {
+  DefaultProductsSortData,
+  ICreateProduct,
+  Product,
+  ProductRecipe,
+  ProductRecipeIngredient,
+  ProductUnit,
+} from '../../products.types';
 import {
   ProductCategoriesService,
   ProductCategory,
@@ -49,13 +57,27 @@ import {
 } from '@msk/mirza/panel/product-categories';
 
 /**
- * A product must be sellable, purchasable, or both
+ * A product must be sellable, purchasable, or have a recipe
  * @param group product form
  */
 function purposeRequiredValidator(group: AbstractControl): ValidationErrors | null {
   const isSellable = group.get('isSellable')?.value;
   const isPurchasable = group.get('isPurchasable')?.value;
-  return isSellable || isPurchasable ? null : { purposeRequired: true };
+  const hasRecipe = ((group.get('recipeItems') as FormArray | null)?.length ?? 0) > 0;
+  return isSellable || isPurchasable || hasRecipe ? null : { purposeRequired: true };
+}
+
+/**
+ * The ingredient must be picked from the list, not just typed
+ * @param control ingredient control
+ */
+function ingredientSelectedValidator(control: AbstractControl): ValidationErrors | null {
+  return control.value && typeof control.value === 'object' ? null : { required: true };
+}
+
+interface RecipeItemFormValue {
+  ingredient: ProductRecipeIngredient | string | null;
+  quantity: number | null;
 }
 
 @Component({
@@ -64,6 +86,7 @@ function purposeRequiredValidator(group: AbstractControl): ValidationErrors | nu
   encapsulation: ViewEncapsulation.None,
   imports: [
     DecimalPipe,
+    PercentPipe,
     NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
@@ -104,6 +127,12 @@ export class ProductCardDetailsComponent implements OnInit {
   formErrors: FormError = {};
   unitList: ProductUnit[] = Object.values(ProductUnit);
   categoryDS!: MskDataSource<ProductCategory>;
+  ingredientDSList: MskDataSource<Product>[] = [];
+
+  // Saved recipe (view mode) and live cost of the edited recipe
+  readonly recipe = signal<ProductRecipe | null>(null);
+  readonly recipeLoaded = signal(false);
+  readonly recipeCost = signal<{ cost: number | null; margin: number | null } | null>(null);
 
   alert = signal({
     show: false,
@@ -131,6 +160,7 @@ export class ProductCardDetailsComponent implements OnInit {
         note: '',
         isSellable: true,
         isPurchasable: true,
+        recipeItems: this._formBuilder.array([]),
       },
       { validators: purposeRequiredValidator },
     );
@@ -153,6 +183,24 @@ export class ProductCardDetailsComponent implements OnInit {
       new MskSort(DefaultProductCategorySortData),
       this.form.get('category')?.valueChanges,
     );
+    // Recompute recipe cost and margin on every change
+    this.form.valueChanges
+      .pipe(startWith(this.form.value), takeUntilDestroyed(this._destroyRef))
+      .subscribe(() => this._updateRecipeCost());
+    // Load the saved recipe; until it arrives the recipe is left untouched on save
+    const productId = this.data.item()?.id;
+    if (productId) {
+      this._productsService
+        .getProductRecipe(productId)
+        .pipe(takeUntilDestroyed(this._destroyRef))
+        .subscribe((recipe) => {
+          this.recipe.set(recipe);
+          recipe.items.forEach((line) => this.addRecipeItem(line.ingredient, line.quantity));
+          this.recipeLoaded.set(true);
+        });
+    } else {
+      this.recipeLoaded.set(true);
+    }
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -172,6 +220,87 @@ export class ProductCardDetailsComponent implements OnInit {
    */
   categoryDisplayFn(value: ProductCategory): string {
     return value?.name;
+  }
+
+  /**
+   * Recipe item rows
+   */
+  get recipeItems(): FormArray {
+    return this.form.get('recipeItems') as FormArray;
+  }
+
+  /**
+   * Get the ingredient name
+   * @param value ingredient
+   */
+  ingredientDisplayFn(value: ProductRecipeIngredient): string {
+    return value?.name;
+  }
+
+  /**
+   * Add a recipe row
+   * @param ingredient
+   * @param quantity
+   */
+  addRecipeItem(ingredient: ProductRecipeIngredient | null = null, quantity: number | null = null): void {
+    const group = this._formBuilder.group({
+      ingredient: [ingredient, ingredientSelectedValidator],
+      quantity: [quantity, [Validators.required, Validators.min(0.001)]],
+    });
+    this.recipeItems.push(group);
+
+    // Ingredients: purchasable or intermediate products, never this product itself
+    const productId = this.data.item()?.id;
+    this.ingredientDSList.push(
+      new MskDataSource<Product>(
+        (params) =>
+          this._productsService.getProducts({
+            ...params,
+            purpose: 'ingredient',
+            ...(productId ? { excludeId: productId } : {}),
+          }),
+        new MskSort(DefaultProductsSortData),
+        group.get('ingredient')?.valueChanges,
+      ),
+    );
+  }
+
+  /**
+   * Remove a recipe row
+   * @param index
+   */
+  removeRecipeItem(index: number): void {
+    this.recipeItems.removeAt(index);
+    this.ingredientDSList.splice(index, 1);
+  }
+
+  /**
+   * Unit of the row's selected ingredient
+   * @param row
+   */
+  recipeUnitOf(row: AbstractControl): ProductUnit | undefined {
+    const ingredient = (row.value as RecipeItemFormValue).ingredient;
+    return ingredient && typeof ingredient === 'object' ? ingredient.unit : undefined;
+  }
+
+  /**
+   * Cost of one recipe row, or null if unknown
+   * @param row
+   */
+  recipeLineCostOf(row: AbstractControl): number | null {
+    const { ingredient, quantity } = row.value as RecipeItemFormValue;
+    if (!ingredient || typeof ingredient !== 'object' || !quantity) return null;
+    return ingredient.effectiveCost == null ? null : ingredient.effectiveCost * quantity;
+  }
+
+  /**
+   * Margin of a cost against the sell price, or null if not applicable
+   * @param cost
+   * @param sellPrice
+   */
+  marginOf(cost: number | null | undefined, sellPrice: number | null | undefined): number | null {
+    if (cost == null || !sellPrice) return null;
+    return (sellPrice - cost) / sellPrice;
   }
 
   /**
@@ -239,6 +368,12 @@ export class ProductCardDetailsComponent implements OnInit {
       note: this.form.get('note')?.value,
       isSellable: this.form.get('isSellable')?.value,
       isPurchasable: this.form.get('isPurchasable')?.value,
+      recipeItems: this.recipeLoaded()
+        ? (this.recipeItems.getRawValue() as RecipeItemFormValue[]).map((row) => ({
+            ingredientId: (row.ingredient as ProductRecipeIngredient).id,
+            quantity: Number(row.quantity),
+          }))
+        : undefined,
     };
 
     const result =
@@ -263,5 +398,36 @@ export class ProductCardDetailsComponent implements OnInit {
         }),
       )
       .subscribe();
+  }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Private methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Sum of the filled recipe rows; null as soon as one ingredient has no cost
+   */
+  private _updateRecipeCost(): void {
+    const rows = this.recipeItems.controls;
+    if (!rows.length) {
+      this.recipeCost.set(null);
+      return;
+    }
+
+    let cost: number | null = 0;
+    for (const row of rows) {
+      const { ingredient, quantity } = row.value as RecipeItemFormValue;
+      // Rows still being filled in do not count yet
+      if (!ingredient || typeof ingredient !== 'object' || !quantity) continue;
+      const lineCost = this.recipeLineCostOf(row);
+      if (lineCost === null) {
+        cost = null;
+        break;
+      }
+      cost += lineCost;
+    }
+
+    const sellPrice = this.form.get('isSellable')?.value ? Number(this.form.get('sellPrice')?.value) : null;
+    this.recipeCost.set({ cost, margin: this.marginOf(cost, sellPrice) });
   }
 }

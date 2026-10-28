@@ -65,7 +65,7 @@
       </div>
     }
     <!-- Cost -->
-    @if (data.item()?.cost) {
+    @if (data.item()?.cost && !data.item()?.hasRecipe) {
       <div class="msk-list-item">
         <div class="msk-list-item-icon">
           <mat-icon>paid</mat-icon>
@@ -108,6 +108,50 @@
       </div>
     }
   </div>
+  <!-- Recipe -->
+  @if (recipe()?.items?.length) {
+    <div class="msk-group-list">
+      <div class="msk-list-item subtitle">{{ t('recipe') }}</div>
+      @for (line of recipe()?.items; track line.ingredient.id) {
+        <div class="msk-list-item">
+          <div class="msk-list-item-icon">
+            <mat-icon>blender</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ line.ingredient.name }}</span>
+            <span>
+              {{ line.quantity | number }} {{ 'products.units.' + line.ingredient.unit | transloco }} ·
+              {{ line.lineCost === null ? '-' : (line.lineCost | mskCurrency) }}
+            </span>
+          </div>
+        </div>
+      }
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>paid</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          @if (recipe()?.costComplete) {
+            <span>{{ recipe()?.cost | mskCurrency }}</span>
+          } @else {
+            <span class="text-error">{{ t('recipe-cost-incomplete') }}</span>
+          }
+          <span>{{ t('computed-cost') }}</span>
+        </div>
+      </div>
+      @if (data.item()?.isSellable && marginOf(recipe()?.cost, data.item()?.sellPrice) !== null) {
+        <div class="msk-list-item">
+          <div class="msk-list-item-icon">
+            <mat-icon>percent</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ marginOf(recipe()?.cost, data.item()?.sellPrice) | percent: '1.0-1' }}</span>
+            <span>{{ t('margin') }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
   @if (data.item()?.note) {
     <div class="msk-group-list">
       <div class="msk-list-item subtitle">{{ t('note') }}</div>
@@ -182,9 +226,12 @@
 
     <!-- Quantity -->
     <div class="flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
-      <mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
         <mat-label>{{ t('quantity') }}</mat-label>
         <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
+        @if (recipeItems.length) {
+          <mat-hint>{{ t('recipe-stock-hint') }}</mat-hint>
+        }
         <mat-error>{{ formErrors['quantity'] }}</mat-error>
       </mat-form-field>
 
@@ -201,12 +248,14 @@
 
     <!-- Price -->
     <div class="flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
-      <mat-form-field>
-        <mat-label>{{ t('cost') }}</mat-label>
-        <input matInput formControlName="cost" mskMask="currency" autocomplete="off" inputmode="numeric" />
-        <span matTextSuffix mskCurrencySymbol></span>
-        <mat-error>{{ formErrors['cost'] }}</mat-error>
-      </mat-form-field>
+      @if (!recipeItems.length) {
+        <mat-form-field>
+          <mat-label>{{ t('cost') }}</mat-label>
+          <input matInput formControlName="cost" mskMask="currency" autocomplete="off" inputmode="numeric" />
+          <span matTextSuffix mskCurrencySymbol></span>
+          <mat-error>{{ formErrors['cost'] }}</mat-error>
+        </mat-form-field>
+      }
 
       @if (form.get('isSellable')?.value) {
         <mat-form-field>
@@ -226,6 +275,74 @@
       </div>
       @if (form.hasError('purposeRequired') && form.touched) {
         <span class="text-error text-body-small px-4">{{ t('purpose-required') }}</span>
+      }
+    </div>
+
+    <!-- Recipe -->
+    <div class="mb-4 flex flex-col gap-2" formArrayName="recipeItems">
+      <div class="text-title-small">{{ t('recipe') }}</div>
+      @for (row of recipeItems.controls; track row; let i = $index) {
+        <div class="flex flex-1 gap-2" [formGroupName]="i">
+          <button type="button" matIconButton [disabled]="form.disabled" (click)="removeRecipeItem(i)">
+            <mat-icon class="text-error">do_not_disturb_on</mat-icon>
+          </button>
+          <div class="flex flex-1 flex-col gap-3 *:block *:flex-1 md:flex-row">
+            <!-- Ingredient -->
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ t('ingredient') }}</mat-label>
+              <input type="text" matInput formControlName="ingredient" [matAutocomplete]="autoIngredient" />
+              <mat-autocomplete #autoIngredient="matAutocomplete" [displayWith]="ingredientDisplayFn">
+                <cdk-virtual-scroll-viewport
+                  itemSize="48"
+                  minBufferPx="240"
+                  maxBufferPx="480"
+                  [style.height.px]="
+                    (autoIngredient?.options?.length || 0) > 5 ? 240 : (autoIngredient?.options?.length || 0) * 48
+                  "
+                >
+                  <mat-option *cdkVirtualFor="let ingredient of ingredientDSList[i]" [value]="ingredient">
+                    {{ ingredient?.name || ('loading' | transloco) }}
+                  </mat-option>
+                </cdk-virtual-scroll-viewport>
+              </mat-autocomplete>
+            </mat-form-field>
+            <!-- Quantity -->
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ t('recipe-quantity') }}</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="quantity"
+                autocomplete="off"
+                inputmode="decimal"
+                step="any"
+              />
+              @if (recipeUnitOf(row); as unit) {
+                <span matTextSuffix>{{ 'products.units.' + unit | transloco }}</span>
+              }
+              <mat-hint align="end">
+                {{ recipeLineCostOf(row) === null ? '' : (recipeLineCostOf(row) | mskCurrency) }}
+              </mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+      }
+      <div class="ms-12">
+        <button type="button" matButton="text" [disabled]="form.disabled || !recipeLoaded()" (click)="addRecipeItem()">
+          {{ t('add-ingredient') }}
+        </button>
+      </div>
+      @if (recipeCost(); as summary) {
+        <div class="text-body-medium flex flex-col gap-1 ps-12">
+          @if (summary.cost !== null) {
+            <span>{{ t('computed-cost') }}: {{ summary.cost | mskCurrency }}</span>
+            @if (summary.margin !== null) {
+              <span>{{ t('margin') }}: {{ summary.margin | percent: '1.0-1' }}</span>
+            }
+          } @else {
+            <span class="text-error">{{ t('recipe-cost-incomplete') }}</span>
+          }
+        </div>
       }
     </div>
 

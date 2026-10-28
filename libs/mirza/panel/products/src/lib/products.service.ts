@@ -15,7 +15,7 @@ import {
   MskLookupItem,
   MskDialogData,
 } from '@msk/shared/data-access';
-import { Product, DefaultProductsSortData, ICreateProduct } from './products.types';
+import { Product, DefaultProductsSortData, ICreateProduct, ProductRecipe } from './products.types';
 import { ProductCardDetailsComponent } from './card/details/details.component';
 
 @Injectable({ providedIn: 'root' })
@@ -116,6 +116,15 @@ export class ProductsService {
     return this._httpClient
       .get<Product>(`${this._appConfig.apiEndpoint}/product/${id}`)
       .pipe(map((response) => new Product(response)));
+  }
+
+  /**
+   * Get product recipe with ingredient costs
+   *
+   * @param id
+   */
+  getProductRecipe(id: number | string): Observable<ProductRecipe> {
+    return this._httpClient.get<ProductRecipe>(`${this._appConfig.apiEndpoint}/product/${id}/recipe`);
   }
 
   /**

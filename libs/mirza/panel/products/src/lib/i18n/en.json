@@ -14,12 +14,22 @@
     "purpose": "Usage",
     "is-sellable": "Sellable",
     "is-purchasable": "Purchasable",
-    "purpose-required": "Select at least one of sellable or purchasable"
+    "purpose-required": "A product must be sellable, purchasable, or have a recipe",
+    "recipe": "Recipe",
+    "ingredient": "Ingredient",
+    "recipe-quantity": "Quantity used",
+    "add-ingredient": "Add ingredient",
+    "computed-cost": "Cost (from recipe)",
+    "margin": "Margin",
+    "recipe-cost-incomplete": "Some ingredients have no cost",
+    "recipe-empty": "This product has no recipe",
+    "recipe-stock-hint": "For now, selling deducts this product's own stock, not its ingredients"
   },
   "units": {
     "piece": "Piece",
     "gram": "Gram",
-    "kg": "Kilogram"
+    "kg": "Kilogram",
+    "ml": "Milliliter"
   },
   "sort": {
     "name": "Name",

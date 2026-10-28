@@ -3,12 +3,13 @@ import { ProductCategory } from '@msk/mirza/panel/product-categories';
 
 export const DefaultProductsSortData: MskSortable = { active: 'name', direction: 'asc' };
 
-export type ProductPurpose = 'sale' | 'purchase';
+export type ProductPurpose = 'sale' | 'purchase' | 'ingredient';
 
 export enum ProductUnit {
   PIECE = 'piece',
   GRAM = 'gram',
   KG = 'kg',
+  ML = 'ml',
 }
 
 export class Product {
@@ -22,6 +23,9 @@ export class Product {
   note?: string;
   isSellable: boolean;
   isPurchasable: boolean;
+  // Recipe-derived cost (null if an ingredient has no cost), else the manual cost
+  effectiveCost?: number | null;
+  hasRecipe: boolean;
 
   constructor(input: Product) {
     this.id = input.id;
@@ -34,7 +38,33 @@ export class Product {
     this.note = input.note;
     this.isSellable = input.isSellable ?? true;
     this.isPurchasable = input.isPurchasable ?? true;
+    this.effectiveCost = input.effectiveCost;
+    this.hasRecipe = input.hasRecipe ?? false;
   }
+}
+
+export interface ProductRecipeIngredient {
+  id: number;
+  name: string;
+  unit: ProductUnit;
+  effectiveCost?: number | null;
+}
+
+export interface ProductRecipeLine {
+  ingredient: ProductRecipeIngredient;
+  quantity: number;
+  lineCost: number | null;
+}
+
+export interface ProductRecipe {
+  items: ProductRecipeLine[];
+  cost: number | null;
+  costComplete: boolean;
+}
+
+export interface IRecipeItem {
+  ingredientId: number;
+  quantity: number;
 }
 
 export interface ICreateProduct {
@@ -48,6 +78,8 @@ export interface ICreateProduct {
   note: string;
   isSellable: boolean;
   isPurchasable: boolean;
+  // Omitted = recipe unchanged, [] = recipe cleared
+  recipeItems?: IRecipeItem[];
 }
 
 export class ProductItem {
