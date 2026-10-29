@@ -28,7 +28,8 @@
     "waste-percent-range": "Between 0 and 99.99",
     "effective-quantity": "with waste",
     "duplicate": "Duplicate",
-    "copy-suffix": "(copy)"
+    "copy-suffix": "(copy)",
+    "cost-from-last-purchase": "From last purchase"
   },
   "units": {
     "piece": "Piece",

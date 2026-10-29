@@ -26,6 +26,8 @@ export class Product {
   // Recipe-derived cost (null if an ingredient has no cost), else the manual cost
   effectiveCost?: number | null;
   hasRecipe: boolean;
+  // Present only when cost follows the last purchase: that purchase's date
+  lastPurchaseAt?: string | null;
 
   constructor(input: Product) {
     this.id = input.id;
@@ -40,6 +42,14 @@ export class Product {
     this.isPurchasable = input.isPurchasable ?? true;
     this.effectiveCost = input.effectiveCost;
     this.hasRecipe = input.hasRecipe ?? false;
+    this.lastPurchaseAt = input.lastPurchaseAt;
+  }
+
+  /**
+   * Cost is taken from the last purchase (read-only in the form)
+   */
+  get costFromPurchase(): boolean {
+    return this.lastPurchaseAt !== undefined;
   }
 }
 

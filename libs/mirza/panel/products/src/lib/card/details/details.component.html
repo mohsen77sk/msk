@@ -75,7 +75,15 @@
         </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.cost | mskCurrency }}</span>
-          <span>{{ t('cost') }}</span>
+          <span>
+            {{ t('cost') }}
+            @if (data.item()?.costFromPurchase) {
+              · {{ t('cost-from-last-purchase') }}
+              @if (data.item()?.lastPurchaseAt) {
+                ({{ data.item()?.lastPurchaseAt | mskDateTime: 'longDate' }})
+              }
+            }
+          </span>
         </div>
       </div>
     }
@@ -258,8 +266,23 @@
       @if (!recipeItems.length) {
         <mat-form-field>
           <mat-label>{{ t('cost') }}</mat-label>
-          <input matInput formControlName="cost" mskMask="currency" autocomplete="off" inputmode="numeric" />
+          <input
+            matInput
+            formControlName="cost"
+            mskMask="currency"
+            autocomplete="off"
+            inputmode="numeric"
+            [readonly]="costFromPurchase()"
+          />
           <span matTextSuffix mskCurrencySymbol></span>
+          @if (costFromPurchase()) {
+            <mat-hint>
+              {{ t('cost-from-last-purchase') }}
+              @if (data.item()?.lastPurchaseAt) {
+                · {{ data.item()?.lastPurchaseAt | mskDateTime: 'longDate' }}
+              }
+            </mat-hint>
+          }
           <mat-error>{{ formErrors['cost'] }}</mat-error>
         </mat-form-field>
       }

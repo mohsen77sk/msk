@@ -25,6 +25,7 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { TranslocoDirective, TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MskDataSource, MskDialogData, MskHttpErrorResponse, MskSort } from '@msk/shared/data-access';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
+import { MskDateTimePipe } from '@msk/shared/pipes/date-time';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskDialogComponent } from '@msk/shared/ui/dialog';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
@@ -115,6 +116,7 @@ interface RecipeItemFormValue {
     TranslocoPipe,
     TranslocoDirective,
     MskCurrencyPipe,
+    MskDateTimePipe,
     MskAlertComponent,
     MskDialogComponent,
     MskMaskDirective,
@@ -144,6 +146,8 @@ export class ProductCardDetailsComponent implements OnInit {
   readonly recipe = signal<ProductRecipe | null>(null);
   readonly recipeLoaded = signal(false);
   readonly recipeCost = signal<{ cost: number | null; margin: number | null } | null>(null);
+  // Cost follows the last purchase and is not edited by hand
+  readonly costFromPurchase = signal(false);
 
   alert = signal({
     show: false,
@@ -188,6 +192,7 @@ export class ProductCardDetailsComponent implements OnInit {
     new MskHandleFormErrors(this.form, this.formErrors, this._translocoService);
     // Patch value form
     this.form.patchValue(this.data.item() || {});
+    this.costFromPurchase.set(this.data.item()?.costFromPurchase ?? false);
     // Set category collection
     this.categoryDS = new MskDataSource<ProductCategory>(
       (params) => this._productCategoriesService.getProductCategories(params),
@@ -234,6 +239,8 @@ export class ProductCardDetailsComponent implements OnInit {
       name: `${this.form.get('name')?.value} ${this._translocoService.translate('products.details.copy-suffix')}`,
       quantity: 0,
     });
+    // The copy has no purchases yet, so its cost starts as a manual value
+    this.costFromPurchase.set(false);
     this.data.action.set('new');
   }
 

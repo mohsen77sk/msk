@@ -28,7 +28,8 @@
     "waste-percent-range": "بین ۰ تا ۹۹٫۹۹",
     "effective-quantity": "با هدررفت",
     "duplicate": "کپی",
-    "copy-suffix": "(کپی)"
+    "copy-suffix": "(کپی)",
+    "cost-from-last-purchase": "از آخرین خرید"
   },
   "units": {
     "piece": "عدد",
