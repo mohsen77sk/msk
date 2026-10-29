@@ -23,7 +23,12 @@
     "margin": "حاشیه‌ی سود",
     "recipe-cost-incomplete": "قیمت تمام‌شده‌ی برخی مواد اولیه ثبت نشده است",
     "recipe-empty": "این محصول دستور تهیه ندارد",
-    "recipe-stock-hint": "فعلاً با فروش، موجودی خود این محصول کسر می‌شود، نه مواد اولیه‌اش"
+    "recipe-stock-hint": "فعلاً با فروش، موجودی خود این محصول کسر می‌شود، نه مواد اولیه‌اش",
+    "waste-percent": "هدررفت ٪",
+    "waste-percent-range": "بین ۰ تا ۹۹٫۹۹",
+    "effective-quantity": "با هدررفت",
+    "duplicate": "کپی",
+    "copy-suffix": "(کپی)"
   },
   "units": {
     "piece": "عدد",

@@ -13,6 +13,9 @@
   ></ng-container>
 
   <ng-template #trailing>
+    <button matIconButton [matTooltip]="t('duplicate')" [disabled]="!recipeLoaded()" (click)="duplicate()">
+      <mat-icon class="text-current">content_copy</mat-icon>
+    </button>
     <button matIconButton (click)="editMode()">
       <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
     </button>
@@ -120,8 +123,12 @@
           <div class="msk-list-item-content">
             <span>{{ line.ingredient.name }}</span>
             <span>
-              {{ line.quantity | number }} {{ 'products.units.' + line.ingredient.unit | transloco }} ·
-              {{ line.lineCost === null ? '-' : (line.lineCost | mskCurrency) }}
+              {{ line.quantity | number }} {{ 'products.units.' + line.ingredient.unit | transloco }}
+              @if (line.wastePercent) {
+                ({{ line.wastePercent | number }}% · {{ line.effectiveQuantity | number: '1.0-3' }}
+                {{ 'products.units.' + line.ingredient.unit | transloco }} {{ t('effective-quantity') }})
+              }
+              · {{ line.lineCost === null ? '-' : (line.lineCost | mskCurrency) }}
             </span>
           </div>
         </div>
@@ -323,6 +330,31 @@
               <mat-hint align="end">
                 {{ recipeLineCostOf(row) === null ? '' : (recipeLineCostOf(row) | mskCurrency) }}
               </mat-hint>
+            </mat-form-field>
+            <!-- Waste -->
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ t('waste-percent') }}</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="wastePercent"
+                autocomplete="off"
+                inputmode="decimal"
+                min="0"
+                max="99.99"
+                step="any"
+              />
+              <span matTextSuffix>%</span>
+              @if (row.get('wastePercent')?.value && recipeEffectiveQuantityOf(row) !== null) {
+                <mat-hint>
+                  {{ recipeEffectiveQuantityOf(row) | number: '1.0-3' }}
+                  {{ recipeUnitOf(row) ? ('products.units.' + recipeUnitOf(row) | transloco) : '' }}
+                  {{ t('effective-quantity') }}
+                </mat-hint>
+              }
+              @if (row.get('wastePercent')?.invalid) {
+                <mat-error>{{ t('waste-percent-range') }}</mat-error>
+              }
             </mat-form-field>
           </div>
         </div>

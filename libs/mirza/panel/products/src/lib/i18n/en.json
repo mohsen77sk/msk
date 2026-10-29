@@ -23,7 +23,12 @@
     "margin": "Margin",
     "recipe-cost-incomplete": "Some ingredients have no cost",
     "recipe-empty": "This product has no recipe",
-    "recipe-stock-hint": "For now, selling deducts this product's own stock, not its ingredients"
+    "recipe-stock-hint": "For now, selling deducts this product's own stock, not its ingredients",
+    "waste-percent": "Waste %",
+    "waste-percent-range": "Between 0 and 99.99",
+    "effective-quantity": "with waste",
+    "duplicate": "Duplicate",
+    "copy-suffix": "(copy)"
   },
   "units": {
     "piece": "Piece",

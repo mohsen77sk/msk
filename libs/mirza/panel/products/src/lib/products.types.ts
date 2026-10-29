@@ -53,6 +53,9 @@ export interface ProductRecipeIngredient {
 export interface ProductRecipeLine {
   ingredient: ProductRecipeIngredient;
   quantity: number;
+  // Percent of the input lost in preparation; effectiveQuantity includes it
+  wastePercent: number;
+  effectiveQuantity: number;
   lineCost: number | null;
 }
 
@@ -65,6 +68,7 @@ export interface ProductRecipe {
 export interface IRecipeItem {
   ingredientId: number;
   quantity: number;
+  wastePercent?: number;
 }
 
 export interface ICreateProduct {

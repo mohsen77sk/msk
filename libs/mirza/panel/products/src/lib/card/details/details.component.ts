@@ -75,9 +75,20 @@ function ingredientSelectedValidator(control: AbstractControl): ValidationErrors
   return control.value && typeof control.value === 'object' ? null : { required: true };
 }
 
+/**
+ * Amount a recipe line actually consumes: the waste is the share of the input
+ * that is lost (same formula as the backend RecipeService)
+ * @param quantity
+ * @param wastePercent
+ */
+function effectiveRecipeQuantity(quantity: number, wastePercent: number | null): number {
+  return quantity / (1 - (wastePercent ?? 0) / 100);
+}
+
 interface RecipeItemFormValue {
   ingredient: ProductRecipeIngredient | string | null;
   quantity: number | null;
+  wastePercent: number | null;
 }
 
 @Component({
@@ -195,7 +206,7 @@ export class ProductCardDetailsComponent implements OnInit {
         .pipe(takeUntilDestroyed(this._destroyRef))
         .subscribe((recipe) => {
           this.recipe.set(recipe);
-          recipe.items.forEach((line) => this.addRecipeItem(line.ingredient, line.quantity));
+          recipe.items.forEach((line) => this.addRecipeItem(line.ingredient, line.quantity, line.wastePercent));
           this.recipeLoaded.set(true);
         });
     } else {
@@ -212,6 +223,18 @@ export class ProductCardDetailsComponent implements OnInit {
    */
   editMode(): void {
     this.data.action.set('edit');
+  }
+
+  /**
+   * Open the saved product as a new one: same fields and recipe, stock 0
+   */
+  duplicate(): void {
+    this.form.patchValue({
+      id: 0,
+      name: `${this.form.get('name')?.value} ${this._translocoService.translate('products.details.copy-suffix')}`,
+      quantity: 0,
+    });
+    this.data.action.set('new');
   }
 
   /**
@@ -241,11 +264,17 @@ export class ProductCardDetailsComponent implements OnInit {
    * Add a recipe row
    * @param ingredient
    * @param quantity
+   * @param wastePercent
    */
-  addRecipeItem(ingredient: ProductRecipeIngredient | null = null, quantity: number | null = null): void {
+  addRecipeItem(
+    ingredient: ProductRecipeIngredient | null = null,
+    quantity: number | null = null,
+    wastePercent = 0,
+  ): void {
     const group = this._formBuilder.group({
       ingredient: [ingredient, ingredientSelectedValidator],
       quantity: [quantity, [Validators.required, Validators.min(0.001)]],
+      wastePercent: [wastePercent, [Validators.min(0), Validators.max(99.99)]],
     });
     this.recipeItems.push(group);
 
@@ -284,13 +313,24 @@ export class ProductCardDetailsComponent implements OnInit {
   }
 
   /**
-   * Cost of one recipe row, or null if unknown
+   * Quantity of one recipe row including its waste, or null while incomplete
+   * @param row
+   */
+  recipeEffectiveQuantityOf(row: AbstractControl): number | null {
+    const { quantity, wastePercent } = row.value as RecipeItemFormValue;
+    if (!quantity) return null;
+    return effectiveRecipeQuantity(quantity, wastePercent);
+  }
+
+  /**
+   * Cost of one recipe row (waste included), or null if unknown
    * @param row
    */
   recipeLineCostOf(row: AbstractControl): number | null {
-    const { ingredient, quantity } = row.value as RecipeItemFormValue;
-    if (!ingredient || typeof ingredient !== 'object' || !quantity) return null;
-    return ingredient.effectiveCost == null ? null : ingredient.effectiveCost * quantity;
+    const { ingredient } = row.value as RecipeItemFormValue;
+    const effectiveQuantity = this.recipeEffectiveQuantityOf(row);
+    if (!ingredient || typeof ingredient !== 'object' || effectiveQuantity === null) return null;
+    return ingredient.effectiveCost == null ? null : ingredient.effectiveCost * effectiveQuantity;
   }
 
   /**
@@ -372,6 +412,7 @@ export class ProductCardDetailsComponent implements OnInit {
         ? (this.recipeItems.getRawValue() as RecipeItemFormValue[]).map((row) => ({
             ingredientId: (row.ingredient as ProductRecipeIngredient).id,
             quantity: Number(row.quantity),
+            wastePercent: Number(row.wastePercent) || 0,
           }))
         : undefined,
     };
