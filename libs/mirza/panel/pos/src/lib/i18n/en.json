@@ -1,0 +1,81 @@
+{
+  "title": "Point of sale",
+  "back": "Back to sales",
+  "retry": "Retry",
+  "code-or-name": "Product code or name…",
+  "no-products": "No products found",
+  "tabs": {
+    "all": "All",
+    "top": "Best sellers"
+  },
+  "cart-count": "{{lines}} items · {{units}} units",
+  "cart-empty": "The cart is empty",
+  "clear-cart": "Clear",
+  "clear-cart-message": "Clear all items, the customer and the payment settings of this sale?",
+  "increase": "Increase quantity",
+  "decrease": "Decrease quantity",
+  "note-separator": ", ",
+  "quick-notes": {
+    "no-sugar": "No sugar",
+    "extra-sugar": "Extra sugar",
+    "almond-milk": "Almond milk",
+    "extra-milk": "Extra milk",
+    "decaf": "Decaf",
+    "extra-hot": "Extra hot",
+    "less-ice": "Less ice",
+    "takeaway": "Takeaway"
+  },
+  "customer": {
+    "placeholder": "Walk-in customer — search name or phone",
+    "remove": "Remove customer",
+    "new": "New customer",
+    "new-with": "+ New customer “{{text}}”",
+    "searching": "Searching…",
+    "name": "Name",
+    "phone": "Phone",
+    "phone-invalid": "11 digits starting with 0",
+    "address": "Address",
+    "save-and-select": "Save and select",
+    "cancel": "Cancel"
+  },
+  "pay": {
+    "add-discount": "+ Discount",
+    "discount-value": "Discount: {{value}}",
+    "discount": "Discount",
+    "add-note": "+ Note",
+    "note-set": "Note ●",
+    "note": "Invoice note",
+    "split-payment": "Split payment",
+    "single-payment": "Single payment",
+    "payment-type": "Payment type",
+    "rest": "Rest",
+    "paid": "Paid: {{value}}",
+    "remaining": "Remaining: {{value}}",
+    "over": "Over: {{value}}",
+    "balanced": "Balanced ✓",
+    "payable": "Amount due",
+    "submit": "Submit — {{type}}",
+    "split": "Split"
+  },
+  "shortcuts": {
+    "toggle": "Keyboard shortcuts",
+    "enter": "Add the code or the only match",
+    "multiply": "Selected line quantity = typed number",
+    "plus-minus": "One more / one less",
+    "arrows": "Move between lines",
+    "escape": "Clear"
+  },
+  "sale-saved": "Sale {{number}} saved",
+  "print": "Print",
+  "print-title": "Sale receipt {{number}}",
+  "errors": {
+    "unknown-code": "No product with code {{code}}",
+    "no-match": "No product with that name",
+    "many-matches": "{{count}} products match; type more or tap a product",
+    "no-selected-line": "Select a cart line first",
+    "quantity-needed": "Type the quantity, then *",
+    "load-failed": "Could not load the products",
+    "save-failed": "Could not save the sale",
+    "print-blocked": "The print window was blocked."
+  }
+}

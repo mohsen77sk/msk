@@ -52,6 +52,27 @@ export interface ICreateSaleInvoice {
   note?: string;
 }
 
+export interface ICreateSaleItem {
+  productId: number;
+  quantity: number;
+  total: number;
+  // Omitted = the server stores total / quantity
+  unitPrice?: number;
+  note?: string;
+}
+
+/**
+ * New sale without a date (the server uses now), e.g. from the POS
+ */
+export interface ICreateSale {
+  customerId?: number;
+  paymentTypes: { paymentTypeId: number; value: number }[];
+  saleItems: ICreateSaleItem[];
+  discount: number;
+  total: number;
+  note?: string;
+}
+
 export interface ISalesForm {
   id: FormControl<number | null>;
   customer: FormControl<Customer | null>;

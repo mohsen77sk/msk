@@ -14,7 +14,7 @@ import {
   MskChangeEvent,
   MskDialogData,
 } from '@msk/shared/data-access';
-import { SaleInvoice, DefaultSalesSortData, ICreateSaleInvoice, ISaleInvoiceSummery } from './sales.types';
+import { SaleInvoice, DefaultSalesSortData, ICreateSale, ICreateSaleInvoice, ISaleInvoiceSummery } from './sales.types';
 import { SalesCardDetailsComponent } from './card/details/details.component';
 
 @Injectable({ providedIn: 'root' })
@@ -122,6 +122,18 @@ export class SalesService {
    */
   createSaleInvoice(invoice: ICreateSaleInvoice): Observable<SaleInvoice> {
     return this._httpClient.post<SaleInvoice>(`${this._appConfig.apiEndpoint}/sale`, invoice).pipe(
+      map((response) => new SaleInvoice(response)),
+      tap((invoice) => this._changes.next({ type: 'create', item: invoice })),
+    );
+  }
+
+  /**
+   * Create a sale from a plain payload (POS)
+   *
+   * @param sale
+   */
+  createSale(sale: ICreateSale): Observable<SaleInvoice> {
+    return this._httpClient.post<SaleInvoice>(`${this._appConfig.apiEndpoint}/sale`, sale).pipe(
       map((response) => new SaleInvoice(response)),
       tap((invoice) => this._changes.next({ type: 'create', item: invoice })),
     );

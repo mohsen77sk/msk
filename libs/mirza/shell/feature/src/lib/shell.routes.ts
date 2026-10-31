@@ -129,6 +129,26 @@ export const routes: Route[] = [
     ],
   },
 
+  // POS: full screen (no panel sidebar), still needs auth, the current store and the initial data
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    component: LayoutComponent,
+    data: {
+      layoutType: 'empty',
+    },
+    resolve: {
+      initial: initialDataResolver,
+    },
+    children: [
+      {
+        path: 'pos',
+        loadChildren: () => import('@msk/mirza/panel/pos').then((r) => r.routes),
+      },
+    ],
+  },
+
   // Error routes & Catch all
   {
     path: '',

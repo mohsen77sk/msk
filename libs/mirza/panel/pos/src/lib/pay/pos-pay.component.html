@@ -1,0 +1,145 @@
+<div class="mz-pos-pay" *transloco="let t; prefix: 'pos.pay'">
+  <!-- Section toggles -->
+  <div class="mz-pos-pay-links">
+    <button
+      type="button"
+      class="mz-pos-pay-link"
+      data-pos-keep-focus
+      [class.mz-pos-pay-link-set]="cart.discount()"
+      [attr.aria-expanded]="discountOpen()"
+      (click)="toggle('discount')"
+    >
+      @if (cart.discount()) {
+        {{ t('discount-value', { value: (cart.discount() | mskCurrency) }) }}
+      } @else {
+        {{ t('add-discount') }}
+      }
+    </button>
+    <button
+      type="button"
+      class="mz-pos-pay-link"
+      data-pos-keep-focus
+      [class.mz-pos-pay-link-set]="cart.note().trim()"
+      [attr.aria-expanded]="noteOpen()"
+      (click)="toggle('note')"
+    >
+      {{ cart.note().trim() ? t('note-set') : t('add-note') }}
+    </button>
+    <button
+      type="button"
+      class="mz-pos-pay-link ms-auto"
+      [class.mz-pos-pay-link-set]="cart.paymentMode() === 'split'"
+      [attr.aria-expanded]="cart.paymentMode() === 'split'"
+      (click)="toggleSplit()"
+    >
+      {{ cart.paymentMode() === 'split' ? t('single-payment') : t('split-payment') }}
+    </button>
+  </div>
+
+  <!-- Discount -->
+  @if (discountOpen()) {
+    <label class="mz-pos-pay-field bg-surface-container-high">
+      <span class="text-on-surface-variant">{{ t('discount') }}</span>
+      <input
+        type="text"
+        mskMask="currency"
+        mskAutoFocus
+        inputmode="numeric"
+        autocomplete="off"
+        dir="ltr"
+        [ngModel]="cart.discount() || null"
+        (ngModelChange)="setDiscount($event)"
+        (keydown.enter)="toggle('discount')"
+      />
+      <span class="text-on-surface-variant" mskCurrencySymbol></span>
+    </label>
+  }
+
+  <!-- Note -->
+  @if (noteOpen()) {
+    <textarea
+      class="mz-pos-pay-note bg-surface-container-high"
+      rows="2"
+      maxlength="255"
+      mskAutoFocus
+      [placeholder]="t('note')"
+      [attr.aria-label]="t('note')"
+      [ngModel]="cart.note()"
+      (ngModelChange)="cart.note.set($event)"
+    ></textarea>
+  }
+
+  <!-- Payment -->
+  @if (cart.paymentMode() === 'single') {
+    <div class="mz-pos-pay-types" role="radiogroup" [attr.aria-label]="t('payment-type')">
+      @for (paymentType of cart.paymentTypes(); track paymentType.id) {
+        <button
+          type="button"
+          role="radio"
+          matRipple
+          class="mz-pos-pay-type"
+          [attr.aria-checked]="cart.paymentTypeId() === paymentType.id"
+          (click)="cart.paymentTypeId.set(paymentType.id)"
+        >
+          {{ paymentType.name }}
+        </button>
+      }
+    </div>
+  } @else {
+    <div class="mz-pos-pay-split">
+      <div class="mz-pos-pay-split-rows">
+        @for (paymentType of cart.paymentTypes(); track paymentType.id) {
+          <div class="mz-pos-pay-split-row">
+            <span class="truncate">{{ paymentType.name }}</span>
+            <input
+              type="text"
+              class="bg-surface-container-high"
+              mskMask="currency"
+              inputmode="numeric"
+              autocomplete="off"
+              dir="ltr"
+              [attr.aria-label]="paymentType.name"
+              [ngModel]="cart.splitValues()[paymentType.id] || null"
+              (ngModelChange)="cart.setSplitValue(paymentType.id, $event)"
+            />
+            <button type="button" matButton="tonal" (click)="cart.fillRemaining(paymentType.id)">
+              {{ t('rest') }}
+            </button>
+          </div>
+        }
+      </div>
+      <div class="mz-pos-pay-split-status">
+        <span class="text-on-surface-variant">{{ t('paid', { value: (cart.splitPaid() | mskCurrency) }) }}</span>
+        @if (cart.splitRemaining() > 0) {
+          <span class="text-error">{{ t('remaining', { value: (cart.splitRemaining() | mskCurrency) }) }}</span>
+        } @else if (cart.splitRemaining() < 0) {
+          <span class="text-error">{{ t('over', { value: (-cart.splitRemaining() | mskCurrency) }) }}</span>
+        } @else {
+          <span class="text-primary">{{ t('balanced') }}</span>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Total + submit -->
+  <div class="mz-pos-pay-footer">
+    <div class="mz-pos-pay-total">
+      <span class="text-on-surface-variant text-sm">{{ t('payable') }}</span>
+      <span class="mz-pos-pay-total-value">{{ cart.total() | mskCurrency }}</span>
+    </div>
+    <button
+      type="button"
+      matButton="filled"
+      class="mz-pos-pay-submit"
+      [disabled]="!cart.canSubmit()"
+      [mskSpinner]="cart.submitting()"
+      (click)="submitted.emit()"
+    >
+      {{
+        t('submit', {
+          type: cart.paymentMode() === 'split' ? t('split') : (cart.selectedPaymentType()?.name ?? ''),
+        })
+      }}
+    </button>
+  </div>
+</div>

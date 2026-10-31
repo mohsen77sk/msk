@@ -63,6 +63,13 @@
         "link": "/panel/sales"
       },
       {
+        "id": "panel.pos",
+        "title": "Point of sale (POS)",
+        "type": "basic",
+        "icon": "point_of_sale",
+        "link": "/pos"
+      },
+      {
         "id": "panel.expenses",
         "title": "Expenses",
         "type": "basic",

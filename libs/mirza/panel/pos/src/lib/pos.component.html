@@ -1,0 +1,68 @@
+<div class="mz-pos bg-surface text-on-surface" (click)="onClick($event)" *transloco="let t; prefix: 'pos'">
+  <!-- Header -->
+  <header class="mz-pos-header">
+    <a
+      matIconButton
+      class="mz-pos-back"
+      routerLink="/panel/sales"
+      [matTooltip]="t('back')"
+      [attr.aria-label]="t('back')"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <div class="mz-pos-header-title">
+      <span class="font-medium">{{ t('title') }}</span>
+      @if (storeName) {
+        <span class="text-on-surface-variant truncate text-sm">{{ storeName }}</span>
+      }
+    </div>
+    <button
+      type="button"
+      matIconButton
+      class="ms-auto"
+      [matTooltip]="t('shortcuts.toggle')"
+      [attr.aria-label]="t('shortcuts.toggle')"
+      [attr.aria-pressed]="showShortcuts()"
+      (click)="showShortcuts.set(!showShortcuts())"
+    >
+      <mat-icon>keyboard</mat-icon>
+    </button>
+  </header>
+
+  <!-- Shortcuts -->
+  @if (showShortcuts()) {
+    <div class="mz-pos-shortcuts bg-surface-container-low text-on-surface-variant">
+      <span><kbd>Enter</kbd> {{ t('shortcuts.enter') }}</span>
+      <span><kbd>*</kbd> {{ t('shortcuts.multiply') }}</span>
+      <span><kbd>+</kbd> / <kbd>-</kbd> {{ t('shortcuts.plus-minus') }}</span>
+      <span><kbd>↑</kbd> / <kbd>↓</kbd> {{ t('shortcuts.arrows') }}</span>
+      <span><kbd>Esc</kbd> {{ t('shortcuts.escape') }}</span>
+    </div>
+  }
+
+  @if (catalog(); as catalog) {
+    <div class="mz-pos-body">
+      <!-- Products -->
+      <section class="mz-pos-products-area">
+        <mz-pos-products [catalog]="catalog" />
+      </section>
+
+      <!-- Cart -->
+      <aside class="mz-pos-cart bg-surface-container-low">
+        <mz-pos-customer />
+        <mz-pos-cart (cleared)="focusInput()" />
+        <mz-pos-pay (submitted)="submit()" />
+      </aside>
+    </div>
+  } @else if (loadError()) {
+    <div class="mz-pos-state">
+      <mat-icon class="text-error">error</mat-icon>
+      <span>{{ loadError() }}</span>
+      <button type="button" matButton="tonal" (click)="load()">{{ t('retry') }}</button>
+    </div>
+  } @else {
+    <div class="mz-pos-state">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+</div>

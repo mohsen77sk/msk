@@ -1,0 +1,81 @@
+{
+  "title": "صندوق فروش",
+  "back": "بازگشت به فروش‌ها",
+  "retry": "تلاش دوباره",
+  "code-or-name": "کد یا نام محصول…",
+  "no-products": "محصولی پیدا نشد",
+  "tabs": {
+    "all": "همه",
+    "top": "پرفروش"
+  },
+  "cart-count": "{{lines}} قلم · {{units}} عدد",
+  "cart-empty": "سبد خالی است",
+  "clear-cart": "خالی کردن",
+  "clear-cart-message": "همه‌ی اقلام، مشتری و تنظیمات پرداخت این فروش پاک شوند؟",
+  "increase": "افزایش تعداد",
+  "decrease": "کاهش تعداد",
+  "note-separator": "، ",
+  "quick-notes": {
+    "no-sugar": "بدون شکر",
+    "extra-sugar": "شکر اضافه",
+    "almond-milk": "شیر بادام",
+    "extra-milk": "شیر اضافه",
+    "decaf": "کم‌کافئین",
+    "extra-hot": "داغ‌تر",
+    "less-ice": "یخ کم",
+    "takeaway": "برای بیرون"
+  },
+  "customer": {
+    "placeholder": "مشتری عمومی — جستجوی نام یا تلفن",
+    "remove": "حذف مشتری",
+    "new": "مشتری جدید",
+    "new-with": "+ مشتری جدید «{{text}}»",
+    "searching": "در حال جستجو…",
+    "name": "نام",
+    "phone": "تلفن",
+    "phone-invalid": "۱۱ رقم و با ۰ شروع شود",
+    "address": "آدرس",
+    "save-and-select": "ذخیره و انتخاب",
+    "cancel": "انصراف"
+  },
+  "pay": {
+    "add-discount": "+ تخفیف",
+    "discount-value": "تخفیف: {{value}}",
+    "discount": "تخفیف",
+    "add-note": "+ توضیحات",
+    "note-set": "توضیحات ●",
+    "note": "توضیحات فاکتور",
+    "split-payment": "پرداخت ترکیبی",
+    "single-payment": "یک نوع پرداخت",
+    "payment-type": "نوع پرداخت",
+    "rest": "باقی",
+    "paid": "پرداخت‌شده: {{value}}",
+    "remaining": "باقیمانده: {{value}}",
+    "over": "اضافه: {{value}}",
+    "balanced": "تراز است ✓",
+    "payable": "مبلغ قابل پرداخت",
+    "submit": "ثبت — {{type}}",
+    "split": "ترکیبی"
+  },
+  "shortcuts": {
+    "toggle": "میانبرهای صفحه‌کلید",
+    "enter": "افزودن کد یا تنها نتیجه",
+    "multiply": "تعداد ردیف انتخابی = عدد واردشده",
+    "plus-minus": "یکی بیشتر / کمتر",
+    "arrows": "جابه‌جایی بین ردیف‌ها",
+    "escape": "پاک کردن"
+  },
+  "sale-saved": "فروش {{number}} ثبت شد",
+  "print": "چاپ",
+  "print-title": "رسید فروش {{number}}",
+  "errors": {
+    "unknown-code": "محصولی با کد {{code}} نیست",
+    "no-match": "محصولی با این نام پیدا نشد",
+    "many-matches": "{{count}} محصول پیدا شد؛ دقیق‌تر بنویسید یا روی محصول بزنید",
+    "no-selected-line": "اول یک ردیف از سبد را انتخاب کنید",
+    "quantity-needed": "عدد تعداد را بنویسید، بعد *",
+    "load-failed": "بارگذاری محصولات انجام نشد",
+    "save-failed": "ثبت فروش انجام نشد",
+    "print-blocked": "پنجره چاپ مسدود شد."
+  }
+}

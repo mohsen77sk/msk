@@ -61,5 +61,6 @@
   "delete": "Delete sale invoice",
   "delete-message": "Are you sure you want to delete invoice <b>{{number}}</b>?",
   "print-receipt": "Print receipt",
-  "print-invoice": "Export invoice (PDF)"
+  "print-invoice": "Export invoice (PDF)",
+  "open-pos": "POS"
 }

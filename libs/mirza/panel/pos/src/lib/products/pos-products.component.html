@@ -1,0 +1,67 @@
+<div class="mz-pos-products" *transloco="let t; prefix: 'pos'">
+  <!-- Code / search -->
+  <div class="mz-pos-products-search">
+    <mat-icon>search</mat-icon>
+    <input
+      #codeInput
+      mskAutoFocus
+      type="text"
+      autocomplete="off"
+      enterkeyhint="done"
+      [placeholder]="t('code-or-name')"
+      [attr.aria-label]="t('code-or-name')"
+      (input)="onInput($event)"
+      (keydown)="onKeydown($event)"
+    />
+  </div>
+
+  <!-- Message -->
+  <div class="mz-pos-products-message text-error" role="status" aria-live="polite">{{ message() }}</div>
+
+  <!-- Category tabs -->
+  <div class="mz-pos-tabs" role="tablist" [class.mz-pos-tabs-inactive]="query()">
+    <button type="button" role="tab" matRipple [attr.aria-selected]="tab() === 'all'" (click)="selectTab('all')">
+      {{ t('tabs.all') }}
+    </button>
+    @if (catalog().topProductIds.length) {
+      <button type="button" role="tab" matRipple [attr.aria-selected]="tab() === 'top'" (click)="selectTab('top')">
+        {{ t('tabs.top') }}
+      </button>
+    }
+    @for (category of catalog().categories; track category.id) {
+      <button
+        type="button"
+        role="tab"
+        matRipple
+        [attr.aria-selected]="tab() === category.id"
+        (click)="selectTab(category.id)"
+      >
+        {{ category.name }}
+      </button>
+    }
+  </div>
+
+  <!-- Grid -->
+  <div class="mz-pos-grid">
+    @for (product of visibleProducts(); track product.id) {
+      @let quantity = cart.quantityByProduct().get(product.id);
+      <button
+        type="button"
+        class="mz-pos-card"
+        matRipple
+        [class.mz-pos-card-in-cart]="quantity"
+        [class.mz-pos-card-selected]="cart.selectedProductId() === product.id"
+        (click)="addProduct(product)"
+      >
+        <span class="mz-pos-card-code" dir="ltr">{{ product.code ?? '' }}</span>
+        <span class="mz-pos-card-name">{{ product.name }}</span>
+        <span class="mz-pos-card-price">{{ product.sellPrice | mskCurrency }}</span>
+        @if (quantity) {
+          <span class="mz-pos-card-badge">{{ quantity }}</span>
+        }
+      </button>
+    } @empty {
+      <div class="mz-pos-grid-empty text-on-surface-variant">{{ t('no-products') }}</div>
+    }
+  </div>
+</div>
