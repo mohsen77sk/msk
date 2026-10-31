@@ -5,6 +5,7 @@
     "view": "{{name}}",
     "specs": "مشخصات",
     "name": "نام",
+    "code": "کد",
     "category": "دسته بندی",
     "quantity": "مقدار",
     "unit": "واحد",

@@ -43,6 +43,9 @@
           <div class="content-grid-item-content">
             <div class="truncate">{{ product.name }}</div>
             <div class="truncate">
+              @if (product.code) {
+                <span *transloco="let t; prefix: 'products.details'">{{ t('code') }} {{ product.code }}</span>
+              }
               <span>{{ product.category?.name }}</span>
               @if (product.quantity) {
                 <span *transloco="let t; prefix: 'products.units'">

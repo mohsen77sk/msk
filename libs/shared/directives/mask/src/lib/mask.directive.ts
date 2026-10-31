@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CURRENCY_BY_CODE, MskAvailableCurrencyCodes } from '@msk/shared/constants';
+import { normalizeDigits } from '@msk/shared/utils/number';
 import { MskMaskType } from './mask.types';
 
 @Directive({
@@ -95,7 +96,10 @@ export class MskMaskDirective implements ControlValueAccessor {
     const parts = example.format(12345.6).match(/[\D]/g) || [];
     // Identify decimal separator (last non-digit char)
     const decSep = parts[parts.length - 1];
-    const normalized = value.replace(new RegExp(`[^0-9${decSep}]`, 'g'), '').replace(decSep, '.');
+    // Persian/Arabic digits typed on a Persian keyboard count as digits
+    const normalized = normalizeDigits(value)
+      .replace(new RegExp(`[^0-9${decSep}]`, 'g'), '')
+      .replace(decSep, '.');
     let num = parseFloat(normalized);
 
     const config = CURRENCY_BY_CODE[this._currencyCode];
