@@ -7,12 +7,27 @@ import { User } from '@msk/mirza/shell/core/user';
 
 export const DefaultSalesSortData: MskSortable = { active: 'number', direction: 'desc' };
 
+/**
+ * A sale line as stored: the same product can be on several lines with different notes
+ */
+export class SaleInvoiceItem extends ProductItem {
+  // Per unit, before the invoice discount; null on sales saved before it was stored
+  unitPrice: number | null;
+  note: string | null;
+
+  constructor(input: SaleInvoiceItem) {
+    super(input);
+    this.unitPrice = input.unitPrice ?? null;
+    this.note = input.note ?? null;
+  }
+}
+
 export class SaleInvoice {
   id: number;
   number: string;
   saleDate?: Date;
   paymentTypes: PaymentTypeDetail[];
-  saleItems: ProductItem[];
+  saleItems: SaleInvoiceItem[];
   discount: number;
   tax: number;
   deliveryFee: number;
@@ -26,7 +41,7 @@ export class SaleInvoice {
     this.number = input.number;
     this.saleDate = input.saleDate ? new Date(input.saleDate) : undefined;
     this.paymentTypes = input.paymentTypes?.map((pt) => new PaymentTypeDetail(pt));
-    this.saleItems = input.saleItems?.map((si) => new ProductItem(si));
+    this.saleItems = input.saleItems?.map((si) => new SaleInvoiceItem(si));
     this.discount = input.discount;
     this.tax = input.tax;
     this.deliveryFee = input.deliveryFee;

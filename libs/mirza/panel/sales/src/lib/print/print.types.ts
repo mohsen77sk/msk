@@ -1,5 +1,4 @@
-import { ProductItem } from '@msk/mirza/panel/products';
-import { SaleInvoice } from '../sales.types';
+import { SaleInvoice, SaleInvoiceItem } from '../sales.types';
 import { Store } from '@msk/mirza/shell/core/store';
 import { PaymentTypeDetail } from '@msk/mirza/panel/payment-types';
 
@@ -43,17 +42,20 @@ export class ReceiptPrintData {
 
 export class ReceiptPrintItem {
   productName: string;
+  note?: string;
   price: number;
   quantity: number;
   unit?: string;
   total: number;
 
-  constructor(input: ProductItem) {
+  constructor(input: SaleInvoiceItem) {
     this.productName = input.product?.name ?? '-';
+    this.note = input.note ?? undefined;
     this.quantity = input.quantity;
     this.unit = input.product?.unit;
     this.total = input.total;
-    this.price = input.product?.sellPrice ?? (this.quantity ? this.total / this.quantity : 0);
+    // The price the line was sold at, not the product's current price
+    this.price = input.unitPrice ?? (this.quantity ? this.total / this.quantity : 0);
   }
 }
 

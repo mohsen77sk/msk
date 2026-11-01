@@ -57,7 +57,12 @@
     <tbody>
       @for (item of data()?.items; track $index) {
         <tr>
-          <td class="sale-receipt-print__product">{{ item.productName }}</td>
+          <td class="sale-receipt-print__product">
+            {{ item.productName }}
+            @if (item.note) {
+              <div class="sale-receipt-print__note">{{ item.note }}</div>
+            }
+          </td>
           <td dir="auto">{{ item.price | mskCurrency: 'IRT' : false }}</td>
           <td dir="auto">{{ item.quantity }}</td>
           <td dir="auto">{{ item.total | mskCurrency: 'IRT' : false }}</td>
