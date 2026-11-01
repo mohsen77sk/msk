@@ -162,6 +162,7 @@
         "libs/mirza/panel/dashboard/**/*",
         "libs/mirza/panel/expenses/**/*",
         "libs/mirza/panel/payment-types/**/*",
+        "libs/mirza/panel/pos/**/*",
         "libs/mirza/panel/product-categories/**/*",
         "libs/mirza/panel/products/**/*",
         "libs/mirza/panel/purchases/**/*",

@@ -14,9 +14,9 @@
 
   <!-- Lines -->
   <div class="mz-pos-cart-list" #lineList>
-    @for (line of cart.lines(); track line.productId) {
-      @let selected = cart.selectedProductId() === line.productId;
-      <div class="mz-pos-line" [class.mz-pos-line-selected]="selected" [attr.data-product-id]="line.productId">
+    @for (line of cart.lines(); track line.id) {
+      @let selected = cart.selectedLineId() === line.id;
+      <div class="mz-pos-line" [class.mz-pos-line-selected]="selected" [attr.data-line-id]="line.id">
         <div class="mz-pos-line-main">
           <!-- Body: selects the line -->
           <button
@@ -24,7 +24,7 @@
             class="mz-pos-line-body"
             matRipple
             [attr.aria-pressed]="selected"
-            (click)="cart.select(line.productId)"
+            (click)="cart.select(line.id)"
           >
             <span class="mz-pos-line-name">{{ line.name }}</span>
             <span class="mz-pos-line-total">{{ line.unitPrice * line.quantity | mskCurrency }}</span>
@@ -38,7 +38,7 @@
               type="button"
               matIconButton
               [attr.aria-label]="t('decrease')"
-              (click)="cart.select(line.productId); cart.changeQuantity(line.productId, -1)"
+              (click)="cart.select(line.id); cart.changeQuantity(line.id, -1)"
             >
               <mat-icon>{{ line.quantity === 1 ? 'delete' : 'remove' }}</mat-icon>
             </button>
@@ -47,7 +47,7 @@
               type="button"
               matIconButton
               [attr.aria-label]="t('increase')"
-              (click)="cart.select(line.productId); cart.changeQuantity(line.productId, 1)"
+              (click)="cart.select(line.id); cart.changeQuantity(line.id, 1)"
             >
               <mat-icon>add</mat-icon>
             </button>
@@ -63,9 +63,15 @@
                 class="mz-pos-chip"
                 matRipple
                 [attr.aria-pressed]="line.notes.includes(note)"
-                (click)="cart.toggleNote(line.productId, note)"
+                (click)="cart.toggleNote(line.id, note)"
               >
                 {{ t('quick-notes.' + note) }}
+              </button>
+            }
+            @if (line.quantity > 1) {
+              <button type="button" class="mz-pos-chip mz-pos-chip-split" matRipple (click)="cart.splitOne(line.id)">
+                <mat-icon>call_split</mat-icon>
+                {{ t('split-one') }}
               </button>
             }
           </div>

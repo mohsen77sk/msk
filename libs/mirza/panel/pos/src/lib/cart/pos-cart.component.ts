@@ -42,12 +42,10 @@ export class PosCartComponent {
   constructor() {
     // Keep the selected line visible (keyboard selection, new lines)
     effect(() => {
-      const productId = this.cart.selectedProductId();
+      const lineId = this.cart.selectedLineId();
       const list = this._list()?.nativeElement;
-      if (productId === null || !list) return;
-      queueMicrotask(() =>
-        list.querySelector(`[data-product-id="${productId}"]`)?.scrollIntoView({ block: 'nearest' }),
-      );
+      if (lineId === null || !list) return;
+      queueMicrotask(() => list.querySelector(`[data-line-id="${lineId}"]`)?.scrollIntoView({ block: 'nearest' }));
     });
   }
 

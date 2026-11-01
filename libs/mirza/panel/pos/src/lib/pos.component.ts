@@ -2,6 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
+  HostListener,
   ViewEncapsulation,
   inject,
   signal,
@@ -54,6 +56,7 @@ const SALE_SNACKBAR_DURATION = 8000;
 })
 export class PosComponent {
   private _destroyRef = inject(DestroyRef);
+  private _elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   private _posService = inject(PosService);
   private _salesService = inject(SalesService);
   private _paymentTypesService = inject(PaymentTypesService);
@@ -114,13 +117,15 @@ export class PosComponent {
   }
 
   /**
-   * Back to the code input after a click on a card, line, chip or button. Not on touch
+   * Back to the code input after a click on a card, line, chip or button of the POS. Not on touch
    * screens, where focusing the input would pop up the on-screen keyboard.
    * @param event
    */
-  onClick(event: MouseEvent): void {
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
     if ((event as PointerEvent).pointerType === 'touch') return;
-    const target = event.target as HTMLElement;
+    const target = event.target as HTMLElement | null;
+    if (!target || !this._elementRef.nativeElement.contains(target)) return;
     if (target.closest('input, textarea, form, [data-pos-keep-focus]')) return;
     if (target.closest('button, a')) this.focusInput();
   }

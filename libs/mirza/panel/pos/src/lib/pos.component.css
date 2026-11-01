@@ -514,6 +514,19 @@ mz-pos-pay {
   overflow: hidden;
 }
 
+.mz-pos-chip-split {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-style: dashed;
+}
+
+.mz-pos-chip-split .mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
 .mz-pos-chip[aria-pressed='true'] {
   border-color: transparent;
   background: var(--mat-sys-secondary-container);

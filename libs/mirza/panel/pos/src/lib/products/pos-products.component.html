@@ -50,7 +50,7 @@
         class="mz-pos-card"
         matRipple
         [class.mz-pos-card-in-cart]="quantity"
-        [class.mz-pos-card-selected]="cart.selectedProductId() === product.id"
+        [class.mz-pos-card-selected]="cart.selectedLine()?.productId === product.id"
         (click)="addProduct(product)"
       >
         <span class="mz-pos-card-code" dir="ltr">{{ product.code ?? '' }}</span>

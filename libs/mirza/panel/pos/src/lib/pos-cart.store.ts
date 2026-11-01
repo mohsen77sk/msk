@@ -2,7 +2,15 @@ import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { StoreService } from '@msk/mirza/shell/core/store';
 import { PaymentType } from '@msk/mirza/panel/payment-types';
 import { ICreateSale } from '@msk/mirza/panel/sales';
-import { PosCartLine, PosCartState, PosPaymentMode, PosProduct, PosQuickNote, PosSelectedCustomer } from './pos.types';
+import {
+  PosCartLine,
+  PosCartState,
+  PosPaymentMode,
+  PosProduct,
+  PosQuickNote,
+  PosSelectedCustomer,
+  samePosNotes,
+} from './pos.types';
 
 const STORAGE_KEY_PREFIX = 'mz-pos-cart:';
 
@@ -15,7 +23,7 @@ export class PosCartStore {
 
   // Cart
   readonly lines = signal<PosCartLine[]>([]);
-  readonly selectedProductId = signal<number | null>(null);
+  readonly selectedLineId = signal<number | null>(null);
   readonly customer = signal<PosSelectedCustomer | null>(null);
   readonly discountInput = signal(0);
   readonly note = signal('');
@@ -28,15 +36,22 @@ export class PosCartStore {
 
   readonly submitting = signal(false);
 
+  private _lastLineId = 0;
+
   // Derived
   readonly subtotal = computed(() => this.lines().reduce((sum, line) => sum + line.unitPrice * line.quantity, 0));
   readonly discount = computed(() => Math.min(Math.max(this.discountInput() || 0, 0), this.subtotal()));
   readonly total = computed(() => this.subtotal() - this.discount());
   readonly unitCount = computed(() => this.lines().reduce((sum, line) => sum + line.quantity, 0));
-  readonly quantityByProduct = computed(() => new Map(this.lines().map((line) => [line.productId, line.quantity])));
-  readonly selectedLine = computed(
-    () => this.lines().find((line) => line.productId === this.selectedProductId()) ?? null,
-  );
+  // All lines of a product together
+  readonly quantityByProduct = computed(() => {
+    const quantities = new Map<number, number>();
+    for (const line of this.lines()) {
+      quantities.set(line.productId, (quantities.get(line.productId) ?? 0) + line.quantity);
+    }
+    return quantities;
+  });
+  readonly selectedLine = computed(() => this.lines().find((line) => line.id === this.selectedLineId()) ?? null);
   readonly selectedPaymentType = computed(
     () => this.paymentTypes().find((paymentType) => paymentType.id === this.paymentTypeId()) ?? null,
   );
@@ -64,57 +79,61 @@ export class PosCartStore {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * One line per product: +1 if present, otherwise a new line. The line becomes selected.
+   * +1 on the product's line without notes, otherwise a new plain line. The line becomes selected.
    * @param product
    */
   add(product: PosProduct): void {
-    if (this.quantityByProduct().has(product.id)) {
-      this._updateLine(product.id, (line) => ({ ...line, quantity: line.quantity + 1 }));
-    } else {
-      this.lines.update((lines) => [
-        ...lines,
-        { productId: product.id, name: product.name, unitPrice: product.sellPrice, quantity: 1, notes: [] },
-      ]);
+    const plain = this.lines().find((line) => line.productId === product.id && !line.notes.length);
+    if (plain) {
+      this._updateLine(plain.id, (line) => ({ ...line, quantity: line.quantity + 1 }));
+      this.selectedLineId.set(plain.id);
+      return;
     }
-    this.selectedProductId.set(product.id);
+
+    const id = this._nextLineId();
+    this.lines.update((lines) => [
+      ...lines,
+      { id, productId: product.id, name: product.name, unitPrice: product.sellPrice, quantity: 1, notes: [] },
+    ]);
+    this.selectedLineId.set(id);
   }
 
   /**
    * Change a line's quantity by delta; 0 removes the line
-   * @param productId
+   * @param lineId
    * @param delta
    */
-  changeQuantity(productId: number, delta: number): void {
-    const line = this.lines().find((x) => x.productId === productId);
-    if (line) this.setQuantity(productId, line.quantity + delta);
+  changeQuantity(lineId: number, delta: number): void {
+    const line = this.lines().find((x) => x.id === lineId);
+    if (line) this.setQuantity(lineId, line.quantity + delta);
   }
 
   /**
    * Set a line's quantity; 0 removes the line
-   * @param productId
+   * @param lineId
    * @param quantity
    */
-  setQuantity(productId: number, quantity: number): void {
+  setQuantity(lineId: number, quantity: number): void {
     if (quantity > 0) {
-      this._updateLine(productId, (line) => ({ ...line, quantity }));
+      this._updateLine(lineId, (line) => ({ ...line, quantity }));
       return;
     }
 
-    const index = this.lines().findIndex((line) => line.productId === productId);
+    const index = this.lines().findIndex((line) => line.id === lineId);
     if (index === -1) return;
-    const lines = this.lines().filter((line) => line.productId !== productId);
+    const lines = this.lines().filter((line) => line.id !== lineId);
     this.lines.set(lines);
-    if (this.selectedProductId() === productId) {
+    if (this.selectedLineId() === lineId) {
       // Keep a selection near the removed line
-      this.selectedProductId.set(lines[Math.min(index, lines.length - 1)]?.productId ?? null);
+      this.selectedLineId.set(lines[Math.min(index, lines.length - 1)]?.id ?? null);
     }
   }
 
   /**
-   * @param productId
+   * @param lineId
    */
-  select(productId: number): void {
-    this.selectedProductId.set(productId);
+  select(lineId: number): void {
+    this.selectedLineId.set(lineId);
   }
 
   /**
@@ -124,21 +143,60 @@ export class PosCartStore {
   moveSelection(step: number): void {
     const lines = this.lines();
     if (!lines.length) return;
-    const index = lines.findIndex((line) => line.productId === this.selectedProductId());
+    const index = lines.findIndex((line) => line.id === this.selectedLineId());
     const next =
       index === -1 ? (step > 0 ? 0 : lines.length - 1) : Math.min(Math.max(index + step, 0), lines.length - 1);
-    this.selectedProductId.set(lines[next].productId);
+    this.selectedLineId.set(lines[next].id);
   }
 
   /**
-   * @param productId
+   * Toggle a note on one line. If another line of the product then has the same notes, the two
+   * merge into the earlier one, which becomes selected.
+   * @param lineId
    * @param note
    */
-  toggleNote(productId: number, note: PosQuickNote): void {
-    this._updateLine(productId, (line) => ({
-      ...line,
-      notes: line.notes.includes(note) ? line.notes.filter((x) => x !== note) : [...line.notes, note],
-    }));
+  toggleNote(lineId: number, note: PosQuickNote): void {
+    const lines = this.lines();
+    const index = lines.findIndex((line) => line.id === lineId);
+    if (index === -1) return;
+    const line = lines[index];
+    const notes = line.notes.includes(note) ? line.notes.filter((x) => x !== note) : [...line.notes, note];
+
+    const twinIndex = lines.findIndex(
+      (x) => x.id !== lineId && x.productId === line.productId && samePosNotes(x.notes, notes),
+    );
+    if (twinIndex === -1) {
+      this._updateLine(lineId, (x) => ({ ...x, notes }));
+      return;
+    }
+
+    const [keep, drop] = twinIndex < index ? [lines[twinIndex], line] : [{ ...line, notes }, lines[twinIndex]];
+    this.lines.set(
+      lines
+        .filter((x) => x.id !== drop.id)
+        .map((x) => (x.id === keep.id ? { ...keep, quantity: keep.quantity + drop.quantity } : x)),
+    );
+    this.selectedLineId.set(keep.id);
+  }
+
+  /**
+   * Move one unit into a new line right below with the same notes; the new line becomes selected
+   * @param lineId
+   */
+  splitOne(lineId: number): void {
+    const lines = this.lines();
+    const index = lines.findIndex((line) => line.id === lineId);
+    const line = lines[index];
+    if (!line || line.quantity < 2) return;
+
+    const id = this._nextLineId();
+    this.lines.set([
+      ...lines.slice(0, index),
+      { ...line, quantity: line.quantity - 1 },
+      { ...line, id, quantity: 1, notes: [...line.notes] },
+      ...lines.slice(index + 1),
+    ]);
+    this.selectedLineId.set(id);
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -226,7 +284,7 @@ export class PosCartStore {
    */
   clear(): void {
     this.lines.set([]);
-    this.selectedProductId.set(null);
+    this.selectedLineId.set(null);
     this.customer.set(null);
     this.discountInput.set(0);
     this.note.set('');
@@ -237,8 +295,12 @@ export class PosCartStore {
   // @ Private methods
   // -----------------------------------------------------------------------------------------------------
 
-  private _updateLine(productId: number, change: (line: PosCartLine) => PosCartLine): void {
-    this.lines.update((lines) => lines.map((line) => (line.productId === productId ? change(line) : line)));
+  private _updateLine(lineId: number, change: (line: PosCartLine) => PosCartLine): void {
+    this.lines.update((lines) => lines.map((line) => (line.id === lineId ? change(line) : line)));
+  }
+
+  private _nextLineId(): number {
+    return ++this._lastLineId;
   }
 
   private _defaultPaymentTypeId(): number | null {
@@ -249,7 +311,7 @@ export class PosCartStore {
   private _snapshot(): PosCartState {
     return {
       lines: this.lines(),
-      selectedProductId: this.selectedProductId(),
+      selectedLineId: this.selectedLineId(),
       customer: this.customer(),
       discount: this.discountInput(),
       note: this.note(),
@@ -276,8 +338,12 @@ export class PosCartStore {
     }
     if (!state || !Array.isArray(state.lines)) return;
 
-    this.lines.set(state.lines);
-    this.selectedProductId.set(state.selectedProductId ?? null);
+    // Carts saved before lines had ids get fresh ones
+    const lines = state.lines.map((line) => (Number.isInteger(line.id) ? line : { ...line, id: 0 }));
+    this._lastLineId = Math.max(0, ...lines.map((line) => line.id));
+    this.lines.set(lines.map((line) => (line.id ? line : { ...line, id: this._nextLineId() })));
+    const selectedLineId = state.selectedLineId ?? null;
+    this.selectedLineId.set(this.lines().some((line) => line.id === selectedLineId) ? selectedLineId : null);
     this.customer.set(state.customer ?? null);
     this.discountInput.set(state.discount ?? 0);
     this.note.set(state.note ?? '');

@@ -29,7 +29,12 @@ export interface PosCatalog {
  */
 export type PosCategoryTab = 'all' | 'top' | number;
 
+/**
+ * A line is one product with one note set: the same product can be on several lines
+ */
 export interface PosCartLine {
+  // Client-side only, unique within the cart
+  id: number;
   productId: number;
   name: string;
   // sellPrice when the product was added
@@ -52,7 +57,7 @@ export type PosPaymentMode = 'single' | 'split';
  */
 export interface PosCartState {
   lines: PosCartLine[];
-  selectedProductId: number | null;
+  selectedLineId: number | null;
   customer: PosSelectedCustomer | null;
   discount: number;
   note: string;
@@ -76,6 +81,15 @@ export const POS_QUICK_NOTES = [
 ] as const;
 
 export type PosQuickNote = (typeof POS_QUICK_NOTES)[number];
+
+/**
+ * Same notes, in any order
+ * @param a
+ * @param b
+ */
+export function samePosNotes(a: PosQuickNote[], b: PosQuickNote[]): boolean {
+  return a.length === b.length && a.every((note) => b.includes(note));
+}
 
 /**
  * Text used for matching: Latin digits, Persian ی/ک, lower case

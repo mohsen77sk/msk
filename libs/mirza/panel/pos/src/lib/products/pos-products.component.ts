@@ -192,7 +192,7 @@ export class PosProductsComponent {
       this._error('quantity-needed');
       return;
     }
-    this.cart.setQuantity(line.productId, quantity);
+    this.cart.setQuantity(line.id, quantity);
     this._clearInput();
     this.message.set('');
   }
@@ -206,7 +206,7 @@ export class PosProductsComponent {
       this._error('no-selected-line');
       return;
     }
-    this.cart.changeQuantity(line.productId, delta);
+    this.cart.changeQuantity(line.id, delta);
     this.message.set('');
   }
 
