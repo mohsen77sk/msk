@@ -61,7 +61,7 @@ export interface ICreateSaleInvoice {
   customerId: number | null;
   saleDate: string;
   paymentTypes: PaymentTypeDetail[];
-  saleItems: ProductItem[];
+  saleItems: ICreateSaleItem[];
   discount: number;
   total: number;
   note?: string;
@@ -106,6 +106,9 @@ export interface ISaleItemForm {
   product: FormControl<Product | null>;
   quantity: FormControl<number | null>;
   total: FormControl<number | null>;
+  // Kept from the saved line; reset when the product changes
+  unitPrice: FormControl<number | null>;
+  note: FormControl<string | null>;
 }
 
 export interface ISaleInvoiceSummery {

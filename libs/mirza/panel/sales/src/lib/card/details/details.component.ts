@@ -259,9 +259,12 @@ export class SalesCardDetailsComponent implements OnInit {
       product: this._formBuilder.control<Product | null>(null, Validators.required),
       quantity: this._formBuilder.control(1, [Validators.required, Validators.min(1)]),
       total: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      unitPrice: this._formBuilder.control<number | null>(null),
+      note: this._formBuilder.control<string | null>(null),
     });
     this.saleItems.push(group);
 
+    // A saved line keeps the price it was sold at; a new or changed product uses its sell price
     combineLatest([
       group.controls.product.valueChanges.pipe(startWith(group.controls.product.value)),
       group.controls.quantity.valueChanges.pipe(startWith(group.controls.quantity.value)),
@@ -269,16 +272,22 @@ export class SalesCardDetailsComponent implements OnInit {
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         map(([product, quantity]) => {
-          group.controls.total.setValue((product?.sellPrice ?? 0) * (quantity ?? 0));
+          const unitPrice = group.controls.unitPrice.value ?? product?.sellPrice ?? 0;
+          group.controls.total.setValue(unitPrice * (quantity ?? 0));
         }),
       )
       .subscribe();
 
+    // Patching a saved line sets product, quantity and total first, then unitPrice and note
     group.controls.product.valueChanges
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         distinctUntilChanged(),
-        tap(() => group.controls.quantity.setValue(1)),
+        tap(() => {
+          group.controls.unitPrice.setValue(null);
+          group.controls.note.setValue(null);
+          group.controls.quantity.setValue(1);
+        }),
       )
       .subscribe();
 
@@ -456,6 +465,8 @@ export class SalesCardDetailsComponent implements OnInit {
         productId: x.controls.product.value?.id ?? 0,
         quantity: x.controls.quantity.value ?? 0,
         total: x.controls.total.value ?? 0,
+        unitPrice: x.controls.unitPrice.value ?? undefined,
+        note: x.controls.note.value ?? undefined,
       })),
       discount: this.form.controls.discount.value ?? 0,
       total: this.form.controls.total.value ?? 0,

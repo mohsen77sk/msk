@@ -135,6 +135,9 @@
       <div class="msk-list-item">
         <div class="msk-list-item-content">
           <span>{{ item.product?.name }}</span>
+          @if (item.note) {
+            <span>{{ item.note }}</span>
+          }
           <span class="dot-separated">
             <div *transloco="let t; prefix: 'products.units'">
               {{ item.quantity }} <small>{{ t(item.product?.unit ?? '') }}</small>
@@ -295,6 +298,10 @@
                 >
                   <mat-icon>close</mat-icon>
                 </button>
+              }
+              <!-- Line note (e.g. from the POS): read-only here, kept on save -->
+              @if (product.value.note) {
+                <mat-hint>{{ product.value.note }}</mat-hint>
               }
               <mat-autocomplete #autoProduct="matAutocomplete" [displayWith]="productDisplayFn">
                 <cdk-virtual-scroll-viewport
