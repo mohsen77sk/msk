@@ -463,6 +463,13 @@ export class ProductCardDetailsComponent implements OnInit {
         catchError((response: MskHttpErrorResponse) => {
           // Re-enable the form
           this.form.enable();
+          // Duplicate code in this store: show it on the code field
+          if (response.error.code === 'PRODUCT_CODE_TAKEN') {
+            this.form.get('code')?.setErrors({
+              serverError: this._translocoService.translate('products.details.code-taken'),
+            });
+            return EMPTY;
+          }
           // Set the alert
           this.alert.set({ show: true, message: response.error.message });
           // Set validation error message

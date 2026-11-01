@@ -6,6 +6,7 @@
     "specs": "specification",
     "name": "Name",
     "code": "Code",
+    "code-taken": "Another product in this store already has this code",
     "category": "Category",
     "quantity": "Quantity",
     "unit": "Unit",

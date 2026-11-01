@@ -115,6 +115,7 @@ export class PosProductsComponent {
         this._changeSelectedQuantity(1);
         break;
       case '-':
+      case '−':
         event.preventDefault();
         this._changeSelectedQuantity(-1);
         break;
