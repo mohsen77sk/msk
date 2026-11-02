@@ -123,6 +123,10 @@ export class SalesCardDetailsComponent implements OnInit {
   // Rows added in this edit that were already sent to the card reader
   private _cardReaderSentRows = signal(new Set<FormGroup<IPaymentTypeForm>>());
 
+  // Not editable: an edit keeps the stored values and the server checks the total with them
+  tax = computed(() => this.data.item()?.tax ?? 0);
+  deliveryFee = computed(() => this.data.item()?.deliveryFee ?? 0);
+
   receiptData = computed<ReceiptPrintData | null>(() => {
     if (this.isNew()) return null;
     return new ReceiptPrintData(this.data.item() as SaleInvoice, this._storeService.currentStore as Store);
@@ -206,6 +210,15 @@ export class SalesCardDetailsComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Sum of the line totals, before discount, tax and delivery fee
+   */
+  itemsSubtotal(): number {
+    if (!this.form) return 0;
+
+    return this.saleItems.controls.reduce((sum, item) => sum + (item.controls.total.value || 0), 0);
+  }
 
   /**
    * Go to edit mode
@@ -555,18 +568,14 @@ export class SalesCardDetailsComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Computed total calculation: sum of all saleItems.total - discount
+   * Computed total, as the server checks it: sum of saleItems.total - discount + tax + delivery fee
    */
   private _computedTotal(): number {
     if (!this.form) return 0;
 
-    const saleItemsTotal = this.saleItems.controls.reduce((sum, item) => {
-      return sum + (item.controls.total.value || 0);
-    }, 0);
-
     const discount = this.form.controls.discount.value || 0;
 
-    return Math.max(0, saleItemsTotal - discount);
+    return Math.max(0, this.itemsSubtotal() - discount) + this.tax() + this.deliveryFee();
   }
 
   /**

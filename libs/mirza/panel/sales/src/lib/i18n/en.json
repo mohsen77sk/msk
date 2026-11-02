@@ -19,12 +19,13 @@
     "products": "Products",
     "product": "Product",
     "quantity": "Quantity",
-    "totalPrice": "Total price",
+    "totalPrice": "Payable total",
     "addProduct": "Add product",
     "paymentTypes": "Payments",
     "addPaymentType": "Add payment type",
     "addMoreInfo": "Add more info",
-    "sendToCardReader": "Send this amount to the card reader"
+    "sendToCardReader": "Send this amount to the card reader",
+    "subtotal": "Items subtotal"
   },
   "sort": {
     "number": "Number",

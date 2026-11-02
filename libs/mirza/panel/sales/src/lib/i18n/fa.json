@@ -19,12 +19,13 @@
     "products": "محصولات",
     "product": "محصول",
     "quantity": "تعداد",
-    "totalPrice": "مجموع قیمت",
+    "totalPrice": "مبلغ قابل پرداخت",
     "addProduct": "افزودن محصول",
     "paymentTypes": "پرداختی ها",
     "addPaymentType": "افزودن نوع پرداخت",
     "addMoreInfo": "اضافه کردن موارد بیشتر",
-    "sendToCardReader": "ارسال این مبلغ به کارتخوان"
+    "sendToCardReader": "ارسال این مبلغ به کارتخوان",
+    "subtotal": "جمع اقلام"
   },
   "sort": {
     "number": "شماره",

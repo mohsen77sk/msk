@@ -417,11 +417,32 @@
         <mat-label>{{ t('discount') }}</mat-label>
         <input matInput formControlName="discount" mskMask="currency" autocomplete="off" inputmode="numeric" />
         <span matTextSuffix mskCurrencySymbol></span>
-        <mat-hint align="end">
-          <span>{{ t('totalPrice') }}: {{ form.get('total')?.value | mskCurrency }}</span>
-        </mat-hint>
         <mat-error>{{ formErrors['discount'] }}</mat-error>
       </mat-form-field>
+    </div>
+
+    <!-- Totals: tax and delivery fee are kept from the saved sale -->
+    <div class="mb-6 ms-12 flex flex-col gap-1">
+      <div class="flex justify-between">
+        <span class="text-secondary">{{ t('subtotal') }}</span>
+        <span>{{ itemsSubtotal() | mskCurrency }}</span>
+      </div>
+      @if (tax()) {
+        <div class="flex justify-between">
+          <span class="text-secondary">{{ t('tax') }}</span>
+          <span>{{ tax() | mskCurrency }}</span>
+        </div>
+      }
+      @if (deliveryFee()) {
+        <div class="flex justify-between">
+          <span class="text-secondary">{{ t('deliveryFee') }}</span>
+          <span>{{ deliveryFee() | mskCurrency }}</span>
+        </div>
+      }
+      <div class="text-title-small flex justify-between">
+        <span>{{ t('totalPrice') }}</span>
+        <span>{{ form.controls.total.value | mskCurrency }}</span>
+      </div>
     </div>
 
     @if (showNote()) {
