@@ -495,7 +495,7 @@ export class SalesCardDetailsComponent implements OnInit {
     // Mark it first so a double click can't start a second transaction
     this._cardReaderSentRows.update((rows) => new Set(rows).add(row));
     this._salesService
-      .testDevelopmentMellatPosConnection(row.controls.value.value ?? 0)
+      .testDevelopmentMellatPosConnection(row.controls.value.value ?? 0, this._mellatBillNumber())
       .pipe(
         tap(() => this._mskSnackbarService.success(this._translocoService.translate('sales.cardReaderSent'))),
         catchError(() => {
@@ -643,8 +643,10 @@ export class SalesCardDetailsComponent implements OnInit {
       : this._salesService.createSaleInvoice(model);
     // Only a new sale goes to the card reader on save; an edit never does (see sendToCardReader)
     const result =
-      !isEdit && this._shouldTestMellatPosConnection()
-        ? this._salesService.testDevelopmentMellatPosConnection(model.total).pipe(switchMap(() => saveRequest))
+      !isEdit && this._mellatPaymentsTotal() > 0
+        ? this._salesService
+            .testDevelopmentMellatPosConnection(this._mellatPaymentsTotal(), this._mellatBillNumber())
+            .pipe(switchMap(() => saveRequest))
         : saveRequest;
 
     result
@@ -702,10 +704,20 @@ export class SalesCardDetailsComponent implements OnInit {
   }
 
   /**
-   * Check whether any selected payment type should trigger the local Mellat POS bridge.
+   * Amount to charge on the card reader: only the Mellat rows, not the whole sale (split payments)
    */
-  private _shouldTestMellatPosConnection(): boolean {
-    return this.paymentTypes.controls.some((paymentType) => this._isMellatPaymentRow(paymentType));
+  private _mellatPaymentsTotal(): number {
+    return this.paymentTypes.controls
+      .filter((row) => this._isMellatPaymentRow(row))
+      .reduce((sum, row) => sum + (Number(row.controls.value.value) || 0), 0);
+  }
+
+  /**
+   * Bill number for one card-reader transaction: store id and the current time in ms. The sale
+   * number doesn't exist yet, the reader is called before the sale is saved.
+   */
+  private _mellatBillNumber(): string {
+    return `${this._storeService.currentStore?.id ?? 0}-${Date.now()}`;
   }
 
   /**

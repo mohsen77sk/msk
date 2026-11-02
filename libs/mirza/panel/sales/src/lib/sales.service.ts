@@ -107,15 +107,18 @@ export class SalesService {
 
   /**
    * Test local Mellat POS bridge payment in development builds only.
+   *
+   * @param amount amount to charge on the card reader
+   * @param billNumber unique per card-reader transaction
    */
-  testDevelopmentMellatPosConnection(saleTotal: number): Observable<unknown> {
+  testDevelopmentMellatPosConnection(amount: number, billNumber: string): Observable<unknown> {
     if (!this.isMellatPosBridgeEnabled) {
       return of(null);
     }
 
     return this._httpClient.post('http://localhost:5283/Payment', {
-      amount: saleTotal,
-      billNumber: 'SALE-123',
+      amount,
+      billNumber,
       ip: '192.168.1.109',
       port: 1024,
       provider: 'MELLAT',
