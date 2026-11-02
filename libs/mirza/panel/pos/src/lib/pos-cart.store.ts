@@ -270,6 +270,7 @@ export class PosCartStore {
         : [{ paymentTypeId: this.paymentTypeId() as number, value: total }];
 
     return {
+      source: 'pos',
       customerId: this.customer()?.id,
       saleItems,
       discount: this.discount(),
