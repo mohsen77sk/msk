@@ -20,10 +20,11 @@
       <button matIconButton (click)="printInvoice()">
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
+      <!-- Only a saved sale can be edited -->
+      <button matIconButton (click)="editMode()">
+        <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+      </button>
     }
-    <button matIconButton (click)="editMode()">
-      <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
-    </button>
   </ng-template>
 
   <ng-template #primaryAction>
@@ -308,10 +309,10 @@
     <div class="mb-6 flex flex-col gap-2" formArrayName="saleItems">
       @for (product of saleItems.controls; track i; let i = $index; let c = $count) {
         <div class="flex flex-1 gap-2" [formGroupName]="i">
-          @if (i === 0) {
+          @if (c === 1) {
             <mat-icon class="flex size-10 shrink-0 items-center justify-center">coffee</mat-icon>
           } @else {
-            <button type="button" mat-icon-button (click)="removeSaleItem(i)">
+            <button type="button" mat-icon-button [disabled]="form.disabled" (click)="removeSaleItem(i)">
               <mat-icon class="text-error">do_not_disturb_on</mat-icon>
             </button>
           }

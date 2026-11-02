@@ -299,6 +299,8 @@ export class SalesCardDetailsComponent implements OnInit {
    * Go to edit mode
    */
   editMode(): void {
+    if (this.data.action() !== 'view') return;
+
     this.data.action.set('edit');
   }
 
@@ -402,6 +404,8 @@ export class SalesCardDetailsComponent implements OnInit {
    * @param index index of the sale item to remove
    */
   removeSaleItem(index: number): void {
+    if (this.saleItems.length <= 1) return;
+
     this.saleItems.removeAt(index);
     this.productDSList.splice(index, 1);
   }
