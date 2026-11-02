@@ -27,7 +27,10 @@
     "sendToCardReader": "Send this amount to the card reader",
     "subtotal": "Items subtotal",
     "lineNote": "Note",
-    "unitPrice": "Unit price"
+    "unitPrice": "Unit price",
+    "paymentsRemaining": "Remaining",
+    "paymentsOver": "Over the payable total",
+    "paymentsSettled": "Payments match the payable total"
   },
   "sort": {
     "number": "Number",

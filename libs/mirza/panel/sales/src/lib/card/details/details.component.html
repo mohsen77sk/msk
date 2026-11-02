@@ -364,10 +364,10 @@
     <div class="mb-6 flex flex-col gap-2" formArrayName="paymentTypes">
       @for (paymentType of paymentTypes.controls; track i; let i = $index; let c = $count) {
         <div class="flex flex-1 gap-2" [formGroupName]="i">
-          @if (i === 0) {
+          @if (c === 1) {
             <mat-icon class="flex size-10 shrink-0 items-center justify-center">payments</mat-icon>
           } @else {
-            <button type="button" mat-icon-button (click)="removePaymentType(i)">
+            <button type="button" mat-icon-button [disabled]="form.disabled" (click)="removePaymentType(i)">
               <mat-icon class="text-error">do_not_disturb_on</mat-icon>
             </button>
           }
@@ -429,10 +429,19 @@
           }
         </div>
       }
-      <div class="ms-12">
-        <button type="button" matButton="text" [disabled]="form.disabled" (click)="addPaymentType()">
+      <div class="ms-12 flex flex-wrap items-center justify-between gap-2">
+        <button type="button" matButton="text" [disabled]="form.disabled" (click)="addPaymentType(true)">
           {{ t('addPaymentType') }}
         </button>
+        <!-- Remaining / over: save is blocked until it is zero -->
+        @let difference = paymentsDifference();
+        @if (difference > 0) {
+          <span class="text-error">{{ t('paymentsRemaining') }}: {{ difference | mskCurrency }}</span>
+        } @else if (difference < 0) {
+          <span class="text-error">{{ t('paymentsOver') }}: {{ -difference | mskCurrency }}</span>
+        } @else {
+          <span class="text-secondary">{{ t('paymentsSettled') }}</span>
+        }
       </div>
     </div>
 

@@ -382,11 +382,13 @@ export class SalesCardDetailsComponent implements OnInit {
 
   /**
    * Add a payment type row in form
+   * @param prefillRemaining start the row with the amount still unpaid (a row the user adds)
    */
-  addPaymentType(): void {
+  addPaymentType(prefillRemaining = false): void {
+    const remaining = prefillRemaining ? Math.max(0, this.paymentsDifference()) : 0;
     const group = this._formBuilder.group<IPaymentTypeForm>({
       paymentType: this._formBuilder.control<PaymentType | null>(null, Validators.required),
-      value: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      value: this._formBuilder.control(remaining, [Validators.required, Validators.min(0)]),
     });
     this.paymentTypes.push(group);
 
@@ -415,7 +417,20 @@ export class SalesCardDetailsComponent implements OnInit {
    * @param index index of the payment type to remove
    */
   removePaymentType(index: number): void {
+    if (this.paymentTypes.length <= 1) return;
+
+    this._savedPaymentRows.delete(this.paymentTypes.at(index));
     this.paymentTypes.removeAt(index);
+    this.paymentTypeDSList.splice(index, 1);
+  }
+
+  /**
+   * Payable total minus the sum of the payments: > 0 still unpaid, < 0 paid over
+   */
+  paymentsDifference(): number {
+    if (!this.form) return 0;
+
+    return (this.form.controls.total.value || 0) - this._paymentsTotal();
   }
 
   /**
@@ -635,13 +650,14 @@ export class SalesCardDetailsComponent implements OnInit {
   private _isPaymentTypesValueEqualByTotal(): boolean {
     if (!this.form) return false;
 
-    const paymentTypesTotal = this.paymentTypes.controls.reduce((sum, item) => {
-      return sum + (item.controls.value.value || 0);
-    }, 0);
+    return this.paymentsDifference() === 0;
+  }
 
-    const total = this.form.controls.total.value || 0;
-
-    return paymentTypesTotal === total;
+  /**
+   * Sum of all payment rows
+   */
+  private _paymentsTotal(): number {
+    return this.paymentTypes.controls.reduce((sum, item) => sum + (Number(item.controls.value.value) || 0), 0);
   }
 
   /**

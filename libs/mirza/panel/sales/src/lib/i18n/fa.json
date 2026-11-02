@@ -27,7 +27,10 @@
     "sendToCardReader": "ارسال این مبلغ به کارتخوان",
     "subtotal": "جمع اقلام",
     "lineNote": "توضیح",
-    "unitPrice": "فی"
+    "unitPrice": "فی",
+    "paymentsRemaining": "باقی‌مانده",
+    "paymentsOver": "بیشتر از مبلغ قابل پرداخت",
+    "paymentsSettled": "پرداخت‌ها با مبلغ قابل پرداخت برابر است"
   },
   "sort": {
     "number": "شماره",
