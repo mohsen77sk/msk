@@ -402,6 +402,27 @@
                 </mat-hint>
               </mat-form-field>
             </div>
+            <!-- Quick notes of the line's product: toggle their text in the note -->
+            @if (lineQuickNotes(product).length) {
+              <div class="flex flex-wrap gap-2">
+                @for (label of lineQuickNotes(product); track label) {
+                  @let pressed = hasQuickNote(product, label);
+                  <button
+                    type="button"
+                    class="text-label-large rounded-full border px-3 py-1"
+                    [class.bg-secondary-container]="pressed"
+                    [class.text-on-secondary-container]="pressed"
+                    [class.border-transparent]="pressed"
+                    [class.border-outline-variant]="!pressed"
+                    [attr.aria-pressed]="pressed"
+                    [disabled]="form.disabled"
+                    (click)="toggleQuickNote(product, label)"
+                  >
+                    {{ label }}
+                  </button>
+                }
+              </div>
+            }
             <!-- Line note: kept when the quantity changes, cleared when the product changes -->
             <mat-form-field subscriptSizing="dynamic">
               <mat-label>{{ t('lineNote') }}</mat-label>

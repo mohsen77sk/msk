@@ -1,4 +1,4 @@
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, inject, signal, DestroyRef, ViewChild, computed } from '@angular/core';
 import {
@@ -39,6 +39,14 @@ import { LockupPaymentTypeSortData, PaymentType, PaymentTypesService } from '@ms
 import { Customer, CustomersService, DefaultCustomersSortData } from '@msk/mirza/panel/customers';
 import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/panel/products';
 import { Store, StoreService } from '@msk/mirza/shell/core/store';
+import {
+  QuickNote,
+  QuickNotesService,
+  SALE_LINE_NOTE_MAX_LENGTH,
+  joinSaleLineNote,
+  quickNoteApplies,
+  splitSaleLineNote,
+} from '@msk/mirza/panel/quick-notes';
 
 import {
   MskHandleFormErrors,
@@ -54,6 +62,7 @@ import {
   filter,
   forkJoin,
   map,
+  of,
   startWith,
   switchMap,
   tap,
@@ -76,8 +85,6 @@ import { InvoicePrintData } from '../../print/invoice-print.types';
 import { InvoicePdfPreviewDialogComponent } from '../../print/invoice-pdf-preview-dialog/invoice-pdf-preview-dialog.component';
 
 const MELLAT_POS_PAYMENT_TYPE_NAME = 'دستگاه POS ملت';
-// sale-item.note is varchar(255)
-const SALE_ITEM_NOTE_MAX_LENGTH = 255;
 
 /**
  * Text typed in the customer field must be picked from the list; an empty field means no customer
@@ -137,12 +144,13 @@ export class SalesCardDetailsComponent implements OnInit {
   private _translocoService = inject(TranslocoService);
   private _mskSnackbarService = inject(MskSnackbarService);
   private _mskConfirmationService = inject(MskConfirmationService);
+  private _quickNotesService = inject(QuickNotesService);
 
   @ViewChild(SaleReceiptPrintComponent)
   private _receiptPrint?: SaleReceiptPrintComponent;
 
   isNew = computed(() => this.data.action() === 'new');
-  readonly noteMaxLength = SALE_ITEM_NOTE_MAX_LENGTH;
+  readonly noteMaxLength = SALE_LINE_NOTE_MAX_LENGTH;
   readonly sourceIcons: Record<SaleSource, string> = {
     manual: 'edit_note',
     pos: 'point_of_sale',
@@ -167,6 +175,12 @@ export class SalesCardDetailsComponent implements OnInit {
   private _savedPaymentRows = new Set<FormGroup<IPaymentTypeForm>>();
   // Rows added in this edit that were already sent to the card reader
   private _cardReaderSentRows = signal(new Set<FormGroup<IPaymentTypeForm>>());
+
+  // The store's active quick notes, offered above each line's note in edit mode
+  private _quickNotes = toSignal(
+    this._quickNotesService.getQuickNotes(true).pipe(catchError(() => of([] as QuickNote[]))),
+    { initialValue: [] as QuickNote[] },
+  );
 
   // Not editable: an edit keeps the stored values and the server checks the total with them
   tax = computed(() => this.data.item()?.tax ?? 0);
@@ -302,6 +316,41 @@ export class SalesCardDetailsComponent implements OnInit {
   }
 
   /**
+   * Quick notes offered for a line: active, and for all products or the line product's category
+   * @param line sale line form
+   */
+  lineQuickNotes(line: FormGroup<ISaleItemForm>): string[] {
+    const product = line.controls.product.value;
+    if (!product || typeof product !== 'object') return [];
+
+    return this._quickNotes()
+      .filter((note) => quickNoteApplies(note, product.category?.id))
+      .map((note) => note.label);
+  }
+
+  /**
+   * Whether the line's note has this quick note as one of its parts
+   * @param line sale line form
+   * @param label
+   */
+  hasQuickNote(line: FormGroup<ISaleItemForm>, label: string): boolean {
+    return splitSaleLineNote(line.controls.note.value).includes(label);
+  }
+
+  /**
+   * Add or remove a quick note in the line's note; other text in the note is kept
+   * @param line sale line form
+   * @param label
+   */
+  toggleQuickNote(line: FormGroup<ISaleItemForm>, label: string): void {
+    const parts = splitSaleLineNote(line.controls.note.value);
+    const next = parts.includes(label) ? parts.filter((part) => part !== label) : [...parts, label];
+    line.controls.note.setValue(joinSaleLineNote(next) || null);
+    // Over 255 shows the max length error
+    line.controls.note.markAsDirty();
+  }
+
+  /**
    * Go to edit mode
    */
   editMode(): void {
@@ -362,7 +411,7 @@ export class SalesCardDetailsComponent implements OnInit {
       quantity: this._formBuilder.control(1, [Validators.required, Validators.min(1)]),
       total: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
       unitPrice: this._formBuilder.control<number | null>(null),
-      note: this._formBuilder.control<string | null>(null, Validators.maxLength(SALE_ITEM_NOTE_MAX_LENGTH)),
+      note: this._formBuilder.control<string | null>(null, Validators.maxLength(SALE_LINE_NOTE_MAX_LENGTH)),
     });
     this.saleItems.push(group);
 
