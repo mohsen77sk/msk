@@ -56,6 +56,16 @@
         <span>{{ t('date') }}</span>
       </div>
     </div>
+    <!-- Items subtotal -->
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>shopping_cart</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>{{ savedItemsSubtotal() | mskCurrency }}</span>
+        <span>{{ t('subtotal') }}</span>
+      </div>
+    </div>
     <!-- Discount -->
     <div class="msk-list-item">
       <div class="msk-list-item-icon">
@@ -67,25 +77,29 @@
       </div>
     </div>
     <!-- Tax -->
-    <div class="msk-list-item">
-      <div class="msk-list-item-icon">
-        <mat-icon>receipt_long</mat-icon>
+    @if (tax()) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>receipt_long</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ tax() | mskCurrency }}</span>
+          <span>{{ t('tax') }}</span>
+        </div>
       </div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.tax | mskCurrency }}</span>
-        <span>{{ t('tax') }}</span>
-      </div>
-    </div>
+    }
     <!-- Delivery Fee -->
-    <div class="msk-list-item">
-      <div class="msk-list-item-icon">
-        <mat-icon>local_shipping</mat-icon>
+    @if (deliveryFee()) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>local_shipping</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ deliveryFee() | mskCurrency }}</span>
+          <span>{{ t('deliveryFee') }}</span>
+        </div>
       </div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.deliveryFee | mskCurrency }}</span>
-        <span>{{ t('deliveryFee') }}</span>
-      </div>
-    </div>
+    }
     <!-- Total -->
     <div class="msk-list-item">
       <div class="msk-list-item-icon">

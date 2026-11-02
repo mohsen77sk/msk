@@ -126,6 +126,9 @@ export class SalesCardDetailsComponent implements OnInit {
   // Not editable: an edit keeps the stored values and the server checks the total with them
   tax = computed(() => this.data.item()?.tax ?? 0);
   deliveryFee = computed(() => this.data.item()?.deliveryFee ?? 0);
+  savedItemsSubtotal = computed(() =>
+    (this.data.item()?.saleItems ?? []).reduce((sum, item) => sum + (item.total || 0), 0),
+  );
 
   receiptData = computed<ReceiptPrintData | null>(() => {
     if (this.isNew()) return null;
