@@ -25,7 +25,8 @@
     "addPaymentType": "Add payment type",
     "addMoreInfo": "Add more info",
     "sendToCardReader": "Send this amount to the card reader",
-    "subtotal": "Items subtotal"
+    "subtotal": "Items subtotal",
+    "lineNote": "Note"
   },
   "sort": {
     "number": "Number",

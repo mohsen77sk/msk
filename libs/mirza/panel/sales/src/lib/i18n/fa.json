@@ -25,7 +25,8 @@
     "addPaymentType": "افزودن نوع پرداخت",
     "addMoreInfo": "اضافه کردن موارد بیشتر",
     "sendToCardReader": "ارسال این مبلغ به کارتخوان",
-    "subtotal": "جمع اقلام"
+    "subtotal": "جمع اقلام",
+    "lineNote": "توضیح"
   },
   "sort": {
     "number": "شماره",

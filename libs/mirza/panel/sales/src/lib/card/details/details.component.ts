@@ -37,7 +37,18 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
-import { catchError, combineLatest, distinctUntilChanged, EMPTY, forkJoin, map, startWith, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  distinctUntilChanged,
+  EMPTY,
+  filter,
+  forkJoin,
+  map,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { SalesService } from '../../sales.service';
 import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleInvoice } from '../../sales.types';
 import { SaleReceiptPrintService } from '../../print/print.service';
@@ -48,6 +59,8 @@ import { InvoicePrintData } from '../../print/invoice-print.types';
 import { InvoicePdfPreviewDialogComponent } from '../../print/invoice-pdf-preview-dialog/invoice-pdf-preview-dialog.component';
 
 const MELLAT_POS_PAYMENT_TYPE_NAME = 'دستگاه POS ملت';
+// sale-item.note is varchar(255)
+const SALE_ITEM_NOTE_MAX_LENGTH = 255;
 
 @Component({
   selector: 'mz-sales-details',
@@ -103,6 +116,7 @@ export class SalesCardDetailsComponent implements OnInit {
   private _receiptPrint?: SaleReceiptPrintComponent;
 
   isNew = computed(() => this.data.action() === 'new');
+  readonly noteMaxLength = SALE_ITEM_NOTE_MAX_LENGTH;
 
   form!: FormGroup<ISalesForm>;
   formErrors: FormError = {};
@@ -282,7 +296,7 @@ export class SalesCardDetailsComponent implements OnInit {
       quantity: this._formBuilder.control(1, [Validators.required, Validators.min(1)]),
       total: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
       unitPrice: this._formBuilder.control<number | null>(null),
-      note: this._formBuilder.control<string | null>(null),
+      note: this._formBuilder.control<string | null>(null, Validators.maxLength(SALE_ITEM_NOTE_MAX_LENGTH)),
     });
     this.saleItems.push(group);
 
@@ -300,11 +314,13 @@ export class SalesCardDetailsComponent implements OnInit {
       )
       .subscribe();
 
-    // Patching a saved line sets product, quantity and total first, then unitPrice and note
+    // Picking a different product resets the line. Typing in the field or picking the same product
+    // again keeps it. Patching a saved line sets product, quantity and total first, then unitPrice and note
     group.controls.product.valueChanges
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        distinctUntilChanged(),
+        filter((product): product is Product => !!product && typeof product === 'object'),
+        distinctUntilChanged((previous, current) => previous.id === current.id),
         tap(() => {
           group.controls.unitPrice.setValue(null);
           group.controls.note.setValue(null);
@@ -530,7 +546,7 @@ export class SalesCardDetailsComponent implements OnInit {
         quantity: x.controls.quantity.value ?? 0,
         total: x.controls.total.value ?? 0,
         unitPrice: x.controls.unitPrice.value ?? undefined,
-        note: x.controls.note.value ?? undefined,
+        note: x.controls.note.value?.trim() || undefined,
       })),
       discount: this.form.controls.discount.value ?? 0,
       total: this.form.controls.total.value ?? 0,

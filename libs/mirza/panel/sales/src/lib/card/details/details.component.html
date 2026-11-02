@@ -291,54 +291,58 @@
               <mat-icon class="text-error">do_not_disturb_on</mat-icon>
             </button>
           }
-          <div class="flex flex-1 flex-col gap-3 *:block *:flex-1 md:flex-row">
-            <!-- Product -->
+          <div class="flex flex-1 flex-col gap-3">
+            <div class="flex flex-1 flex-col gap-3 *:block *:flex-1 md:flex-row">
+              <!-- Product -->
+              <mat-form-field subscriptSizing="dynamic">
+                <mat-label>{{ t('product') }}</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="product"
+                  [matAutocomplete]="autoProduct"
+                  [mskAutoFocus]="i !== 0 && !product.value.product"
+                />
+                @if (product.get('product')?.value) {
+                  <button
+                    type="button"
+                    matIconButton
+                    matSuffix
+                    [disabled]="form.disabled"
+                    (click)="product.get('product')?.reset()"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                }
+                <mat-autocomplete #autoProduct="matAutocomplete" [displayWith]="productDisplayFn">
+                  <cdk-virtual-scroll-viewport
+                    itemSize="48"
+                    minBufferPx="240"
+                    maxBufferPx="480"
+                    [style.height.px]="
+                      (autoProduct?.options?.length || 0) > 5 ? 240 : (autoProduct?.options?.length || 0) * 48
+                    "
+                  >
+                    <mat-option *cdkVirtualFor="let product of productDSList[i]" [value]="product">
+                      {{ product?.name || ('loading' | transloco) }}
+                    </mat-option>
+                  </cdk-virtual-scroll-viewport>
+                </mat-autocomplete>
+              </mat-form-field>
+              <!-- Quantity -->
+              <mat-form-field>
+                <mat-label>{{ t('quantity') }}</mat-label>
+                <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
+                <mat-hint align="end">
+                  {{ product.get('total')?.value | mskCurrency }}
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <!-- Line note: kept when the quantity changes, cleared when the product changes -->
             <mat-form-field subscriptSizing="dynamic">
-              <mat-label>{{ t('product') }}</mat-label>
-              <input
-                type="text"
-                matInput
-                formControlName="product"
-                [matAutocomplete]="autoProduct"
-                [mskAutoFocus]="i !== 0 && !product.value.product"
-              />
-              @if (product.get('product')?.value) {
-                <button
-                  type="button"
-                  matIconButton
-                  matSuffix
-                  [disabled]="form.disabled"
-                  (click)="product.get('product')?.reset()"
-                >
-                  <mat-icon>close</mat-icon>
-                </button>
-              }
-              <!-- Line note (e.g. from the POS): read-only here, kept on save -->
-              @if (product.value.note) {
-                <mat-hint>{{ product.value.note }}</mat-hint>
-              }
-              <mat-autocomplete #autoProduct="matAutocomplete" [displayWith]="productDisplayFn">
-                <cdk-virtual-scroll-viewport
-                  itemSize="48"
-                  minBufferPx="240"
-                  maxBufferPx="480"
-                  [style.height.px]="
-                    (autoProduct?.options?.length || 0) > 5 ? 240 : (autoProduct?.options?.length || 0) * 48
-                  "
-                >
-                  <mat-option *cdkVirtualFor="let product of productDSList[i]" [value]="product">
-                    {{ product?.name || ('loading' | transloco) }}
-                  </mat-option>
-                </cdk-virtual-scroll-viewport>
-              </mat-autocomplete>
-            </mat-form-field>
-            <!-- Quantity -->
-            <mat-form-field>
-              <mat-label>{{ t('quantity') }}</mat-label>
-              <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
-              <mat-hint align="end">
-                {{ product.get('total')?.value | mskCurrency }}
-              </mat-hint>
+              <mat-label>{{ t('lineNote') }}</mat-label>
+              <input matInput formControlName="note" autocomplete="off" [maxlength]="noteMaxLength" />
+              <mat-error>{{ formErrors['saleItems']?.[i]?.['note'] }}</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -436,7 +440,7 @@
     </div>
 
     <!-- Totals: tax and delivery fee are kept from the saved sale -->
-    <div class="mb-6 ms-12 flex flex-col gap-1">
+    <div class="ms-12 mb-6 flex flex-col gap-1">
       <div class="flex justify-between">
         <span class="text-secondary">{{ t('subtotal') }}</span>
         <span>{{ itemsSubtotal() | mskCurrency }}</span>
