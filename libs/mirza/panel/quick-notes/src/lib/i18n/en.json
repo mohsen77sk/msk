@@ -1,0 +1,25 @@
+{
+  "title": "Quick notes",
+  "details": {
+    "new": "New quick note",
+    "edit": "Edit quick note",
+    "view": "{{name}}",
+    "specs": "specification",
+    "label": "Text",
+    "isActive": "Active",
+    "categories": "Categories",
+    "allProducts": "All products",
+    "categoriesHint": "Empty means it is shown for all products."
+  },
+  "list": {
+    "inactive": "Inactive",
+    "reorderHint": "Drag rows to change the order in the POS.",
+    "reorderFailed": "Saving the order failed."
+  },
+  "errors": {
+    "labelTaken": "A quick note with this text already exists."
+  },
+  "empty-list": "There are no quick notes!",
+  "delete": "Delete quick note",
+  "delete-message": "Are you sure you want to delete <b>{{name}}</b>? Past invoices are not changed."
+}

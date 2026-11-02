@@ -4,6 +4,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { RouterLink } from '@angular/router';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
@@ -21,6 +22,7 @@ import { AddressDialogComponent } from './common/address-dialog/address-dialog.c
   templateUrl: './settings.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [
+    RouterLink,
     TranslocoDirective,
     MatIconModule,
     MatRippleModule,

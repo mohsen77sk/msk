@@ -165,6 +165,7 @@
         "libs/mirza/panel/pos/**/*",
         "libs/mirza/panel/product-categories/**/*",
         "libs/mirza/panel/products/**/*",
+        "libs/mirza/panel/quick-notes/**/*",
         "libs/mirza/panel/purchases/**/*",
         "libs/mirza/panel/sales/**/*",
         "libs/mirza/panel/settings/**/*",
