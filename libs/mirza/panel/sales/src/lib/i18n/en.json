@@ -33,7 +33,15 @@
     "paymentsSettled": "Payments match the payable total",
     "walkInCustomer": "Walk-in customer",
     "customerNotPicked": "Pick a customer from the list, or leave the field empty.",
-    "discountExceedsSubtotal": "The discount cannot be more than the items subtotal."
+    "discountExceedsSubtotal": "The discount cannot be more than the items subtotal.",
+    "source": "Source",
+    "sources": {
+      "manual": "Manual",
+      "pos": "POS",
+      "snappfood": "Snappfood"
+    },
+    "snappfoodOrderId": "Snappfood order ID",
+    "createdBy": "Created by"
   },
   "sort": {
     "number": "Number",

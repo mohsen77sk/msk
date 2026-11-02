@@ -66,6 +66,7 @@ import {
   ISalesForm,
   SaleInvoice,
   SaleInvoiceItem,
+  SaleSource,
 } from '../../sales.types';
 import { SaleReceiptPrintService } from '../../print/print.service';
 import { ReceiptPrintData } from '../../print/print.types';
@@ -142,6 +143,11 @@ export class SalesCardDetailsComponent implements OnInit {
 
   isNew = computed(() => this.data.action() === 'new');
   readonly noteMaxLength = SALE_ITEM_NOTE_MAX_LENGTH;
+  readonly sourceIcons: Record<SaleSource, string> = {
+    manual: 'edit_note',
+    pos: 'point_of_sale',
+    snappfood: 'delivery_dining',
+  };
 
   form!: FormGroup<ISalesForm>;
   formErrors: FormError = {};

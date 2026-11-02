@@ -33,7 +33,15 @@
     "paymentsSettled": "پرداخت‌ها با مبلغ قابل پرداخت برابر است",
     "walkInCustomer": "مشتری عمومی",
     "customerNotPicked": "مشتری را از فهرست انتخاب کنید یا فیلد را خالی بگذارید.",
-    "discountExceedsSubtotal": "تخفیف نمی‌تواند از جمع اقلام بیشتر باشد."
+    "discountExceedsSubtotal": "تخفیف نمی‌تواند از جمع اقلام بیشتر باشد.",
+    "source": "منبع",
+    "sources": {
+      "manual": "دستی",
+      "pos": "POS",
+      "snappfood": "اسنپ‌فود"
+    },
+    "snappfoodOrderId": "شماره سفارش اسنپ‌فود",
+    "createdBy": "ثبت‌کننده"
   },
   "sort": {
     "number": "شماره",

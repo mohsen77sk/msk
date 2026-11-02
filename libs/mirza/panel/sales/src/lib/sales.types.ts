@@ -8,6 +8,11 @@ import { User } from '@msk/mirza/shell/core/user';
 export const DefaultSalesSortData: MskSortable = { active: 'number', direction: 'desc' };
 
 /**
+ * Where a sale was created. Set once by the server; a client may only send 'manual' or 'pos'.
+ */
+export type SaleSource = 'manual' | 'pos' | 'snappfood';
+
+/**
  * A sale line as stored: the same product can be on several lines with different notes
  */
 export class SaleInvoiceItem extends ProductItem {
@@ -35,6 +40,9 @@ export class SaleInvoice {
   user?: User;
   customer?: Customer;
   note?: string;
+  source: SaleSource;
+  // Only on GET /sale/:id, for a sale imported from Snappfood
+  snappfoodOrderId: string | null;
 
   constructor(input: SaleInvoice) {
     this.id = input.id;
@@ -49,6 +57,8 @@ export class SaleInvoice {
     this.user = input.user ? new User(input.user) : undefined;
     this.customer = input.customer ? new Customer(input.customer) : undefined;
     this.note = input.note;
+    this.source = input.source ?? 'manual';
+    this.snappfoodOrderId = input.snappfoodOrderId ?? null;
   }
 
   get title(): string {
@@ -80,6 +90,8 @@ export interface ICreateSaleItem {
  * New sale without a date (the server uses now), e.g. from the POS
  */
 export interface ICreateSale {
+  // Omitted = 'manual'
+  source?: Exclude<SaleSource, 'snappfood'>;
   customerId?: number;
   paymentTypes: { paymentTypeId: number; value: number }[];
   saleItems: ICreateSaleItem[];

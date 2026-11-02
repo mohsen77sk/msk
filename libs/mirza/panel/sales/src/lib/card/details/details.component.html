@@ -47,6 +47,44 @@
         <span>{{ t('number') }}</span>
       </div>
     </div>
+    <!-- Source -->
+    @let source = data.item()?.source ?? 'manual';
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>{{ sourceIcons[source] }}</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>
+          <span class="bg-secondary-container text-on-secondary-container text-label-medium rounded-full px-2 py-0.5">
+            {{ t('sources.' + source) }}
+          </span>
+        </span>
+        <span>{{ t('source') }}</span>
+      </div>
+    </div>
+    @if (data.item()?.snappfoodOrderId) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>tag</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span class="bidi-isolate-ltr">{{ data.item()?.snappfoodOrderId }}</span>
+          <span>{{ t('snappfoodOrderId') }}</span>
+        </div>
+      </div>
+    }
+    <!-- Created by -->
+    @if (data.item()?.user; as user) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>badge</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ user.name.trim() || user.phoneNumber || '-' }}</span>
+          <span>{{ t('createdBy') }}</span>
+        </div>
+      </div>
+    }
     <!-- Date -->
     <div class="msk-list-item">
       <div class="msk-list-item-icon">
