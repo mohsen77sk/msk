@@ -1,5 +1,4 @@
-import { ProductItem } from '@msk/mirza/panel/products';
-import { SaleInvoice } from '../sales.types';
+import { SaleInvoice, SaleInvoiceItem } from '../sales.types';
 import { Store } from '@msk/mirza/shell/core/store';
 
 const TOTAL_MISMATCH_EPSILON = 0.01;
@@ -85,14 +84,17 @@ export class InvoicePrintData {
 
 export class InvoiceLineItem {
   productName: string;
+  note?: string;
   quantity: number;
   unitPrice: number;
   lineTotal: number;
 
-  constructor(input: ProductItem) {
+  constructor(input: SaleInvoiceItem) {
     this.productName = input.product?.name ?? '-';
+    this.note = input.note ?? undefined;
     this.quantity = input.quantity;
     this.lineTotal = input.total;
-    this.unitPrice = input.product?.sellPrice ?? (this.quantity ? this.lineTotal / this.quantity : 0);
+    // The price the line was sold at, not the product's current price
+    this.unitPrice = input.unitPrice ?? (this.quantity ? this.lineTotal / this.quantity : 0);
   }
 }
