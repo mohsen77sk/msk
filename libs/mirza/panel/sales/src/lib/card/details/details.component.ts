@@ -50,7 +50,14 @@ import {
   tap,
 } from 'rxjs';
 import { SalesService } from '../../sales.service';
-import { ICreateSaleInvoice, IPaymentTypeForm, ISaleItemForm, ISalesForm, SaleInvoice } from '../../sales.types';
+import {
+  ICreateSaleInvoice,
+  IPaymentTypeForm,
+  ISaleItemForm,
+  ISalesForm,
+  SaleInvoice,
+  SaleInvoiceItem,
+} from '../../sales.types';
 import { SaleReceiptPrintService } from '../../print/print.service';
 import { ReceiptPrintData } from '../../print/print.types';
 import { SaleReceiptPrintComponent } from '../../print/print.component';
@@ -196,6 +203,12 @@ export class SalesCardDetailsComponent implements OnInit {
       this.data.item()?.paymentTypes.forEach((v, i) => i !== 0 && this.addPaymentType());
       this.data.item()?.saleItems.forEach((v, i) => i !== 0 && this.addSaleItem());
       this.form.patchValue(this.data.item() || {});
+      // Lines saved before unitPrice was stored keep the price they were sold at, as the server derives it
+      this.saleItems.controls.forEach(({ controls }) => {
+        if (controls.unitPrice.value === null && controls.quantity.value) {
+          controls.unitPrice.setValue((controls.total.value ?? 0) / controls.quantity.value, { emitEvent: false });
+        }
+      });
       this.paymentTypes.controls.forEach((row) => this._savedPaymentRows.add(row));
     }
     // Set customer collection
@@ -235,6 +248,25 @@ export class SalesCardDetailsComponent implements OnInit {
     if (!this.form) return 0;
 
     return this.saleItems.controls.reduce((sum, item) => sum + (item.controls.total.value || 0), 0);
+  }
+
+  /**
+   * Unit price a saved line was sold at (total / quantity on lines saved before it was stored)
+   * @param item saved sale line
+   */
+  savedUnitPrice(item: SaleInvoiceItem): number {
+    return item.unitPrice ?? (item.quantity ? item.total / item.quantity : 0);
+  }
+
+  /**
+   * Unit price a form line is priced at: the saved price, or the product's sell price for a new
+   * or changed line
+   * @param line sale line form
+   */
+  lineUnitPrice(line: FormGroup<ISaleItemForm>): number {
+    const product = line.controls.product.value;
+    const sellPrice = product && typeof product === 'object' ? product.sellPrice : undefined;
+    return line.controls.unitPrice.value ?? sellPrice ?? 0;
   }
 
   /**

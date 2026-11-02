@@ -26,7 +26,8 @@
     "addMoreInfo": "اضافه کردن موارد بیشتر",
     "sendToCardReader": "ارسال این مبلغ به کارتخوان",
     "subtotal": "جمع اقلام",
-    "lineNote": "توضیح"
+    "lineNote": "توضیح",
+    "unitPrice": "فی"
   },
   "sort": {
     "number": "شماره",

@@ -26,7 +26,8 @@
     "addMoreInfo": "Add more info",
     "sendToCardReader": "Send this amount to the card reader",
     "subtotal": "Items subtotal",
-    "lineNote": "Note"
+    "lineNote": "Note",
+    "unitPrice": "Unit price"
   },
   "sort": {
     "number": "Number",
