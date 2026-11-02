@@ -82,6 +82,18 @@
       <span class="sale-receipt-print__label">تخفیف</span>
       <span class="sale-receipt-print__value" dir="auto">{{ data()?.discount | mskCurrency: 'IRT' }}</span>
     </div>
+    @if (data()?.tax) {
+      <div class="sale-receipt-print__row">
+        <span class="sale-receipt-print__label">مالیات</span>
+        <span class="sale-receipt-print__value" dir="auto">{{ data()?.tax | mskCurrency: 'IRT' }}</span>
+      </div>
+    }
+    @if (data()?.deliveryFee) {
+      <div class="sale-receipt-print__row">
+        <span class="sale-receipt-print__label">هزینه ارسال</span>
+        <span class="sale-receipt-print__value" dir="auto">{{ data()?.deliveryFee | mskCurrency: 'IRT' }}</span>
+      </div>
+    }
     <div class="sale-receipt-print__row sale-receipt-print__total">
       <span class="sale-receipt-print__label">قابل پرداخت</span>
       <span class="sale-receipt-print__value" dir="auto">{{ data()?.total | mskCurrency: 'IRT' }}</span>
