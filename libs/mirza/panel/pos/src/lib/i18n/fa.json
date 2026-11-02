@@ -14,18 +14,7 @@
   "clear-cart-message": "همه‌ی اقلام، مشتری و تنظیمات پرداخت این فروش پاک شوند؟",
   "increase": "افزایش تعداد",
   "decrease": "کاهش تعداد",
-  "note-separator": "، ",
   "split-one": "جدا کردن یکی",
-  "quick-notes": {
-    "no-sugar": "بدون شکر",
-    "extra-sugar": "شکر اضافه",
-    "almond-milk": "شیر بادام",
-    "extra-milk": "شیر اضافه",
-    "decaf": "کم‌کافئین",
-    "extra-hot": "داغ‌تر",
-    "less-ice": "یخ کم",
-    "takeaway": "برای بیرون"
-  },
   "customer": {
     "placeholder": "مشتری عمومی — جستجوی نام یا تلفن",
     "remove": "حذف مشتری",
@@ -78,5 +67,8 @@
     "load-failed": "بارگذاری محصولات انجام نشد",
     "save-failed": "ثبت فروش انجام نشد",
     "print-blocked": "پنجره چاپ مسدود شد."
-  }
+  },
+  "other-note": "دیگر…",
+  "other-note-placeholder": "یادداشت دلخواه، Enter برای افزودن",
+  "note-too-long": "یادداشت این ردیف حداکثر ۲۵۵ حرف است."
 }

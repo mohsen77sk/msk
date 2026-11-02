@@ -14,18 +14,7 @@
   "clear-cart-message": "Clear all items, the customer and the payment settings of this sale?",
   "increase": "Increase quantity",
   "decrease": "Decrease quantity",
-  "note-separator": ", ",
   "split-one": "Split one",
-  "quick-notes": {
-    "no-sugar": "No sugar",
-    "extra-sugar": "Extra sugar",
-    "almond-milk": "Almond milk",
-    "extra-milk": "Extra milk",
-    "decaf": "Decaf",
-    "extra-hot": "Extra hot",
-    "less-ice": "Less ice",
-    "takeaway": "Takeaway"
-  },
   "customer": {
     "placeholder": "Walk-in customer — search name or phone",
     "remove": "Remove customer",
@@ -78,5 +67,8 @@
     "load-failed": "Could not load the products",
     "save-failed": "Could not save the sale",
     "print-blocked": "The print window was blocked."
-  }
+  },
+  "other-note": "Other…",
+  "other-note-placeholder": "Custom note, Enter to add",
+  "note-too-long": "A line note is at most 255 characters."
 }

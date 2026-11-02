@@ -50,7 +50,7 @@
       <!-- Cart -->
       <aside class="mz-pos-cart bg-surface-container-low">
         <mz-pos-customer />
-        <mz-pos-cart (cleared)="focusInput()" />
+        <mz-pos-cart [categoryIdByProduct]="categoryIdByProduct()" (cleared)="focusInput()" />
         <mz-pos-pay (submitted)="submit()" />
       </aside>
     </div>

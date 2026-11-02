@@ -57,7 +57,7 @@
         <!-- Quick notes of the selected line -->
         @if (selected) {
           <div class="mz-pos-chips">
-            @for (note of quickNotes; track note) {
+            @for (note of chips(line); track note) {
               <button
                 type="button"
                 class="mz-pos-chip"
@@ -65,7 +65,37 @@
                 [attr.aria-pressed]="line.notes.includes(note)"
                 (click)="cart.toggleNote(line.id, note)"
               >
-                {{ t('quick-notes.' + note) }}
+                {{ note }}
+              </button>
+            }
+            <!-- Free text: joins the same note set, so identical lines still merge -->
+            @if (otherNoteLineId() === line.id) {
+              <div class="mz-pos-other-note">
+                <input
+                  #otherNoteInput
+                  type="text"
+                  class="mz-pos-other-note-input"
+                  autocomplete="off"
+                  [placeholder]="t('other-note-placeholder')"
+                  [attr.aria-invalid]="otherNoteTooLong()"
+                  (input)="otherNoteTooLong.set(false)"
+                  (keydown.enter)="$event.preventDefault(); addOtherNote(line.id, otherNoteInput)"
+                  (keydown.escape)="closeOtherNote()"
+                />
+                @if (otherNoteTooLong()) {
+                  <span class="text-error text-body-small">{{ t('note-too-long') }}</span>
+                }
+              </div>
+            } @else {
+              <button
+                type="button"
+                class="mz-pos-chip mz-pos-chip-split"
+                matRipple
+                data-pos-keep-focus
+                (click)="openOtherNote(line.id)"
+              >
+                <mat-icon>edit_note</mat-icon>
+                {{ t('other-note') }}
               </button>
             }
             @if (line.quantity > 1) {

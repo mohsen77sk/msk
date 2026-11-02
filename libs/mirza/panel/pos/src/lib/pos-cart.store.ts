@@ -2,12 +2,13 @@ import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { StoreService } from '@msk/mirza/shell/core/store';
 import { PaymentType } from '@msk/mirza/panel/payment-types';
 import { ICreateSale } from '@msk/mirza/panel/sales';
+import { SALE_LINE_NOTE_MAX_LENGTH, joinSaleLineNote } from '@msk/mirza/panel/quick-notes';
 import {
+  LEGACY_POS_QUICK_NOTE_LABELS,
   PosCartLine,
   PosCartState,
   PosPaymentMode,
   PosProduct,
-  PosQuickNote,
   PosSelectedCustomer,
   samePosNotes,
 } from './pos.types';
@@ -150,33 +151,47 @@ export class PosCartStore {
   }
 
   /**
-   * Toggle a note on one line. If another line of the product then has the same notes, the two
-   * merge into the earlier one, which becomes selected.
+   * Toggle a quick note on one line
    * @param lineId
    * @param note
    */
-  toggleNote(lineId: number, note: PosQuickNote): void {
-    const lines = this.lines();
-    const index = lines.findIndex((line) => line.id === lineId);
-    if (index === -1) return;
-    const line = lines[index];
-    const notes = line.notes.includes(note) ? line.notes.filter((x) => x !== note) : [...line.notes, note];
-
-    const twinIndex = lines.findIndex(
-      (x) => x.id !== lineId && x.productId === line.productId && samePosNotes(x.notes, notes),
-    );
-    if (twinIndex === -1) {
-      this._updateLine(lineId, (x) => ({ ...x, notes }));
-      return;
+  toggleNote(lineId: number, note: string): void {
+    const line = this.lines().find((x) => x.id === lineId);
+    if (!line) return;
+    if (line.notes.includes(note)) {
+      this._setNotes(
+        lineId,
+        line.notes.filter((x) => x !== note),
+      );
+    } else if (this.fitsNote(line, note)) {
+      this._setNotes(lineId, [...line.notes, note]);
     }
+  }
 
-    const [keep, drop] = twinIndex < index ? [lines[twinIndex], line] : [{ ...line, notes }, lines[twinIndex]];
-    this.lines.set(
-      lines
-        .filter((x) => x.id !== drop.id)
-        .map((x) => (x.id === keep.id ? { ...keep, quantity: keep.quantity + drop.quantity } : x)),
-    );
-    this.selectedLineId.set(keep.id);
+  /**
+   * Add free text to one line's notes; it joins the same note set as the quick notes
+   * @param lineId
+   * @param text
+   * @returns false if it doesn't fit in the line note
+   */
+  addNote(lineId: number, text: string): boolean {
+    const note = text.trim();
+    const line = this.lines().find((x) => x.id === lineId);
+    if (!line || !note) return !!line;
+    if (line.notes.includes(note)) return true;
+    if (!this.fitsNote(line, note)) return false;
+
+    this._setNotes(lineId, [...line.notes, note]);
+    return true;
+  }
+
+  /**
+   * Whether the line note stays within the sale line limit with this part added
+   * @param line
+   * @param note
+   */
+  fitsNote(line: PosCartLine, note: string): boolean {
+    return joinSaleLineNote([...line.notes, note.trim()]).length <= SALE_LINE_NOTE_MAX_LENGTH;
   }
 
   /**
@@ -251,15 +266,14 @@ export class PosCartStore {
 
   /**
    * POST /sale payload
-   * @param noteText line note keys -> text
    */
-  toPayload(noteText: (notes: PosQuickNote[]) => string): ICreateSale {
+  toPayload(): ICreateSale {
     const saleItems = this.lines().map((line) => ({
       productId: line.productId,
       quantity: line.quantity,
       unitPrice: line.unitPrice,
       total: line.unitPrice * line.quantity,
-      note: line.notes.length ? noteText(line.notes) : undefined,
+      note: line.notes.length ? joinSaleLineNote(line.notes) : undefined,
     }));
     const total = saleItems.reduce((sum, item) => sum + item.total, 0) - this.discount();
     const paymentTypes =
@@ -298,6 +312,35 @@ export class PosCartStore {
 
   private _updateLine(lineId: number, change: (line: PosCartLine) => PosCartLine): void {
     this.lines.update((lines) => lines.map((line) => (line.id === lineId ? change(line) : line)));
+  }
+
+  /**
+   * Set a line's notes. If another line of the product then has the same notes, the two merge
+   * into the earlier one, which becomes selected.
+   * @param lineId
+   * @param notes
+   */
+  private _setNotes(lineId: number, notes: string[]): void {
+    const lines = this.lines();
+    const index = lines.findIndex((line) => line.id === lineId);
+    if (index === -1) return;
+    const line = lines[index];
+
+    const twinIndex = lines.findIndex(
+      (x) => x.id !== lineId && x.productId === line.productId && samePosNotes(x.notes, notes),
+    );
+    if (twinIndex === -1) {
+      this._updateLine(lineId, (x) => ({ ...x, notes }));
+      return;
+    }
+
+    const [keep, drop] = twinIndex < index ? [lines[twinIndex], line] : [{ ...line, notes }, lines[twinIndex]];
+    this.lines.set(
+      lines
+        .filter((x) => x.id !== drop.id)
+        .map((x) => (x.id === keep.id ? { ...keep, quantity: keep.quantity + drop.quantity } : x)),
+    );
+    this.selectedLineId.set(keep.id);
   }
 
   private _nextLineId(): number {
@@ -339,8 +382,12 @@ export class PosCartStore {
     }
     if (!state || !Array.isArray(state.lines)) return;
 
-    // Carts saved before lines had ids get fresh ones
-    const lines = state.lines.map((line) => (Number.isInteger(line.id) ? line : { ...line, id: 0 }));
+    // Carts saved before lines had ids get fresh ones; old quick-note keys become labels
+    const lines = state.lines.map((line) => ({
+      ...line,
+      id: Number.isInteger(line.id) ? line.id : 0,
+      notes: (line.notes ?? []).map((note) => LEGACY_POS_QUICK_NOTE_LABELS[note] ?? note),
+    }));
     this._lastLineId = Math.max(0, ...lines.map((line) => line.id));
     this.lines.set(lines.map((line) => (line.id ? line : { ...line, id: this._nextLineId() })));
     const selectedLineId = state.selectedLineId ?? null;

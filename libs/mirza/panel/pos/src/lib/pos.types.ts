@@ -40,8 +40,8 @@ export interface PosCartLine {
   // sellPrice when the product was added
   unitPrice: number;
   quantity: number;
-  // Quick-note keys (see POS_QUICK_NOTES)
-  notes: PosQuickNote[];
+  // Note parts: quick-note labels and free text, joined into the sale line note
+  notes: string[];
 }
 
 export interface PosSelectedCustomer {
@@ -67,27 +67,26 @@ export interface PosCartState {
 }
 
 /**
- * Quick-note chips; labels live in i18n under pos.quick-notes. Store-configurable later.
+ * Carts saved while quick notes were hardcoded hold these keys; they become the labels the
+ * stores were seeded with
  */
-export const POS_QUICK_NOTES = [
-  'no-sugar',
-  'extra-sugar',
-  'almond-milk',
-  'extra-milk',
-  'decaf',
-  'extra-hot',
-  'less-ice',
-  'takeaway',
-] as const;
-
-export type PosQuickNote = (typeof POS_QUICK_NOTES)[number];
+export const LEGACY_POS_QUICK_NOTE_LABELS: Record<string, string> = {
+  'no-sugar': 'بدون شکر',
+  'extra-sugar': 'شکر اضافه',
+  'almond-milk': 'شیر بادام',
+  'extra-milk': 'شیر اضافه',
+  decaf: 'کم‌کافئین',
+  'extra-hot': 'داغ‌تر',
+  'less-ice': 'یخ کم',
+  takeaway: 'برای بیرون',
+};
 
 /**
  * Same notes, in any order
  * @param a
  * @param b
  */
-export function samePosNotes(a: PosQuickNote[], b: PosQuickNote[]): boolean {
+export function samePosNotes(a: string[], b: string[]): boolean {
   return a.length === b.length && a.every((note) => b.includes(note));
 }
 

@@ -5,6 +5,7 @@ import {
   ElementRef,
   HostListener,
   ViewEncapsulation,
+  computed,
   inject,
   signal,
   viewChild,
@@ -69,11 +70,14 @@ export class PosComponent {
 
   readonly storeName = this._storeService.currentStore?.name ?? '';
   readonly catalog = signal<PosCatalog | null>(null);
+  // Which quick notes a cart line gets
+  readonly categoryIdByProduct = computed(
+    () => new Map((this.catalog()?.products ?? []).map((product) => [product.id, product.categoryId] as const)),
+  );
   readonly loadError = signal('');
   readonly showShortcuts = signal(false);
 
   private _products = viewChild(PosProductsComponent);
-  private _cartLines = viewChild(PosCartComponent);
 
   /**
    * Constructor
@@ -136,8 +140,7 @@ export class PosComponent {
   submit(): void {
     if (!this.cart.canSubmit()) return;
 
-    const cartLines = this._cartLines();
-    const payload = this.cart.toPayload((notes) => cartLines?.noteText(notes) ?? '');
+    const payload = this.cart.toPayload();
     this.cart.submitting.set(true);
     this._salesService
       .createSale(payload)

@@ -527,6 +527,28 @@ mz-pos-pay {
   font-size: 18px;
 }
 
+/* Free-text note of the selected line */
+.mz-pos-other-note {
+  display: flex;
+  flex: 1 1 100%;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mz-pos-other-note-input {
+  min-height: var(--mz-pos-target);
+  padding: 0 12px;
+  border: 1px solid var(--mat-sys-outline);
+  border-radius: 8px;
+  background: var(--mat-sys-surface);
+  color: inherit;
+  font: inherit;
+}
+
+.mz-pos-other-note-input[aria-invalid='true'] {
+  border-color: var(--mat-sys-error);
+}
+
 .mz-pos-chip[aria-pressed='true'] {
   border-color: transparent;
   background: var(--mat-sys-secondary-container);
