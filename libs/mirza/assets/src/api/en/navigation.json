@@ -70,6 +70,13 @@
         "link": "/pos"
       },
       {
+        "id": "panel.quick-notes",
+        "title": "Order notes",
+        "type": "basic",
+        "icon": "sticky_note_2",
+        "link": "/panel/quick-notes"
+      },
+      {
         "id": "panel.expenses",
         "title": "Expenses",
         "type": "basic",
