@@ -32,7 +32,8 @@
     "paymentsOver": "Over the payable total",
     "paymentsSettled": "Payments match the payable total",
     "walkInCustomer": "Walk-in customer",
-    "customerNotPicked": "Pick a customer from the list, or leave the field empty."
+    "customerNotPicked": "Pick a customer from the list, or leave the field empty.",
+    "discountExceedsSubtotal": "The discount cannot be more than the items subtotal."
   },
   "sort": {
     "number": "Number",

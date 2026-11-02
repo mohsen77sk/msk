@@ -469,7 +469,13 @@
         <mat-label>{{ t('discount') }}</mat-label>
         <input matInput formControlName="discount" mskMask="currency" autocomplete="off" inputmode="numeric" />
         <span matTextSuffix mskCurrencySymbol></span>
-        <mat-error>{{ formErrors['discount'] }}</mat-error>
+        <mat-error>
+          @if (form.controls.discount.hasError('discountExceedsSubtotal')) {
+            {{ t('discountExceedsSubtotal') }}
+          } @else {
+            {{ formErrors['discount'] }}
+          }
+        </mat-error>
       </mat-form-field>
     </div>
 

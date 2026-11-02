@@ -208,7 +208,13 @@ export class SalesCardDetailsComponent implements OnInit {
       saleDate: this._formBuilder.control(new Date(new Date().setHours(0, 0, 0, 0)), Validators.required),
       saleItems: this._formBuilder.array<FormGroup>([], Validators.required),
       paymentTypes: this._formBuilder.array<FormGroup>([], Validators.required),
-      discount: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      discount: this._formBuilder.control(0, [
+        Validators.required,
+        Validators.min(0),
+        // Server rule SALE_DISCOUNT_EXCEEDS_SUBTOTAL
+        (control: AbstractControl): ValidationErrors | null =>
+          (Number(control.value) || 0) > this.itemsSubtotal() ? { discountExceedsSubtotal: true } : null,
+      ]),
       total: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
       note: this._formBuilder.control(''),
     });
@@ -243,6 +249,8 @@ export class SalesCardDetailsComponent implements OnInit {
     ])
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe(() => {
+        // The discount limit follows the lines
+        this.form.controls.discount.updateValueAndValidity({ emitEvent: false });
         const total = this._computedTotal();
         this.form.controls.total.setValue(total, { emitEvent: false });
         // Update first payment type if not changed by user
@@ -640,6 +648,10 @@ export class SalesCardDetailsComponent implements OnInit {
           // Set validation error message
           if (response.error?.errors) {
             MskSetServerErrorsFormFields(response.error.errors, this.form);
+          }
+          if (response.error?.code === 'SALE_DISCOUNT_EXCEEDS_SUBTOTAL') {
+            this.form.controls.discount.setErrors({ discountExceedsSubtotal: true });
+            this.form.controls.discount.markAsTouched();
           }
           // Return
           return EMPTY;
