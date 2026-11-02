@@ -118,6 +118,11 @@ export class SalesCardDetailsComponent implements OnInit {
   showDate = signal(!this.isNew());
   showNote = signal(!this.isNew());
 
+  // Payment rows loaded with the sale: already paid, never sent to the card reader again
+  private _savedPaymentRows = new Set<FormGroup<IPaymentTypeForm>>();
+  // Rows added in this edit that were already sent to the card reader
+  private _cardReaderSentRows = signal(new Set<FormGroup<IPaymentTypeForm>>());
+
   receiptData = computed<ReceiptPrintData | null>(() => {
     if (this.isNew()) return null;
     return new ReceiptPrintData(this.data.item() as SaleInvoice, this._storeService.currentStore as Store);
@@ -170,6 +175,7 @@ export class SalesCardDetailsComponent implements OnInit {
       this.data.item()?.paymentTypes.forEach((v, i) => i !== 0 && this.addPaymentType());
       this.data.item()?.saleItems.forEach((v, i) => i !== 0 && this.addSaleItem());
       this.form.patchValue(this.data.item() || {});
+      this.paymentTypes.controls.forEach((row) => this._savedPaymentRows.add(row));
     }
     // Set customer collection
     this.customerDS = new MskDataSource<Customer>(
@@ -349,6 +355,48 @@ export class SalesCardDetailsComponent implements OnInit {
   }
 
   /**
+   * Whether a payment row can be sent to the card reader by hand: only a Mellat row added
+   * in this edit, not sent yet. Saving an edit never calls the card reader.
+   * @param row payment row
+   */
+  canSendToCardReader(row: FormGroup<IPaymentTypeForm>): boolean {
+    return (
+      this.data.action() === 'edit' &&
+      this._salesService.isMellatPosBridgeEnabled &&
+      !this._savedPaymentRows.has(row) &&
+      !this._cardReaderSentRows().has(row) &&
+      this._isMellatPaymentRow(row) &&
+      (row.controls.value.value ?? 0) > 0
+    );
+  }
+
+  /**
+   * Send one new payment row's amount to the card reader
+   * @param row payment row
+   */
+  sendToCardReader(row: FormGroup<IPaymentTypeForm>): void {
+    if (!this.canSendToCardReader(row)) return;
+
+    // Mark it first so a double click can't start a second transaction
+    this._cardReaderSentRows.update((rows) => new Set(rows).add(row));
+    this._salesService
+      .testDevelopmentMellatPosConnection(row.controls.value.value ?? 0)
+      .pipe(
+        tap(() => this._mskSnackbarService.success(this._translocoService.translate('sales.cardReaderSent'))),
+        catchError(() => {
+          this._cardReaderSentRows.update((rows) => {
+            const next = new Set(rows);
+            next.delete(row);
+            return next;
+          });
+          this._mskSnackbarService.error(this._translocoService.translate('sales.errors.cardReaderFailed'));
+          return EMPTY;
+        }),
+      )
+      .subscribe();
+  }
+
+  /**
    * Print the current sale as an 80mm thermal receipt
    */
   printReceipt(): void {
@@ -473,13 +521,15 @@ export class SalesCardDetailsComponent implements OnInit {
       note: this.form.controls.note.value ?? '',
     };
 
-    const saveRequest =
-      this.data.action() === 'edit'
-        ? this._salesService.updateSaleInvoice(model)
-        : this._salesService.createSaleInvoice(model);
-    const result = this._shouldTestMellatPosConnection()
-      ? this._salesService.testDevelopmentMellatPosConnection(model.total).pipe(switchMap(() => saveRequest))
-      : saveRequest;
+    const isEdit = this.data.action() === 'edit';
+    const saveRequest = isEdit
+      ? this._salesService.updateSaleInvoice(model)
+      : this._salesService.createSaleInvoice(model);
+    // Only a new sale goes to the card reader on save; an edit never does (see sendToCardReader)
+    const result =
+      !isEdit && this._shouldTestMellatPosConnection()
+        ? this._salesService.testDevelopmentMellatPosConnection(model.total).pipe(switchMap(() => saveRequest))
+        : saveRequest;
 
     result
       .pipe(
@@ -538,8 +588,14 @@ export class SalesCardDetailsComponent implements OnInit {
    * Check whether any selected payment type should trigger the local Mellat POS bridge.
    */
   private _shouldTestMellatPosConnection(): boolean {
-    return this.paymentTypes.controls.some(
-      (paymentType) => paymentType.controls.paymentType.value?.name === MELLAT_POS_PAYMENT_TYPE_NAME,
-    );
+    return this.paymentTypes.controls.some((paymentType) => this._isMellatPaymentRow(paymentType));
+  }
+
+  /**
+   * Whether a payment row is paid with the Mellat card reader
+   * @param row payment row
+   */
+  private _isMellatPaymentRow(row: FormGroup<IPaymentTypeForm>): boolean {
+    return row.controls.paymentType.value?.name === MELLAT_POS_PAYMENT_TYPE_NAME;
   }
 }

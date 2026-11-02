@@ -390,6 +390,18 @@
               <span matTextSuffix mskCurrencySymbol></span>
             </mat-form-field>
           </div>
+          <!-- Card reader: only by hand, only for a Mellat row added in this edit -->
+          @if (canSendToCardReader(paymentType)) {
+            <button
+              type="button"
+              matIconButton
+              [matTooltip]="t('sendToCardReader')"
+              [disabled]="form.disabled"
+              (click)="sendToCardReader(paymentType)"
+            >
+              <mat-icon>contactless</mat-icon>
+            </button>
+          }
         </div>
       }
       <div class="ms-12">

@@ -23,7 +23,8 @@
     "addProduct": "افزودن محصول",
     "paymentTypes": "پرداختی ها",
     "addPaymentType": "افزودن نوع پرداخت",
-    "addMoreInfo": "اضافه کردن موارد بیشتر"
+    "addMoreInfo": "اضافه کردن موارد بیشتر",
+    "sendToCardReader": "ارسال این مبلغ به کارتخوان"
   },
   "sort": {
     "number": "شماره",
@@ -31,7 +32,8 @@
   },
   "errors": {
     "paymentTypesValueMustEqualByTotal": "مجموع مقادیر پرداختی با مبلغ نهایی برابر نیست.",
-    "printWindowBlocked": "پنجره چاپ مسدود شد."
+    "printWindowBlocked": "پنجره چاپ مسدود شد.",
+    "cardReaderFailed": "ارسال به کارتخوان با خطا مواجه شد."
   },
   "receipt": {
     "sale": "شماره فروش",
@@ -62,5 +64,6 @@
   "delete-message": "آیا مطمئن هستید که می خواهید فاکتور شماره <b>{{number}}</b> را حذف کنید؟",
   "print-receipt": "چاپ رسید",
   "print-invoice": "خروجی فاکتور (PDF)",
-  "open-pos": "صندوق فروش (POS)"
+  "open-pos": "صندوق فروش (POS)",
+  "cardReaderSent": "مبلغ به کارتخوان ارسال شد."
 }

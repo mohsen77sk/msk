@@ -99,10 +99,17 @@ export class SalesService {
   }
 
   /**
+   * Whether the local Mellat POS bridge is called (development builds only)
+   */
+  get isMellatPosBridgeEnabled(): boolean {
+    return !this._appConfig.production;
+  }
+
+  /**
    * Test local Mellat POS bridge payment in development builds only.
    */
   testDevelopmentMellatPosConnection(saleTotal: number): Observable<unknown> {
-    if (this._appConfig.production) {
+    if (!this.isMellatPosBridgeEnabled) {
       return of(null);
     }
 

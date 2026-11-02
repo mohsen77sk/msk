@@ -23,7 +23,8 @@
     "addProduct": "Add product",
     "paymentTypes": "Payments",
     "addPaymentType": "Add payment type",
-    "addMoreInfo": "Add more info"
+    "addMoreInfo": "Add more info",
+    "sendToCardReader": "Send this amount to the card reader"
   },
   "sort": {
     "number": "Number",
@@ -31,7 +32,8 @@
   },
   "errors": {
     "paymentTypesValueMustEqualByTotal": "The total amount paid does not equal the final amount.",
-    "printWindowBlocked": "The print window was blocked."
+    "printWindowBlocked": "The print window was blocked.",
+    "cardReaderFailed": "Sending to the card reader failed."
   },
   "receipt": {
     "sale": "Sale",
@@ -62,5 +64,6 @@
   "delete-message": "Are you sure you want to delete invoice <b>{{number}}</b>?",
   "print-receipt": "Print receipt",
   "print-invoice": "Export invoice (PDF)",
-  "open-pos": "POS"
+  "open-pos": "POS",
+  "cardReaderSent": "The amount was sent to the card reader."
 }
