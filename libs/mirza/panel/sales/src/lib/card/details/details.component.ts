@@ -1,7 +1,16 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, inject, signal, DestroyRef, ViewChild, computed } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -68,6 +77,15 @@ import { InvoicePdfPreviewDialogComponent } from '../../print/invoice-pdf-previe
 const MELLAT_POS_PAYMENT_TYPE_NAME = 'دستگاه POS ملت';
 // sale-item.note is varchar(255)
 const SALE_ITEM_NOTE_MAX_LENGTH = 255;
+
+/**
+ * Text typed in the customer field must be picked from the list; an empty field means no customer
+ * @param control
+ */
+function customerPickedValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  return typeof value === 'string' && value.trim() ? { customerNotPicked: true } : null;
+}
 
 @Component({
   selector: 'mz-sales-details',
@@ -186,7 +204,7 @@ export class SalesCardDetailsComponent implements OnInit {
     // Create the form
     this.form = this._formBuilder.group<ISalesForm>({
       id: this._formBuilder.control(0, Validators.required),
-      customer: this._formBuilder.control(null),
+      customer: this._formBuilder.control<Customer | null>(null, customerPickedValidator),
       saleDate: this._formBuilder.control(new Date(new Date().setHours(0, 0, 0, 0)), Validators.required),
       saleItems: this._formBuilder.array<FormGroup>([], Validators.required),
       paymentTypes: this._formBuilder.array<FormGroup>([], Validators.required),
@@ -582,6 +600,7 @@ export class SalesCardDetailsComponent implements OnInit {
 
     const model: ICreateSaleInvoice = {
       id: this.form.controls.id.value ?? 0,
+      // An empty field clears the customer; typed text never gets here (customerPickedValidator)
       customerId: this.form.controls.customer.value?.id ?? null,
       saleDate: this.form.controls.saleDate.value?.toISOString() ?? new Date().toISOString(),
       paymentTypes: this.form.controls.paymentTypes.controls.map((x) => ({

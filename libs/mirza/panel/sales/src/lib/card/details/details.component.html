@@ -142,6 +142,18 @@
         </div>
       }
     </div>
+  } @else {
+    <div class="msk-group-list">
+      <div class="msk-list-item subtitle">{{ t('customer') }}</div>
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>person_outline</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ t('walkInCustomer') }}</span>
+        </div>
+      </div>
+    </div>
   }
   <div class="msk-group-list">
     <div class="msk-list-item subtitle">{{ t('products') }}</div>
@@ -269,7 +281,13 @@
               </mat-option>
             </cdk-virtual-scroll-viewport>
           </mat-autocomplete>
-          <mat-error>{{ formErrors['customer'] }}</mat-error>
+          <mat-error>
+            @if (form.controls.customer.hasError('customerNotPicked')) {
+              {{ t('customerNotPicked') }}
+            } @else {
+              {{ formErrors['customer'] }}
+            }
+          </mat-error>
         </mat-form-field>
       </div>
     }

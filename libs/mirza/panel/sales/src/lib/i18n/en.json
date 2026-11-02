@@ -30,7 +30,9 @@
     "unitPrice": "Unit price",
     "paymentsRemaining": "Remaining",
     "paymentsOver": "Over the payable total",
-    "paymentsSettled": "Payments match the payable total"
+    "paymentsSettled": "Payments match the payable total",
+    "walkInCustomer": "Walk-in customer",
+    "customerNotPicked": "Pick a customer from the list, or leave the field empty."
   },
   "sort": {
     "number": "Number",
