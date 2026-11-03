@@ -1,0 +1,67 @@
+<msk-dialog
+  *transloco="let t; prefix: 'members.members'"
+  [title]="data.member ? data.member.fullName || data.member.phoneNumber : t('add')"
+  [hasAction]="!readOnly()"
+  [primaryAction]="primaryAction"
+>
+  <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form" msk-dialog-content>
+    @if (alert().show) {
+      <msk-alert class="mb-4" appearance="outline" type="error">{{ alert().message }}</msk-alert>
+    }
+
+    <!-- Phone -->
+    <mat-form-field>
+      <mat-label>{{ t('phone') }}</mat-label>
+      <input matInput formControlName="phone" dir="ltr" inputmode="tel" autocomplete="off" />
+      <mat-error>{{ formErrors['phone'] }}</mat-error>
+      @if (!data.member) {
+        <mat-hint>{{ t('phoneHint') }}</mat-hint>
+      }
+    </mat-form-field>
+
+    @if (!data.member) {
+      <div class="flex gap-2">
+        <mat-form-field class="flex-1">
+          <mat-label>{{ t('firstName') }}</mat-label>
+          <input matInput formControlName="firstName" autocomplete="off" />
+        </mat-form-field>
+        <mat-form-field class="flex-1">
+          <mat-label>{{ t('lastName') }}</mat-label>
+          <input matInput formControlName="lastName" autocomplete="off" />
+        </mat-form-field>
+      </div>
+    }
+
+    <!-- Role -->
+    <mat-form-field>
+      <mat-label>{{ t('role') }}</mat-label>
+      <mat-select formControlName="roleId">
+        @for (role of roles(); track role.id) {
+          <mat-option [value]="role.id">{{ role.name }}</mat-option>
+        }
+        <!-- An owner seen by a non-owner: show the role it has, read-only -->
+        @if (readOnly() && data.member) {
+          <mat-option [value]="data.member.role.id">{{ data.member.role.name }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>{{ formErrors['roleId'] }}</mat-error>
+    </mat-form-field>
+
+    @if (data.member && !readOnly()) {
+      <div class="msk-group-list elevated mt-4">
+        <div class="msk-list-item cursor-pointer" matRipple (click)="remove()" aria-hidden="true">
+          <div class="msk-list-item-icon">
+            <mat-icon class="text-error">person_remove</mat-icon>
+          </div>
+          <div class="msk-list-item-content text-error">{{ t('remove') }}</div>
+        </div>
+      </div>
+    }
+  </form>
+
+  <ng-template #primaryAction>
+    <button matButton [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="save()">
+      <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
+    </button>
+  </ng-template>
+</msk-dialog>

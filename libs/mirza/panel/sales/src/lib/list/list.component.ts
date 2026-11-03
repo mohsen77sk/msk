@@ -26,12 +26,14 @@ import { DefaultPaymentTypeSortData, PaymentTypesService } from '@msk/mirza/pane
 import { DefaultCustomersSortData, CustomersService } from '@msk/mirza/panel/customers';
 import { DefaultProductsSortData, ProductsService } from '@msk/mirza/panel/products';
 import { Locale } from 'date-fns';
+import { StoreCanDirective } from '@msk/mirza/shell/core/store';
 
 @Component({
   selector: 'mz-sales-list',
   templateUrl: './list.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [
+    StoreCanDirective,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,

@@ -82,6 +82,13 @@
         "type": "basic",
         "icon": "receipt_long",
         "link": "/panel/expenses"
+      },
+      {
+        "id": "panel.members",
+        "title": "کارکنان و دسترسی‌ها",
+        "type": "basic",
+        "icon": "manage_accounts",
+        "link": "/panel/members"
       }
     ]
   }

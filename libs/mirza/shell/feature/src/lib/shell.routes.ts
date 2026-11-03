@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { AuthGuard, NoAuthGuard } from '@msk/mirza/shell/core/auth';
 import { LayoutComponent } from '@msk/mirza/shell/ui/layout';
+import { storePageResolver } from '@msk/mirza/shell/core/store';
 import { initialDataResolver } from './shell.resolvers';
 import { createRedirectComponent } from './common/dynamic-redirect.component';
 
@@ -86,6 +87,7 @@ export const routes: Route[] = [
           },
           {
             path: 'dashboard',
+            resolve: { access: storePageResolver('/panel/dashboard') },
             loadChildren: () => import('@msk/mirza/panel/dashboard').then((r) => r.routes),
           },
           {
@@ -94,26 +96,32 @@ export const routes: Route[] = [
           },
           {
             path: 'vendors',
+            resolve: { access: storePageResolver('/panel/vendors') },
             loadChildren: () => import('@msk/mirza/panel/vendors').then((r) => r.routes),
           },
           {
             path: 'product-categories',
+            resolve: { access: storePageResolver('/panel/product-categories') },
             loadChildren: () => import('@msk/mirza/panel/product-categories').then((r) => r.routes),
           },
           {
             path: 'payment-types',
+            resolve: { access: storePageResolver('/panel/payment-types') },
             loadChildren: () => import('@msk/mirza/panel/payment-types').then((r) => r.routes),
           },
           {
             path: 'quick-notes',
+            resolve: { access: storePageResolver('/panel/quick-notes') },
             loadChildren: () => import('@msk/mirza/panel/quick-notes').then((r) => r.routes),
           },
           {
             path: 'products',
+            resolve: { access: storePageResolver('/panel/products') },
             loadChildren: () => import('@msk/mirza/panel/products').then((r) => r.routes),
           },
           {
             path: 'purchases',
+            resolve: { access: storePageResolver('/panel/purchases') },
             loadChildren: () => import('@msk/mirza/panel/purchases').then((r) => r.routes),
           },
           {
@@ -122,10 +130,17 @@ export const routes: Route[] = [
           },
           {
             path: 'expenses',
+            resolve: { access: storePageResolver('/panel/expenses') },
             loadChildren: () => import('@msk/mirza/panel/expenses').then((r) => r.routes),
           },
           {
+            path: 'members',
+            resolve: { access: storePageResolver('/panel/members') },
+            loadChildren: () => import('@msk/mirza/panel/members').then((r) => r.routes),
+          },
+          {
             path: 'settings',
+            resolve: { access: storePageResolver('/panel/settings') },
             loadChildren: () => import('@msk/mirza/panel/settings').then((r) => r.routes),
           },
         ],
@@ -148,6 +163,7 @@ export const routes: Route[] = [
     children: [
       {
         path: 'pos',
+        resolve: { access: storePageResolver('/pos') },
         loadChildren: () => import('@msk/mirza/panel/pos').then((r) => r.routes),
       },
     ],

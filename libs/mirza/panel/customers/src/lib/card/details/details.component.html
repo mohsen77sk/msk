@@ -15,9 +15,11 @@
   ></ng-container>
 
   <ng-template #trailing>
-    <button matIconButton (click)="editMode()">
-      <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
-    </button>
+    <ng-container *mzStoreCan="'customers.manage'">
+      <button matIconButton (click)="editMode()">
+        <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+      </button>
+    </ng-container>
   </ng-template>
 
   <ng-template #primaryAction>
@@ -169,14 +171,16 @@
   <div class="mt-6" *transloco="let t">
     <div class="text-title-small mb-4">{{ t('settings') }}</div>
     <div class="msk-group-list elevated">
-      <div class="msk-list-item cursor-pointer" matRipple (click)="deleteCustomer()" aria-hidden="true">
-        <div class="msk-list-item-icon">
-          <mat-icon class="text-error">delete</mat-icon>
+      <ng-container *mzStoreCan="'customers.manage'">
+        <div class="msk-list-item cursor-pointer" matRipple (click)="deleteCustomer()" aria-hidden="true">
+          <div class="msk-list-item-icon">
+            <mat-icon class="text-error">delete</mat-icon>
+          </div>
+          <div class="msk-list-item-content text-error">
+            {{ t('customers.delete') }}
+          </div>
         </div>
-        <div class="msk-list-item-content text-error">
-          {{ t('customers.delete') }}
-        </div>
-      </div>
+      </ng-container>
     </div>
   </div>
 </ng-template>

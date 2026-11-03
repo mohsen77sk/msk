@@ -38,7 +38,7 @@ import { MskDatepickerTouchUiDirective } from '@msk/shared/directives/datepicker
 import { LockupPaymentTypeSortData, PaymentType, PaymentTypesService } from '@msk/mirza/panel/payment-types';
 import { Customer, CustomersService, DefaultCustomersSortData } from '@msk/mirza/panel/customers';
 import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/panel/products';
-import { Store, StoreService } from '@msk/mirza/shell/core/store';
+import { Store, StoreService, StoreCanDirective } from '@msk/mirza/shell/core/store';
 import {
   QuickNote,
   QuickNotesService,
@@ -100,6 +100,7 @@ function customerPickedValidator(control: AbstractControl): ValidationErrors | n
   templateUrl: './details.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [
+    StoreCanDirective,
     NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,

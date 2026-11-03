@@ -1,0 +1,83 @@
+<div class="page-layout grid-scroll" *transloco="let t; prefix: 'members'">
+  <!-- Header -->
+  <div class="header">
+    <div class="flex flex-col gap-1">
+      <span class="text-title-medium md:text-title-large">{{ t('title') }}</span>
+      <span class="text-on-surface-variant text-body-small">{{ t('subtitle') }}</span>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="content">
+    <mat-tab-group
+      class="h-full"
+      mat-stretch-tabs="false"
+      [selectedIndex]="tabIndex()"
+      (selectedIndexChange)="tabIndex.set($event)"
+    >
+      <!-- Members -->
+      <mat-tab [label]="t('tabs.members')">
+        <div class="content-grid p-2">
+          @for (member of members(); track member.userId) {
+            <div class="content-grid-item tow-line bg-surface" matRipple (click)="openMember(member)">
+              <div class="content-grid-item-avatar">
+                <msk-avatar [name]="member.fullName || member.phoneNumber"></msk-avatar>
+              </div>
+              <div class="content-grid-item-content">
+                <div class="truncate">{{ member.fullName || member.phoneNumber }}</div>
+                <div>
+                  <span dir="ltr">{{ member.phoneNumber }}</span>
+                  <span class="text-primary">{{ member.role.name }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        @if (members()?.length === 0) {
+          <msk-empty-state class="inset-0 h-full w-full"></msk-empty-state>
+        }
+      </mat-tab>
+
+      <!-- Roles -->
+      <mat-tab [label]="t('tabs.roles')">
+        <div class="content-grid p-2">
+          @for (role of roles(); track role.id) {
+            <div class="content-grid-item tow-line bg-surface" matRipple (click)="openRole(role)">
+              <div class="content-grid-item-avatar">
+                <msk-avatar [name]="role.name"></msk-avatar>
+              </div>
+              <div class="content-grid-item-content">
+                <div class="truncate">{{ role.name }}</div>
+                <div>
+                  <span>{{ t('roles.memberCount', { count: role.memberCount }) }}</span>
+                  <span>
+                    {{
+                      role.isOwner
+                        ? t('roles.allPermissions')
+                        : t('roles.permissionCount', { count: role.permissions.length })
+                    }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <!-- Fab -->
+    <div class="content-fab-container">
+      @if (tabIndex() === 0) {
+        <button matFab extended class="msk-zoom-in" (click)="openMember()">
+          <mat-icon>person_add</mat-icon>
+          <span>{{ t('members.add') }}</span>
+        </button>
+      } @else {
+        <button matFab extended class="msk-zoom-in" (click)="openRole()">
+          <mat-icon>add</mat-icon>
+          <span>{{ t('roles.add') }}</span>
+        </button>
+      }
+    </div>
+  </div>
+</div>

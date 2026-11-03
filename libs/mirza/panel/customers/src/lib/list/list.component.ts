@@ -17,12 +17,14 @@ import { MskDataSource, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { Customer, DefaultCustomersSortData } from '../customers.types';
 import { CustomersService } from '../customers.service';
+import { StoreCanDirective } from '@msk/mirza/shell/core/store';
 
 @Component({
   selector: 'mz-customers-list',
   templateUrl: './list.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [
+    StoreCanDirective,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,

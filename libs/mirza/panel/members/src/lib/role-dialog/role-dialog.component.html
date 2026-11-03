@@ -1,0 +1,52 @@
+<msk-dialog
+  *transloco="let t; prefix: 'members.roles'"
+  [title]="data.role ? data.role.name : t('add')"
+  [hasAction]="!readOnly"
+  [primaryAction]="primaryAction"
+>
+  <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form" msk-dialog-content>
+    @if (alert().show) {
+      <msk-alert class="mb-4" appearance="outline" type="error">{{ alert().message }}</msk-alert>
+    }
+
+    <mat-form-field>
+      <mat-label>{{ t('name') }}</mat-label>
+      <input matInput formControlName="name" [maxlength]="nameMaxLength" autocomplete="off" />
+      <mat-error>{{ formErrors['name'] }}</mat-error>
+    </mat-form-field>
+
+    @if (readOnly) {
+      <msk-alert class="mb-2" appearance="outline" type="info">{{ t('ownerHint') }}</msk-alert>
+    }
+
+    <div class="text-title-small mt-2 mb-1">{{ t('permissions') }}</div>
+    <div class="flex flex-col">
+      @for (permission of allPermissions; track permission) {
+        <mat-checkbox
+          [checked]="readOnly || selected().has(permission)"
+          [disabled]="readOnly || form.disabled"
+          (change)="toggle(permission, $event.checked)"
+        >
+          {{ t('permission.' + permission) }}
+        </mat-checkbox>
+      }
+    </div>
+
+    @if (canDelete) {
+      <div class="msk-group-list elevated mt-4">
+        <div class="msk-list-item cursor-pointer" matRipple (click)="delete()" aria-hidden="true">
+          <div class="msk-list-item-icon">
+            <mat-icon class="text-error">delete</mat-icon>
+          </div>
+          <div class="msk-list-item-content text-error">{{ t('delete') }}</div>
+        </div>
+      </div>
+    }
+  </form>
+
+  <ng-template #primaryAction>
+    <button matButton [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="save()">
+      <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
+    </button>
+  </ng-template>
+</msk-dialog>
