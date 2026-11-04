@@ -1,5 +1,4 @@
-import { ProductItem } from '@msk/mirza/panel/products';
-import { SaleInvoice } from '../sales.types';
+import { SaleInvoice, SaleInvoiceItem } from '../sales.types';
 import { Store } from '@msk/mirza/shell/core/store';
 import { PaymentTypeDetail } from '@msk/mirza/panel/payment-types';
 
@@ -21,6 +20,8 @@ export class ReceiptPrintData {
   items: ReceiptPrintItem[];
   subtotal: number;
   discount: number;
+  tax: number;
+  deliveryFee: number;
   total: number;
   payments: ReceiptPrintPayment[];
   footerText: string;
@@ -35,6 +36,8 @@ export class ReceiptPrintData {
     this.items = (input.saleItems ?? []).map((item) => new ReceiptPrintItem(item));
     this.subtotal = this.items.reduce((sum, item) => sum + item.total, 0);
     this.discount = input.discount ?? 0;
+    this.tax = input.tax ?? 0;
+    this.deliveryFee = input.deliveryFee ?? 0;
     this.total = input.total ?? 0;
     this.payments = (input.paymentTypes ?? []).map((item) => new ReceiptPrintPayment(item));
     this.footerText = 'Thank you';
@@ -43,17 +46,20 @@ export class ReceiptPrintData {
 
 export class ReceiptPrintItem {
   productName: string;
+  note?: string;
   price: number;
   quantity: number;
   unit?: string;
   total: number;
 
-  constructor(input: ProductItem) {
+  constructor(input: SaleInvoiceItem) {
     this.productName = input.product?.name ?? '-';
+    this.note = input.note ?? undefined;
     this.quantity = input.quantity;
     this.unit = input.product?.unit;
     this.total = input.total;
-    this.price = input.product?.sellPrice ?? (this.quantity ? this.total / this.quantity : 0);
+    // The price the line was sold at, not the product's current price
+    this.price = input.unitPrice ?? (this.quantity ? this.total / this.quantity : 0);
   }
 }
 

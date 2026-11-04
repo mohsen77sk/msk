@@ -117,7 +117,12 @@
       @for (item of renderedItems; track $index) {
         <tr>
           <td class="sale-invoice-print__col-row">{{ $index + 1 | mzPersianDigits }}</td>
-          <td>{{ item.productName }}</td>
+          <td>
+            {{ item.productName }}
+            @if (item.note) {
+              <div class="sale-invoice-print__note">{{ item.note }}</div>
+            }
+          </td>
           <td class="sale-invoice-print__col-num">{{ item.quantity | mzPersianDigits }}</td>
           <td class="sale-invoice-print__col-num">
             {{ item.unitPrice | mskCurrency: undefined : false | mzPersianDigits }}

@@ -41,6 +41,7 @@ import {
   MskSetServerErrorsFormFields,
   FormError,
 } from '@msk/shared/utils/error-handler';
+import { normalizeDigits } from '@msk/shared/utils/number';
 import { catchError, EMPTY, map, startWith, tap } from 'rxjs';
 import { ProductsService } from '../../products.service';
 import {
@@ -66,6 +67,29 @@ function purposeRequiredValidator(group: AbstractControl): ValidationErrors | nu
   const isPurchasable = group.get('isPurchasable')?.value;
   const hasRecipe = ((group.get('recipeItems') as FormArray | null)?.length ?? 0) > 0;
   return isSellable || isPurchasable || hasRecipe ? null : { purposeRequired: true };
+}
+
+/**
+ * Product code: empty, or a whole number 1-9999 (Persian/Arabic digits allowed)
+ * @param control code control
+ */
+function productCodeValidator(control: AbstractControl): ValidationErrors | null {
+  const code = parseProductCode(control.value);
+  if (code === null) return null;
+  if (Number.isNaN(code)) return { pattern: true };
+  if (code < 1) return { min: { min: 1 } };
+  if (code > 9999) return { max: { max: 9999 } };
+  return null;
+}
+
+/**
+ * null when empty, NaN when not a whole number
+ * @param value
+ */
+function parseProductCode(value: unknown): number | null {
+  const text = normalizeDigits(String(value ?? '')).trim();
+  if (!text) return null;
+  return /^\d+$/.test(text) ? Number(text) : NaN;
 }
 
 /**
@@ -167,6 +191,7 @@ export class ProductCardDetailsComponent implements OnInit {
       {
         id: [0, Validators.required],
         name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
+        code: [null as string | number | null, productCodeValidator],
         category: null,
         quantity: null,
         unit: [ProductUnit.PIECE, Validators.required],
@@ -238,6 +263,8 @@ export class ProductCardDetailsComponent implements OnInit {
       id: 0,
       name: `${this.form.get('name')?.value} ${this._translocoService.translate('products.details.copy-suffix')}`,
       quantity: 0,
+      // Codes are unique per store
+      code: null,
     });
     // The copy has no purchases yet, so its cost starts as a manual value
     this.costFromPurchase.set(false);
@@ -406,6 +433,7 @@ export class ProductCardDetailsComponent implements OnInit {
     const model: ICreateProduct = {
       id: this.form.get('id')?.value,
       name: this.form.get('name')?.value,
+      code: parseProductCode(this.form.get('code')?.value),
       categoryId: this.form.get('category')?.value?.id,
       unit: this.form.get('unit')?.value,
       quantity: this.form.get('quantity')?.value,
@@ -435,6 +463,13 @@ export class ProductCardDetailsComponent implements OnInit {
         catchError((response: MskHttpErrorResponse) => {
           // Re-enable the form
           this.form.enable();
+          // Duplicate code in this store: show it on the code field
+          if (response.error.code === 'PRODUCT_CODE_TAKEN') {
+            this.form.get('code')?.setErrors({
+              serverError: this._translocoService.translate('products.details.code-taken'),
+            });
+            return EMPTY;
+          }
           // Set the alert
           this.alert.set({ show: true, message: response.error.message });
           // Set validation error message

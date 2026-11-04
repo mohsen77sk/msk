@@ -20,10 +20,11 @@
       <button matIconButton (click)="printInvoice()">
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
+      <!-- Only a saved sale can be edited -->
+      <button matIconButton (click)="editMode()">
+        <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+      </button>
     }
-    <button matIconButton (click)="editMode()">
-      <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
-    </button>
   </ng-template>
 
   <ng-template #primaryAction>
@@ -46,14 +47,62 @@
         <span>{{ t('number') }}</span>
       </div>
     </div>
+    <!-- Source -->
+    @let source = data.item()?.source ?? 'manual';
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>{{ sourceIcons[source] }}</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>
+          <span class="bg-secondary-container text-on-secondary-container text-label-medium rounded-full px-2 py-0.5">
+            {{ t('sources.' + source) }}
+          </span>
+        </span>
+        <span>{{ t('source') }}</span>
+      </div>
+    </div>
+    @if (data.item()?.snappfoodOrderId) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>tag</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span class="bidi-isolate-ltr">{{ data.item()?.snappfoodOrderId }}</span>
+          <span>{{ t('snappfoodOrderId') }}</span>
+        </div>
+      </div>
+    }
+    <!-- Created by -->
+    @if (data.item()?.user; as user) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>badge</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ user.name.trim() || user.phoneNumber || '-' }}</span>
+          <span>{{ t('createdBy') }}</span>
+        </div>
+      </div>
+    }
     <!-- Date -->
     <div class="msk-list-item">
       <div class="msk-list-item-icon">
         <mat-icon>event</mat-icon>
       </div>
       <div class="msk-list-item-content">
-        <span>{{ (data.item()?.saleDate | mskDateTime: 'longDate') || '-' }}</span>
+        <span>{{ (data.item()?.saleDate | mskDateTime: 'PPPp') || '-' }}</span>
         <span>{{ t('date') }}</span>
+      </div>
+    </div>
+    <!-- Items subtotal -->
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>shopping_cart</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>{{ savedItemsSubtotal() | mskCurrency }}</span>
+        <span>{{ t('subtotal') }}</span>
       </div>
     </div>
     <!-- Discount -->
@@ -67,25 +116,29 @@
       </div>
     </div>
     <!-- Tax -->
-    <div class="msk-list-item">
-      <div class="msk-list-item-icon">
-        <mat-icon>receipt_long</mat-icon>
+    @if (tax()) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>receipt_long</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ tax() | mskCurrency }}</span>
+          <span>{{ t('tax') }}</span>
+        </div>
       </div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.tax | mskCurrency }}</span>
-        <span>{{ t('tax') }}</span>
-      </div>
-    </div>
+    }
     <!-- Delivery Fee -->
-    <div class="msk-list-item">
-      <div class="msk-list-item-icon">
-        <mat-icon>local_shipping</mat-icon>
+    @if (deliveryFee()) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>local_shipping</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ deliveryFee() | mskCurrency }}</span>
+          <span>{{ t('deliveryFee') }}</span>
+        </div>
       </div>
-      <div class="msk-list-item-content">
-        <span>{{ data.item()?.deliveryFee | mskCurrency }}</span>
-        <span>{{ t('deliveryFee') }}</span>
-      </div>
-    </div>
+    }
     <!-- Total -->
     <div class="msk-list-item">
       <div class="msk-list-item-icon">
@@ -128,17 +181,38 @@
         </div>
       }
     </div>
+  } @else {
+    <div class="msk-group-list">
+      <div class="msk-list-item subtitle">{{ t('customer') }}</div>
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>person_outline</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ t('walkInCustomer') }}</span>
+        </div>
+      </div>
+    </div>
   }
   <div class="msk-group-list">
     <div class="msk-list-item subtitle">{{ t('products') }}</div>
     @for (item of data.item()?.saleItems; track $index) {
       <div class="msk-list-item">
         <div class="msk-list-item-content">
-          <span>{{ item.product?.name }}</span>
+          <span>
+            {{ item.product?.name }}
+            @if (item.product?.code) {
+              <small class="text-secondary bidi-isolate-ltr">#{{ item.product?.code }}</small>
+            }
+          </span>
+          @if (item.note) {
+            <span>{{ item.note }}</span>
+          }
           <span class="dot-separated">
             <div *transloco="let t; prefix: 'products.units'">
               {{ item.quantity }} <small>{{ t(item.product?.unit ?? '') }}</small>
             </div>
+            <div>{{ t('unitPrice') }}: {{ savedUnitPrice(item) | mskCurrency }}</div>
             <div>{{ item.total | mskCurrency }}</div>
           </span>
         </div>
@@ -246,7 +320,13 @@
               </mat-option>
             </cdk-virtual-scroll-viewport>
           </mat-autocomplete>
-          <mat-error>{{ formErrors['customer'] }}</mat-error>
+          <mat-error>
+            @if (form.controls.customer.hasError('customerNotPicked')) {
+              {{ t('customerNotPicked') }}
+            } @else {
+              {{ formErrors['customer'] }}
+            }
+          </mat-error>
         </mat-form-field>
       </div>
     }
@@ -267,57 +347,87 @@
     <div class="mb-6 flex flex-col gap-2" formArrayName="saleItems">
       @for (product of saleItems.controls; track i; let i = $index; let c = $count) {
         <div class="flex flex-1 gap-2" [formGroupName]="i">
-          @if (i === 0) {
+          @if (c === 1) {
             <mat-icon class="flex size-10 shrink-0 items-center justify-center">coffee</mat-icon>
           } @else {
-            <button type="button" mat-icon-button (click)="removeSaleItem(i)">
+            <button type="button" mat-icon-button [disabled]="form.disabled" (click)="removeSaleItem(i)">
               <mat-icon class="text-error">do_not_disturb_on</mat-icon>
             </button>
           }
-          <div class="flex flex-1 flex-col gap-3 *:block *:flex-1 md:flex-row">
-            <!-- Product -->
+          <div class="flex flex-1 flex-col gap-3">
+            <div class="flex flex-1 flex-col gap-3 *:block *:flex-1 md:flex-row">
+              <!-- Product -->
+              <mat-form-field subscriptSizing="dynamic">
+                <mat-label>{{ t('product') }}</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="product"
+                  [matAutocomplete]="autoProduct"
+                  [mskAutoFocus]="i !== 0 && !product.value.product"
+                />
+                @if (product.get('product')?.value) {
+                  <button
+                    type="button"
+                    matIconButton
+                    matSuffix
+                    [disabled]="form.disabled"
+                    (click)="product.get('product')?.reset()"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                }
+                <mat-autocomplete #autoProduct="matAutocomplete" [displayWith]="productDisplayFn">
+                  <cdk-virtual-scroll-viewport
+                    itemSize="48"
+                    minBufferPx="240"
+                    maxBufferPx="480"
+                    [style.height.px]="
+                      (autoProduct?.options?.length || 0) > 5 ? 240 : (autoProduct?.options?.length || 0) * 48
+                    "
+                  >
+                    <mat-option *cdkVirtualFor="let product of productDSList[i]" [value]="product">
+                      {{ product?.name || ('loading' | transloco) }}
+                    </mat-option>
+                  </cdk-virtual-scroll-viewport>
+                </mat-autocomplete>
+              </mat-form-field>
+              <!-- Quantity -->
+              <mat-form-field>
+                <mat-label>{{ t('quantity') }}</mat-label>
+                <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
+                <mat-hint>{{ t('unitPrice') }}: {{ lineUnitPrice(product) | mskCurrency }}</mat-hint>
+                <mat-hint align="end">
+                  {{ product.get('total')?.value | mskCurrency }}
+                </mat-hint>
+              </mat-form-field>
+            </div>
+            <!-- Quick notes of the line's product: toggle their text in the note -->
+            @if (lineQuickNotes(product).length) {
+              <div class="flex flex-wrap gap-2">
+                @for (label of lineQuickNotes(product); track label) {
+                  @let pressed = hasQuickNote(product, label);
+                  <button
+                    type="button"
+                    class="text-label-large rounded-full border px-3 py-1"
+                    [class.bg-secondary-container]="pressed"
+                    [class.text-on-secondary-container]="pressed"
+                    [class.border-transparent]="pressed"
+                    [class.border-outline-variant]="!pressed"
+                    [attr.aria-pressed]="pressed"
+                    [disabled]="form.disabled"
+                    (click)="toggleQuickNote(product, label)"
+                  >
+                    {{ label }}
+                  </button>
+                }
+              </div>
+            }
+            <!-- Line note: kept when the quantity changes, cleared when the product changes -->
             <mat-form-field subscriptSizing="dynamic">
-              <mat-label>{{ t('product') }}</mat-label>
-              <input
-                type="text"
-                matInput
-                formControlName="product"
-                [matAutocomplete]="autoProduct"
-                [mskAutoFocus]="i !== 0 && !product.value.product"
-              />
-              @if (product.get('product')?.value) {
-                <button
-                  type="button"
-                  matIconButton
-                  matSuffix
-                  [disabled]="form.disabled"
-                  (click)="product.get('product')?.reset()"
-                >
-                  <mat-icon>close</mat-icon>
-                </button>
-              }
-              <mat-autocomplete #autoProduct="matAutocomplete" [displayWith]="productDisplayFn">
-                <cdk-virtual-scroll-viewport
-                  itemSize="48"
-                  minBufferPx="240"
-                  maxBufferPx="480"
-                  [style.height.px]="
-                    (autoProduct?.options?.length || 0) > 5 ? 240 : (autoProduct?.options?.length || 0) * 48
-                  "
-                >
-                  <mat-option *cdkVirtualFor="let product of productDSList[i]" [value]="product">
-                    {{ product?.name || ('loading' | transloco) }}
-                  </mat-option>
-                </cdk-virtual-scroll-viewport>
-              </mat-autocomplete>
-            </mat-form-field>
-            <!-- Quantity -->
-            <mat-form-field>
-              <mat-label>{{ t('quantity') }}</mat-label>
-              <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
-              <mat-hint align="end">
-                {{ product.get('total')?.value | mskCurrency }}
-              </mat-hint>
+              <mat-label>{{ t('lineNote') }}</mat-label>
+              <input matInput formControlName="note" autocomplete="off" [maxlength]="noteMaxLength" />
+              <mat-error>{{ formErrors['saleItems']?.[i]?.['note'] }}</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -332,10 +442,10 @@
     <div class="mb-6 flex flex-col gap-2" formArrayName="paymentTypes">
       @for (paymentType of paymentTypes.controls; track i; let i = $index; let c = $count) {
         <div class="flex flex-1 gap-2" [formGroupName]="i">
-          @if (i === 0) {
+          @if (c === 1) {
             <mat-icon class="flex size-10 shrink-0 items-center justify-center">payments</mat-icon>
           } @else {
-            <button type="button" mat-icon-button (click)="removePaymentType(i)">
+            <button type="button" mat-icon-button [disabled]="form.disabled" (click)="removePaymentType(i)">
               <mat-icon class="text-error">do_not_disturb_on</mat-icon>
             </button>
           }
@@ -383,12 +493,33 @@
               <span matTextSuffix mskCurrencySymbol></span>
             </mat-form-field>
           </div>
+          <!-- Card reader: only by hand, only for a Mellat row added in this edit -->
+          @if (canSendToCardReader(paymentType)) {
+            <button
+              type="button"
+              matIconButton
+              [matTooltip]="t('sendToCardReader')"
+              [disabled]="form.disabled"
+              (click)="sendToCardReader(paymentType)"
+            >
+              <mat-icon>contactless</mat-icon>
+            </button>
+          }
         </div>
       }
-      <div class="ms-12">
-        <button type="button" matButton="text" [disabled]="form.disabled" (click)="addPaymentType()">
+      <div class="ms-12 flex flex-wrap items-center justify-between gap-2">
+        <button type="button" matButton="text" [disabled]="form.disabled" (click)="addPaymentType(true)">
           {{ t('addPaymentType') }}
         </button>
+        <!-- Remaining / over: save is blocked until it is zero -->
+        @let difference = paymentsDifference();
+        @if (difference > 0) {
+          <span class="text-error">{{ t('paymentsRemaining') }}: {{ difference | mskCurrency }}</span>
+        } @else if (difference < 0) {
+          <span class="text-error">{{ t('paymentsOver') }}: {{ -difference | mskCurrency }}</span>
+        } @else {
+          <span class="text-secondary">{{ t('paymentsSettled') }}</span>
+        }
       </div>
     </div>
 
@@ -398,11 +529,38 @@
         <mat-label>{{ t('discount') }}</mat-label>
         <input matInput formControlName="discount" mskMask="currency" autocomplete="off" inputmode="numeric" />
         <span matTextSuffix mskCurrencySymbol></span>
-        <mat-hint align="end">
-          <span>{{ t('totalPrice') }}: {{ form.get('total')?.value | mskCurrency }}</span>
-        </mat-hint>
-        <mat-error>{{ formErrors['discount'] }}</mat-error>
+        <mat-error>
+          @if (form.controls.discount.hasError('discountExceedsSubtotal')) {
+            {{ t('discountExceedsSubtotal') }}
+          } @else {
+            {{ formErrors['discount'] }}
+          }
+        </mat-error>
       </mat-form-field>
+    </div>
+
+    <!-- Totals: tax and delivery fee are kept from the saved sale -->
+    <div class="ms-12 mb-6 flex flex-col gap-1">
+      <div class="flex justify-between">
+        <span class="text-secondary">{{ t('subtotal') }}</span>
+        <span>{{ itemsSubtotal() | mskCurrency }}</span>
+      </div>
+      @if (tax()) {
+        <div class="flex justify-between">
+          <span class="text-secondary">{{ t('tax') }}</span>
+          <span>{{ tax() | mskCurrency }}</span>
+        </div>
+      }
+      @if (deliveryFee()) {
+        <div class="flex justify-between">
+          <span class="text-secondary">{{ t('deliveryFee') }}</span>
+          <span>{{ deliveryFee() | mskCurrency }}</span>
+        </div>
+      }
+      <div class="text-title-small flex justify-between">
+        <span>{{ t('totalPrice') }}</span>
+        <span>{{ form.controls.total.value | mskCurrency }}</span>
+      </div>
     </div>
 
     @if (showNote()) {

@@ -1,0 +1,99 @@
+<div class="mz-pos-customer" *transloco="let t; prefix: 'pos.customer'">
+  @if (cart.customer(); as customer) {
+    <!-- Selected customer -->
+    <div class="mz-pos-customer-chip bg-secondary-container text-on-secondary-container">
+      <mat-icon>person</mat-icon>
+      <span class="truncate font-medium">{{ customer.name }}</span>
+      @if (customer.contactNumber) {
+        <span class="truncate opacity-80" dir="ltr">{{ customer.contactNumber }}</span>
+      }
+      <button type="button" matIconButton class="ms-auto" [attr.aria-label]="t('remove')" (click)="remove()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  } @else if (showForm()) {
+    <!-- New customer -->
+    <form class="mz-pos-customer-form" [formGroup]="form" (ngSubmit)="save()">
+      <div class="mz-pos-customer-form-title">
+        <span class="font-medium">{{ t('new') }}</span>
+        <button type="button" matIconButton [attr.aria-label]="t('cancel')" (click)="closeForm()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>{{ t('name') }}</mat-label>
+        <input #nameInput matInput formControlName="name" autocomplete="off" />
+        <mat-error>{{ formErrors['name'] }}</mat-error>
+      </mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>{{ t('phone') }}</mat-label>
+        <input matInput formControlName="contactNumber" autocomplete="off" inputmode="tel" dir="ltr" maxlength="11" />
+        <mat-error>{{ formErrors['contactNumber'] || t('phone-invalid') }}</mat-error>
+      </mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>{{ t('address') }}</mat-label>
+        <input matInput formControlName="address" autocomplete="off" />
+        <mat-error>{{ formErrors['address'] }}</mat-error>
+      </mat-form-field>
+      @if (serverError()) {
+        <div class="text-error text-sm">{{ serverError() }}</div>
+      }
+      <button type="submit" matButton="filled" [disabled]="saving()" [mskSpinner]="saving()">
+        {{ t('save-and-select') }}
+      </button>
+    </form>
+  } @else {
+    <!-- Search -->
+    <div class="mz-pos-customer-search">
+      <div class="mz-pos-customer-input bg-surface-container-high">
+        <mat-icon>person_search</mat-icon>
+        <input
+          type="text"
+          autocomplete="off"
+          [value]="search()"
+          [placeholder]="t('placeholder')"
+          [attr.aria-label]="t('placeholder')"
+          (input)="onSearch($event)"
+          (keydown.escape)="search.set(''); results.set([])"
+        />
+      </div>
+      <button
+        type="button"
+        matIconButton
+        data-pos-keep-focus
+        [matTooltip]="t('new')"
+        [attr.aria-label]="t('new')"
+        (click)="openForm()"
+      >
+        <mat-icon>person_add</mat-icon>
+      </button>
+    </div>
+
+    @if (search().trim()) {
+      <div class="mz-pos-customer-results bg-surface-container-low" role="listbox">
+        @for (customer of results(); track customer.id) {
+          <button type="button" role="option" matRipple aria-selected="false" (click)="pick(customer)">
+            <span class="truncate">{{ customer.name }}</span>
+            @if (customer.contactNumber) {
+              <span class="text-on-surface-variant truncate" dir="ltr">{{ customer.contactNumber }}</span>
+            }
+          </button>
+        }
+        @if (searching() && !results().length) {
+          <div class="mz-pos-customer-results-hint text-on-surface-variant">{{ t('searching') }}</div>
+        }
+        <button
+          type="button"
+          role="option"
+          matRipple
+          aria-selected="false"
+          class="text-primary"
+          data-pos-keep-focus
+          (click)="openForm()"
+        >
+          <span class="truncate">{{ t('new-with', { text: search().trim() }) }}</span>
+        </button>
+      </div>
+    }
+  }
+</div>

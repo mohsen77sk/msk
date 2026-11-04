@@ -7,12 +7,32 @@ import { User } from '@msk/mirza/shell/core/user';
 
 export const DefaultSalesSortData: MskSortable = { active: 'number', direction: 'desc' };
 
+/**
+ * Where a sale was created. Set once by the server; a client may only send 'manual' or 'pos'.
+ */
+export type SaleSource = 'manual' | 'pos' | 'snappfood';
+
+/**
+ * A sale line as stored: the same product can be on several lines with different notes
+ */
+export class SaleInvoiceItem extends ProductItem {
+  // Per unit, before the invoice discount; null on sales saved before it was stored
+  unitPrice: number | null;
+  note: string | null;
+
+  constructor(input: SaleInvoiceItem) {
+    super(input);
+    this.unitPrice = input.unitPrice ?? null;
+    this.note = input.note ?? null;
+  }
+}
+
 export class SaleInvoice {
   id: number;
   number: string;
   saleDate?: Date;
   paymentTypes: PaymentTypeDetail[];
-  saleItems: ProductItem[];
+  saleItems: SaleInvoiceItem[];
   discount: number;
   tax: number;
   deliveryFee: number;
@@ -20,13 +40,16 @@ export class SaleInvoice {
   user?: User;
   customer?: Customer;
   note?: string;
+  source: SaleSource;
+  // Only on GET /sale/:id, for a sale imported from Snappfood
+  snappfoodOrderId: string | null;
 
   constructor(input: SaleInvoice) {
     this.id = input.id;
     this.number = input.number;
     this.saleDate = input.saleDate ? new Date(input.saleDate) : undefined;
     this.paymentTypes = input.paymentTypes?.map((pt) => new PaymentTypeDetail(pt));
-    this.saleItems = input.saleItems?.map((si) => new ProductItem(si));
+    this.saleItems = input.saleItems?.map((si) => new SaleInvoiceItem(si));
     this.discount = input.discount;
     this.tax = input.tax;
     this.deliveryFee = input.deliveryFee;
@@ -34,6 +57,8 @@ export class SaleInvoice {
     this.user = input.user ? new User(input.user) : undefined;
     this.customer = input.customer ? new Customer(input.customer) : undefined;
     this.note = input.note;
+    this.source = input.source ?? 'manual';
+    this.snappfoodOrderId = input.snappfoodOrderId ?? null;
   }
 
   get title(): string {
@@ -46,7 +71,30 @@ export interface ICreateSaleInvoice {
   customerId: number | null;
   saleDate: string;
   paymentTypes: PaymentTypeDetail[];
-  saleItems: ProductItem[];
+  saleItems: ICreateSaleItem[];
+  discount: number;
+  total: number;
+  note?: string;
+}
+
+export interface ICreateSaleItem {
+  productId: number;
+  quantity: number;
+  total: number;
+  // Omitted = the server stores total / quantity
+  unitPrice?: number;
+  note?: string;
+}
+
+/**
+ * New sale without a date (the server uses now), e.g. from the POS
+ */
+export interface ICreateSale {
+  // Omitted = 'manual'
+  source?: Exclude<SaleSource, 'snappfood'>;
+  customerId?: number;
+  paymentTypes: { paymentTypeId: number; value: number }[];
+  saleItems: ICreateSaleItem[];
   discount: number;
   total: number;
   note?: string;
@@ -70,6 +118,9 @@ export interface ISaleItemForm {
   product: FormControl<Product | null>;
   quantity: FormControl<number | null>;
   total: FormControl<number | null>;
+  // Kept from the saved line; reset when the product changes
+  unitPrice: FormControl<number | null>;
+  note: FormControl<string | null>;
 }
 
 export interface ISaleInvoiceSummery {

@@ -105,6 +105,10 @@ export const routes: Route[] = [
             loadChildren: () => import('@msk/mirza/panel/payment-types').then((r) => r.routes),
           },
           {
+            path: 'quick-notes',
+            loadChildren: () => import('@msk/mirza/panel/quick-notes').then((r) => r.routes),
+          },
+          {
             path: 'products',
             loadChildren: () => import('@msk/mirza/panel/products').then((r) => r.routes),
           },
@@ -125,6 +129,26 @@ export const routes: Route[] = [
             loadChildren: () => import('@msk/mirza/panel/settings').then((r) => r.routes),
           },
         ],
+      },
+    ],
+  },
+
+  // POS: full screen (no panel sidebar), still needs auth, the current store and the initial data
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    component: LayoutComponent,
+    data: {
+      layoutType: 'empty',
+    },
+    resolve: {
+      initial: initialDataResolver,
+    },
+    children: [
+      {
+        path: 'pos',
+        loadChildren: () => import('@msk/mirza/panel/pos').then((r) => r.routes),
       },
     ],
   },

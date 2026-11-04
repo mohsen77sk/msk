@@ -41,6 +41,18 @@
         <span>{{ t('name') }}</span>
       </div>
     </div>
+    <!-- Code -->
+    @if (data.item()?.code) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>tag</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.code }}</span>
+          <span>{{ t('code') }}</span>
+        </div>
+      </div>
+    }
     <!-- Category -->
     @if (data.item()?.category) {
       <div class="msk-list-item">
@@ -205,6 +217,13 @@
     }
 
     <div class="flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
+      <!-- Code -->
+      <mat-form-field class="sm:max-w-28">
+        <mat-label>{{ t('code') }}</mat-label>
+        <input matInput formControlName="code" maxlength="4" autocomplete="off" inputmode="numeric" dir="ltr" />
+        <mat-error>{{ formErrors['code'] }}</mat-error>
+      </mat-form-field>
+
       <!-- Name -->
       <mat-form-field>
         <mat-label>{{ t('name') }}</mat-label>

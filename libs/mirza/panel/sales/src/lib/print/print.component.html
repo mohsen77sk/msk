@@ -57,7 +57,12 @@
     <tbody>
       @for (item of data()?.items; track $index) {
         <tr>
-          <td class="sale-receipt-print__product">{{ item.productName }}</td>
+          <td class="sale-receipt-print__product">
+            {{ item.productName }}
+            @if (item.note) {
+              <div class="sale-receipt-print__note">{{ item.note }}</div>
+            }
+          </td>
           <td dir="auto">{{ item.price | mskCurrency: 'IRT' : false }}</td>
           <td dir="auto">{{ item.quantity }}</td>
           <td dir="auto">{{ item.total | mskCurrency: 'IRT' : false }}</td>
@@ -77,6 +82,18 @@
       <span class="sale-receipt-print__label">تخفیف</span>
       <span class="sale-receipt-print__value" dir="auto">{{ data()?.discount | mskCurrency: 'IRT' }}</span>
     </div>
+    @if (data()?.tax) {
+      <div class="sale-receipt-print__row">
+        <span class="sale-receipt-print__label">مالیات</span>
+        <span class="sale-receipt-print__value" dir="auto">{{ data()?.tax | mskCurrency: 'IRT' }}</span>
+      </div>
+    }
+    @if (data()?.deliveryFee) {
+      <div class="sale-receipt-print__row">
+        <span class="sale-receipt-print__label">هزینه ارسال</span>
+        <span class="sale-receipt-print__value" dir="auto">{{ data()?.deliveryFee | mskCurrency: 'IRT' }}</span>
+      </div>
+    }
     <div class="sale-receipt-print__row sale-receipt-print__total">
       <span class="sale-receipt-print__label">قابل پرداخت</span>
       <span class="sale-receipt-print__value" dir="auto">{{ data()?.total | mskCurrency: 'IRT' }}</span>

@@ -1,0 +1,111 @@
+<msk-dialog
+  *transloco="let t; prefix: 'quickNotes.details'"
+  [title]="t(data.action(), { name: data.item()?.label })"
+  [hasAction]="data.action() !== 'view'"
+  [primaryAction]="primaryAction"
+  [trailing]="trailing"
+>
+  <!-- Content -->
+  <ng-container
+    [ngTemplateOutlet]="data.action() === 'view' ? viewTemplate : formTemplate"
+    [ngTemplateOutletContext]="{ t: t }"
+    msk-dialog-content
+  ></ng-container>
+
+  <ng-template #trailing>
+    @if (data.action() === 'view') {
+      <button matIconButton (click)="editMode()">
+        <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+      </button>
+    }
+  </ng-template>
+
+  <ng-template #primaryAction>
+    <button matButton [disabled]="form.disabled" [mskSpinner]="form.disabled" (click)="saveAndClose()">
+      <span *transloco="let t">{{ form.enabled ? t('save') : '' }}</span>
+    </button>
+  </ng-template>
+</msk-dialog>
+
+<ng-template #viewTemplate let-t="t">
+  <div class="msk-group-list">
+    <div class="msk-list-item subtitle">{{ t('specs') }}</div>
+    <!-- Label -->
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>sell</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>{{ data.item()?.label || '-' }}</span>
+        <span>{{ t('label') }}</span>
+      </div>
+    </div>
+    <!-- Active -->
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>{{ t('isActive') }}</span>
+        <msk-state-chip class="mt-2" [checked]="data.item()?.isActive"></msk-state-chip>
+      </div>
+    </div>
+    <!-- Scope -->
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>category</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>{{ scopeNames().length ? scopeNames().join('، ') : t('allProducts') }}</span>
+        <span>{{ t('categories') }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="mt-6" *transloco="let t">
+    <div class="text-title-small mb-4">{{ t('settings') }}</div>
+    <div class="msk-group-list elevated">
+      <div class="msk-list-item cursor-pointer" matRipple (click)="deleteQuickNote()" aria-hidden="true">
+        <div class="msk-list-item-icon">
+          <mat-icon class="text-error">delete</mat-icon>
+        </div>
+        <div class="msk-list-item-content text-error">
+          {{ t('quickNotes.delete') }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #formTemplate let-t="t">
+  <form class="flex flex-auto flex-col gap-y-2" [formGroup]="form">
+    <!-- Alert -->
+    @if (alert().show) {
+      <msk-alert class="mb-4" appearance="outline" type="error">
+        {{ alert().message }}
+      </msk-alert>
+    }
+
+    <!-- Label -->
+    <mat-form-field>
+      <mat-label>{{ t('label') }}</mat-label>
+      <input matInput formControlName="label" [maxlength]="labelMaxLength" autocomplete="off" />
+      <mat-error>{{ formErrors['label'] }}</mat-error>
+    </mat-form-field>
+
+    <!-- Categories: empty = all products -->
+    <mat-form-field>
+      <mat-label>{{ t('categories') }}</mat-label>
+      <mat-select formControlName="categoryIds" multiple [placeholder]="t('allProducts')">
+        @for (category of categories(); track category.id) {
+          <mat-option [value]="category.id">{{ category.name }}</mat-option>
+        }
+      </mat-select>
+      <mat-hint>{{ t('categoriesHint') }}</mat-hint>
+    </mat-form-field>
+
+    <!-- Active -->
+    <div class="flex gap-2">
+      <mat-checkbox formControlName="isActive">{{ t('isActive') }}</mat-checkbox>
+    </div>
+  </form>
+</ng-template>

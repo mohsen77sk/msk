@@ -15,6 +15,8 @@ export enum ProductUnit {
 export class Product {
   id: number;
   name: string;
+  // POS quick code (1-9999), unique per store
+  code?: number | null;
   unit: ProductUnit;
   quantity?: number;
   cost?: number;
@@ -32,6 +34,7 @@ export class Product {
   constructor(input: Product) {
     this.id = input.id;
     this.name = input.name;
+    this.code = input.code;
     this.unit = input.unit;
     this.quantity = input.quantity;
     this.cost = input.cost;
@@ -84,6 +87,8 @@ export interface IRecipeItem {
 export interface ICreateProduct {
   id: number;
   name: string;
+  // null clears the code
+  code: number | null;
   categoryId: number;
   unit: string;
   quantity: number;

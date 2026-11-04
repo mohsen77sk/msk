@@ -63,6 +63,20 @@
         "link": "/panel/sales"
       },
       {
+        "id": "panel.pos",
+        "title": "صندوق فروش (POS)",
+        "type": "basic",
+        "icon": "point_of_sale",
+        "link": "/pos"
+      },
+      {
+        "id": "panel.quick-notes",
+        "title": "یادداشت‌ها و افزودنی‌ها",
+        "type": "basic",
+        "icon": "sticky_note_2",
+        "link": "/panel/quick-notes"
+      },
+      {
         "id": "panel.expenses",
         "title": "هزینه‌ها",
         "type": "basic",
