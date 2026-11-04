@@ -14,11 +14,11 @@
         formControlName="categoryId"
         [datasource]="categoryLookupDS"
       ></msk-filter-menu>
-      <msk-filter-menu
-        [label]="t('products.details.purpose')"
-        formControlName="purpose"
-        [datasource]="purposeLookupDS"
-      ></msk-filter-menu>
+      <mat-chip-listbox formControlName="purpose" [hideSingleSelectionIndicator]="false" aria-label="purpose">
+        @for (purpose of purposes; track purpose) {
+          <mat-chip-option [value]="purpose">{{ t('products.purpose.' + purpose) }}</mat-chip-option>
+        }
+      </mat-chip-listbox>
     </div>
   </div>
 

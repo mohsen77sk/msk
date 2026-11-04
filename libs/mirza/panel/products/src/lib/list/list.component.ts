@@ -2,7 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import { Component, DestroyRef, OnInit, ViewEncapsulation, inject, viewChild } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { map, startWith, take } from 'rxjs';
+import { map, startWith } from 'rxjs';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,13 +11,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { MatChipsModule } from '@angular/material/chips';
+import { TranslocoDirective } from '@jsverse/transloco';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskEmptyStateComponent } from '@msk/shared/ui/empty-state';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
-import { MskDataSource, MskLookupItem, MskPageData, MskSort } from '@msk/shared/data-access';
+import { MskDataSource, MskLookupItem, MskSort } from '@msk/shared/data-access';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { DefaultProductCategorySortData, ProductCategoriesService } from '@msk/mirza/panel/product-categories';
 import { DefaultProductsSortData, Product, ProductPurpose } from '../products.types';
@@ -40,6 +41,7 @@ import { ProductsService } from '../products.service';
     MatRippleModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatChipsModule,
     TranslocoDirective,
     MskCurrencyPipe,
     MskAvatarComponent,
@@ -54,7 +56,6 @@ export class ProductsListComponent implements OnInit {
   private _productsService = inject(ProductsService);
   private _viewport = viewChild.required(CdkVirtualScrollViewport);
   private _productCategoriesService = inject(ProductCategoriesService);
-  private _translocoService = inject(TranslocoService);
 
   dataSource!: MskDataSource<Product>;
 
@@ -72,7 +73,7 @@ export class ProductsListComponent implements OnInit {
     purpose: new FormControl<ProductPurpose | null>(null),
   });
   categoryLookupDS!: MskDataSource<MskLookupItem>;
-  purposeLookupDS!: MskDataSource<MskLookupItem>;
+  readonly purposes: ProductPurpose[] = ['sale', 'purchase'];
 
   trackById = (i: number, item: Product | undefined) => item?.id ?? i;
 
@@ -88,7 +89,11 @@ export class ProductsListComponent implements OnInit {
       (params) => this._productsService.getProducts(params),
       this.sortData,
       this.search.valueChanges,
-      this.filterForm.valueChanges.pipe(startWith(this.filterForm.value)),
+      this.filterForm.valueChanges.pipe(
+        startWith(this.filterForm.value),
+        // a deselected chip-listbox emits undefined; the API expects null for "all"
+        map((v) => ({ ...v, purpose: v.purpose ?? null })),
+      ),
     );
 
     // Subscribe to ProductsService changes and update the data source accordingly
@@ -111,25 +116,6 @@ export class ProductsListComponent implements OnInit {
     this.categoryLookupDS = new MskDataSource<MskLookupItem>(
       (params) => this._productCategoriesService.getLookupProductCategories(params),
       new MskSort(DefaultProductCategorySortData),
-    );
-
-    // Set purpose collection (static, labels from the products scope)
-    const purposes: ProductPurpose[] = ['sale', 'purchase'];
-    this.purposeLookupDS = new MskDataSource<MskLookupItem>(
-      () =>
-        this._translocoService.selectTranslateObject<Record<ProductPurpose, string>>('purpose', {}, 'products').pipe(
-          take(1),
-          map(
-            (labels) =>
-              new MskPageData<MskLookupItem>({
-                page: 1,
-                pageSize: purposes.length,
-                total: purposes.length,
-                items: purposes.map((purpose) => ({ id: purpose, code: purpose, name: labels[purpose] })),
-              }),
-          ),
-        ),
-      new MskSort(DefaultProductsSortData),
     );
   }
 }
