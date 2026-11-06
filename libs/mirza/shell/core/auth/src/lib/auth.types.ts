@@ -27,3 +27,8 @@ export interface ResetPasswordRequest {
   newPassword: string;
   confirmNewPassword: string;
 }
+
+export interface TokenPair {
+  accessToken: string;
+  refreshToken: string;
+}

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
-import { Observable, of, switchMap, throwError } from 'rxjs';
+import { Observable, catchError, finalize, map, of, shareReplay, switchMap, throwError } from 'rxjs';
 import {
   AUTH_TOKEN,
   LoginRequest,
@@ -9,6 +9,7 @@ import {
   REFRESH_TOKEN,
   RegistrationRequest,
   ResetPasswordRequest,
+  TokenPair,
 } from './auth.types';
 import { AuthUtils } from './auth.utils';
 
@@ -17,6 +18,7 @@ export class AuthService {
   private _authenticated = false;
   private _appConfig = inject(MSK_APP_CONFIG);
   private _httpClient = inject(HttpClient);
+  private _refreshing$: Observable<boolean> | null = null;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -152,24 +154,57 @@ export class AuthService {
   }
 
   /**
+   * Whether the access token must be renewed before use: expired or about to expire, or issued
+   * before token types existed (those last a year; they are swapped for the short ones)
+   */
+  needsRefresh(): boolean {
+    const token = this.accessToken;
+    if (!token) return !!this.refreshToken;
+    return AuthUtils.isTokenExpired(token, 60) || AuthUtils.tokenType(token) === null;
+  }
+
+  /**
+   * Renew the tokens with the refresh token (or, once, a token issued before token types).
+   * Concurrent callers share one request. Emits false when the session cannot be renewed.
+   */
+  refreshTokens(): Observable<boolean> {
+    if (this._refreshing$) return this._refreshing$;
+
+    const candidates = [this.refreshToken, this.accessToken].filter(
+      (t) => !!t && !AuthUtils.isTokenExpired(t) && AuthUtils.tokenType(t) !== 'access',
+    );
+    if (!candidates.length) return of(false);
+
+    this._refreshing$ = this._httpClient
+      .post<TokenPair>(`${this._appConfig.apiEndpoint}/auth/refresh`, { refreshToken: candidates[0] })
+      .pipe(
+        map((pair) => {
+          this.accessToken = pair.accessToken;
+          this.refreshToken = pair.refreshToken;
+          this._authenticated = true;
+          return true;
+        }),
+        catchError(() => of(false)),
+        finalize(() => (this._refreshing$ = null)),
+        shareReplay(1),
+      );
+    return this._refreshing$;
+  }
+
+  /**
    * Check the authentication status
    */
   check(): Observable<boolean> {
+    // A token that is expired, close to expiry or from before token types: renew it silently
+    if (this.needsRefresh()) {
+      return this.refreshTokens();
+    }
+
     // Check if the user is logged in
     if (this._authenticated) {
       return of(true);
     }
 
-    // Check the access token availability
-    if (!this.accessToken) {
-      return of(false);
-    }
-
-    // Check the access token expire date
-    if (AuthUtils.isTokenExpired(this.accessToken)) {
-      return of(false);
-    }
-
-    return of(true);
+    return of(!!this.accessToken && !AuthUtils.isTokenExpired(this.accessToken));
   }
 }
