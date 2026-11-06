@@ -1,0 +1,13 @@
+{
+  "name": "mirza-public-menu",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mirza/public/menu/src",
+  "prefix": "mz",
+  "projectType": "library",
+  "tags": ["scope:mirza", "type:feature"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

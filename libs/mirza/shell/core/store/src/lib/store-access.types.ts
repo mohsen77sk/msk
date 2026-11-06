@@ -37,6 +37,7 @@ export const PAGE_PERMISSIONS: Record<string, StorePermission> = {
   '/panel/products': 'products.manage',
   '/panel/payment-types': 'settings.manage',
   '/panel/quick-notes': 'settings.manage',
+  '/panel/menu': 'settings.manage',
   '/panel/purchases': 'purchases.manage',
   '/panel/expenses': 'expenses.manage',
   '/panel/settings': 'settings.manage',

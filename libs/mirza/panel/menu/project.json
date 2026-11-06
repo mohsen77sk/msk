@@ -1,0 +1,13 @@
+{
+  "name": "mirza-panel-menu",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mirza/panel/menu/src",
+  "prefix": "mz",
+  "projectType": "library",
+  "tags": ["scope:mirza", "type:feature"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

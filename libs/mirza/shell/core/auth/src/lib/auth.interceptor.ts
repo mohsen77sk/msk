@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { StoreService } from '@msk/mirza/shell/core/store';
+import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { AuthService } from './auth.service';
 import { AuthUtils } from './auth.utils';
 
@@ -20,6 +21,12 @@ const NO_REFRESH = /\/auth\/(login|refresh|register|forgot-password)/;
  * @param next
  */
 export const authInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
+  // Public (unauthenticated) API: never attach credentials or store context,
+  // and never sign out / reload on its errors.
+  if (req.url.startsWith(`${inject(MSK_APP_CONFIG).apiEndpoint}/public/`)) {
+    return next(req);
+  }
+
   const router = inject(Router);
   const authService = inject(AuthService);
   const storeService = inject(StoreService);

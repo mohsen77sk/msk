@@ -120,6 +120,11 @@ export const routes: Route[] = [
             loadChildren: () => import('@msk/mirza/panel/products').then((r) => r.routes),
           },
           {
+            path: 'menu',
+            resolve: { access: storePageResolver('/panel/menu') },
+            loadChildren: () => import('@msk/mirza/panel/menu').then((r) => r.routes),
+          },
+          {
             path: 'purchases',
             resolve: { access: storePageResolver('/panel/purchases') },
             loadChildren: () => import('@msk/mirza/panel/purchases').then((r) => r.routes),
@@ -167,6 +172,16 @@ export const routes: Route[] = [
         loadChildren: () => import('@msk/mirza/panel/pos').then((r) => r.routes),
       },
     ],
+  },
+
+  // Public digital menu (no auth guards, no initial data resolver)
+  {
+    path: 'menu',
+    component: LayoutComponent,
+    data: {
+      layoutType: 'empty',
+    },
+    loadChildren: () => import('@msk/mirza/public/menu').then((r) => r.routes),
   },
 
   // Error routes & Catch all
