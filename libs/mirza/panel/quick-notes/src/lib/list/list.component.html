@@ -1,0 +1,71 @@
+<div class="page-layout grid-scroll" *transloco="let t; prefix: 'quickNotes'">
+  <!-- Header -->
+  <div class="header">
+    <div class="flex flex-col gap-1">
+      <span class="text-title-medium md:text-title-large">{{ t('title') }}</span>
+      <span class="text-on-surface-variant text-body-small">{{ t('list.reorderHint') }}</span>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="content">
+    <div
+      class="content-grid p-2"
+      #gridContent
+      cdkDropList
+      [cdkDropListData]="quickNotes() ?? []"
+      [cdkDropListDisabled]="saving()"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (quickNote of quickNotes(); track quickNote.id) {
+        <div
+          class="content-grid-item tow-line bg-surface"
+          cdkDrag
+          [routerLink]="['card', 'view', quickNote.id]"
+          matRipple
+        >
+          <!-- Drag handle -->
+          <mat-icon class="text-on-surface-variant cursor-grab" cdkDragHandle (click)="$event.stopPropagation()">
+            drag_indicator
+          </mat-icon>
+          <!-- Avatar -->
+          <div class="content-grid-item-avatar">
+            <msk-avatar [name]="quickNote.label"></msk-avatar>
+          </div>
+          <!-- Content -->
+          <div class="content-grid-item-content" [class.opacity-60]="!quickNote.isActive">
+            <div class="truncate">{{ quickNote.label }}</div>
+            <div>
+              @if (scopeNames(quickNote).length) {
+                <span class="truncate">{{ scopeNames(quickNote).join('، ') }}</span>
+              } @else {
+                <span>{{ t('details.allProducts') }}</span>
+              }
+              @if (!quickNote.isActive) {
+                <span class="text-error">{{ t('list.inactive') }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Empty state -->
+    @if (quickNotes()?.length === 0) {
+      <msk-empty-state class="inset-0 h-full w-full"></msk-empty-state>
+    }
+
+    <!-- Fab -->
+    <div class="content-fab-container">
+      <button matFab extended [routerLink]="['card', 'new']" [mskFabExtendedCollapse]="gridContent">
+        <mat-icon>add</mat-icon>
+        <span *transloco="let t">{{ t('new') }}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Invisible router-outlet for card component -->
+<div class="pointer-events-none invisible absolute h-0 w-0 opacity-0">
+  <router-outlet></router-outlet>
+</div>

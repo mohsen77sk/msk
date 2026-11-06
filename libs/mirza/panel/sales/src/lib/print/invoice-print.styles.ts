@@ -190,6 +190,11 @@ export function getSaleInvoicePrintStyles(): string {
       white-space: nowrap;
     }
 
+    .sale-invoice-print__note {
+      font-size: 10px;
+      font-weight: 400;
+    }
+
     .sale-invoice-print__totals {
       width: 100%;
       display: flex;

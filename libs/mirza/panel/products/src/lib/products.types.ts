@@ -3,43 +3,102 @@ import { ProductCategory } from '@msk/mirza/panel/product-categories';
 
 export const DefaultProductsSortData: MskSortable = { active: 'name', direction: 'asc' };
 
+export type ProductPurpose = 'sale' | 'purchase' | 'ingredient';
+
 export enum ProductUnit {
   PIECE = 'piece',
   GRAM = 'gram',
   KG = 'kg',
+  ML = 'ml',
 }
 
 export class Product {
   id: number;
   name: string;
+  // POS quick code (1-9999), unique per store
+  code?: number | null;
   unit: ProductUnit;
   quantity?: number;
   cost?: number;
   sellPrice?: number;
   category?: ProductCategory;
   note?: string;
+  isSellable: boolean;
+  isPurchasable: boolean;
+  // Recipe-derived cost (null if an ingredient has no cost), else the manual cost
+  effectiveCost?: number | null;
+  hasRecipe: boolean;
+  // Present only when cost follows the last purchase: that purchase's date
+  lastPurchaseAt?: string | null;
 
   constructor(input: Product) {
     this.id = input.id;
     this.name = input.name;
+    this.code = input.code;
     this.unit = input.unit;
     this.quantity = input.quantity;
     this.cost = input.cost;
     this.sellPrice = input.sellPrice;
     this.category = input.category ? new ProductCategory(input.category) : undefined;
     this.note = input.note;
+    this.isSellable = input.isSellable ?? true;
+    this.isPurchasable = input.isPurchasable ?? true;
+    this.effectiveCost = input.effectiveCost;
+    this.hasRecipe = input.hasRecipe ?? false;
+    this.lastPurchaseAt = input.lastPurchaseAt;
   }
+
+  /**
+   * Cost is taken from the last purchase (read-only in the form)
+   */
+  get costFromPurchase(): boolean {
+    return this.lastPurchaseAt !== undefined;
+  }
+}
+
+export interface ProductRecipeIngredient {
+  id: number;
+  name: string;
+  unit: ProductUnit;
+  effectiveCost?: number | null;
+}
+
+export interface ProductRecipeLine {
+  ingredient: ProductRecipeIngredient;
+  quantity: number;
+  // Percent of the input lost in preparation; effectiveQuantity includes it
+  wastePercent: number;
+  effectiveQuantity: number;
+  lineCost: number | null;
+}
+
+export interface ProductRecipe {
+  items: ProductRecipeLine[];
+  cost: number | null;
+  costComplete: boolean;
+}
+
+export interface IRecipeItem {
+  ingredientId: number;
+  quantity: number;
+  wastePercent?: number;
 }
 
 export interface ICreateProduct {
   id: number;
   name: string;
+  // null clears the code
+  code: number | null;
   categoryId: number;
   unit: string;
   quantity: number;
   cost: number;
   sellPrice: number;
   note: string;
+  isSellable: boolean;
+  isPurchasable: boolean;
+  // Omitted = recipe unchanged, [] = recipe cleared
+  recipeItems?: IRecipeItem[];
 }
 
 export class ProductItem {

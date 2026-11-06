@@ -35,13 +35,6 @@
         "link": "/panel/payment-types"
       },
       {
-        "id": "panel.expenses",
-        "title": "Expenses",
-        "type": "basic",
-        "icon": "receipt_long",
-        "link": "/panel/expenses"
-      },
-      {
         "id": "panel.product-categories",
         "title": "product categories",
         "type": "basic",
@@ -68,6 +61,34 @@
         "type": "basic",
         "icon": "sell",
         "link": "/panel/sales"
+      },
+      {
+        "id": "panel.pos",
+        "title": "Point of sale (POS)",
+        "type": "basic",
+        "icon": "point_of_sale",
+        "link": "/pos"
+      },
+      {
+        "id": "panel.quick-notes",
+        "title": "Order notes",
+        "type": "basic",
+        "icon": "sticky_note_2",
+        "link": "/panel/quick-notes"
+      },
+      {
+        "id": "panel.expenses",
+        "title": "Expenses",
+        "type": "basic",
+        "icon": "receipt_long",
+        "link": "/panel/expenses"
+      },
+      {
+        "id": "panel.members",
+        "title": "Staff & access",
+        "type": "basic",
+        "icon": "manage_accounts",
+        "link": "/panel/members"
       }
     ]
   }

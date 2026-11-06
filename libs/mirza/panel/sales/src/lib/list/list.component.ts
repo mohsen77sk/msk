@@ -19,19 +19,21 @@ import { MskFilterMenuComponent } from '@msk/shared/ui/filter-menu';
 import { MskSortMenuComponent, SortMenuItem } from '@msk/shared/ui/sort-menu';
 import { MskFabExtendedCollapseDirective } from '@msk/shared/directives/fab-extended-collapse';
 import { DateRangeFactory, MskDateRange } from '@msk/shared/utils/datetime';
-import { MskDataSource, MskLookupItem, MskSort } from '@msk/shared/data-access';
+import { MskDataSource, MskLookupItem, MskPagingRequest, MskSort } from '@msk/shared/data-access';
 import { SaleInvoice, DefaultSalesSortData, ISaleInvoiceSummery } from '../sales.types';
 import { SalesService } from '../sales.service';
 import { DefaultPaymentTypeSortData, PaymentTypesService } from '@msk/mirza/panel/payment-types';
 import { DefaultCustomersSortData, CustomersService } from '@msk/mirza/panel/customers';
 import { DefaultProductsSortData, ProductsService } from '@msk/mirza/panel/products';
 import { Locale } from 'date-fns';
+import { StoreCanDirective } from '@msk/mirza/shell/core/store';
 
 @Component({
   selector: 'mz-sales-list',
   templateUrl: './list.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [
+    StoreCanDirective,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
@@ -64,6 +66,8 @@ export class SalesListComponent implements OnInit {
 
   dataSource!: MskDataSource<SaleInvoice>;
   dataSummery = signal<ISaleInvoiceSummery | undefined>(undefined);
+  // Last list request; the summary covers the whole filter, whatever the page.
+  private _summaryParams?: MskPagingRequest;
 
   sortItems: SortMenuItem[] = [
     { key: 'number', label: 'sales.sort.number' },
@@ -95,7 +99,10 @@ export class SalesListComponent implements OnInit {
    */
   ngOnInit(): void {
     this.dataSource = new MskDataSource<SaleInvoice>(
-      (params) => this._salesService.getSaleInvoices(params).pipe(tap((res) => this.dataSummery.set(res.data))),
+      (params) => {
+        this._summaryParams = params;
+        return this._salesService.getSaleInvoices(params).pipe(tap((res) => this.dataSummery.set(res.data)));
+      },
       this.sortData,
       this.search.valueChanges,
       this.filterForm.valueChanges.pipe(startWith(this.filterForm.value)),
@@ -110,9 +117,11 @@ export class SalesListComponent implements OnInit {
           break;
         case 'update':
           this.dataSource.updateWhere((p) => p.id === evt.item.id, evt.item);
+          this._reloadSummary();
           break;
         case 'delete':
           this.dataSource.removeWhere((p) => p.id === evt.id);
+          this._reloadSummary();
           break;
       }
     });
@@ -132,5 +141,20 @@ export class SalesListComponent implements OnInit {
       (params) => this._paymentTypeService.getLookupPaymentTypes(params),
       new MskSort(DefaultPaymentTypeSortData),
     );
+  }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Private methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Re-fetch the totals after a sale is edited or deleted; the row itself is patched in place.
+   */
+  private _reloadSummary(): void {
+    if (!this._summaryParams) return;
+    this._salesService
+      .getSaleInvoices(this._summaryParams)
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe((res) => this.dataSummery.set(res.data));
   }
 }

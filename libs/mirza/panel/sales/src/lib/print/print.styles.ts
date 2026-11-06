@@ -135,6 +135,11 @@ export const SALE_RECEIPT_PRINT_STYLES = `
     overflow-wrap: anywhere;
   }
 
+  .sale-receipt-print__note {
+    font-size: 10px;
+    font-weight: 400;
+  }
+
   .sale-receipt-print__totals {
     display: grid;
     gap: 0.5mm;

@@ -57,7 +57,7 @@
         class="content-grid-item tow-line"
         [class.pointer-events-none]="!invoice"
         *cdkVirtualFor="let invoice of dataSource; trackBy: trackById"
-        [routerLink]="['card', 'view', $safeNavigationMigration(invoice?.id)]"
+        [routerLink]="['card', 'view', invoice?.id]"
         matRipple
       >
         @if (invoice) {
@@ -96,10 +96,30 @@
 
     <!-- Fab -->
     <div class="content-fab-container">
-      <button matFab extended [routerLink]="['card', 'new']" [mskFabExtendedCollapse]="gridContent" class="msk-zoom-in">
-        <mat-icon>add</mat-icon>
-        <span *transloco="let t">{{ t('new') }}</span>
-      </button>
+      <ng-container *mzStoreCan="'sales.create'">
+        <a
+          matFab
+          extended
+          routerLink="/pos"
+          [mskFabExtendedCollapse]="gridContent"
+          class="msk-zoom-in"
+          *transloco="let t"
+          [attr.aria-label]="t('sales.open-pos')"
+        >
+          <mat-icon>point_of_sale</mat-icon>
+          <span>{{ t('sales.open-pos') }}</span>
+        </a>
+        <button
+          matFab
+          extended
+          [routerLink]="['card', 'new']"
+          [mskFabExtendedCollapse]="gridContent"
+          class="msk-zoom-in"
+        >
+          <mat-icon>add</mat-icon>
+          <span *transloco="let t">{{ t('new') }}</span>
+        </button>
+      </ng-container>
     </div>
   </div>
 </div>

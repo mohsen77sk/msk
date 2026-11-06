@@ -14,7 +14,7 @@ import {
   MskChangeEvent,
   MskDialogData,
 } from '@msk/shared/data-access';
-import { SaleInvoice, DefaultSalesSortData, ICreateSaleInvoice, ISaleInvoiceSummery } from './sales.types';
+import { SaleInvoice, DefaultSalesSortData, ICreateSale, ICreateSaleInvoice, ISaleInvoiceSummery } from './sales.types';
 import { SalesCardDetailsComponent } from './card/details/details.component';
 
 @Injectable({ providedIn: 'root' })
@@ -99,16 +99,26 @@ export class SalesService {
   }
 
   /**
-   * Test local Mellat POS bridge payment in development builds only.
+   * Whether the local Mellat POS bridge is called (development builds only)
    */
-  testDevelopmentMellatPosConnection(saleTotal: number): Observable<unknown> {
-    if (this._appConfig.production) {
+  get isMellatPosBridgeEnabled(): boolean {
+    return !this._appConfig.production;
+  }
+
+  /**
+   * Test local Mellat POS bridge payment in development builds only.
+   *
+   * @param amount amount to charge on the card reader
+   * @param billNumber unique per card-reader transaction
+   */
+  testDevelopmentMellatPosConnection(amount: number, billNumber: string): Observable<unknown> {
+    if (!this.isMellatPosBridgeEnabled) {
       return of(null);
     }
 
     return this._httpClient.post('http://localhost:5283/Payment', {
-      amount: saleTotal,
-      billNumber: 'SALE-123',
+      amount,
+      billNumber,
       ip: '192.168.1.109',
       port: 1024,
       provider: 'MELLAT',
@@ -122,6 +132,18 @@ export class SalesService {
    */
   createSaleInvoice(invoice: ICreateSaleInvoice): Observable<SaleInvoice> {
     return this._httpClient.post<SaleInvoice>(`${this._appConfig.apiEndpoint}/sale`, invoice).pipe(
+      map((response) => new SaleInvoice(response)),
+      tap((invoice) => this._changes.next({ type: 'create', item: invoice })),
+    );
+  }
+
+  /**
+   * Create a sale from a plain payload (POS)
+   *
+   * @param sale
+   */
+  createSale(sale: ICreateSale): Observable<SaleInvoice> {
+    return this._httpClient.post<SaleInvoice>(`${this._appConfig.apiEndpoint}/sale`, sale).pipe(
       map((response) => new SaleInvoice(response)),
       tap((invoice) => this._changes.next({ type: 'create', item: invoice })),
     );

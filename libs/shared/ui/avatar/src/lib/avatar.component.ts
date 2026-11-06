@@ -9,7 +9,7 @@ import { Component, HostBinding, input, ViewEncapsulation } from '@angular/core'
 export class MskAvatarComponent {
   name = input.required<string>();
   imageUrl = input<string>();
-  size = input<'small' | 'medium' | 'big'>('medium');
+  size = input<'small' | 'medium' | 'big' | 'huge'>('medium');
 
   private _colors = [
     'monochrome',
@@ -41,8 +41,10 @@ export class MskAvatarComponent {
       'text-label-medium': this.size() === 'small',
       'size-10': this.size() === 'medium',
       'text-title-medium': this.size() === 'medium',
-      'size-24': this.size() === 'big',
-      'text-headline-large': this.size() === 'big',
+      'size-15': this.size() === 'big',
+      'text-title-large': this.size() === 'big',
+      'size-24': this.size() === 'huge',
+      'text-headline-large': this.size() === 'huge',
       block: true,
     };
   }

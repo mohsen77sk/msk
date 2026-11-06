@@ -1,6 +1,6 @@
 <msk-dialog
   *transloco="let t; prefix: 'accounts.details'"
-  [title]="t(data.action(), { name: $safeNavigationMigration(data.item()?.fullName) })"
+  [title]="t(data.action(), { name: data.item()?.fullName })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
@@ -35,7 +35,7 @@
         @if (isLoadingBalance()) {
           <mat-spinner diameter="24"></mat-spinner>
         } @else {
-          {{ $safeNavigationMigration(data.item()?.balance) | mskCurrency }}
+          {{ data.item()?.balance | mskCurrency }}
         }
       </span>
     </div>
@@ -80,7 +80,9 @@
     <!-- AccountNumber -->
     @if (data.item()?.code) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">numbers</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>numbers</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.code }}</span>
           <span>{{ t('accountNumber') }}</span>
@@ -90,7 +92,9 @@
     <!-- TypeName -->
     @if (data.item()?.accountTypeName) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">credit_card_gear</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>credit_card_gear</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.accountTypeName }}</span>
           <span>{{ t('accountType') }}</span>
@@ -100,9 +104,11 @@
     <!-- CreateDate -->
     @if (data.item()?.createDate) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">calendar_add_on</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>calendar_add_on</mat-icon>
+        </div>
         <div class="msk-list-item-content">
-          <span>{{ ($safeNavigationMigration(data.item()?.createDate) | mskDateTime: 'longDate') || '-' }}</span>
+          <span>{{ (data.item()?.createDate | mskDateTime: 'longDate') || '-' }}</span>
           <span>{{ t('createDate') }}</span>
         </div>
       </div>
@@ -110,9 +116,11 @@
     <!-- CloseDate -->
     @if (data.item()?.closeDate) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">event_busy</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>event_busy</mat-icon>
+        </div>
         <div class="msk-list-item-content">
-          <span>{{ ($safeNavigationMigration(data.item()?.closeDate) | mskDateTime: 'longDate') || '-' }}</span>
+          <span>{{ (data.item()?.closeDate | mskDateTime: 'longDate') || '-' }}</span>
           <span>{{ t('closeDate') }}</span>
         </div>
       </div>
@@ -122,7 +130,9 @@
     <div class="msk-group-list">
       <div class="msk-list-item subtitle">{{ t('note') }}</div>
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>sticky_note_2</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.note }}</span>
         </div>

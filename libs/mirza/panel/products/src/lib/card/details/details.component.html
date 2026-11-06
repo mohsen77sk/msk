@@ -1,6 +1,6 @@
 <msk-dialog
   *transloco="let t; prefix: 'products.details'"
-  [title]="t(data.action(), { name: $safeNavigationMigration(data.item()?.name) })"
+  [title]="t(data.action(), { name: data.item()?.name })"
   [hasAction]="data.action() !== 'view'"
   [primaryAction]="primaryAction"
   [trailing]="trailing"
@@ -13,6 +13,9 @@
   ></ng-container>
 
   <ng-template #trailing>
+    <button matIconButton [matTooltip]="t('duplicate')" [disabled]="!recipeLoaded()" (click)="duplicate()">
+      <mat-icon class="text-current">content_copy</mat-icon>
+    </button>
     <button matIconButton (click)="editMode()">
       <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
     </button>
@@ -30,16 +33,32 @@
     <div class="msk-list-item subtitle">{{ t('specs') }}</div>
     <!-- Name -->
     <div class="msk-list-item">
-      <mat-icon class="msk-list-item-icon">label</mat-icon>
+      <div class="msk-list-item-icon">
+        <mat-icon>label</mat-icon>
+      </div>
       <div class="msk-list-item-content">
         <span>{{ data.item()?.name || '-' }}</span>
         <span>{{ t('name') }}</span>
       </div>
     </div>
+    <!-- Code -->
+    @if (data.item()?.code) {
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>tag</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          <span>{{ data.item()?.code }}</span>
+          <span>{{ t('code') }}</span>
+        </div>
+      </div>
+    }
     <!-- Category -->
     @if (data.item()?.category) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">category</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>category</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.category?.name || '-' }}</span>
           <span>{{ t('category') }}</span>
@@ -49,41 +68,124 @@
     <!-- Quantity -->
     @if (data.item()?.quantity) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">pin</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>pin</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span *transloco="let t; prefix: 'products.units'">
-            {{ ($safeNavigationMigration(data.item()?.quantity) | number) || '-' }} {{ t(data.item()?.unit ?? '') }}
+            {{ (data.item()?.quantity | number) || '-' }} {{ t(data.item()?.unit ?? '') }}
           </span>
           <span>{{ t('quantity') }}</span>
         </div>
       </div>
     }
     <!-- Cost -->
-    @if (data.item()?.cost) {
+    @if (data.item()?.cost && !data.item()?.hasRecipe) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">paid</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>paid</mat-icon>
+        </div>
         <div class="msk-list-item-content">
-          <span>{{ $safeNavigationMigration(data.item()?.cost) | mskCurrency }}</span>
-          <span>{{ t('cost') }}</span>
+          <span>{{ data.item()?.cost | mskCurrency }}</span>
+          <span>
+            {{ t('cost') }}
+            @if (data.item()?.costFromPurchase) {
+              · {{ t('cost-from-last-purchase') }}
+              @if (data.item()?.lastPurchaseAt) {
+                ({{ data.item()?.lastPurchaseAt | mskDateTime: 'longDate' }})
+              }
+            }
+          </span>
         </div>
       </div>
     }
+    <!-- Purpose -->
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>storefront</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>{{ t('is-sellable') }}</span>
+        <msk-state-chip class="mt-2" [checked]="data.item()?.isSellable"></msk-state-chip>
+      </div>
+    </div>
+    <div class="msk-list-item">
+      <div class="msk-list-item-icon">
+        <mat-icon>shopping_cart</mat-icon>
+      </div>
+      <div class="msk-list-item-content">
+        <span>{{ t('is-purchasable') }}</span>
+        <msk-state-chip class="mt-2" [checked]="data.item()?.isPurchasable"></msk-state-chip>
+      </div>
+    </div>
     <!-- SellPrice -->
     @if (data.item()?.sellPrice) {
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sell</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>sell</mat-icon>
+        </div>
         <div class="msk-list-item-content">
-          <span>{{ $safeNavigationMigration(data.item()?.sellPrice) | mskCurrency }}</span>
+          <span>{{ data.item()?.sellPrice | mskCurrency }}</span>
           <span>{{ t('sell-price') }}</span>
         </div>
       </div>
     }
   </div>
+  <!-- Recipe -->
+  @if (recipe()?.items?.length) {
+    <div class="msk-group-list">
+      <div class="msk-list-item subtitle">{{ t('recipe') }}</div>
+      @for (line of recipe()?.items; track line.ingredient.id) {
+        <div class="msk-list-item">
+          <div class="msk-list-item-icon">
+            <mat-icon>blender</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ line.ingredient.name }}</span>
+            <span>
+              {{ line.quantity | number }} {{ 'products.units.' + line.ingredient.unit | transloco }}
+              @if (line.wastePercent) {
+                ({{ line.wastePercent | number }}% · {{ line.effectiveQuantity | number: '1.0-3' }}
+                {{ 'products.units.' + line.ingredient.unit | transloco }} {{ t('effective-quantity') }})
+              }
+              · {{ line.lineCost === null ? '-' : (line.lineCost | mskCurrency) }}
+            </span>
+          </div>
+        </div>
+      }
+      <div class="msk-list-item">
+        <div class="msk-list-item-icon">
+          <mat-icon>paid</mat-icon>
+        </div>
+        <div class="msk-list-item-content">
+          @if (recipe()?.costComplete) {
+            <span>{{ recipe()?.cost | mskCurrency }}</span>
+          } @else {
+            <span class="text-error">{{ t('recipe-cost-incomplete') }}</span>
+          }
+          <span>{{ t('computed-cost') }}</span>
+        </div>
+      </div>
+      @if (data.item()?.isSellable && marginOf(recipe()?.cost, data.item()?.sellPrice) !== null) {
+        <div class="msk-list-item">
+          <div class="msk-list-item-icon">
+            <mat-icon>percent</mat-icon>
+          </div>
+          <div class="msk-list-item-content">
+            <span>{{ marginOf(recipe()?.cost, data.item()?.sellPrice) | percent: '1.0-1' }}</span>
+            <span>{{ t('margin') }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
   @if (data.item()?.note) {
     <div class="msk-group-list">
       <div class="msk-list-item subtitle">{{ t('note') }}</div>
       <div class="msk-list-item">
-        <mat-icon class="msk-list-item-icon">sticky_note_2</mat-icon>
+        <div class="msk-list-item-icon">
+          <mat-icon>sticky_note_2</mat-icon>
+        </div>
         <div class="msk-list-item-content">
           <span>{{ data.item()?.note }}</span>
         </div>
@@ -115,6 +217,13 @@
     }
 
     <div class="flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
+      <!-- Code -->
+      <mat-form-field class="sm:max-w-28">
+        <mat-label>{{ t('code') }}</mat-label>
+        <input matInput formControlName="code" maxlength="4" autocomplete="off" inputmode="numeric" dir="ltr" />
+        <mat-error>{{ formErrors['code'] }}</mat-error>
+      </mat-form-field>
+
       <!-- Name -->
       <mat-form-field>
         <mat-label>{{ t('name') }}</mat-label>
@@ -151,9 +260,12 @@
 
     <!-- Quantity -->
     <div class="flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
-      <mat-form-field>
+      <mat-form-field subscriptSizing="dynamic">
         <mat-label>{{ t('quantity') }}</mat-label>
         <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
+        @if (recipeItems.length) {
+          <mat-hint>{{ t('recipe-stock-hint') }}</mat-hint>
+        }
         <mat-error>{{ formErrors['quantity'] }}</mat-error>
       </mat-form-field>
 
@@ -170,19 +282,142 @@
 
     <!-- Price -->
     <div class="flex flex-col gap-x-4 gap-y-2 *:flex-1 sm:flex-row">
-      <mat-form-field>
-        <mat-label>{{ t('cost') }}</mat-label>
-        <input matInput formControlName="cost" mskMask="currency" autocomplete="off" inputmode="numeric" />
-        <span matTextSuffix mskCurrencySymbol></span>
-        <mat-error>{{ formErrors['cost'] }}</mat-error>
-      </mat-form-field>
+      @if (!recipeItems.length) {
+        <mat-form-field>
+          <mat-label>{{ t('cost') }}</mat-label>
+          <input
+            matInput
+            formControlName="cost"
+            mskMask="currency"
+            autocomplete="off"
+            inputmode="numeric"
+            [readonly]="costFromPurchase()"
+          />
+          <span matTextSuffix mskCurrencySymbol></span>
+          @if (costFromPurchase()) {
+            <mat-hint>
+              {{ t('cost-from-last-purchase') }}
+              @if (data.item()?.lastPurchaseAt) {
+                · {{ data.item()?.lastPurchaseAt | mskDateTime: 'longDate' }}
+              }
+            </mat-hint>
+          }
+          <mat-error>{{ formErrors['cost'] }}</mat-error>
+        </mat-form-field>
+      }
 
-      <mat-form-field>
-        <mat-label>{{ t('sell-price') }}</mat-label>
-        <input matInput formControlName="sellPrice" mskMask="currency" autocomplete="off" inputmode="numeric" />
-        <span matTextSuffix mskCurrencySymbol></span>
-        <mat-error>{{ formErrors['sellPrice'] }}</mat-error>
-      </mat-form-field>
+      @if (form.get('isSellable')?.value) {
+        <mat-form-field>
+          <mat-label>{{ t('sell-price') }}</mat-label>
+          <input matInput formControlName="sellPrice" mskMask="currency" autocomplete="off" inputmode="numeric" />
+          <span matTextSuffix mskCurrencySymbol></span>
+          <mat-error>{{ formErrors['sellPrice'] }}</mat-error>
+        </mat-form-field>
+      }
+    </div>
+
+    <!-- Purpose -->
+    <div class="flex flex-col gap-1">
+      <div class="flex gap-4">
+        <mat-checkbox formControlName="isSellable">{{ t('is-sellable') }}</mat-checkbox>
+        <mat-checkbox formControlName="isPurchasable">{{ t('is-purchasable') }}</mat-checkbox>
+      </div>
+      @if (form.hasError('purposeRequired') && form.touched) {
+        <span class="text-error text-body-small px-4">{{ t('purpose-required') }}</span>
+      }
+    </div>
+
+    <!-- Recipe -->
+    <div class="mb-4 flex flex-col gap-2" formArrayName="recipeItems">
+      <div class="text-title-small">{{ t('recipe') }}</div>
+      @for (row of recipeItems.controls; track row; let i = $index) {
+        <div class="flex flex-1 gap-2" [formGroupName]="i">
+          <button type="button" matIconButton [disabled]="form.disabled" (click)="removeRecipeItem(i)">
+            <mat-icon class="text-error">do_not_disturb_on</mat-icon>
+          </button>
+          <div class="flex flex-1 flex-col gap-3 *:block *:flex-1 md:flex-row">
+            <!-- Ingredient -->
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ t('ingredient') }}</mat-label>
+              <input type="text" matInput formControlName="ingredient" [matAutocomplete]="autoIngredient" />
+              <mat-autocomplete #autoIngredient="matAutocomplete" [displayWith]="ingredientDisplayFn">
+                <cdk-virtual-scroll-viewport
+                  itemSize="48"
+                  minBufferPx="240"
+                  maxBufferPx="480"
+                  [style.height.px]="
+                    (autoIngredient?.options?.length || 0) > 5 ? 240 : (autoIngredient?.options?.length || 0) * 48
+                  "
+                >
+                  <mat-option *cdkVirtualFor="let ingredient of ingredientDSList[i]" [value]="ingredient">
+                    {{ ingredient?.name || ('loading' | transloco) }}
+                  </mat-option>
+                </cdk-virtual-scroll-viewport>
+              </mat-autocomplete>
+            </mat-form-field>
+            <!-- Quantity -->
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ t('recipe-quantity') }}</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="quantity"
+                autocomplete="off"
+                inputmode="decimal"
+                step="any"
+              />
+              @if (recipeUnitOf(row); as unit) {
+                <span matTextSuffix>{{ 'products.units.' + unit | transloco }}</span>
+              }
+              <mat-hint align="end">
+                {{ recipeLineCostOf(row) === null ? '' : (recipeLineCostOf(row) | mskCurrency) }}
+              </mat-hint>
+            </mat-form-field>
+            <!-- Waste -->
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ t('waste-percent') }}</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="wastePercent"
+                autocomplete="off"
+                inputmode="decimal"
+                min="0"
+                max="99.99"
+                step="any"
+              />
+              <span matTextSuffix>%</span>
+              @if (row.get('wastePercent')?.value && recipeEffectiveQuantityOf(row) !== null) {
+                <mat-hint>
+                  {{ recipeEffectiveQuantityOf(row) | number: '1.0-3' }}
+                  {{ recipeUnitOf(row) ? ('products.units.' + recipeUnitOf(row) | transloco) : '' }}
+                  {{ t('effective-quantity') }}
+                </mat-hint>
+              }
+              @if (row.get('wastePercent')?.invalid) {
+                <mat-error>{{ t('waste-percent-range') }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+      }
+      <div class="ms-12">
+        <button type="button" matButton="text" [disabled]="form.disabled || !recipeLoaded()" (click)="addRecipeItem()">
+          {{ t('add-ingredient') }}
+        </button>
+      </div>
+      @if (recipeCost(); as summary) {
+        <div class="text-body-medium flex flex-col gap-1 ps-12">
+          @if (summary.cost !== null) {
+            <span>{{ t('computed-cost') }}: {{ summary.cost | mskCurrency }}</span>
+            @if (summary.margin !== null) {
+              <span>{{ t('margin') }}: {{ summary.margin | percent: '1.0-1' }}</span>
+            }
+          } @else {
+            <span class="text-error">{{ t('recipe-cost-incomplete') }}</span>
+          }
+        </div>
+      }
     </div>
 
     <!-- Note -->

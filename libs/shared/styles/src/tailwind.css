@@ -11,10 +11,17 @@
 
   --text-*: initial;
 
+  --breakpoint-*: initial;
   --breakpoint-sm: 600px;
   --breakpoint-md: 840px;
   --breakpoint-lg: 1200px;
   --breakpoint-xl: 1600px;
+
+  --container-*: initial;
+  --container-sm: 600px;
+  --container-md: 840px;
+  --container-lg: 1200px;
+  --container-xl: 1600px;
 
   --radius-*: initial;
   --radius-none: var(--mat-sys-corner-none);

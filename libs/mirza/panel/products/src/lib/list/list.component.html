@@ -14,6 +14,11 @@
         formControlName="categoryId"
         [datasource]="categoryLookupDS"
       ></msk-filter-menu>
+      <mat-chip-listbox formControlName="purpose" [hideSingleSelectionIndicator]="false" aria-label="purpose">
+        @for (purpose of purposes; track purpose) {
+          <mat-chip-option [value]="purpose">{{ t('products.purpose.' + purpose) }}</mat-chip-option>
+        }
+      </mat-chip-listbox>
     </div>
   </div>
 
@@ -26,7 +31,7 @@
         class="content-grid-item tow-line"
         [class.pointer-events-none]="!product"
         *cdkVirtualFor="let product of dataSource; trackBy: trackById"
-        [routerLink]="['card', 'view', $safeNavigationMigration(product?.id)]"
+        [routerLink]="['card', 'view', product?.id]"
         matRipple
       >
         @if (product) {
@@ -38,6 +43,9 @@
           <div class="content-grid-item-content">
             <div class="truncate">{{ product.name }}</div>
             <div class="truncate">
+              @if (product.code) {
+                <span *transloco="let t; prefix: 'products.details'">{{ t('code') }} {{ product.code }}</span>
+              }
               <span>{{ product.category?.name }}</span>
               @if (product.quantity) {
                 <span *transloco="let t; prefix: 'products.units'">

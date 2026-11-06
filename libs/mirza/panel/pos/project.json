@@ -1,0 +1,10 @@
+{
+  "name": "mirza-panel-pos",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mirza/panel/pos/src",
+  "prefix": "mz",
+  "projectType": "library",
+  "tags": ["scope:mirza", "type:feature"],
+  "// targets": "to see all targets run: nx show project mirza-panel-pos --web",
+  "targets": {}
+}

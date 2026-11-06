@@ -5,6 +5,7 @@
   width: 384px !important;
   min-width: 240px !important;
   max-width: 384px !important;
+  background-color: var(--mat-sys-surface-container) !important;
   border-radius: var(--mat-sys-corner-extra-large) !important;
   box-shadow:
     0 4px 8px 3px rgba(0, 0, 0, 0.15),
@@ -53,7 +54,8 @@
     cursor: pointer;
     border-radius: var(--mat-sys-corner-extra-small);
     background-color: var(--mat-sys-surface-container-lowest);
-    transition: border-radius 0.1s ease-in-out;
+    transition: border-radius 25ms ease-in-out 175ms;
+    flex: 0 0 auto;
 
     &:hover {
       background-color: var(--mat-sys-surface-container-highest);

@@ -16,6 +16,8 @@ export interface MskHttpErrorResponse extends HttpErrorResponse {
 
 export interface MskErrorResponse {
   message: string;
+  // Machine-readable reason on some errors, e.g. PRODUCT_CODE_TAKEN
+  code?: string;
   errors?: MskErrorResponseItem;
 }
 

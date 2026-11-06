@@ -151,6 +151,20 @@ export class AuthUtils {
   }
 
   /**
+   * The token's `typ` claim ('access' | 'refresh'), or null for tokens issued before token types
+   *
+   * @param token
+   */
+  static tokenType(token: string): string | null {
+    try {
+      const decoded = this._decodeToken(token) as { typ?: string } | null;
+      return decoded?.typ ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
    * Get token expiration date
    *
    * @param token

@@ -19,11 +19,29 @@
     "products": "Products",
     "product": "Product",
     "quantity": "Quantity",
-    "totalPrice": "Total price",
+    "totalPrice": "Payable total",
     "addProduct": "Add product",
     "paymentTypes": "Payments",
     "addPaymentType": "Add payment type",
-    "addMoreInfo": "Add more info"
+    "addMoreInfo": "Add more info",
+    "sendToCardReader": "Send this amount to the card reader",
+    "subtotal": "Items subtotal",
+    "lineNote": "Note",
+    "unitPrice": "Unit price",
+    "paymentsRemaining": "Remaining",
+    "paymentsOver": "Over the payable total",
+    "paymentsSettled": "Payments match the payable total",
+    "walkInCustomer": "Walk-in customer",
+    "customerNotPicked": "Pick a customer from the list, or leave the field empty.",
+    "discountExceedsSubtotal": "The discount cannot be more than the items subtotal.",
+    "source": "Source",
+    "sources": {
+      "manual": "Manual",
+      "pos": "POS",
+      "snappfood": "Snappfood"
+    },
+    "snappfoodOrderId": "Snappfood order ID",
+    "createdBy": "Created by"
   },
   "sort": {
     "number": "Number",
@@ -31,7 +49,8 @@
   },
   "errors": {
     "paymentTypesValueMustEqualByTotal": "The total amount paid does not equal the final amount.",
-    "printWindowBlocked": "The print window was blocked."
+    "printWindowBlocked": "The print window was blocked.",
+    "cardReaderFailed": "Sending to the card reader failed."
   },
   "receipt": {
     "sale": "Sale",
@@ -61,5 +80,7 @@
   "delete": "Delete sale invoice",
   "delete-message": "Are you sure you want to delete invoice <b>{{number}}</b>?",
   "print-receipt": "Print receipt",
-  "print-invoice": "Export invoice (PDF)"
+  "print-invoice": "Export invoice (PDF)",
+  "open-pos": "POS",
+  "cardReaderSent": "The amount was sent to the card reader."
 }

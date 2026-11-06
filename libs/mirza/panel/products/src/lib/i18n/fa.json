@@ -5,17 +5,39 @@
     "view": "{{name}}",
     "specs": "مشخصات",
     "name": "نام",
+    "code": "کد",
+    "code-taken": "این کد برای محصول دیگری در این فروشگاه ثبت شده است",
     "category": "دسته بندی",
     "quantity": "مقدار",
     "unit": "واحد",
     "cost": "قیمت تمام شده",
     "sell-price": "قیمت فروش",
-    "note": "توضیحات"
+    "note": "توضیحات",
+    "purpose": "کاربرد",
+    "is-sellable": "قابل فروش",
+    "is-purchasable": "قابل خرید",
+    "purpose-required": "محصول باید قابل فروش، قابل خرید یا دارای دستور تهیه باشد",
+    "recipe": "دستور تهیه",
+    "ingredient": "ماده‌ی اولیه",
+    "recipe-quantity": "مقدار مصرف",
+    "add-ingredient": "افزودن ماده‌ی اولیه",
+    "computed-cost": "قیمت تمام‌شده (از دستور تهیه)",
+    "margin": "حاشیه‌ی سود",
+    "recipe-cost-incomplete": "قیمت تمام‌شده‌ی برخی مواد اولیه ثبت نشده است",
+    "recipe-empty": "این محصول دستور تهیه ندارد",
+    "recipe-stock-hint": "فعلاً با فروش، موجودی خود این محصول کسر می‌شود، نه مواد اولیه‌اش",
+    "waste-percent": "هدررفت ٪",
+    "waste-percent-range": "بین ۰ تا ۹۹٫۹۹",
+    "effective-quantity": "با هدررفت",
+    "duplicate": "کپی",
+    "copy-suffix": "(کپی)",
+    "cost-from-last-purchase": "از آخرین خرید"
   },
   "units": {
     "piece": "عدد",
     "gram": "گرم",
-    "kg": "کیلوگرم"
+    "kg": "کیلوگرم",
+    "ml": "میلی‌لیتر"
   },
   "sort": {
     "name": "نام",
@@ -24,5 +46,10 @@
   "search": "جستجوی محصولات",
   "empty-list": "هیچ محصولی وجود ندارد!",
   "delete": "حذف محصول",
-  "delete-message": "آیا مطمئن هستید که می خواهید <b>{{name}}</b> را حذف کنید؟"
+  "delete-message": "آیا مطمئن هستید که می خواهید <b>{{name}}</b> را حذف کنید؟",
+  "purpose": {
+    "all": "همه",
+    "sale": "قابل فروش",
+    "purchase": "قابل خرید"
+  }
 }
