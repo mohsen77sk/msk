@@ -40,7 +40,9 @@ export class PosCartStore {
   private _lastLineId = 0;
 
   // Derived
-  readonly subtotal = computed(() => this.lines().reduce((sum, line) => sum + line.unitPrice * line.quantity, 0));
+  readonly subtotal = computed(() =>
+    this.lines().reduce((sum, line) => sum + Math.round(line.unitPrice * line.quantity), 0),
+  );
   readonly discount = computed(() => Math.min(Math.max(this.discountInput() || 0, 0), this.subtotal()));
   readonly total = computed(() => this.subtotal() - this.discount());
   readonly unitCount = computed(() => this.lines().reduce((sum, line) => sum + line.quantity, 0));
@@ -272,7 +274,7 @@ export class PosCartStore {
       productId: line.productId,
       quantity: line.quantity,
       unitPrice: line.unitPrice,
-      total: line.unitPrice * line.quantity,
+      total: Math.round(line.unitPrice * line.quantity),
       note: line.notes.length ? joinSaleLineNote(line.notes) : undefined,
     }));
     const total = saleItems.reduce((sum, item) => sum + item.total, 0) - this.discount();

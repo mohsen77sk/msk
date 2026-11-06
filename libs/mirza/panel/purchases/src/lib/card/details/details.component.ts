@@ -217,7 +217,8 @@ export class PurchasesCardDetailsComponent implements OnInit {
   addPurchaseItem(): void {
     const group = this._formBuilder.group<IPurchaseItemForm>({
       product: this._formBuilder.control<Product | null>(null, Validators.required),
-      quantity: this._formBuilder.control(1, [Validators.required, Validators.min(1)]),
+      // Fractions for gram/kg products (0.25 kg); the backend keeps 3 decimals
+      quantity: this._formBuilder.control(1, [Validators.required, Validators.min(0.001)]),
       total: this._formBuilder.control(0, [Validators.required, Validators.min(0)]),
     });
     this.purchaseItems.push(group);

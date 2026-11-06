@@ -236,7 +236,14 @@
             <!-- Quantity -->
             <mat-form-field subscriptSizing="dynamic" class="md:w-24 md:flex-none">
               <mat-label>{{ t('quantity') }}</mat-label>
-              <input matInput type="number" formControlName="quantity" autocomplete="off" inputmode="numeric" />
+              <input
+                matInput
+                type="number"
+                formControlName="quantity"
+                autocomplete="off"
+                inputmode="decimal"
+                step="any"
+              />
             </mat-form-field>
             <!-- Row total (manually entered, not derived from product.sellPrice) -->
             <mat-form-field>

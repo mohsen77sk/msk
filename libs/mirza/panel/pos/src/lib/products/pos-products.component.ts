@@ -188,7 +188,9 @@ export class PosProductsComponent {
       return;
     }
     const term = this._searchTerm();
-    const quantity = /^\d+$/.test(term) ? Number(term) : NaN;
+    // Whole or decimal (0.25, 1/5 with a Persian decimal separator) for gram/kg products
+    const decimal = term.replace(/[٫/,]/g, '.');
+    const quantity = /^\d+(\.\d{1,3})?$|^\.\d{1,3}$/.test(decimal) ? Number(decimal) : NaN;
     if (!quantity) {
       this._error('quantity-needed');
       return;
