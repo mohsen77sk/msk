@@ -43,6 +43,7 @@
       "@msk/mirza/panel/payment-types": ["libs/mirza/panel/payment-types/src/index.ts"],
       "@msk/mirza/panel/pos": ["libs/mirza/panel/pos/src/index.ts"],
       "@msk/mirza/panel/products": ["libs/mirza/panel/products/src/index.ts"],
+      "@msk/mirza/panel/members": ["libs/mirza/panel/members/src/index.ts"],
       "@msk/mirza/panel/quick-notes": ["libs/mirza/panel/quick-notes/src/index.ts"],
       "@msk/mirza/panel/purchases": ["libs/mirza/panel/purchases/src/index.ts"],
       "@msk/mirza/panel/sales": ["libs/mirza/panel/sales/src/index.ts"],

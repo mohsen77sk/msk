@@ -1,0 +1,43 @@
+{
+  "title": "Staff & access",
+  "subtitle": "Who can do what in this store.",
+  "tabs": {
+    "members": "Staff",
+    "roles": "Roles"
+  },
+  "members": {
+    "add": "Add member",
+    "phone": "Mobile number",
+    "phoneHint": "No account yet? One is created; they set a password with “Forgot password”.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "role": "Role",
+    "remove": "Remove from store",
+    "remove-message": "<b>{{name}}</b> will lose access to this store. Their recorded sales stay."
+  },
+  "roles": {
+    "add": "New role",
+    "name": "Role name",
+    "permissions": "Permissions",
+    "memberCount": "{{count}} members",
+    "permissionCount": "{{count}} permissions",
+    "allPermissions": "All permissions",
+    "ownerHint": "The owner always has every permission and cannot be edited.",
+    "delete": "Delete role",
+    "delete-message": "Delete the <b>{{name}}</b> role?",
+    "permission": {
+      "sales.create": "Record sales and use the POS",
+      "sales.view_all": "See everyone's sales (otherwise only their own)",
+      "sales.edit": "Edit sales",
+      "sales.delete": "Delete sales",
+      "customers.manage": "Add and edit customers",
+      "products.manage": "Products, categories and recipes",
+      "purchases.manage": "Purchases",
+      "vendors.manage": "Vendors",
+      "expenses.manage": "Expenses",
+      "reports.view": "Dashboard and reports",
+      "settings.manage": "Store settings, payment types, quick notes and menu",
+      "members.manage": "Manage staff and roles"
+    }
+  }
+}

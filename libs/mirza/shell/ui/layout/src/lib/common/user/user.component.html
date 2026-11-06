@@ -90,7 +90,12 @@
       </div>
     </div>
     <div class="mz-user-panel-profile-list" *transloco="let t">
-      <div class="mz-user-panel-profile-item" [routerLink]="'/panel/settings'" aria-hidden="true">
+      <div
+        class="mz-user-panel-profile-item"
+        *mzStoreCan="'settings.manage'"
+        [routerLink]="'/panel/settings'"
+        aria-hidden="true"
+      >
         <div>
           <mat-icon class="mat-icon-rtl-mirror">settings_account_box</mat-icon>
           <span class="ms-3 font-medium">{{ t('layout.settings') }}</span>

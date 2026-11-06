@@ -30,12 +30,14 @@ import {
 import { Customer, CustomerSummary, GenderEnum, CustomerOrderRow } from '../../customers.types';
 import { CustomersService } from '../../customers.service';
 import { catchError, distinctUntilChanged, EMPTY, filter, map, of, switchMap, tap } from 'rxjs';
+import { StoreCanDirective } from '@msk/mirza/shell/core/store';
 
 @Component({
   selector: 'mz-customers-details',
   templateUrl: './details.component.html',
   encapsulation: ViewEncapsulation.None,
   imports: [
+    StoreCanDirective,
     NgTemplateOutlet,
     DecimalPipe,
     FormsModule,

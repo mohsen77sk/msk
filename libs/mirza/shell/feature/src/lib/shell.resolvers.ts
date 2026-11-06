@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { forkJoin, of, EMPTY } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { forkJoin, EMPTY } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { UserService } from '@msk/mirza/shell/core/user';
-import { StoreService } from '@msk/mirza/shell/core/store';
+import { StoreAccessService, StoreService } from '@msk/mirza/shell/core/store';
 import { NavigationService } from '@msk/mirza/shell/core/navigation';
 
 export const initialDataResolver = () => {
@@ -11,6 +11,7 @@ export const initialDataResolver = () => {
   const userService = inject(UserService);
   const storeService = inject(StoreService);
   const navigationService = inject(NavigationService);
+  const storeAccessService = inject(StoreAccessService);
 
   // Fork join multiple API endpoint calls to wait all of them to finish
   return forkJoin([userService.get(), storeService.getAll(), navigationService.get()]).pipe(
@@ -20,7 +21,8 @@ export const initialDataResolver = () => {
         router.navigate(['onboarding']);
         return EMPTY;
       }
-      return of([user, stores, navigation]);
+      // The caller's permissions in the current store (getAll set it)
+      return storeAccessService.load().pipe(map(() => [user, stores, navigation]));
     }),
   );
 };

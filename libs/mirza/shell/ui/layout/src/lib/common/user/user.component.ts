@@ -20,7 +20,7 @@ import { MskAvatarComponent } from '@msk/shared/ui/avatar';
 import { LayoutScheme, MskLayoutConfigService } from '@msk/shared/services/config';
 import { availableCurrencies, availableLangs } from '@msk/shared/constants';
 import { UserService, User } from '@msk/mirza/shell/core/user';
-import { StoreService, Store } from '@msk/mirza/shell/core/store';
+import { StoreAccessService, StoreCanDirective, StoreService, Store } from '@msk/mirza/shell/core/store';
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
 import { LayoutCurrencyDialogComponent } from '../layout-currency-dialog/layout-currency-dialog.component';
@@ -39,6 +39,7 @@ import { tap } from 'rxjs';
     MatDialogModule,
     TranslocoDirective,
     MskAvatarComponent,
+    StoreCanDirective,
   ],
 })
 export class UserComponent implements OnInit {
@@ -47,6 +48,7 @@ export class UserComponent implements OnInit {
   private _dialog = inject(MatDialog);
   private _userService = inject(UserService);
   private _storeService = inject(StoreService);
+  private _storeAccessService = inject(StoreAccessService);
   private _layoutConfigService = inject(MskLayoutConfigService);
 
   showAvatar = input(true, { transform: booleanAttribute });
@@ -149,7 +151,8 @@ export class UserComponent implements OnInit {
     }
 
     this._storeService.currentStore = store;
-    this._router.navigate(['/panel/redirect']);
+    // Permissions differ per store: land where the new role may go
+    this._storeAccessService.load().subscribe(() => this._router.navigateByUrl(this._storeAccessService.homeUrl()));
   }
 
   /**

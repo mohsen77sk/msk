@@ -21,9 +21,11 @@
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
       <!-- Only a saved sale can be edited -->
-      <button matIconButton (click)="editMode()">
-        <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
-      </button>
+      <ng-container *mzStoreCan="'sales.edit'">
+        <button matIconButton (click)="editMode()">
+          <mat-icon class="mat-icon-rtl-mirror text-current">edit</mat-icon>
+        </button>
+      </ng-container>
     }
   </ng-template>
 
@@ -262,14 +264,16 @@
           {{ t('sales.print-invoice') }}
         </div>
       </div>
-      <div class="msk-list-item cursor-pointer" matRipple (click)="deleteInvoice()" aria-hidden="true">
-        <div class="msk-list-item-icon">
-          <mat-icon class="text-error">delete</mat-icon>
+      <ng-container *mzStoreCan="'sales.delete'">
+        <div class="msk-list-item cursor-pointer" matRipple (click)="deleteInvoice()" aria-hidden="true">
+          <div class="msk-list-item-icon">
+            <mat-icon class="text-error">delete</mat-icon>
+          </div>
+          <div class="msk-list-item-content text-error">
+            {{ t('sales.delete') }}
+          </div>
         </div>
-        <div class="msk-list-item-content text-error">
-          {{ t('sales.delete') }}
-        </div>
-      </div>
+      </ng-container>
     </div>
   </div>
 </ng-template>
