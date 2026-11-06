@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  DOCUMENT,
   DestroyRef,
   OnInit,
   ViewEncapsulation,
@@ -12,8 +11,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AbstractControl, FormBuilder, FormControl, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { Clipboard } from '@angular/cdk/clipboard';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,31 +20,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { MSK_APP_CONFIG } from '@msk/shared/utils/app-config';
 import { MskCurrencyPipe } from '@msk/shared/pipes/currency';
 import { MskAlertComponent } from '@msk/shared/ui/alert';
 import { MskSpinnerDirective } from '@msk/shared/directives/spinner';
 import { MskSnackbarService } from '@msk/shared/services/snack-bar';
-import { MskValidateFormFields } from '@msk/shared/utils/error-handler';
 import { MskDataSource, MskHttpErrorResponse, MskSort } from '@msk/shared/data-access';
 import { DefaultProductsSortData, Product, ProductsService } from '@msk/mirza/panel/products';
-import { encode, renderSVG } from 'uqr';
-import {
-  MENU_SLUG_MAX_LENGTH,
-  MENU_SLUG_MIN_LENGTH,
-  MENU_SLUG_PATTERN,
-  MenuConfig,
-  MenuProductGroup,
-  RESERVED_MENU_SLUGS,
-} from './menu.types';
+import { MenuProductGroup } from './menu.types';
 import { MenuService } from './menu.service';
-
-// Medium-high error correction and a 4-module quiet zone keep printed codes scannable.
-const QR_OPTIONS = { ecc: 'Q', border: 4 } as const;
-const QR_PNG_MIN_SIZE = 1024;
 
 /**
  * Group products by category, keeping the order in which categories first appear
@@ -62,10 +45,6 @@ function groupByCategory(products: Product[]): MenuProductGroup[] {
     groups.set(key, group);
   }
   return [...groups.values()];
-}
-
-function reservedSlugValidator(control: AbstractControl<string>): ValidationErrors | null {
-  return RESERVED_MENU_SLUGS.includes(control.value) ? { reserved: true } : null;
 }
 
 @Component({
@@ -84,7 +63,6 @@ function reservedSlugValidator(control: AbstractControl<string>): ValidationErro
     MatCheckboxModule,
     MatTooltipModule,
     MatFormFieldModule,
-    MatSlideToggleModule,
     MatProgressSpinnerModule,
     TranslocoDirective,
     MskCurrencyPipe,
@@ -93,28 +71,16 @@ function reservedSlugValidator(control: AbstractControl<string>): ValidationErro
   ],
 })
 export class MenuComponent implements OnInit {
-  private _document = inject(DOCUMENT);
-  private _clipboard = inject(Clipboard);
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _destroyRef = inject(DestroyRef);
-  private _appConfig = inject(MSK_APP_CONFIG);
-  private _formBuilder = inject(FormBuilder);
   private _menuService = inject(MenuService);
   private _productsService = inject(ProductsService);
   private _snackbarService = inject(MskSnackbarService);
   private _translocoService = inject(TranslocoService);
 
-  readonly slugMinLength = MENU_SLUG_MIN_LENGTH;
-  readonly slugMaxLength = MENU_SLUG_MAX_LENGTH;
-
   readonly isLoading = signal(true);
   readonly loadFailed = signal(false);
   readonly alert = signal({ show: false, message: '' });
-
-  // Last saved settings (the public URL and QR code always reflect saved state)
-  readonly savedSlug = signal<string | null>(null);
-  readonly savedEnabled = signal(false);
-  readonly savingSettings = signal(false);
 
   // Selected products, always kept grouped by category in display order
   readonly selected = signal<Product[]>([]);
@@ -124,39 +90,10 @@ export class MenuComponent implements OnInit {
   readonly groups = computed(() => groupByCategory(this.selected()));
   readonly selectedIds = computed(() => new Set(this.selected().map((product) => product.id)));
 
-  readonly publicUrl = computed(() => {
-    const slug = this.savedSlug();
-    const origin = this._appConfig.frontendOrigin;
-    return slug && origin ? `${origin}/menu/${slug}` : null;
-  });
-
-  readonly qrCode = computed(() => {
-    const url = this.publicUrl();
-    return url ? this._renderQrCode(url) : null;
-  });
-
-  settingsForm = this._formBuilder.nonNullable.group({
-    enabled: [false],
-    slug: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(MENU_SLUG_MIN_LENGTH),
-        Validators.maxLength(MENU_SLUG_MAX_LENGTH),
-        Validators.pattern(MENU_SLUG_PATTERN),
-        reservedSlugValidator,
-      ],
-    ],
-  });
-
   search = new FormControl<string>('');
   productsDataSource!: MskDataSource<Product>;
 
   trackById = (i: number, item: Product | undefined) => item?.id ?? i;
-
-  get slugControl(): FormControl<string> {
-    return this.settingsForm.controls.slug;
-  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Lifecycle hooks
@@ -183,8 +120,6 @@ export class MenuComponent implements OnInit {
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe({
         next: (menu) => {
-          this.settingsForm.reset({ enabled: menu.enabled, slug: menu.slug ?? '' });
-          this._applySavedSettings(menu);
           this._setSelected(menu.products);
           this.productsDirty.set(false);
           this.isLoading.set(false);
@@ -199,53 +134,6 @@ export class MenuComponent implements OnInit {
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Trim and lowercase the slug, matching the backend normalization
-   */
-  normalizeSlug(): void {
-    const normalized = this.slugControl.value.trim().toLowerCase();
-    if (normalized !== this.slugControl.value) {
-      this.slugControl.setValue(normalized);
-    }
-  }
-
-  /**
-   * Save the enabled state and slug
-   */
-  saveSettings(): void {
-    this.normalizeSlug();
-    MskValidateFormFields(this.settingsForm);
-    if (this.settingsForm.invalid) {
-      return;
-    }
-
-    const payload = this.settingsForm.getRawValue();
-    this.settingsForm.disable();
-    this.savingSettings.set(true);
-    this.alert.set({ show: false, message: '' });
-
-    this._menuService.updateMenu(payload).subscribe({
-      next: (menu) => {
-        this.savingSettings.set(false);
-        this.settingsForm.enable();
-        this.settingsForm.reset({ enabled: menu.enabled, slug: menu.slug ?? '' });
-        this._applySavedSettings(menu);
-        this._snackbarService.success(this._translocoService.translate('menu.settings.saved'));
-      },
-      error: (response: MskHttpErrorResponse) => {
-        this.savingSettings.set(false);
-        // Enable first: enable() re-runs validation and would clear the server error below
-        this.settingsForm.enable();
-        if (response.status === 409) {
-          this.slugControl.setErrors({ taken: true });
-          this.slugControl.markAsTouched();
-          return;
-        }
-        this.alert.set({ show: true, message: this._errorMessage(response) });
-      },
-    });
-  }
 
   /**
    * Add or remove a product from the menu
@@ -335,48 +223,9 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  /**
-   * Copy the public URL
-   */
-  copyUrl(): void {
-    const url = this.publicUrl();
-    if (url && this._clipboard.copy(url)) {
-      this._snackbarService.success(this._translocoService.translate('menu.share.copied'));
-    }
-  }
-
-  /**
-   * Download the QR code
-   *
-   * @param format
-   */
-  downloadQrCode(format: 'png' | 'svg'): void {
-    const qrCode = this.qrCode();
-    const slug = this.savedSlug();
-    if (!qrCode || !slug) {
-      return;
-    }
-
-    const href =
-      format === 'png' ? qrCode.png : URL.createObjectURL(new Blob([qrCode.svg], { type: 'image/svg+xml' }));
-    const link = this._document.createElement('a');
-    link.href = href;
-    link.download = `menu-qr-${slug}.${format}`;
-    link.click();
-
-    if (format === 'svg') {
-      setTimeout(() => URL.revokeObjectURL(href));
-    }
-  }
-
   // -----------------------------------------------------------------------------------------------------
   // @ Private methods
   // -----------------------------------------------------------------------------------------------------
-
-  private _applySavedSettings(menu: MenuConfig): void {
-    this.savedSlug.set(menu.slug);
-    this.savedEnabled.set(menu.enabled);
-  }
 
   private _setSelected(products: Product[]): void {
     this.selected.set(groupByCategory(products).flatMap((group) => group.products));
@@ -389,31 +238,5 @@ export class MenuComponent implements OnInit {
       return message.join('\n');
     }
     return typeof message === 'string' ? message : response.message;
-  }
-
-  private _renderQrCode(url: string): { png: string; svg: string } | null {
-    const qr = encode(url, QR_OPTIONS);
-    const scale = Math.ceil(QR_PNG_MIN_SIZE / qr.size);
-    const canvas = this._document.createElement('canvas');
-    canvas.width = qr.size * scale;
-    canvas.height = qr.size * scale;
-
-    const context = canvas.getContext('2d');
-    if (!context) {
-      return null;
-    }
-
-    context.fillStyle = '#ffffff';
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = '#000000';
-    qr.data.forEach((row, y) =>
-      row.forEach((dark, x) => {
-        if (dark) {
-          context.fillRect(x * scale, y * scale, scale, scale);
-        }
-      }),
-    );
-
-    return { png: canvas.toDataURL('image/png'), svg: renderSVG(url, QR_OPTIONS) };
   }
 }

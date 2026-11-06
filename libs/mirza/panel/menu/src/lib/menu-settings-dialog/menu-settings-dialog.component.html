@@ -1,0 +1,54 @@
+<ng-container *transloco="let t">
+  <h2 matDialogTitle>{{ t('menu.settings.title') }}</h2>
+
+  <div matDialogContent>
+    <form class="flex flex-col gap-2" [formGroup]="form" (ngSubmit)="save()" #formNode>
+      @if (alert()) {
+        <msk-alert class="mb-4" appearance="outline" [showIcon]="false" type="error">
+          <span class="whitespace-pre-line">{{ alert() }}</span>
+        </msk-alert>
+      }
+
+      <mat-slide-toggle class="mb-4" formControlName="enabled">{{ t('menu.settings.enabled') }}</mat-slide-toggle>
+
+      <mat-form-field>
+        <mat-label>{{ t('menu.settings.slug') }}</mat-label>
+        <input
+          matInput
+          formControlName="slug"
+          dir="ltr"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          [maxlength]="slugMaxLength"
+          (blur)="normalizeSlug()"
+        />
+        <mat-hint>{{ t('menu.settings.slug-hint') }}</mat-hint>
+        <mat-error>
+          @if (slugControl.hasError('required')) {
+            {{ t('menu.settings.errors.required') }}
+          } @else if (slugControl.hasError('minlength') || slugControl.hasError('maxlength')) {
+            {{ t('menu.settings.errors.length', { min: slugMinLength, max: slugMaxLength }) }}
+          } @else if (slugControl.hasError('pattern')) {
+            {{ t('menu.settings.errors.pattern') }}
+          } @else if (slugControl.hasError('reserved')) {
+            {{ t('menu.settings.errors.reserved') }}
+          } @else if (slugControl.hasError('taken')) {
+            {{ t('menu.settings.errors.taken') }}
+          }
+        </mat-error>
+      </mat-form-field>
+
+      @if (data.menu.slug && slugControl.value !== data.menu.slug) {
+        <msk-alert appearance="soft" type="warning">{{ t('menu.settings.slug-change-warning') }}</msk-alert>
+      }
+    </form>
+  </div>
+
+  <div matDialogActions>
+    <button matButton type="button" [disabled]="saving()" matDialogClose>{{ t('cancel') }}</button>
+    <button matButton type="submit" [disabled]="saving()" [mskSpinner]="saving()" (click)="formNode.requestSubmit()">
+      {{ saving() ? '' : t('save') }}
+    </button>
+  </div>
+</ng-container>

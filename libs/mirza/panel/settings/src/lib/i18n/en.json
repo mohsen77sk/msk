@@ -10,5 +10,17 @@
   "address": "Address",
   "pos": "POS",
   "quick-notes": "Quick notes",
-  "quick-notes-hint": "Ready-made notes for invoice lines"
+  "quick-notes-hint": "Ready-made notes for invoice lines",
+  "menu": "Digital menu",
+  "menu-status": "Menu status and address",
+  "menu-status-on": "On",
+  "menu-status-off": "Off",
+  "menu-no-slug": "No menu address yet",
+  "menu-enabled": "Menu is visible to customers",
+  "menu-share": "Link and QR code",
+  "menu-share-hint": "Copy the link, preview, download the QR code",
+  "menu-share-no-slug": "Set the menu address first",
+  "menu-products": "Menu products",
+  "menu-products-hint": "Choose and order the products on the menu",
+  "menu-load-error": "Could not load the menu settings"
 }

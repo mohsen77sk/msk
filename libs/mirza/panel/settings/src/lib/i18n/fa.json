@@ -10,5 +10,17 @@
   "address": "آدرس",
   "pos": "صندوق فروش (POS)",
   "quick-notes": "یادداشت‌های سریع",
-  "quick-notes-hint": "یادداشت‌های آماده برای اقلام فاکتور"
+  "quick-notes-hint": "یادداشت‌های آماده برای اقلام فاکتور",
+  "menu": "منوی دیجیتال",
+  "menu-status": "وضعیت و آدرس منو",
+  "menu-status-on": "فعال",
+  "menu-status-off": "غیرفعال",
+  "menu-no-slug": "آدرس منو تعیین نشده",
+  "menu-enabled": "منو برای مشتریان فعال باشد",
+  "menu-share": "لینک و QR کد",
+  "menu-share-hint": "کپی لینک، پیش‌نمایش و دانلود QR",
+  "menu-share-no-slug": "اول آدرس منو را تعیین کنید",
+  "menu-products": "محصولات منو",
+  "menu-products-hint": "انتخاب و ترتیب محصولات منو",
+  "menu-load-error": "دریافت تنظیمات منو با خطا مواجه شد"
 }

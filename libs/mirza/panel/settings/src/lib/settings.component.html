@@ -81,6 +81,61 @@
           </button>
         </div>
 
+        <div class="text-title-large mt-8 mb-8">{{ t('menu') }}</div>
+        @if (menuLoadFailed()) {
+          <p class="text-body-medium text-error">{{ t('menu-load-error') }}</p>
+        } @else {
+          <div class="msk-group-list">
+            <div class="msk-list-item">
+              <div class="msk-list-item-icon">
+                <mat-icon>visibility</mat-icon>
+              </div>
+              <div class="msk-list-item-content">
+                <span>{{ t('menu-enabled') }}</span>
+              </div>
+              <mat-slide-toggle
+                [checked]="menu()?.enabled ?? false"
+                [disabled]="!menu() || menuSaving()"
+                (change)="toggleMenu($event.checked, $event.source)"
+                [attr.aria-label]="t('menu-enabled')"
+              ></mat-slide-toggle>
+            </div>
+            <button class="msk-list-item item-hover" matRipple [disabled]="!menu()" (click)="openMenuSettingsDialog()">
+              <div class="msk-list-item-icon">
+                <mat-icon>link</mat-icon>
+              </div>
+              <div class="msk-list-item-content">
+                <span>{{ t('menu-status') }}</span>
+                <span dir="auto">{{ menu()?.slug || t('menu-no-slug') }}</span>
+              </div>
+            </button>
+            <button
+              class="msk-list-item item-hover"
+              matRipple
+              [disabled]="!menu()?.slug"
+              (click)="openMenuShareDialog()"
+            >
+              <div class="msk-list-item-icon">
+                <mat-icon>qr_code_2</mat-icon>
+              </div>
+              <div class="msk-list-item-content">
+                <span>{{ t('menu-share') }}</span>
+                <span>{{ menu()?.slug ? t('menu-share-hint') : t('menu-share-no-slug') }}</span>
+              </div>
+            </button>
+            <a class="msk-list-item item-hover" matRipple routerLink="/panel/menu">
+              <div class="msk-list-item-icon">
+                <mat-icon>restaurant_menu</mat-icon>
+              </div>
+              <div class="msk-list-item-content">
+                <span>{{ t('menu-products') }}</span>
+                <span>{{ t('menu-products-hint') }}</span>
+              </div>
+              <mat-icon class="mat-icon-rtl-mirror text-on-surface-variant">chevron_right</mat-icon>
+            </a>
+          </div>
+        }
+
         <div class="text-title-large mt-8 mb-8">{{ t('pos') }}</div>
         <div class="msk-group-list">
           <a class="msk-list-item item-hover" matRipple routerLink="/panel/quick-notes">

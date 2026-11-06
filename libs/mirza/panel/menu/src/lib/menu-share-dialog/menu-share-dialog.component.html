@@ -1,0 +1,40 @@
+<ng-container *transloco="let t">
+  <h2 matDialogTitle>{{ t('menu.share.title') }}</h2>
+
+  <div matDialogContent class="flex flex-col gap-4">
+    @if (!data.menu.enabled) {
+      <msk-alert appearance="soft" type="warning">{{ t('menu.share.disabled-warning') }}</msk-alert>
+    }
+
+    <div class="bg-surface-container-low rounded-medium flex items-center gap-2 py-1 ps-4 pe-1">
+      <a class="text-primary min-w-0 flex-auto truncate" dir="ltr" [href]="url" target="_blank" rel="noopener">{{
+        url
+      }}</a>
+      <button matIconButton type="button" [matTooltip]="t('menu.share.copy')" (click)="copyUrl()">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+    </div>
+
+    @if (qrCode; as qr) {
+      <img class="size-56 self-center bg-white" [src]="qr.png" [alt]="t('menu.share.qr-alt')" />
+      <div class="flex flex-wrap justify-center gap-2">
+        <button matButton="tonal" type="button" (click)="download('png')">
+          <mat-icon>download</mat-icon>
+          <span>{{ t('menu.share.download-png') }}</span>
+        </button>
+        <button matButton="tonal" type="button" (click)="download('svg')">
+          <mat-icon>download</mat-icon>
+          <span>{{ t('menu.share.download-svg') }}</span>
+        </button>
+      </div>
+    }
+  </div>
+
+  <div matDialogActions>
+    <a matButton [href]="url" target="_blank" rel="noopener">
+      <mat-icon>visibility</mat-icon>
+      <span>{{ t('menu.share.preview') }}</span>
+    </a>
+    <button matButton type="button" matDialogClose>{{ t('close') }}</button>
+  </div>
+</ng-container>

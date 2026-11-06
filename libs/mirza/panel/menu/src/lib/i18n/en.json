@@ -39,5 +39,6 @@
     "add": "Add products",
     "search": "Search products",
     "saved": "Menu products saved"
-  }
+  },
+  "back-to-settings": "Back to settings"
 }
