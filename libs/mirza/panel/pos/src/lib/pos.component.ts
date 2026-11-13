@@ -156,6 +156,7 @@ export class PosComponent {
       )
       .subscribe((sale) => {
         this.cart.clear();
+        this._products()?.clearSearch();
         this.focusInput();
         this._showSaved(sale);
       });

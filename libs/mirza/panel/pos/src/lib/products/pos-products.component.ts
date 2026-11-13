@@ -73,6 +73,14 @@ export class PosProductsComponent {
   }
 
   /**
+   * Empty the search so the next order starts from all products
+   */
+  clearSearch(): void {
+    this._clearInput();
+    this.message.set('');
+  }
+
+  /**
    * @param product
    */
   addProduct(product: PosProduct): void {
