@@ -127,6 +127,12 @@
         </div>
         <span class="text-label-medium font-light">{{ t(activeLangLabel()) }}</span>
       </div>
+      <div class="mz-user-panel-profile-item" (click)="openLayoutNotificationsDialog()" aria-hidden="true">
+        <div>
+          <mat-icon class="mat-icon-rtl-mirror">notifications_active</mat-icon>
+          <span class="ms-3 font-medium">{{ t('layout.notifications') }}</span>
+        </div>
+      </div>
       <div class="mz-user-panel-profile-item" (click)="openLayoutCurrencyDialog()" aria-hidden="true">
         <div>
           <mat-icon class="mat-icon-rtl-mirror">universal_currency_alt</mat-icon>

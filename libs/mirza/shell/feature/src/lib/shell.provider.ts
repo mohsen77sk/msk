@@ -26,6 +26,7 @@ import { provideMskServiceWorker } from '@msk/shared/utils/service-worker';
 import { provideMskTransloco } from '@msk/shared/utils/transloco';
 import { provideMskLoading } from '@msk/shared/utils/loading';
 import { provideAuth } from '@msk/mirza/shell/core/auth';
+import { provideNotifications } from '@msk/mirza/shell/core/notifications';
 
 import { routes } from './shell.routes';
 
@@ -94,6 +95,9 @@ export const provideShell = (config: LayoutConfig): Array<Provider | Environment
 
     // Provide Auth
     provideAuth(),
+
+    // Realtime order notifications (socket + web push)
+    provideNotifications(),
 
     // Material Date Adapter
     provideDateFnsAdapter(),

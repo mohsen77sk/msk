@@ -53,6 +53,7 @@
       "@msk/mirza/public/menu": ["libs/mirza/public/menu/src/index.ts"],
       "@msk/mirza/shell/core/auth": ["libs/mirza/shell/core/auth/src/index.ts"],
       "@msk/mirza/shell/core/navigation": ["libs/mirza/shell/core/navigation/src/index.ts"],
+      "@msk/mirza/shell/core/notifications": ["libs/mirza/shell/core/notifications/src/index.ts"],
       "@msk/mirza/shell/core/store": ["libs/mirza/shell/core/store/src/index.ts"],
       "@msk/mirza/shell/core/user": ["libs/mirza/shell/core/user/src/index.ts"],
       "@msk/mirza/shell/feature": ["libs/mirza/shell/feature/src/index.ts"],

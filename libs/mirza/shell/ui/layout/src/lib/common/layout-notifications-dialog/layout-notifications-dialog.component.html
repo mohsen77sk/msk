@@ -1,0 +1,33 @@
+<h2 matDialogTitle *transloco="let t">{{ t('layout.notifications-title') }}</h2>
+<div matDialogContent *transloco="let t">
+  <p class="text-body-medium mb-4">{{ t('layout.notifications-description') }}</p>
+
+  @if (notifications.pushSupported()) {
+    <mat-slide-toggle
+      [checked]="notifications.pushEnabled()"
+      [disabled]="notifications.pushBusy() || notifications.permissionDenied()"
+      (change)="toggle($event)"
+    >
+      {{ t('layout.notifications-toggle') }}
+    </mat-slide-toggle>
+    @if (notifications.permissionDenied()) {
+      <p class="text-body-small text-error mt-2">{{ t('layout.notifications-denied') }}</p>
+    }
+    @if (notifications.pushEnabled()) {
+      <div class="mt-3">
+        <button matButton="outlined" (click)="test()">{{ t('layout.notifications-test') }}</button>
+      </div>
+    }
+  } @else {
+    <p class="text-body-small text-on-surface-variant">{{ t('layout.notifications-unsupported') }}</p>
+  }
+
+  @if (notifications.needsInstallHint()) {
+    <p class="text-body-small bg-surface-container-high mt-4 rounded-lg p-3">
+      {{ t('layout.notifications-ios-hint') }}
+    </p>
+  }
+</div>
+<div matDialogActions *transloco="let t">
+  <button matButton matDialogClose>{{ t('layout.close') }}</button>
+</div>

@@ -57,7 +57,16 @@
     "select-language": "Select language",
     "select-currency": "Select currency",
     "show-more-stores": "Show more stores",
-    "hide-more-stores": "Hide more stores"
+    "hide-more-stores": "Hide more stores",
+    "notifications": "Order notifications",
+    "notifications-title": "Order notifications",
+    "notifications-description": "When a Digikala or Snappfood order arrives you get a sound and a message here. Turn on the switch below to also get notifications on this device when the app is closed.",
+    "notifications-toggle": "Receive order notifications",
+    "notifications-test": "Send a test notification",
+    "close": "Close",
+    "notifications-denied": "Notifications are blocked in this browser. Allow them from the browser settings (lock icon next to the address).",
+    "notifications-unsupported": "This browser or build does not support notifications.",
+    "notifications-ios-hint": "On iPhone and iPad, notifications only work when the app is added to the Home Screen: tap Safari's Share button, choose Add to Home Screen, and open the app from its icon."
   },
   "upload-image": {
     "ext-error": "Only images are allowed.",

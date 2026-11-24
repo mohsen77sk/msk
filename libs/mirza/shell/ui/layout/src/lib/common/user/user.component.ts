@@ -24,6 +24,7 @@ import { StoreAccessService, StoreCanDirective, StoreService, Store } from '@msk
 import { LayoutSchemeDialogComponent } from '../layout-scheme-dialog/layout-scheme-dialog.component';
 import { LayoutLanguageDialogComponent } from '../layout-language-dialog/layout-language-dialog.component';
 import { LayoutCurrencyDialogComponent } from '../layout-currency-dialog/layout-currency-dialog.component';
+import { LayoutNotificationsDialogComponent } from '../layout-notifications-dialog/layout-notifications-dialog.component';
 import { tap } from 'rxjs';
 
 @Component({
@@ -132,6 +133,13 @@ export class UserComponent implements OnInit {
    */
   openLayoutCurrencyDialog() {
     this._dialog.open(LayoutCurrencyDialogComponent).afterClosed().subscribe();
+  }
+
+  /**
+   * Open order notifications dialog
+   */
+  openLayoutNotificationsDialog() {
+    this._dialog.open(LayoutNotificationsDialogComponent).afterClosed().subscribe();
   }
 
   /**

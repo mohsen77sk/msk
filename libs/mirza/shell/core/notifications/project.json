@@ -1,0 +1,10 @@
+{
+  "name": "mirza-shell-core-notifications",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/mirza/shell/core/notifications/src",
+  "prefix": "mz",
+  "projectType": "library",
+  "tags": ["scope:mirza", "type:util"],
+  "// targets": "to see all targets run: nx show project mirza-shell-core-notifications --web",
+  "targets": {}
+}
