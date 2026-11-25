@@ -95,40 +95,71 @@ export class NotificationsService {
   }
 
   private _onNotification(n: StoreNotification): void {
-    this.playSound();
+    this._startAlarm();
     const ref = this._snackBar.open(`${n.title} — ${n.body}`, 'باز کردن', {
-      duration: 20000,
+      duration: 60000,
       direction: 'rtl',
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: 'mz-order-toast',
     });
     ref.onAction().subscribe(() => void this._router.navigateByUrl(n.url));
+    // Any acknowledgement (button, swipe, timeout) silences the alarm.
+    ref.afterDismissed().subscribe(() => this._stopAlarm());
   }
 
-  /** Two-tone chime generated with Web Audio (no audio file to ship). */
+  private _alarmTimer: ReturnType<typeof setInterval> | null = null;
+  private _alarmUntil = 0;
+
+  /** Repeats the loud alarm until the toast is acknowledged (at most one minute). */
+  private _startAlarm(): void {
+    this._alarmUntil = Date.now() + 60000;
+    if (this._alarmTimer) {
+      return;
+    }
+    this.playSound();
+    this._alarmTimer = setInterval(() => {
+      if (Date.now() > this._alarmUntil) {
+        this._stopAlarm();
+      } else {
+        this.playSound();
+      }
+    }, 2500);
+  }
+
+  private _stopAlarm(): void {
+    if (this._alarmTimer) {
+      clearInterval(this._alarmTimer);
+      this._alarmTimer = null;
+    }
+  }
+
+  /** Loud, attention-grabbing alarm generated with Web Audio (no audio file to ship). */
   playSound(): void {
     const ctx = this._getAudio();
     if (!ctx || ctx.state !== 'running') {
       return;
     }
     const start = ctx.currentTime;
-    [
-      { f: 880, t: 0 },
-      { f: 1175, t: 0.18 },
-      { f: 880, t: 0.9 },
-      { f: 1175, t: 1.08 },
-    ].forEach(({ f, t }) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = f;
-      gain.gain.setValueAtTime(0.0001, start + t);
-      gain.gain.exponentialRampToValueAtTime(0.35, start + t + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, start + t + 0.45);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(start + t);
-      osc.stop(start + t + 0.5);
+    // Rising two-tone siren, three times; square waves cut through café noise.
+    [0, 0.6, 1.2].forEach((t) => {
+      [
+        { f: 988, d: 0 },
+        { f: 1319, d: 0.25 },
+      ].forEach(({ f, d }) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.value = f;
+        const at = start + t + d;
+        gain.gain.setValueAtTime(0.0001, at);
+        gain.gain.exponentialRampToValueAtTime(0.9, at + 0.01);
+        gain.gain.setValueAtTime(0.9, at + 0.2);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.24);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(at);
+        osc.stop(at + 0.25);
+      });
     });
   }
 
